@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import context from '@ascua/context';
 import { setOwner } from '@ember/application';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { defer } from '@ascua/queue';
 import Patch from '../dmp/patch';
@@ -28,9 +28,9 @@ export default class Model {
 	// Instance properties
 	// ------------------------------
 
-	@inject surreal;
+	@service surreal;
 
-	@inject store;
+	@service store;
 
 	#id = null;
 

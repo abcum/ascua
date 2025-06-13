@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { setOwner } from '@ember/application';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import meta from '../meta';
 import json from '../../utils/json';
@@ -20,7 +20,7 @@ export default class Field {
 	// Instance properties
 	// ------------------------------
 
-	@inject store;
+	@service store;
 
 	#parent = undefined;
 

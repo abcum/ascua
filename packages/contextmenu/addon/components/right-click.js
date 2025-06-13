@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { arg } from '@ascua/decorators';
 import Remote from '@electron/remote';
@@ -7,7 +7,7 @@ import Electron from 'electron';
 
 export default class extends Component {
 
-	@inject contextmenu;
+	@service contextmenu;
 
 	@arg model = null;
 

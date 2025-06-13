@@ -1,10 +1,10 @@
 import Helper from '@ember/component/helper';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { typeOf } from '@ember/utils';
 
 export default class extends Helper {
 
-	@inject contextmenu;
+	@service contextmenu;
 
 	compute([name], { model }) {
 		return (event, ...params) => {
@@ -12,7 +12,7 @@ export default class extends Helper {
 			model = params.length ? params[0] : null;
 
 			params.forEach(param => {
-				if ( typeOf(param) === 'instance' ) {
+				if (typeOf(param) === 'instance') {
 					model = param;
 				}
 			});

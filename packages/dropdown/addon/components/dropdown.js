@@ -1,12 +1,12 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { get } from '@ember/object';
 
 export default class extends Component {
 
-	@inject('-document') document;
+	@service('-document') document;
 
 	@tracked top = 0;
 
@@ -46,20 +46,20 @@ export default class extends Component {
 		let t = this.element.getBoundingClientRect().top - 5;
 		let l = this.element.getBoundingClientRect().left - 5;
 
-		while ( l+w > window.innerWidth-30 ) l--;
-		while ( t+h > window.innerHeight-30 ) t--;
+		while (l + w > window.innerWidth - 30) l--;
+		while (t + h > window.innerHeight - 30) t--;
 
 		this.left = l; this.top = t;
 
-		setTimeout( () => {
+		setTimeout(() => {
 
 			let w = element.offsetWidth;
 			let h = element.offsetHeight;
 			let t = this.element.getBoundingClientRect().top - 5;
 			let l = this.element.getBoundingClientRect().left - 5;
 
-			while ( l+w > window.innerWidth-30 ) l--;
-			while ( t+h > window.innerHeight-30 ) t--;
+			while (l + w > window.innerWidth - 30) l--;
+			while (t + h > window.innerHeight - 30) t--;
 
 			this.left = l; this.top = t;
 
@@ -72,7 +72,7 @@ export default class extends Component {
 	}
 
 	@action didValue() {
-		if ( Array.isArray(this.args.value) ) {
+		if (Array.isArray(this.args.value)) {
 			Promise.all(this.args.value).then(v => {
 				this.value = v;
 			});
@@ -84,7 +84,7 @@ export default class extends Component {
 	}
 
 	@action register(el, value, label) {
-		setTimeout( () => {
+		setTimeout(() => {
 			Promise.resolve(value).then(value => {
 				this.options.addObject({
 					el, label, value,
@@ -94,7 +94,7 @@ export default class extends Component {
 	}
 
 	@action unregister(el, value, label) {
-		setTimeout( () => {
+		setTimeout(() => {
 			Promise.resolve(value).then(value => {
 				this.options = this.options.filter(opt => {
 					return opt.el !== el;
@@ -104,7 +104,7 @@ export default class extends Component {
 	}
 
 	@action reregister(el, value, label) {
-		setTimeout( () => {
+		setTimeout(() => {
 			Promise.resolve(value).then(value => {
 				this.options = this.options.map(opt => {
 					return opt.el !== el ? opt : {
@@ -118,7 +118,7 @@ export default class extends Component {
 	@action async changed(value) {
 
 		if (this.args.multiple) {
-			if ( this.value.includes(value) ) {
+			if (this.value.includes(value)) {
 				value = this.value.removeObject(value);
 			} else {
 				value = this.value.addObject(value);
@@ -145,8 +145,8 @@ export default class extends Component {
 
 		} else {
 
-			let label = this.options.reduce( (a, o, k) => {
-				if ( this.value.includes(o.value) ) {
+			let label = this.options.reduce((a, o, k) => {
+				if (this.value.includes(o.value)) {
 					a.push(o.label);
 				}
 				return a;

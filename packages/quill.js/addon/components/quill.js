@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { arg } from '@ascua/decorators';
 import Event from '@ascua/events';
@@ -21,10 +21,10 @@ const history = {
 };
 
 const toolbar = [
-	[{'header': [1, 2, 3, 4, false]}],
+	[{ 'header': [1, 2, 3, 4, false] }],
 	['bold', 'italic', 'underline', 'strike'],
-	[{'color': []}, {'background': []}],
-	[{'align': []}, {'list': 'ordered'}, {'list': 'bullet'}],
+	[{ 'color': [] }, { 'background': [] }],
+	[{ 'align': [] }, { 'list': 'ordered' }, { 'list': 'bullet' }],
 	['blockquote', 'image', 'video', 'code-block'],
 	['link'],
 	['clean']
@@ -32,7 +32,7 @@ const toolbar = [
 
 export default class extends Component {
 
-	@inject quill;
+	@service quill;
 
 	@arg name = null;
 	@arg delta = null;
@@ -92,13 +92,13 @@ export default class extends Component {
 		// Listen to events and call any specified actions.
 
 		this.instance.on('text-change', (delta, oldDelta, source) => {
-			return element.dispatchEvent( new Event('text-change', {
+			return element.dispatchEvent(new Event('text-change', {
 				detail: { instance: this.instance, delta, oldDelta, source }
 			}));
 		});
 
 		this.instance.on('selection-change', (range, oldRange, source) => {
-			return element.dispatchEvent( new Event('selection-change', {
+			return element.dispatchEvent(new Event('selection-change', {
 				detail: { instance: this.instance, range, oldRange, source }
 			}));
 		});

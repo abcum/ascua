@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class extends Controller {
-	@inject electron;
+	@service electron;
 }

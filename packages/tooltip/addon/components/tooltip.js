@@ -1,13 +1,13 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import position from '../utils/position';
 import { arg } from '@ascua/decorators';
 
 export default class extends Component {
 
-	@inject('-document') document;
+	@service('-document') document;
 
 	@arg side = 's';
 
@@ -37,19 +37,19 @@ export default class extends Component {
 
 		this.show.split(' ').forEach(e => {
 			switch (e) {
-			case 'click':
-				return this.target.addEventListener('click', this.openHandler);
-			case 'hover':
-				return this.target.addEventListener('mouseenter', this.openHandler);
+				case 'click':
+					return this.target.addEventListener('click', this.openHandler);
+				case 'hover':
+					return this.target.addEventListener('mouseenter', this.openHandler);
 			}
 		});
 
 		this.hide.split(' ').forEach(e => {
 			switch (e) {
-			case 'click':
-				return document.addEventListener('mousedown', this.closeHandler);
-			case 'hover':
-				return this.target.addEventListener('mouseleave', this.closeHandler);
+				case 'click':
+					return document.addEventListener('mousedown', this.closeHandler);
+				case 'hover':
+					return this.target.addEventListener('mouseleave', this.closeHandler);
 			}
 		});
 
@@ -61,19 +61,19 @@ export default class extends Component {
 
 		this.show.split(' ').forEach(e => {
 			switch (e) {
-			case 'click':
-				return this.target.removeEventListener('click', this.openHandler);
-			case 'hover':
-				return this.target.removeEventListener('mouseenter', this.openHandler);
+				case 'click':
+					return this.target.removeEventListener('click', this.openHandler);
+				case 'hover':
+					return this.target.removeEventListener('mouseenter', this.openHandler);
 			}
 		});
 
 		this.hide.split(' ').forEach(e => {
 			switch (e) {
-			case 'click':
-				return document.removeEventListener('mousedown', this.closeHandler);
-			case 'hover':
-				return this.target.removeEventListener('mouseleave', this.closeHandler);
+				case 'click':
+					return document.removeEventListener('mousedown', this.closeHandler);
+				case 'hover':
+					return this.target.removeEventListener('mouseleave', this.closeHandler);
 			}
 		});
 

@@ -1,6 +1,5 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject } from '@ember/service';
 import { action } from '@ember/object';
 import stripe from '@ascua/stripe.js';
 import config from '@ascua/config';

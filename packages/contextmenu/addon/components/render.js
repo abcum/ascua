@@ -1,11 +1,11 @@
 import Component from '@glimmer/component';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import Electron from 'electron';
 
 export default class extends Component {
 
-	@inject contextmenu;
+	@service contextmenu;
 
 	visible = !Electron;
 
@@ -14,8 +14,8 @@ export default class extends Component {
 		let w = element.offsetWidth;
 		let h = element.offsetHeight;
 
-		while ( x+w > window.innerWidth-30 ) x--;
-		while ( y+h > window.innerHeight-30 ) y--;
+		while (x + w > window.innerWidth - 30) x--;
+		while (y + h > window.innerHeight - 30) y--;
 
 		element.style.top = `${y}px`;
 		element.style.left = `${x}px`;

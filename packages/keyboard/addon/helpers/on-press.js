@@ -1,10 +1,10 @@
 import Helper from '@ember/component/helper';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import handler from '../utils/handler';
 
 export default class extends Helper {
 
-	@inject('-document') document;
+	@service('-document') document;
 
 	compute([keys, func, ...params]) {
 

@@ -1,11 +1,11 @@
 import Component from '@glimmer/component';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { arg } from '@ascua/decorators';
 
 export default class extends Component {
 
-	@inject contextmenu;
+	@service contextmenu;
 
 	@arg type = 'normal';
 
@@ -32,7 +32,7 @@ export default class extends Component {
 	}
 
 	@action didMouse() {
-		setTimeout( () => {
+		setTimeout(() => {
 			this.contextmenu.hide();
 		});
 	}

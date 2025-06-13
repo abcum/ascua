@@ -1,13 +1,13 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { timeout } from '@ascua/tasks';
 import { restart } from '@ascua/tasks';
 
 export default class extends Component {
 
-	@inject pdfjs;
+	@service pdfjs;
 
 	@tracked doc;
 
@@ -107,8 +107,8 @@ export default class extends Component {
 			});
 			this.doc = yield this.xhr.promise;
 
-			for (let i=1; i<=this.doc.numPages; i++) {
-				pages.pushObject( this.doc.getPage(i) );
+			for (let i = 1; i <= this.doc.numPages; i++) {
+				pages.pushObject(this.doc.getPage(i));
 			}
 
 			this.pages = yield Promise.all(pages);

@@ -1,9 +1,9 @@
 import Service from '@ember/service';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class extends Service {
 
-	@inject router;
+	@service router;
 
 	get name() {
 		return this.router.currentRouteName;
@@ -18,7 +18,7 @@ export default class extends Service {
 	}
 
 	get query() {
-		return this.vars.split('&').filter(p => p).reduce( (o, p) => {
+		return this.vars.split('&').filter(p => p).reduce((o, p) => {
 			let bit = p.split('=');
 			let key = decodeURIComponent(bit[0]);
 			let val = decodeURIComponent(bit[1]) || null;

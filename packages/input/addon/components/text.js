@@ -1,11 +1,11 @@
 import Component from '@glimmer/component';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { arg } from '@ascua/decorators';
 
 export default class extends Component {
 
-	@inject('-document') document;
+	@service('-document') document;
 
 	@arg value = '';
 

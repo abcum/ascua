@@ -1,8 +1,8 @@
 import Route from '@ember/routing/route';
 import { assert } from '@ember/debug';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 
-export default function(target) {
+export default function (target) {
 	assert(
 		'The @attempted decorator can only be applied to a Route',
 		!target || (target && target.prototype instanceof Route),
@@ -22,11 +22,11 @@ function func(target) {
 
 	target.reopen({
 
-		surreal: inject(),
+		surreal: service(),
 
 		beforeModel() {
 			// Wait for authentication attempt.
-			return this.surreal.wait().then( () => {
+			return this.surreal.wait().then(() => {
 				// Continue with original hook.
 				return before.apply(this, ...arguments);
 			});

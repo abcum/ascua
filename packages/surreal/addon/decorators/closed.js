@@ -1,8 +1,8 @@
 import Route from '@ember/routing/route';
 import { assert } from '@ember/debug';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 
-export default function(target) {
+export default function (target) {
 	assert(
 		'The @closed decorator can only be applied to a Route',
 		!target || (target && target.prototype instanceof Route),
@@ -20,9 +20,9 @@ function func(target) {
 
 	target.reopen({
 
-		surreal: inject(),
+		surreal: service(),
 
-		closed: () => {},
+		closed: () => { },
 
 		activate() {
 			this._super(...arguments);

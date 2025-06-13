@@ -1,9 +1,9 @@
 import Helper from '@ember/component/helper';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class extends Helper {
 
-	@inject quill;
+	@service quill;
 
 	compute([name], { html }) {
 		return (...passed) => {

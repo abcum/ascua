@@ -1,12 +1,12 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { htmlSafe } from '@ember/template';
 
 export default class extends Component {
 
-	@inject('-document') document;
+	@service('-document') document;
 
 	@tracked value = htmlSafe(this.args.value);
 

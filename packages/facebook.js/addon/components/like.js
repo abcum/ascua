@@ -1,11 +1,11 @@
-import Component from '@glimmer/component';
-import { inject } from '@ember/service';
+import Component from '@ember/component';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { arg } from '@ascua/decorators';
 
 export default class extends Component {
 
-	@inject facebook;
+	@service facebook;
 
 	@arg action = 'like';
 	@arg colorscheme = 'light';

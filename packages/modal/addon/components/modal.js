@@ -1,12 +1,12 @@
 import Component from '@glimmer/component';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { dispatch } from '@ascua/events';
 import Event from '@ascua/events';
 
 export default class extends Component {
 
-	@inject('-document') document;
+	@service('-document') document;
 
 	@action didEscape(event) {
 		if (this.args.onClose) {
@@ -18,7 +18,7 @@ export default class extends Component {
 	}
 
 	@action didClick(event) {
-		if ( event.target.matches('app-modal-cover') ) {
+		if (event.target.matches('app-modal-cover')) {
 			if (this.args.onClose) {
 				return this.args.onClose();
 			}

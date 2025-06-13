@@ -1,8 +1,8 @@
 import Route from '@ember/routing/route';
 import { assert } from '@ember/debug';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 
-export default function(target) {
+export default function (target) {
 	assert(
 		'The @authenticated decorator can only be applied to a Route',
 		!target || (target && target.prototype instanceof Route),
@@ -26,11 +26,11 @@ function func(target) {
 
 	target.reopen({
 
-		router: inject(),
+		router: service(),
 
-		surreal: inject(),
+		surreal: service(),
 
-		session: inject(),
+		session: service(),
 
 		redirectIfInvalidated: 'signin',
 
@@ -58,7 +58,7 @@ function func(target) {
 				return this.router.replaceWith(this.redirectIfInvalidated);
 			}
 			// Wait for session identification.
-			return this.session.ready.then( () => {
+			return this.session.ready.then(() => {
 				// Continue with original hook.
 				return before.apply(this, ...arguments);
 			});

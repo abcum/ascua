@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import Cache from '../classes/cache';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 import Model from '@ascua/surreal/model';
@@ -12,7 +12,7 @@ import { DestroyedError } from '../errors';
 
 export default class Store extends Service {
 
-	@inject surreal;
+	@service surreal;
 
 	#cache = new Cache(); // Record cache
 
@@ -220,7 +220,7 @@ export default class Store extends Service {
 		if (id !== undefined) {
 
 			if (Array.isArray(id)) {
-				return this.#cache.get(model).remove( v => id.includes(v) );
+				return this.#cache.get(model).remove(v => id.includes(v));
 			} else {
 				return this.#cache.get(model).removeBy('id', id);
 			}
@@ -252,7 +252,7 @@ export default class Store extends Service {
 		if (id !== undefined) {
 
 			if (Array.isArray(id)) {
-				return this.#cache.get(model).filter( v => id.includes(v) );
+				return this.#cache.get(model).filter(v => id.includes(v));
 			} else {
 				return this.#cache.get(model).findBy('id', id);
 			}
@@ -280,30 +280,30 @@ export default class Store extends Service {
 	 * @returns {Promise} Promise object with the desired records.
 	 */
 
-	select(model, id, opts={}) {
+	select(model, id, opts = {}) {
 
 		assert('The model type must be a string', typeof model === 'string');
 
 		opts = Object.assign({}, { reload: false }, opts);
 
-		if (this.#stack[id||model] === undefined) {
+		if (this.#stack[id || model] === undefined) {
 
 			let cached = this.cached(model, id);
 
 			switch (true) {
-			case cached !== undefined && cached.length !== 0 && opts.reload !== true:
-				return cached;
-			case cached === undefined || cached.length === 0 || opts.reload === true:
-				this.#stack[id||model] = this.remote(model, id, opts);
-				return this.#stack[id||model].then(result => {
-					delete this.#stack[id||model];
-					return result;
-				});
+				case cached !== undefined && cached.length !== 0 && opts.reload !== true:
+					return cached;
+				case cached === undefined || cached.length === 0 || opts.reload === true:
+					this.#stack[id || model] = this.remote(model, id, opts);
+					return this.#stack[id || model].then(result => {
+						delete this.#stack[id || model];
+						return result;
+					});
 			}
 
 		}
 
-		return this.#stack[id||model];
+		return this.#stack[id || model];
 
 	}
 
@@ -321,17 +321,17 @@ export default class Store extends Service {
 	 * @returns {Promise} Promise object with the desired records.
 	 */
 
-	async remote(model, id, opts={}) {
+	async remote(model, id, opts = {}) {
 
 		assert('The model type must be a string', typeof model === 'string');
 
-		if (this.#stash[id||model] !== undefined) {
-			let server = await this.#stash[id||model];
-			delete this.#stash[id||model];
+		if (this.#stash[id || model] !== undefined) {
+			let server = await this.#stash[id || model];
+			delete this.#stash[id || model];
 			return this.inject(server);
 		} else {
 			let server = await this.surreal.select(model, id);
-			if (opts.shoebox) this.#stash[id||model] = server;
+			if (opts.shoebox) this.#stash[id || model] = server;
 			return this.inject(server);
 		}
 
@@ -477,7 +477,7 @@ export default class Store extends Service {
 	 * @returns {Promise} Promise object with the total number of records.
 	 */
 
-	async count(model, query={}) {
+	async count(model, query = {}) {
 
 		let { text, vars } = count(model, query);
 
@@ -504,7 +504,7 @@ export default class Store extends Service {
 	 * @returns {Promise} Promise object with the desired matching records.
 	 */
 
-	async search(model, query={}) {
+	async search(model, query = {}) {
 
 		let result;
 

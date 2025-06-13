@@ -1,12 +1,12 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { arg } from '@ascua/decorators';
 
 export default class extends Component {
 
-	@inject('-document') document;
+	@service('-document') document;
 
 	@tracked top = 0;
 
@@ -39,20 +39,20 @@ export default class extends Component {
 		let t = this.element.getBoundingClientRect().top - 5;
 		let l = this.element.getBoundingClientRect().left - 5;
 
-		while ( l+w > window.innerWidth-30 ) l--;
-		while ( t+h > window.innerHeight-30 ) t--;
+		while (l + w > window.innerWidth - 30) l--;
+		while (t + h > window.innerHeight - 30) t--;
 
 		this.left = l; this.top = t;
 
-		setTimeout( () => {
+		setTimeout(() => {
 
 			let w = element.offsetWidth;
 			let h = element.offsetHeight;
 			let t = this.element.getBoundingClientRect().top - 5;
 			let l = this.element.getBoundingClientRect().left - 5;
 
-			while ( l+w > window.innerWidth-30 ) l--;
-			while ( t+h > window.innerHeight-30 ) t--;
+			while (l + w > window.innerWidth - 30) l--;
+			while (t + h > window.innerHeight - 30) t--;
 
 			this.left = l; this.top = t;
 
@@ -66,23 +66,23 @@ export default class extends Component {
 
 	get value() {
 		switch (true) {
-		case this.args.value && this.args.value instanceof Date === true:
-			return this.args.value;
-		case this.args.value && this.args.value instanceof Date === false:
-			return new Date(this.args.value);
-		default:
-			return undefined;
+			case this.args.value && this.args.value instanceof Date === true:
+				return this.args.value;
+			case this.args.value && this.args.value instanceof Date === false:
+				return new Date(this.args.value);
+			default:
+				return undefined;
 		}
 	}
 
 	get pivot() {
 		switch (true) {
-		case this.current !== undefined:
-			return this.current;
-		case this.value !== undefined:
-			return this.value;
-		default:
-			return new Date();
+			case this.current !== undefined:
+				return this.current;
+			case this.value !== undefined:
+				return this.value;
+			default:
+				return new Date();
 		}
 	}
 

@@ -1,9 +1,9 @@
 import Service from '@ember/service';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class extends Service {
 
-	@inject router;
+	@service router;
 
 	constructor() {
 

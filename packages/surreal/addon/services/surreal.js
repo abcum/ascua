@@ -4,7 +4,7 @@ import config from '@ascua/config';
 import unid from '../utils/unid';
 import Database from 'surreal';
 import { tracked } from '@glimmer/tracking';
-import { inject } from '@ember/service';
+import { service } from '@ember/service';
 import { assert } from '@ember/debug';
 import { cache } from '@ascua/decorators';
 import JWT from '../utils/jwt';
@@ -20,7 +20,7 @@ const defaults = {
 
 export default class Surreal extends Service {
 
-	@inject store;
+	@service store;
 
 	// The localStorage proxy class
 	// which enables us to write to
@@ -154,12 +154,12 @@ export default class Surreal extends Service {
 			this.emit(e.action, e.result);
 
 			switch (e.action) {
-			case 'CREATE':
-				return this.store.inject(e.result);
-			case 'UPDATE':
-				return this.store.inject(e.result);
-			case 'DELETE':
-				return this.store.remove(e.result);
+				case 'CREATE':
+					return this.store.inject(e.result);
+				case 'UPDATE':
+					return this.store.inject(e.result);
+				case 'DELETE':
+					return this.store.remove(e.result);
 			}
 
 		});
