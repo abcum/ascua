@@ -1,4 +1,4 @@
-const insert = async function(file) {
+const insert = async function (file) {
 	return new Promise(resolve => {
 		const rdr = new FileReader();
 		rdr.onload = (e) => {
@@ -31,6 +31,22 @@ export default class Insert {
 				const idx = (this.quill.getSelection() || {}).index;
 				if (idx < 0) idx = this.quill.getLength();
 				this.quill.insertEmbed(idx, 'image', src, 'user');
+			}
+
+		}
+
+		if (file.type.match(/^video\//i)) {
+
+			if (typeof this.handler === 'function') {
+				const src = await this.handler(file);
+				const idx = (this.quill.getSelection() || {}).index;
+				if (idx < 0) idx = this.quill.getLength();
+				this.quill.insertEmbed(idx, 'video', src, 'user');
+			} else {
+				const src = await insert(file);
+				const idx = (this.quill.getSelection() || {}).index;
+				if (idx < 0) idx = this.quill.getLength();
+				this.quill.insertEmbed(idx, 'video', src, 'user');
 			}
 
 		}

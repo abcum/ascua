@@ -9,14 +9,30 @@ export default class Import {
 
 		this.quill.root.addEventListener('drop', this.didDrop, false);
 		this.quill.root.addEventListener('paste', this.didPaste, false);
-		this.quill.getModule('toolbar').addHandler('image', this.didClick);
+		this.quill.getModule('toolbar').addHandler('image', this.didImage);
+		this.quill.getModule('toolbar').addHandler('video', this.didVideo);
 
 	}
 
-	didClick(e) {
+	didImage(e) {
 
 		const input = document.createElement('input');
 		input.setAttribute('type', 'file');
+		input.setAttribute('accept', 'image/*');
+		input.onchange = () => {
+			[].forEach.call(input.files, file => {
+				this.quill.getModule('insert').insert(file);
+			});
+		}
+		input.click();
+
+	}
+
+	didVideo(e) {
+
+		const input = document.createElement('input');
+		input.setAttribute('type', 'file');
+		input.setAttribute('accept', 'video/*');
 		input.onchange = () => {
 			[].forEach.call(input.files, file => {
 				this.quill.getModule('insert').insert(file);

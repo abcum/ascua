@@ -9,10 +9,16 @@ import Import from '../utils/import';
 Quill.register('modules/import', Import);
 
 import Insert from '../utils/insert';
-Quill.register('modules/insert', Insert);
+Quill.register('modules/insert', Insert, true);
 
 import Resize from '../utils/resize';
-Quill.register('modules/resize', Resize);
+Quill.register('modules/resize', Resize, true);
+
+import Image from '../utils/image';
+Quill.register(Image, true);
+
+import Video from '../utils/video';
+Quill.register(Video, true);
 
 const history = {
 	delay: 1000,
