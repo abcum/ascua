@@ -116,7 +116,6 @@
     "@ascua/editable": "file:packages/editable",
     "@ascua/electron": "file:packages/electron",
     "@ascua/events": "file:packages/events",
-    "@ascua/facebook.js": "file:packages/facebook.js",
     "@ascua/fastboot": "file:packages/fastboot",
     "@ascua/fetch": "file:packages/fetch",
     "@ascua/format": "file:packages/format",
