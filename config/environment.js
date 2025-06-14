@@ -46,6 +46,7 @@ module.exports = function (environment) {
 
 		EmberENV: {
 			EXTEND_PROTOTYPES: {
+				Array: true,
 				Date: false,
 			},
 			FEATURES: {
