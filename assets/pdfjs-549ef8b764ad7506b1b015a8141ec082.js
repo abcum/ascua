@@ -20,24 +20,24 @@
  * JavaScript code in this page
  */
 (function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=t.pdfjsLib=e():"function"==typeof define&&define.amd?define("pdfjs-dist/build/pdf",[],(()=>t.pdfjsLib=e())):"object"==typeof exports?exports["pdfjs-dist/build/pdf"]=t.pdfjsLib=e():t["pdfjs-dist/build/pdf"]=t.pdfjsLib=e()})(globalThis,(()=>(()=>{"use strict"
-var __webpack_modules__=[,(t,e)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.VerbosityLevel=e.Util=e.UnknownErrorException=e.UnexpectedResponseException=e.TextRenderingMode=e.RenderingIntentFlag=e.PromiseCapability=e.PermissionFlag=e.PasswordResponses=e.PasswordException=e.PageActionEventType=e.OPS=e.MissingPDFException=e.MAX_IMAGE_SIZE_TO_CACHE=e.LINE_FACTOR=e.LINE_DESCENT_FACTOR=e.InvalidPDFException=e.ImageKind=e.IDENTITY_MATRIX=e.FormatError=e.FeatureTest=e.FONT_IDENTITY_MATRIX=e.DocumentActionEventType=e.CMapCompressionType=e.BaseException=e.BASELINE_FACTOR=e.AnnotationType=e.AnnotationReplyType=e.AnnotationPrefix=e.AnnotationMode=e.AnnotationFlag=e.AnnotationFieldFlag=e.AnnotationEditorType=e.AnnotationEditorPrefix=e.AnnotationEditorParamsType=e.AnnotationBorderStyleType=e.AnnotationActionEventType=e.AbortException=void 0,e.assert=function(t,e){t||r(e)},e.bytesToString=h,e.createValidAbsoluteUrl=function(t,e=null,s=null){if(!t)return null
+var __webpack_modules__=[,(t,e)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.VerbosityLevel=e.Util=e.UnknownErrorException=e.UnexpectedResponseException=e.TextRenderingMode=e.RenderingIntentFlag=e.PromiseCapability=e.PermissionFlag=e.PasswordResponses=e.PasswordException=e.PageActionEventType=e.OPS=e.MissingPDFException=e.MAX_IMAGE_SIZE_TO_CACHE=e.LINE_FACTOR=e.LINE_DESCENT_FACTOR=e.InvalidPDFException=e.ImageKind=e.IDENTITY_MATRIX=e.FormatError=e.FeatureTest=e.FONT_IDENTITY_MATRIX=e.DocumentActionEventType=e.CMapCompressionType=e.BaseException=e.BASELINE_FACTOR=e.AnnotationType=e.AnnotationReplyType=e.AnnotationPrefix=e.AnnotationMode=e.AnnotationFlag=e.AnnotationFieldFlag=e.AnnotationEditorType=e.AnnotationEditorPrefix=e.AnnotationEditorParamsType=e.AnnotationBorderStyleType=e.AnnotationActionEventType=e.AbortException=void 0,e.assert=function(t,e){t||o(e)},e.bytesToString=c,e.createValidAbsoluteUrl=function(t,e=null,s=null){if(!t)return null
 try{if(s&&"string"==typeof t){if(s.addDefaultProtocol&&t.startsWith("www.")){const e=t.match(/\./g)
-e?.length>=2&&(t=`http://${t}`)}if(s.tryConvertEncoding)try{t=p(t)}catch{}}const i=e?new URL(t,e):new URL(t)
+e?.length>=2&&(t=`http://${t}`)}if(s.tryConvertEncoding)try{t=g(t)}catch{}}const i=e?new URL(t,e):new URL(t)
 if(function(t){switch(t?.protocol){case"http:":case"https:":case"ftp:":case"mailto:":case"tel:":return!0
 default:return!1}}(i))return i}catch{}return null},e.getModificationDate=function(t=new Date){return[t.getUTCFullYear().toString(),(t.getUTCMonth()+1).toString().padStart(2,"0"),t.getUTCDate().toString().padStart(2,"0"),t.getUTCHours().toString().padStart(2,"0"),t.getUTCMinutes().toString().padStart(2,"0"),t.getUTCSeconds().toString().padStart(2,"0")].join("")},e.getUuid=function(){if("undefined"!=typeof crypto&&"function"==typeof crypto?.randomUUID)return crypto.randomUUID()
 const t=new Uint8Array(32)
 if("undefined"!=typeof crypto&&"function"==typeof crypto?.getRandomValues)crypto.getRandomValues(t)
 else for(let e=0;e<32;e++)t[e]=Math.floor(255*Math.random())
-return h(t)},e.getVerbosityLevel=function(){return n},e.info=function(t){n>=i.INFOS&&console.log(`Info: ${t}`)},e.isArrayBuffer=function(t){return"object"==typeof t&&void 0!==t?.byteLength},e.isArrayEqual=function(t,e){if(t.length!==e.length)return!1
+return c(t)},e.getVerbosityLevel=function(){return a},e.info=function(t){a>=n.INFOS&&console.log(`Info: ${t}`)},e.isArrayBuffer=function(t){return"object"==typeof t&&void 0!==t?.byteLength},e.isArrayEqual=function(t,e){if(t.length!==e.length)return!1
 for(let s=0,i=t.length;s<i;s++)if(t[s]!==e[s])return!1
-return!0},e.isNodeJS=void 0,e.normalizeUnicode=function(t){g||(g=/([\u00a0\u00b5\u037e\u0eb3\u2000-\u200a\u202f\u2126\ufb00-\ufb04\ufb06\ufb20-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufba1\ufba4-\ufba9\ufbae-\ufbb1\ufbd3-\ufbdc\ufbde-\ufbe7\ufbea-\ufbf8\ufbfc-\ufbfd\ufc00-\ufc5d\ufc64-\ufcf1\ufcf5-\ufd3d\ufd88\ufdf4\ufdfa-\ufdfb\ufe71\ufe77\ufe79\ufe7b\ufe7d]+)|(\ufb05+)/gu,m=new Map([["ﬅ","ſt"]]))
-return t.replaceAll(g,((t,e,s)=>e?e.normalize("NFKC"):m.get(s)))},e.objectFromMap=function(t){const e=Object.create(null)
+return!0},e.isNodeJS=void 0,e.normalizeUnicode=function(t){m||(m=/([\u00a0\u00b5\u037e\u0eb3\u2000-\u200a\u202f\u2126\ufb00-\ufb04\ufb06\ufb20-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufba1\ufba4-\ufba9\ufbae-\ufbb1\ufbd3-\ufbdc\ufbde-\ufbe7\ufbea-\ufbf8\ufbfc-\ufbfd\ufc00-\ufc5d\ufc64-\ufcf1\ufcf5-\ufd3d\ufd88\ufdf4\ufdfa-\ufdfb\ufe71\ufe77\ufe79\ufe7b\ufe7d]+)|(\ufb05+)/gu,f=new Map([["ﬅ","ſt"]]))
+return t.replaceAll(m,((t,e,s)=>e?e.normalize("NFKC"):f.get(s)))},e.objectFromMap=function(t){const e=Object.create(null)
 for(const[s,i]of t)e[s]=i
-return e},e.objectSize=function(t){return Object.keys(t).length},e.setVerbosityLevel=function(t){Number.isInteger(t)&&(n=t)},e.shadow=o,e.string32=function(t){return String.fromCharCode(t>>24&255,t>>16&255,t>>8&255,255&t)},e.stringToBytes=c,e.stringToPDFString=function(t){if(t[0]>="ï"){let e
-if("þ"===t[0]&&"ÿ"===t[1]?e="utf-16be":"ÿ"===t[0]&&"þ"===t[1]?e="utf-16le":"ï"===t[0]&&"»"===t[1]&&"¿"===t[2]&&(e="utf-8"),e)try{const s=new TextDecoder(e,{fatal:!0}),i=c(t)
-return s.decode(i)}catch(s){a(`stringToPDFString: "${s}".`)}}const e=[]
-for(let i=0,n=t.length;i<n;i++){const s=u[t.charCodeAt(i)]
-e.push(s?String.fromCharCode(s):t.charAt(i))}return e.join("")},e.stringToUTF8String=p,e.unreachable=r,e.utf8StringToString=function(t){return unescape(encodeURIComponent(t))},e.warn=a
+return e},e.objectSize=function(t){return Object.keys(t).length},e.setVerbosityLevel=function(t){Number.isInteger(t)&&(a=t)},e.shadow=l,e.string32=function(t){return String.fromCharCode(t>>24&255,t>>16&255,t>>8&255,255&t)},e.stringToBytes=d,e.stringToPDFString=function(t){if(t[0]>="ï"){let e
+if("þ"===t[0]&&"ÿ"===t[1]?e="utf-16be":"ÿ"===t[0]&&"þ"===t[1]?e="utf-16le":"ï"===t[0]&&"»"===t[1]&&"¿"===t[2]&&(e="utf-8"),e)try{const s=new TextDecoder(e,{fatal:!0}),i=d(t)
+return s.decode(i)}catch(s){r(`stringToPDFString: "${s}".`)}}const e=[]
+for(let i=0,n=t.length;i<n;i++){const s=p[t.charCodeAt(i)]
+e.push(s?String.fromCharCode(s):t.charAt(i))}return e.join("")},e.stringToUTF8String=g,e.unreachable=o,e.utf8StringToString=function(t){return unescape(encodeURIComponent(t))},e.warn=r
 const s=!("object"!=typeof process||process+""!="[object process]"||process.versions.nw||process.versions.electron&&process.type&&"browser"!==process.type)
 e.isNodeJS=s
 e.IDENTITY_MATRIX=[1,0,0,1,0,0]
@@ -45,7 +45,8 @@ e.FONT_IDENTITY_MATRIX=[.001,0,0,.001,0,0]
 e.MAX_IMAGE_SIZE_TO_CACHE=1e7
 e.LINE_FACTOR=1.35
 e.LINE_DESCENT_FACTOR=.35
-e.BASELINE_FACTOR=.25925925925925924
+const i=.35/1.35
+e.BASELINE_FACTOR=i
 e.RenderingIntentFlag={ANY:1,DISPLAY:2,PRINT:4,SAVE:8,ANNOTATIONS_FORMS:16,ANNOTATIONS_STORAGE:32,ANNOTATIONS_DISABLE:64,OPLIST:256}
 e.AnnotationMode={DISABLE:0,ENABLE:1,ENABLE_FORMS:2,ENABLE_STORAGE:3}
 e.AnnotationEditorPrefix="pdfjs_internal_editor_"
@@ -62,33 +63,33 @@ e.AnnotationBorderStyleType={SOLID:1,DASHED:2,BEVELED:3,INSET:4,UNDERLINE:5}
 e.AnnotationActionEventType={E:"Mouse Enter",X:"Mouse Exit",D:"Mouse Down",U:"Mouse Up",Fo:"Focus",Bl:"Blur",PO:"PageOpen",PC:"PageClose",PV:"PageVisible",PI:"PageInvisible",K:"Keystroke",F:"Format",V:"Validate",C:"Calculate"}
 e.DocumentActionEventType={WC:"WillClose",WS:"WillSave",DS:"DidSave",WP:"WillPrint",DP:"DidPrint"}
 e.PageActionEventType={O:"PageOpen",C:"PageClose"}
-const i={ERRORS:0,WARNINGS:1,INFOS:5}
-e.VerbosityLevel=i
+const n={ERRORS:0,WARNINGS:1,INFOS:5}
+e.VerbosityLevel=n
 e.CMapCompressionType={NONE:0,BINARY:1}
 e.OPS={dependency:1,setLineWidth:2,setLineCap:3,setLineJoin:4,setMiterLimit:5,setDash:6,setRenderingIntent:7,setFlatness:8,setGState:9,save:10,restore:11,transform:12,moveTo:13,lineTo:14,curveTo:15,curveTo2:16,curveTo3:17,closePath:18,rectangle:19,stroke:20,closeStroke:21,fill:22,eoFill:23,fillStroke:24,eoFillStroke:25,closeFillStroke:26,closeEOFillStroke:27,endPath:28,clip:29,eoClip:30,beginText:31,endText:32,setCharSpacing:33,setWordSpacing:34,setHScale:35,setLeading:36,setFont:37,setTextRenderingMode:38,setTextRise:39,moveText:40,setLeadingMoveText:41,setTextMatrix:42,nextLine:43,showText:44,showSpacedText:45,nextLineShowText:46,nextLineSetSpacingShowText:47,setCharWidth:48,setCharWidthAndBounds:49,setStrokeColorSpace:50,setFillColorSpace:51,setStrokeColor:52,setStrokeColorN:53,setFillColor:54,setFillColorN:55,setStrokeGray:56,setFillGray:57,setStrokeRGBColor:58,setFillRGBColor:59,setStrokeCMYKColor:60,setFillCMYKColor:61,shadingFill:62,beginInlineImage:63,beginImageData:64,endInlineImage:65,paintXObject:66,markPoint:67,markPointProps:68,beginMarkedContent:69,beginMarkedContentProps:70,endMarkedContent:71,beginCompat:72,endCompat:73,paintFormXObjectBegin:74,paintFormXObjectEnd:75,beginGroup:76,endGroup:77,beginAnnotation:80,endAnnotation:81,paintImageMaskXObject:83,paintImageMaskXObjectGroup:84,paintImageXObject:85,paintInlineImageXObject:86,paintInlineImageXObjectGroup:87,paintImageXObjectRepeat:88,paintImageMaskXObjectRepeat:89,paintSolidColorImageMask:90,constructPath:91}
 e.PasswordResponses={NEED_PASSWORD:1,INCORRECT_PASSWORD:2}
-let n=i.WARNINGS
-function a(t){n>=i.WARNINGS&&console.log(`Warning: ${t}`)}function r(t){throw new Error(t)}function o(t,e,s,i=!1){return Object.defineProperty(t,e,{value:s,enumerable:!i,configurable:!0,writable:!1}),s}const l=function(){function t(e,s){this.constructor===t&&r("Cannot initialize BaseException."),this.message=e,this.name=s}return t.prototype=new Error,t.constructor=t,t}()
-e.BaseException=l
-e.PasswordException=class extends l{constructor(t,e){super(t,"PasswordException"),this.code=e}}
-e.UnknownErrorException=class extends l{constructor(t,e){super(t,"UnknownErrorException"),this.details=e}}
-e.InvalidPDFException=class extends l{constructor(t){super(t,"InvalidPDFException")}}
-e.MissingPDFException=class extends l{constructor(t){super(t,"MissingPDFException")}}
-e.UnexpectedResponseException=class extends l{constructor(t,e){super(t,"UnexpectedResponseException"),this.status=e}}
-e.FormatError=class extends l{constructor(t){super(t,"FormatError")}}
-function h(t){"object"==typeof t&&void 0!==t?.length||r("Invalid argument for bytesToString")
+let a=n.WARNINGS
+function r(t){a>=n.WARNINGS&&console.log(`Warning: ${t}`)}function o(t){throw new Error(t)}function l(t,e,s,i=!1){return Object.defineProperty(t,e,{value:s,enumerable:!i,configurable:!0,writable:!1}),s}const h=function(){function t(e,s){this.constructor===t&&o("Cannot initialize BaseException."),this.message=e,this.name=s}return t.prototype=new Error,t.constructor=t,t}()
+e.BaseException=h
+e.PasswordException=class extends h{constructor(t,e){super(t,"PasswordException"),this.code=e}}
+e.UnknownErrorException=class extends h{constructor(t,e){super(t,"UnknownErrorException"),this.details=e}}
+e.InvalidPDFException=class extends h{constructor(t){super(t,"InvalidPDFException")}}
+e.MissingPDFException=class extends h{constructor(t){super(t,"MissingPDFException")}}
+e.UnexpectedResponseException=class extends h{constructor(t,e){super(t,"UnexpectedResponseException"),this.status=e}}
+e.FormatError=class extends h{constructor(t){super(t,"FormatError")}}
+function c(t){"object"==typeof t&&void 0!==t?.length||o("Invalid argument for bytesToString")
 const e=t.length,s=8192
 if(e<s)return String.fromCharCode.apply(null,t)
 const i=[]
 for(let n=0;n<e;n+=s){const a=Math.min(n+s,e),r=t.subarray(n,a)
-i.push(String.fromCharCode.apply(null,r))}return i.join("")}function c(t){"string"!=typeof t&&r("Invalid argument for stringToBytes")
+i.push(String.fromCharCode.apply(null,r))}return i.join("")}function d(t){"string"!=typeof t&&o("Invalid argument for stringToBytes")
 const e=t.length,s=new Uint8Array(e)
 for(let i=0;i<e;++i)s[i]=255&t.charCodeAt(i)
-return s}e.AbortException=class extends l{constructor(t){super(t,"AbortException")}}
-e.FeatureTest=class{static get isLittleEndian(){return o(this,"isLittleEndian",function(){const t=new Uint8Array(4)
-return t[0]=1,1===new Uint32Array(t.buffer,0,1)[0]}())}static get isEvalSupported(){return o(this,"isEvalSupported",function(){try{return new Function(""),!0}catch{return!1}}())}static get isOffscreenCanvasSupported(){return o(this,"isOffscreenCanvasSupported","undefined"!=typeof OffscreenCanvas)}static get platform(){return"undefined"==typeof navigator?o(this,"platform",{isWin:!1,isMac:!1}):o(this,"platform",{isWin:navigator.platform.includes("Win"),isMac:navigator.platform.includes("Mac")})}static get isCSSRoundSupported(){return o(this,"isCSSRoundSupported",globalThis.CSS?.supports?.("width: round(1.5px, 1px)"))}}
-const d=[...Array(256).keys()].map((t=>t.toString(16).padStart(2,"0")))
-e.Util=class{static makeHexColor(t,e,s){return`#${d[t]}${d[e]}${d[s]}`}static scaleMinMax(t,e){let s
+return s}e.AbortException=class extends h{constructor(t){super(t,"AbortException")}}
+e.FeatureTest=class{static get isLittleEndian(){return l(this,"isLittleEndian",function(){const t=new Uint8Array(4)
+return t[0]=1,1===new Uint32Array(t.buffer,0,1)[0]}())}static get isEvalSupported(){return l(this,"isEvalSupported",function(){try{return new Function(""),!0}catch{return!1}}())}static get isOffscreenCanvasSupported(){return l(this,"isOffscreenCanvasSupported","undefined"!=typeof OffscreenCanvas)}static get platform(){return"undefined"==typeof navigator?l(this,"platform",{isWin:!1,isMac:!1}):l(this,"platform",{isWin:navigator.platform.includes("Win"),isMac:navigator.platform.includes("Mac")})}static get isCSSRoundSupported(){return l(this,"isCSSRoundSupported",globalThis.CSS?.supports?.("width: round(1.5px, 1px)"))}}
+const u=[...Array(256).keys()].map((t=>t.toString(16).padStart(2,"0")))
+e.Util=class{static makeHexColor(t,e,s){return`#${u[t]}${u[e]}${u[s]}`}static scaleMinMax(t,e){let s
 t[0]?(t[0]<0&&(s=e[0],e[0]=e[1],e[1]=s),e[0]*=t[0],e[1]*=t[0],t[3]<0&&(s=e[2],e[2]=e[3],e[3]=s),e[2]*=t[3],e[3]*=t[3]):(s=e[0],e[0]=e[2],e[2]=s,s=e[1],e[1]=e[3],e[3]=s,t[1]<0&&(s=e[2],e[2]=e[3],e[3]=s),e[2]*=t[1],e[3]*=t[1],t[2]<0&&(s=e[0],e[0]=e[1],e[1]=s),e[0]*=t[2],e[1]*=t[2]),e[0]+=t[4],e[1]+=t[4],e[2]+=t[5],e[3]+=t[5]}static transform(t,e){return[t[0]*e[0]+t[2]*e[1],t[1]*e[0]+t[3]*e[1],t[0]*e[2]+t[2]*e[3],t[1]*e[2]+t[3]*e[3],t[0]*e[4]+t[2]*e[5]+t[4],t[1]*e[4]+t[3]*e[5]+t[5]]}static applyTransform(t,e){return[t[0]*e[0]+t[1]*e[2]+e[4],t[0]*e[1]+t[1]*e[3]+e[5]]}static applyInverseTransform(t,e){const s=e[0]*e[3]-e[1]*e[2]
 return[(t[0]*e[3]-t[1]*e[2]+e[2]*e[5]-e[4]*e[3])/s,(-t[0]*e[1]+t[1]*e[0]+e[4]*e[1]-e[5]*e[0])/s]}static getAxialAlignedBoundingBox(t,e){const s=this.applyTransform(t,e),i=this.applyTransform(t.slice(2,4),e),n=this.applyTransform([t[0],t[3]],e),a=this.applyTransform([t[2],t[1]],e)
 return[Math.min(s[0],i[0],n[0],a[0]),Math.min(s[1],i[1],n[1],a[1]),Math.max(s[0],i[0],n[0],a[0]),Math.max(s[1],i[1],n[1],a[1])]}static inverseTransform(t){const e=t[0]*t[3]-t[1]*t[2]
@@ -105,10 +106,10 @@ let _,A=l.length
 const v=A
 for(;A--;)p=l[A],_=1-p,h[0][A]=_*_*_*t+3*_*_*p*s+3*_*p*p*n+p*p*p*r,h[1][A]=_*_*_*e+3*_*_*p*i+3*_*p*p*a+p*p*p*o
 return h[0][v]=t,h[1][v]=e,h[0][v+1]=r,h[1][v+1]=o,h[0].length=h[1].length=v+2,[Math.min(...h[0]),Math.min(...h[1]),Math.max(...h[0]),Math.max(...h[1])]}}
-const u=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,728,711,710,729,733,731,730,732,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8226,8224,8225,8230,8212,8211,402,8260,8249,8250,8722,8240,8222,8220,8221,8216,8217,8218,8482,64257,64258,321,338,352,376,381,305,322,339,353,382,0,8364]
-function p(t){return decodeURIComponent(escape(t))}e.PromiseCapability=class{#t=!1
+const p=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,728,711,710,729,733,731,730,732,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8226,8224,8225,8230,8212,8211,402,8260,8249,8250,8722,8240,8222,8220,8221,8216,8217,8218,8482,64257,64258,321,338,352,376,381,305,322,339,353,382,0,8364]
+function g(t){return decodeURIComponent(escape(t))}e.PromiseCapability=class{#t=!1
 constructor(){this.promise=new Promise(((t,e)=>{this.resolve=e=>{this.#t=!0,t(e)},this.reject=t=>{this.#t=!0,e(t)}}))}get settled(){return this.#t}}
-let g=null,m=null
+let m=null,f=null
 e.AnnotationPrefix="pdfjs_internal_id_"},(__unused_webpack_module,exports,__w_pdfjs_require__)=>{Object.defineProperty(exports,"__esModule",{value:!0}),exports.RenderTask=exports.PDFWorkerUtil=exports.PDFWorker=exports.PDFPageProxy=exports.PDFDocumentProxy=exports.PDFDocumentLoadingTask=exports.PDFDataRangeTransport=exports.LoopbackPort=exports.DefaultStandardFontDataFactory=exports.DefaultFilterFactory=exports.DefaultCanvasFactory=exports.DefaultCMapReaderFactory=void 0,Object.defineProperty(exports,"SVGGraphics",{enumerable:!0,get:function(){return _displaySvg.SVGGraphics}}),exports.build=void 0,exports.getDocument=getDocument,exports.version=void 0
 var _util=__w_pdfjs_require__(1),_annotation_storage=__w_pdfjs_require__(3),_display_utils=__w_pdfjs_require__(6),_font_loader=__w_pdfjs_require__(9),_displayNode_utils=__w_pdfjs_require__(10),_canvas=__w_pdfjs_require__(11),_worker_options=__w_pdfjs_require__(14),_message_handler=__w_pdfjs_require__(15),_metadata=__w_pdfjs_require__(16),_optional_content_config=__w_pdfjs_require__(17),_transport_stream=__w_pdfjs_require__(18),_displayFetch_stream=__w_pdfjs_require__(19),_displayNetwork=__w_pdfjs_require__(22),_displayNode_stream=__w_pdfjs_require__(23),_displaySvg=__w_pdfjs_require__(24),_xfa_text=__w_pdfjs_require__(25)
 const DEFAULT_RANGE_CHUNK_SIZE=65536,RENDERING_CANCELLED_TIMEOUT=100,DELAYED_CLEANUP_TIMEOUT=5e3,DefaultCanvasFactory=_util.isNodeJS?_displayNode_utils.NodeCanvasFactory:_display_utils.DOMCanvasFactory
@@ -926,9 +927,9 @@ void 0!==t.setLineDash&&(e.setLineDash(t.getLineDash()),e.lineDashOffset=t.lineD
 for(let a=3;a<n;a+=4){const n=t[a]
 if(0===n)t[a-3]=e,t[a-2]=s,t[a-1]=i
 else if(n<255){const r=255-n
-t[a-3]=t[a-3]*n+e*r>>8,t[a-2]=t[a-2]*n+s*r>>8,t[a-1]=t[a-1]*n+i*r>>8}}}function b(t,e,s){const i=t.length
-for(let n=3;n<i;n+=4){const i=s?s[t[n]]:t[n]
-e[n]=e[n]*i*.00392156862745098|0}}function _(t,e,s){const i=t.length
+t[a-3]=t[a-3]*n+e*r>>8,t[a-2]=t[a-2]*n+s*r>>8,t[a-1]=t[a-1]*n+i*r>>8}}}function b(t,e,s){const i=t.length,n=1/255
+for(let a=3;a<i;a+=4){const i=s?s[t[a]]:t[a]
+e[a]=e[a]*i*n|0}}function _(t,e,s){const i=t.length
 for(let n=3;n<i;n+=4){const i=77*t[n-3]+152*t[n-2]+28*t[n-1]
 e[n]=s?e[n]*s[i>>8]>>8:e[n]*i>>16}}function A(t,e,s,i){const n=i[0],a=i[1],r=i[2]-n,o=i[3]-a
 0!==r&&0!==o&&(function(t,e,s,i,n,a,r,o,l,h,c){const d=!!a,u=d?a[0]:0,p=d?a[1]:0,g=d?a[2]:0,m="Luminosity"===n?_:b,A=Math.min(i,Math.ceil(1048576/s))
@@ -1851,54 +1852,54 @@ else{if(!s.shouldBuildText(a))return
 i?.attributes?.textContent?n=i.attributes.textContent:i.value&&(n=i.value)}if(null!==n&&e.push({str:n}),i.children)for(const e of i.children)t(e)}(t),i}static shouldBuildText(t){return!("textarea"===t||"input"===t||"option"===t||"select"===t)}}e.XfaText=s},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.TextLayerRenderTask=void 0,e.renderTextLayer=function(t){t.textContentSource||!t.textContent&&!t.textContentStream||((0,n.deprecated)("The TextLayerRender `textContent`/`textContentStream` parameters will be removed in the future, please use `textContentSource` instead."),t.textContentSource=t.textContent||t.textContentStream)
 const{container:e,viewport:s}=t,i=getComputedStyle(e),a=i.getPropertyValue("visibility"),r=parseFloat(i.getPropertyValue("--scale-factor"))
 "visible"===a&&(!r||Math.abs(r-s.scale)>1e-5)&&console.error("The `--scale-factor` CSS-variable must be set, to the same value as `viewport.scale`, either on the `container`-element itself or higher up in the DOM.")
-const o=new d(t)
-return o._render(),o},e.updateTextLayer=function({container:t,viewport:e,textDivs:s,textDivProperties:i,isOffscreenCanvasSupported:a,mustRotate:r=!0,mustRescale:o=!0}){r&&(0,n.setLayerDimensions)(t,{rotation:e.rotation})
-if(o){const t=l(0,a),n={prevFontSize:null,prevFontFamily:null,div:null,scale:e.scale*(globalThis.devicePixelRatio||1),properties:null,ctx:t}
-for(const e of s)n.properties=i.get(e),n.div=e,c(n)}}
+const o=new c(t)
+return o._render(),o},e.updateTextLayer=function({container:t,viewport:e,textDivs:s,textDivProperties:i,isOffscreenCanvasSupported:a,mustRotate:r=!0,mustRescale:l=!0}){r&&(0,n.setLayerDimensions)(t,{rotation:e.rotation})
+if(l){const t=o(0,a),n={prevFontSize:null,prevFontFamily:null,div:null,scale:e.scale*(globalThis.devicePixelRatio||1),properties:null,ctx:t}
+for(const e of s)n.properties=i.get(e),n.div=e,h(n)}}
 var i=s(1),n=s(6)
-const a=30,r=.8,o=new Map
-function l(t,e){let s
+const a=30,r=new Map
+function o(t,e){let s
 if(e&&i.FeatureTest.isOffscreenCanvasSupported)s=new OffscreenCanvas(t,t).getContext("2d",{alpha:!1})
 else{const e=document.createElement("canvas")
-e.width=e.height=t,s=e.getContext("2d",{alpha:!1})}return s}function h(t,e,s){const n=document.createElement("span"),h={angle:0,canvasWidth:0,hasText:""!==e.str,hasEOL:e.hasEOL,fontSize:0}
+e.width=e.height=t,s=e.getContext("2d",{alpha:!1})}return s}function l(t,e,s){const n=document.createElement("span"),l={angle:0,canvasWidth:0,hasText:""!==e.str,hasEOL:e.hasEOL,fontSize:0}
 t._textDivs.push(n)
-const c=i.Util.transform(t._transform,e.transform)
-let d=Math.atan2(c[1],c[0])
-const u=s[e.fontName]
-u.vertical&&(d+=Math.PI/2)
-const p=Math.hypot(c[2],c[3]),g=p*function(t,e){const s=o.get(t)
+const h=i.Util.transform(t._transform,e.transform)
+let c=Math.atan2(h[1],h[0])
+const d=s[e.fontName]
+d.vertical&&(c+=Math.PI/2)
+const u=Math.hypot(h[2],h[3]),p=u*function(t,e){const s=r.get(t)
 if(s)return s
-const i=l(a,e)
-i.font=`${a}px ${t}`
+const i=o(a,e)
+i.font=`30px ${t}`
 const n=i.measureText("")
-let h=n.fontBoundingBoxAscent,c=Math.abs(n.fontBoundingBoxDescent)
-if(h){const e=h/(h+c)
-return o.set(t,e),i.canvas.width=i.canvas.height=0,e}i.strokeStyle="red",i.clearRect(0,0,a,a),i.strokeText("g",0,0)
-let d=i.getImageData(0,0,a,a).data
-c=0
-for(let r=d.length-1-3;r>=0;r-=4)if(d[r]>0){c=Math.ceil(r/4/a)
-break}i.clearRect(0,0,a,a),i.strokeText("A",0,a),d=i.getImageData(0,0,a,a).data,h=0
-for(let r=0,o=d.length;r<o;r+=4)if(d[r]>0){h=a-Math.floor(r/4/a)
-break}if(i.canvas.width=i.canvas.height=0,h){const e=h/(h+c)
-return o.set(t,e),e}return o.set(t,r),r}(u.fontFamily,t._isOffscreenCanvasSupported)
-let m,f
-0===d?(m=c[4],f=c[5]-g):(m=c[4]+g*Math.sin(d),f=c[5]-g*Math.cos(d))
-const b="calc(var(--scale-factor)*",_=n.style
-t._container===t._rootContainer?(_.left=`${(100*m/t._pageWidth).toFixed(2)}%`,_.top=`${(100*f/t._pageHeight).toFixed(2)}%`):(_.left=`${b}${m.toFixed(2)}px)`,_.top=`${b}${f.toFixed(2)}px)`),_.fontSize=`${b}${p.toFixed(2)}px)`,_.fontFamily=u.fontFamily,h.fontSize=p,n.setAttribute("role","presentation"),n.textContent=e.str,n.dir=e.dir,t._fontInspectorEnabled&&(n.dataset.fontName=e.fontName),0!==d&&(h.angle=d*(180/Math.PI))
-let A=!1
-if(e.str.length>1)A=!0
+let l=n.fontBoundingBoxAscent,h=Math.abs(n.fontBoundingBoxDescent)
+if(l){const e=l/(l+h)
+return r.set(t,e),i.canvas.width=i.canvas.height=0,e}i.strokeStyle="red",i.clearRect(0,0,a,a),i.strokeText("g",0,0)
+let c=i.getImageData(0,0,a,a).data
+h=0
+for(let r=c.length-1-3;r>=0;r-=4)if(c[r]>0){h=Math.ceil(r/4/a)
+break}i.clearRect(0,0,a,a),i.strokeText("A",0,a),c=i.getImageData(0,0,a,a).data,l=0
+for(let r=0,o=c.length;r<o;r+=4)if(c[r]>0){l=a-Math.floor(r/4/a)
+break}if(i.canvas.width=i.canvas.height=0,l){const e=l/(l+h)
+return r.set(t,e),e}return r.set(t,.8),.8}(d.fontFamily,t._isOffscreenCanvasSupported)
+let g,m
+0===c?(g=h[4],m=h[5]-p):(g=h[4]+p*Math.sin(c),m=h[5]-p*Math.cos(c))
+const f="calc(var(--scale-factor)*",b=n.style
+t._container===t._rootContainer?(b.left=`${(100*g/t._pageWidth).toFixed(2)}%`,b.top=`${(100*m/t._pageHeight).toFixed(2)}%`):(b.left=`${f}${g.toFixed(2)}px)`,b.top=`${f}${m.toFixed(2)}px)`),b.fontSize=`${f}${u.toFixed(2)}px)`,b.fontFamily=d.fontFamily,l.fontSize=u,n.setAttribute("role","presentation"),n.textContent=e.str,n.dir=e.dir,t._fontInspectorEnabled&&(n.dataset.fontName=e.fontName),0!==c&&(l.angle=c*(180/Math.PI))
+let _=!1
+if(e.str.length>1)_=!0
 else if(" "!==e.str&&e.transform[0]!==e.transform[3]){const t=Math.abs(e.transform[0]),s=Math.abs(e.transform[3])
-t!==s&&Math.max(t,s)/Math.min(t,s)>1.5&&(A=!0)}A&&(h.canvasWidth=u.vertical?e.height:e.width),t._textDivProperties.set(n,h),t._isReadableStream&&t._layoutText(n)}function c(t){const{div:e,scale:s,properties:i,ctx:n,prevFontSize:a,prevFontFamily:r}=t,{style:o}=e
+t!==s&&Math.max(t,s)/Math.min(t,s)>1.5&&(_=!0)}_&&(l.canvasWidth=d.vertical?e.height:e.width),t._textDivProperties.set(n,l),t._isReadableStream&&t._layoutText(n)}function h(t){const{div:e,scale:s,properties:i,ctx:n,prevFontSize:a,prevFontFamily:r}=t,{style:o}=e
 let l=""
 if(0!==i.canvasWidth&&i.hasText){const{fontFamily:h}=o,{canvasWidth:c,fontSize:d}=i
 a===d&&r===h||(n.font=`${d*s}px ${h}`,t.prevFontSize=d,t.prevFontFamily=h)
 const{width:u}=n.measureText(e.textContent)
-u>0&&(l=`scaleX(${c*s/u})`)}0!==i.angle&&(l=`rotate(${i.angle}deg) ${l}`),l.length>0&&(o.transform=l)}class d{constructor({textContentSource:t,container:e,viewport:s,textDivs:a,textDivProperties:r,textContentItemsStr:o,isOffscreenCanvasSupported:h}){this._textContentSource=t,this._isReadableStream=t instanceof ReadableStream,this._container=this._rootContainer=e,this._textDivs=a||[],this._textContentItemsStr=o||[],this._isOffscreenCanvasSupported=h,this._fontInspectorEnabled=!!globalThis.FontInspector?.enabled,this._reader=null,this._textDivProperties=r||new WeakMap,this._canceled=!1,this._capability=new i.PromiseCapability,this._layoutTextParams={prevFontSize:null,prevFontFamily:null,div:null,scale:s.scale*(globalThis.devicePixelRatio||1),properties:null,ctx:l(0,h)}
+u>0&&(l=`scaleX(${c*s/u})`)}0!==i.angle&&(l=`rotate(${i.angle}deg) ${l}`),l.length>0&&(o.transform=l)}class c{constructor({textContentSource:t,container:e,viewport:s,textDivs:a,textDivProperties:r,textContentItemsStr:l,isOffscreenCanvasSupported:h}){this._textContentSource=t,this._isReadableStream=t instanceof ReadableStream,this._container=this._rootContainer=e,this._textDivs=a||[],this._textContentItemsStr=l||[],this._isOffscreenCanvasSupported=h,this._fontInspectorEnabled=!!globalThis.FontInspector?.enabled,this._reader=null,this._textDivProperties=r||new WeakMap,this._canceled=!1,this._capability=new i.PromiseCapability,this._layoutTextParams={prevFontSize:null,prevFontFamily:null,div:null,scale:s.scale*(globalThis.devicePixelRatio||1),properties:null,ctx:o(0,h)}
 const{pageWidth:c,pageHeight:d,pageX:u,pageY:p}=s.rawDims
-this._transform=[1,0,0,-1,-u,p+d],this._pageWidth=c,this._pageHeight=d,(0,n.setLayerDimensions)(e,s),this._capability.promise.finally((()=>{this._layoutTextParams=null})).catch((()=>{}))}get promise(){return this._capability.promise}cancel(){this._canceled=!0,this._reader&&(this._reader.cancel(new i.AbortException("TextLayer task cancelled.")).catch((()=>{})),this._reader=null),this._capability.reject(new i.AbortException("TextLayer task cancelled."))}_processItems(t,e){for(const s of t)if(void 0!==s.str)this._textContentItemsStr.push(s.str),h(this,s,e)
+this._transform=[1,0,0,-1,-u,p+d],this._pageWidth=c,this._pageHeight=d,(0,n.setLayerDimensions)(e,s),this._capability.promise.finally((()=>{this._layoutTextParams=null})).catch((()=>{}))}get promise(){return this._capability.promise}cancel(){this._canceled=!0,this._reader&&(this._reader.cancel(new i.AbortException("TextLayer task cancelled.")).catch((()=>{})),this._reader=null),this._capability.reject(new i.AbortException("TextLayer task cancelled."))}_processItems(t,e){for(const s of t)if(void 0!==s.str)this._textContentItemsStr.push(s.str),l(this,s,e)
 else if("beginMarkedContentProps"===s.type||"beginMarkedContent"===s.type){const t=this._container
 this._container=document.createElement("span"),this._container.classList.add("markedContent"),null!==s.id&&this._container.setAttribute("id",`${s.id}`),t.append(this._container)}else"endMarkedContent"===s.type&&(this._container=this._container.parentNode)}_layoutText(t){const e=this._layoutTextParams.properties=this._textDivProperties.get(t)
-if(this._layoutTextParams.div=t,c(this._layoutTextParams),e.hasText&&this._container.append(t),e.hasEOL){const t=document.createElement("br")
+if(this._layoutTextParams.div=t,h(this._layoutTextParams),e.hasText&&this._container.append(t),e.hasEOL){const t=document.createElement("br")
 t.setAttribute("role","presentation"),this._container.append(t)}}_render(){const t=new i.PromiseCapability
 let e=Object.create(null)
 if(this._isReadableStream){const s=()=>{this._reader.read().then((({value:i,done:n})=>{n?t.resolve():(Object.assign(e,i.styles),this._processItems(i.items,e),s())}),t.reject)}
@@ -1908,7 +1909,7 @@ this._processItems(e,s),t.resolve()}}t.promise.then((()=>{e=null,function(t){if(
 const e=t._textDivs,s=t._capability
 if(e.length>1e5)s.resolve()
 else{if(!t._isReadableStream)for(const s of e)t._layoutText(s)
-s.resolve()}}(this)}),this._capability.reject)}}e.TextLayerRenderTask=d},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.AnnotationEditorLayer=void 0
+s.resolve()}}(this)}),this._capability.reject)}}e.TextLayerRenderTask=c},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.AnnotationEditorLayer=void 0
 var i=s(1),n=s(4),a=s(28),r=s(33),o=s(6),l=s(34)
 class h{#Se
 #xe=!1

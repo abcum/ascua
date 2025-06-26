@@ -86,24 +86,24 @@ for(const a of m)t.push(a.finished),a.terminate()
 return Promise.all(t).then((function(){k.destroy(),k=null}))})),k.on("Ready",(function(t){(function(e){function t(e){C(),k.send("GetDoc",{pdfInfo:e})}function s(e){if(C(),e instanceof r.PasswordException){const t=new g(`PasswordException: response ${e.code}`)
 v(t),k.sendWithPromise("PasswordRequest",e).then((function({password:e}){F(t),a.updatePassword(e),o()})).catch((function(){F(t),k.send("DocException",e)}))}else e instanceof r.InvalidPDFException||e instanceof r.MissingPDFException||e instanceof r.UnexpectedResponseException||e instanceof r.UnknownErrorException?k.send("DocException",e):k.send("DocException",new r.UnknownErrorException(e.message,e.toString()))}function o(){C(),O(!1).then(t,(function(e){C(),e instanceof i.XRefParseException?a.requestLoadedStream().then((function(){C(),O(!0).then(t,s)})):s(e)}))}C(),I(e).then((function(e){if(n)throw e.terminate(new r.AbortException("Worker was terminated.")),new Error("Worker was terminated")
 a=e,a.requestLoadedStream(!0).then((e=>{k.send("DataLoaded",{length:e.bytes.byteLength})}))})).then(o,s)})(e),e=null})),A}static initializeFromPort(e){const t=new u.MessageHandler("worker","main",e)
-p.setup(t,e),t.send("ready",null)}}t.WorkerMessageHandler=p,"undefined"==typeof window&&!r.isNodeJS&&"undefined"!=typeof self&&("function"==typeof(n=self).postMessage&&"onmessage"in n)&&p.initializeFromPort(self)},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.VerbosityLevel=t.Util=t.UnknownErrorException=t.UnexpectedResponseException=t.TextRenderingMode=t.RenderingIntentFlag=t.PromiseCapability=t.PermissionFlag=t.PasswordResponses=t.PasswordException=t.PageActionEventType=t.OPS=t.MissingPDFException=t.MAX_IMAGE_SIZE_TO_CACHE=t.LINE_FACTOR=t.LINE_DESCENT_FACTOR=t.InvalidPDFException=t.ImageKind=t.IDENTITY_MATRIX=t.FormatError=t.FeatureTest=t.FONT_IDENTITY_MATRIX=t.DocumentActionEventType=t.CMapCompressionType=t.BaseException=t.BASELINE_FACTOR=t.AnnotationType=t.AnnotationReplyType=t.AnnotationPrefix=t.AnnotationMode=t.AnnotationFlag=t.AnnotationFieldFlag=t.AnnotationEditorType=t.AnnotationEditorPrefix=t.AnnotationEditorParamsType=t.AnnotationBorderStyleType=t.AnnotationActionEventType=t.AbortException=void 0,t.assert=function(e,t){e||s(t)},t.bytesToString=l,t.createValidAbsoluteUrl=function(e,t=null,a=null){if(!e)return null
+p.setup(t,e),t.send("ready",null)}}t.WorkerMessageHandler=p,"undefined"==typeof window&&!r.isNodeJS&&"undefined"!=typeof self&&("function"==typeof(n=self).postMessage&&"onmessage"in n)&&p.initializeFromPort(self)},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.VerbosityLevel=t.Util=t.UnknownErrorException=t.UnexpectedResponseException=t.TextRenderingMode=t.RenderingIntentFlag=t.PromiseCapability=t.PermissionFlag=t.PasswordResponses=t.PasswordException=t.PageActionEventType=t.OPS=t.MissingPDFException=t.MAX_IMAGE_SIZE_TO_CACHE=t.LINE_FACTOR=t.LINE_DESCENT_FACTOR=t.InvalidPDFException=t.ImageKind=t.IDENTITY_MATRIX=t.FormatError=t.FeatureTest=t.FONT_IDENTITY_MATRIX=t.DocumentActionEventType=t.CMapCompressionType=t.BaseException=t.BASELINE_FACTOR=t.AnnotationType=t.AnnotationReplyType=t.AnnotationPrefix=t.AnnotationMode=t.AnnotationFlag=t.AnnotationFieldFlag=t.AnnotationEditorType=t.AnnotationEditorPrefix=t.AnnotationEditorParamsType=t.AnnotationBorderStyleType=t.AnnotationActionEventType=t.AbortException=void 0,t.assert=function(e,t){e||o(t)},t.bytesToString=h,t.createValidAbsoluteUrl=function(e,t=null,a=null){if(!e)return null
 try{if(a&&"string"==typeof e){if(a.addDefaultProtocol&&e.startsWith("www.")){const t=e.match(/\./g)
-t?.length>=2&&(e=`http://${e}`)}if(a.tryConvertEncoding)try{e=f(e)}catch{}}const n=t?new URL(e,t):new URL(e)
+t?.length>=2&&(e=`http://${e}`)}if(a.tryConvertEncoding)try{e=g(e)}catch{}}const n=t?new URL(e,t):new URL(e)
 if(function(e){switch(e?.protocol){case"http:":case"https:":case"ftp:":case"mailto:":case"tel:":return!0
 default:return!1}}(n))return n}catch{}return null},t.getModificationDate=function(e=new Date){return[e.getUTCFullYear().toString(),(e.getUTCMonth()+1).toString().padStart(2,"0"),e.getUTCDate().toString().padStart(2,"0"),e.getUTCHours().toString().padStart(2,"0"),e.getUTCMinutes().toString().padStart(2,"0"),e.getUTCSeconds().toString().padStart(2,"0")].join("")},t.getUuid=function(){if("undefined"!=typeof crypto&&"function"==typeof crypto?.randomUUID)return crypto.randomUUID()
 const e=new Uint8Array(32)
 if("undefined"!=typeof crypto&&"function"==typeof crypto?.getRandomValues)crypto.getRandomValues(e)
 else for(let t=0;t<32;t++)e[t]=Math.floor(255*Math.random())
-return l(e)},t.getVerbosityLevel=function(){return r},t.info=function(e){r>=n.INFOS&&console.log(`Info: ${e}`)},t.isArrayBuffer=function(e){return"object"==typeof e&&void 0!==e?.byteLength},t.isArrayEqual=function(e,t){if(e.length!==t.length)return!1
+return h(e)},t.getVerbosityLevel=function(){return i},t.info=function(e){i>=r.INFOS&&console.log(`Info: ${e}`)},t.isArrayBuffer=function(e){return"object"==typeof e&&void 0!==e?.byteLength},t.isArrayEqual=function(e,t){if(e.length!==t.length)return!1
 for(let a=0,n=e.length;a<n;a++)if(e[a]!==t[a])return!1
-return!0},t.isNodeJS=void 0,t.normalizeUnicode=function(e){g||(g=/([\u00a0\u00b5\u037e\u0eb3\u2000-\u200a\u202f\u2126\ufb00-\ufb04\ufb06\ufb20-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufba1\ufba4-\ufba9\ufbae-\ufbb1\ufbd3-\ufbdc\ufbde-\ufbe7\ufbea-\ufbf8\ufbfc-\ufbfd\ufc00-\ufc5d\ufc64-\ufcf1\ufcf5-\ufd3d\ufd88\ufdf4\ufdfa-\ufdfb\ufe71\ufe77\ufe79\ufe7b\ufe7d]+)|(\ufb05+)/gu,p=new Map([["ﬅ","ſt"]]))
-return e.replaceAll(g,((e,t,a)=>t?t.normalize("NFKC"):p.get(a)))},t.objectFromMap=function(e){const t=Object.create(null)
+return!0},t.isNodeJS=void 0,t.normalizeUnicode=function(e){p||(p=/([\u00a0\u00b5\u037e\u0eb3\u2000-\u200a\u202f\u2126\ufb00-\ufb04\ufb06\ufb20-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufba1\ufba4-\ufba9\ufbae-\ufbb1\ufbd3-\ufbdc\ufbde-\ufbe7\ufbea-\ufbf8\ufbfc-\ufbfd\ufc00-\ufc5d\ufc64-\ufcf1\ufcf5-\ufd3d\ufd88\ufdf4\ufdfa-\ufdfb\ufe71\ufe77\ufe79\ufe7b\ufe7d]+)|(\ufb05+)/gu,m=new Map([["ﬅ","ſt"]]))
+return e.replaceAll(p,((e,t,a)=>t?t.normalize("NFKC"):m.get(a)))},t.objectFromMap=function(e){const t=Object.create(null)
 for(const[a,n]of e)t[a]=n
-return t},t.objectSize=function(e){return Object.keys(e).length},t.setVerbosityLevel=function(e){Number.isInteger(e)&&(r=e)},t.shadow=o,t.string32=function(e){return String.fromCharCode(e>>24&255,e>>16&255,e>>8&255,255&e)},t.stringToBytes=h,t.stringToPDFString=function(e){if(e[0]>="ï"){let t
-if("þ"===e[0]&&"ÿ"===e[1]?t="utf-16be":"ÿ"===e[0]&&"þ"===e[1]?t="utf-16le":"ï"===e[0]&&"»"===e[1]&&"¿"===e[2]&&(t="utf-8"),t)try{const a=new TextDecoder(t,{fatal:!0}),n=h(e)
-return a.decode(n)}catch(a){i(`stringToPDFString: "${a}".`)}}const t=[]
-for(let n=0,r=e.length;n<r;n++){const a=d[e.charCodeAt(n)]
-t.push(a?String.fromCharCode(a):e.charAt(n))}return t.join("")},t.stringToUTF8String=f,t.unreachable=s,t.utf8StringToString=function(e){return unescape(encodeURIComponent(e))},t.warn=i
+return t},t.objectSize=function(e){return Object.keys(e).length},t.setVerbosityLevel=function(e){Number.isInteger(e)&&(i=e)},t.shadow=c,t.string32=function(e){return String.fromCharCode(e>>24&255,e>>16&255,e>>8&255,255&e)},t.stringToBytes=u,t.stringToPDFString=function(e){if(e[0]>="ï"){let t
+if("þ"===e[0]&&"ÿ"===e[1]?t="utf-16be":"ÿ"===e[0]&&"þ"===e[1]?t="utf-16le":"ï"===e[0]&&"»"===e[1]&&"¿"===e[2]&&(t="utf-8"),t)try{const a=new TextDecoder(t,{fatal:!0}),n=u(e)
+return a.decode(n)}catch(a){s(`stringToPDFString: "${a}".`)}}const t=[]
+for(let n=0,r=e.length;n<r;n++){const a=f[e.charCodeAt(n)]
+t.push(a?String.fromCharCode(a):e.charAt(n))}return t.join("")},t.stringToUTF8String=g,t.unreachable=o,t.utf8StringToString=function(e){return unescape(encodeURIComponent(e))},t.warn=s
 const a=!("object"!=typeof process||process+""!="[object process]"||process.versions.nw||process.versions.electron&&process.type&&"browser"!==process.type)
 t.isNodeJS=a
 t.IDENTITY_MATRIX=[1,0,0,1,0,0]
@@ -111,7 +111,8 @@ t.FONT_IDENTITY_MATRIX=[.001,0,0,.001,0,0]
 t.MAX_IMAGE_SIZE_TO_CACHE=1e7
 t.LINE_FACTOR=1.35
 t.LINE_DESCENT_FACTOR=.35
-t.BASELINE_FACTOR=.25925925925925924
+const n=.35/1.35
+t.BASELINE_FACTOR=n
 t.RenderingIntentFlag={ANY:1,DISPLAY:2,PRINT:4,SAVE:8,ANNOTATIONS_FORMS:16,ANNOTATIONS_STORAGE:32,ANNOTATIONS_DISABLE:64,OPLIST:256}
 t.AnnotationMode={DISABLE:0,ENABLE:1,ENABLE_FORMS:2,ENABLE_STORAGE:3}
 t.AnnotationEditorPrefix="pdfjs_internal_editor_"
@@ -128,33 +129,33 @@ t.AnnotationBorderStyleType={SOLID:1,DASHED:2,BEVELED:3,INSET:4,UNDERLINE:5}
 t.AnnotationActionEventType={E:"Mouse Enter",X:"Mouse Exit",D:"Mouse Down",U:"Mouse Up",Fo:"Focus",Bl:"Blur",PO:"PageOpen",PC:"PageClose",PV:"PageVisible",PI:"PageInvisible",K:"Keystroke",F:"Format",V:"Validate",C:"Calculate"}
 t.DocumentActionEventType={WC:"WillClose",WS:"WillSave",DS:"DidSave",WP:"WillPrint",DP:"DidPrint"}
 t.PageActionEventType={O:"PageOpen",C:"PageClose"}
-const n={ERRORS:0,WARNINGS:1,INFOS:5}
-t.VerbosityLevel=n
+const r={ERRORS:0,WARNINGS:1,INFOS:5}
+t.VerbosityLevel=r
 t.CMapCompressionType={NONE:0,BINARY:1}
 t.OPS={dependency:1,setLineWidth:2,setLineCap:3,setLineJoin:4,setMiterLimit:5,setDash:6,setRenderingIntent:7,setFlatness:8,setGState:9,save:10,restore:11,transform:12,moveTo:13,lineTo:14,curveTo:15,curveTo2:16,curveTo3:17,closePath:18,rectangle:19,stroke:20,closeStroke:21,fill:22,eoFill:23,fillStroke:24,eoFillStroke:25,closeFillStroke:26,closeEOFillStroke:27,endPath:28,clip:29,eoClip:30,beginText:31,endText:32,setCharSpacing:33,setWordSpacing:34,setHScale:35,setLeading:36,setFont:37,setTextRenderingMode:38,setTextRise:39,moveText:40,setLeadingMoveText:41,setTextMatrix:42,nextLine:43,showText:44,showSpacedText:45,nextLineShowText:46,nextLineSetSpacingShowText:47,setCharWidth:48,setCharWidthAndBounds:49,setStrokeColorSpace:50,setFillColorSpace:51,setStrokeColor:52,setStrokeColorN:53,setFillColor:54,setFillColorN:55,setStrokeGray:56,setFillGray:57,setStrokeRGBColor:58,setFillRGBColor:59,setStrokeCMYKColor:60,setFillCMYKColor:61,shadingFill:62,beginInlineImage:63,beginImageData:64,endInlineImage:65,paintXObject:66,markPoint:67,markPointProps:68,beginMarkedContent:69,beginMarkedContentProps:70,endMarkedContent:71,beginCompat:72,endCompat:73,paintFormXObjectBegin:74,paintFormXObjectEnd:75,beginGroup:76,endGroup:77,beginAnnotation:80,endAnnotation:81,paintImageMaskXObject:83,paintImageMaskXObjectGroup:84,paintImageXObject:85,paintInlineImageXObject:86,paintInlineImageXObjectGroup:87,paintImageXObjectRepeat:88,paintImageMaskXObjectRepeat:89,paintSolidColorImageMask:90,constructPath:91}
 t.PasswordResponses={NEED_PASSWORD:1,INCORRECT_PASSWORD:2}
-let r=n.WARNINGS
-function i(e){r>=n.WARNINGS&&console.log(`Warning: ${e}`)}function s(e){throw new Error(e)}function o(e,t,a,n=!1){return Object.defineProperty(e,t,{value:a,enumerable:!n,configurable:!0,writable:!1}),a}const c=function(){function e(t,a){this.constructor===e&&s("Cannot initialize BaseException."),this.message=t,this.name=a}return e.prototype=new Error,e.constructor=e,e}()
-t.BaseException=c
-t.PasswordException=class extends c{constructor(e,t){super(e,"PasswordException"),this.code=t}}
-t.UnknownErrorException=class extends c{constructor(e,t){super(e,"UnknownErrorException"),this.details=t}}
-t.InvalidPDFException=class extends c{constructor(e){super(e,"InvalidPDFException")}}
-t.MissingPDFException=class extends c{constructor(e){super(e,"MissingPDFException")}}
-t.UnexpectedResponseException=class extends c{constructor(e,t){super(e,"UnexpectedResponseException"),this.status=t}}
-t.FormatError=class extends c{constructor(e){super(e,"FormatError")}}
-function l(e){"object"==typeof e&&void 0!==e?.length||s("Invalid argument for bytesToString")
+let i=r.WARNINGS
+function s(e){i>=r.WARNINGS&&console.log(`Warning: ${e}`)}function o(e){throw new Error(e)}function c(e,t,a,n=!1){return Object.defineProperty(e,t,{value:a,enumerable:!n,configurable:!0,writable:!1}),a}const l=function(){function e(t,a){this.constructor===e&&o("Cannot initialize BaseException."),this.message=t,this.name=a}return e.prototype=new Error,e.constructor=e,e}()
+t.BaseException=l
+t.PasswordException=class extends l{constructor(e,t){super(e,"PasswordException"),this.code=t}}
+t.UnknownErrorException=class extends l{constructor(e,t){super(e,"UnknownErrorException"),this.details=t}}
+t.InvalidPDFException=class extends l{constructor(e){super(e,"InvalidPDFException")}}
+t.MissingPDFException=class extends l{constructor(e){super(e,"MissingPDFException")}}
+t.UnexpectedResponseException=class extends l{constructor(e,t){super(e,"UnexpectedResponseException"),this.status=t}}
+t.FormatError=class extends l{constructor(e){super(e,"FormatError")}}
+function h(e){"object"==typeof e&&void 0!==e?.length||o("Invalid argument for bytesToString")
 const t=e.length,a=8192
 if(t<a)return String.fromCharCode.apply(null,e)
 const n=[]
 for(let r=0;r<t;r+=a){const i=Math.min(r+a,t),s=e.subarray(r,i)
-n.push(String.fromCharCode.apply(null,s))}return n.join("")}function h(e){"string"!=typeof e&&s("Invalid argument for stringToBytes")
+n.push(String.fromCharCode.apply(null,s))}return n.join("")}function u(e){"string"!=typeof e&&o("Invalid argument for stringToBytes")
 const t=e.length,a=new Uint8Array(t)
 for(let n=0;n<t;++n)a[n]=255&e.charCodeAt(n)
-return a}t.AbortException=class extends c{constructor(e){super(e,"AbortException")}}
-t.FeatureTest=class{static get isLittleEndian(){return o(this,"isLittleEndian",function(){const e=new Uint8Array(4)
-return e[0]=1,1===new Uint32Array(e.buffer,0,1)[0]}())}static get isEvalSupported(){return o(this,"isEvalSupported",function(){try{return new Function(""),!0}catch{return!1}}())}static get isOffscreenCanvasSupported(){return o(this,"isOffscreenCanvasSupported","undefined"!=typeof OffscreenCanvas)}static get platform(){return"undefined"==typeof navigator?o(this,"platform",{isWin:!1,isMac:!1}):o(this,"platform",{isWin:navigator.platform.includes("Win"),isMac:navigator.platform.includes("Mac")})}static get isCSSRoundSupported(){return o(this,"isCSSRoundSupported",globalThis.CSS?.supports?.("width: round(1.5px, 1px)"))}}
-const u=[...Array(256).keys()].map((e=>e.toString(16).padStart(2,"0")))
-t.Util=class{static makeHexColor(e,t,a){return`#${u[e]}${u[t]}${u[a]}`}static scaleMinMax(e,t){let a
+return a}t.AbortException=class extends l{constructor(e){super(e,"AbortException")}}
+t.FeatureTest=class{static get isLittleEndian(){return c(this,"isLittleEndian",function(){const e=new Uint8Array(4)
+return e[0]=1,1===new Uint32Array(e.buffer,0,1)[0]}())}static get isEvalSupported(){return c(this,"isEvalSupported",function(){try{return new Function(""),!0}catch{return!1}}())}static get isOffscreenCanvasSupported(){return c(this,"isOffscreenCanvasSupported","undefined"!=typeof OffscreenCanvas)}static get platform(){return"undefined"==typeof navigator?c(this,"platform",{isWin:!1,isMac:!1}):c(this,"platform",{isWin:navigator.platform.includes("Win"),isMac:navigator.platform.includes("Mac")})}static get isCSSRoundSupported(){return c(this,"isCSSRoundSupported",globalThis.CSS?.supports?.("width: round(1.5px, 1px)"))}}
+const d=[...Array(256).keys()].map((e=>e.toString(16).padStart(2,"0")))
+t.Util=class{static makeHexColor(e,t,a){return`#${d[e]}${d[t]}${d[a]}`}static scaleMinMax(e,t){let a
 e[0]?(e[0]<0&&(a=t[0],t[0]=t[1],t[1]=a),t[0]*=e[0],t[1]*=e[0],e[3]<0&&(a=t[2],t[2]=t[3],t[3]=a),t[2]*=e[3],t[3]*=e[3]):(a=t[0],t[0]=t[2],t[2]=a,a=t[1],t[1]=t[3],t[3]=a,e[1]<0&&(a=t[2],t[2]=t[3],t[3]=a),t[2]*=e[1],t[3]*=e[1],e[2]<0&&(a=t[0],t[0]=t[1],t[1]=a),t[0]*=e[2],t[1]*=e[2]),t[0]+=e[4],t[1]+=e[4],t[2]+=e[5],t[3]+=e[5]}static transform(e,t){return[e[0]*t[0]+e[2]*t[1],e[1]*t[0]+e[3]*t[1],e[0]*t[2]+e[2]*t[3],e[1]*t[2]+e[3]*t[3],e[0]*t[4]+e[2]*t[5]+e[4],e[1]*t[4]+e[3]*t[5]+e[5]]}static applyTransform(e,t){return[e[0]*t[0]+e[1]*t[2]+t[4],e[0]*t[1]+e[1]*t[3]+t[5]]}static applyInverseTransform(e,t){const a=t[0]*t[3]-t[1]*t[2]
 return[(e[0]*t[3]-e[1]*t[2]+t[2]*t[5]-t[4]*t[3])/a,(-e[0]*t[1]+e[1]*t[0]+t[4]*t[1]-t[5]*t[0])/a]}static getAxialAlignedBoundingBox(e,t){const a=this.applyTransform(e,t),n=this.applyTransform(e.slice(2,4),t),r=this.applyTransform([e[0],e[3]],t),i=this.applyTransform([e[2],e[1]],t)
 return[Math.min(a[0],n[0],r[0],i[0]),Math.min(a[1],n[1],r[1],i[1]),Math.max(a[0],n[0],r[0],i[0]),Math.max(a[1],n[1],r[1],i[1])]}static inverseTransform(e){const t=e[0]*e[3]-e[1]*e[2]
@@ -171,10 +172,10 @@ let y,w=c.length
 const x=w
 for(;w--;)f=c[w],y=1-f,l[0][w]=y*y*y*e+3*y*y*f*a+3*y*f*f*r+f*f*f*s,l[1][w]=y*y*y*t+3*y*y*f*n+3*y*f*f*i+f*f*f*o
 return l[0][x]=e,l[1][x]=t,l[0][x+1]=s,l[1][x+1]=o,l[0].length=l[1].length=x+2,[Math.min(...l[0]),Math.min(...l[1]),Math.max(...l[0]),Math.max(...l[1])]}}
-const d=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,728,711,710,729,733,731,730,732,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8226,8224,8225,8230,8212,8211,402,8260,8249,8250,8722,8240,8222,8220,8221,8216,8217,8218,8482,64257,64258,321,338,352,376,381,305,322,339,353,382,0,8364]
-function f(e){return decodeURIComponent(escape(e))}t.PromiseCapability=class{#e=!1
+const f=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,728,711,710,729,733,731,730,732,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8226,8224,8225,8230,8212,8211,402,8260,8249,8250,8722,8240,8222,8220,8221,8216,8217,8218,8482,64257,64258,321,338,352,376,381,305,322,339,353,382,0,8364]
+function g(e){return decodeURIComponent(escape(e))}t.PromiseCapability=class{#e=!1
 constructor(){this.promise=new Promise(((e,t)=>{this.resolve=t=>{this.#e=!0,e(t)},this.reject=e=>{this.#e=!0,t(e)}}))}get settled(){return this.#e}}
-let g=null,p=null
+let p=null,m=null
 t.AnnotationPrefix="pdfjs_internal_id_"},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.XRefParseException=t.XRefEntryException=t.ParserEOFException=t.PDF_VERSION_REGEXP=t.MissingDataException=void 0,t.arrayBuffersToBytes=function(e){const t=e.length
 if(0===t)return new Uint8Array(0)
 if(1===t)return new Uint8Array(e[0])
@@ -304,9 +305,9 @@ var n=a(3),r=a(2),i=a(8)
 class s extends i.Stream{constructor(e,t,a){super(new Uint8Array(e),0,e,null),this.chunkSize=t,this._loadedChunks=new Set,this.numChunks=Math.ceil(e/t),this.manager=a,this.progressiveDataLength=0,this.lastSuccessfulEnsureByteChunk=-1}getMissingChunks(){const e=[]
 for(let t=0,a=this.numChunks;t<a;++t)this._loadedChunks.has(t)||e.push(t)
 return e}get numChunksLoaded(){return this._loadedChunks.size}get isDataLoaded(){return this.numChunksLoaded===this.numChunks}onReceiveData(e,t){const a=this.chunkSize
-if(e%a!=0)throw new Error(`Bad begin offset: ${e}`)
+if(e%a!==0)throw new Error(`Bad begin offset: ${e}`)
 const n=e+t.byteLength
-if(n%a!=0&&n!==this.bytes.length)throw new Error(`Bad end offset: ${n}`)
+if(n%a!==0&&n!==this.bytes.length)throw new Error(`Bad end offset: ${n}`)
 this.bytes.set(new Uint8Array(t),e)
 const r=Math.floor(e/a),i=Math.floor((n-1)/a)+1
 for(let s=r;s<i;++s)this._loadedChunks.add(s)}onReceiveProgressiveData(e){let t=this.progressiveDataLength
@@ -493,8 +494,8 @@ const i=this.xref.fetchIfRef(t[n+1])
 i instanceof c.BaseStream&&!i.isEmpty&&(a[e]=i)}return a}get xfaDatasets(){const e=this._xfaStreams
 if(!e)return(0,n.shadow)(this,"xfaDatasets",null)
 for(const t of["datasets","xdp:xdp"]){const a=e[t]
-if(a)try{const e={[t]:(0,n.stringToUTF8String)(a.getString())}
-return(0,n.shadow)(this,"xfaDatasets",new d.DatasetReader(e))}catch{(0,n.warn)("XFA - Invalid utf-8 string.")
+if(a)try{const e=(0,n.stringToUTF8String)(a.getString()),r={[t]:e}
+return(0,n.shadow)(this,"xfaDatasets",new d.DatasetReader(r))}catch{(0,n.warn)("XFA - Invalid utf-8 string.")
 break}}return(0,n.shadow)(this,"xfaDatasets",null)}get xfaData(){const e=this._xfaStreams
 if(!e)return null
 const t=Object.create(null)
@@ -1133,7 +1134,7 @@ this.data.annotationType=n.AnnotationType.STRIKEOUT
 if(this.data.quadPoints=x(t,null)){if(!this.appearance){const e=this.color?w(this.color):[0,0,0],n=t.get("CA")
 this._setDefaultAppearance({xref:a,extra:"[] 0 d 1 w",strokeColor:e,strokeAlpha:n,pointsCallback:(e,t)=>(e.push((t[0].x+t[2].x)/2+" "+(t[0].y+t[2].y)/2+" m",(t[1].x+t[3].x)/2+" "+(t[1].y+t[3].y)/2+" l","S"),[t[0].x,t[1].x,t[3].y,t[1].y])})}}else this.data.popupRef=null}}class z extends C{constructor(e){super(e),this.data.annotationType=n.AnnotationType.STAMP,this.data.hasOwnCanvas=this.data.noRotate}static async createImage(e,t){const{width:a,height:r}=e,i=new OffscreenCanvas(a,r),c=i.getContext("2d",{alpha:!0})
 c.drawImage(e,0,0)
-const l=c.getImageData(0,0,a,r).data,h=new Uint32Array(l.buffer),u=h.some(n.FeatureTest.isLittleEndian?e=>e>>>24!=255:e=>255!=(255&e))
+const l=c.getImageData(0,0,a,r).data,h=new Uint32Array(l.buffer),u=h.some(n.FeatureTest.isLittleEndian?e=>e>>>24!=255:e=>!!(255&~e))
 u&&(c.fillStyle="white",c.fillRect(0,0,a,r),c.drawImage(e,0,0))
 const d=i.convertToBlob({type:"image/jpeg",quality:1}).then((e=>e.arrayBuffer())),f=s.Name.get("XObject"),g=s.Name.get("Image"),p=new s.Dict(t)
 p.set("Type",f),p.set("Subtype",g),p.set("BitsPerComponent",8),p.set("ColorSpace",s.Name.get("DeviceRGB")),p.set("Filter",s.Name.get("DCTDecode")),p.set("BBox",[0,0,a,r]),p.set("Width",a),p.set("Height",r)
@@ -2271,7 +2272,7 @@ switch(0|r){case-1:(0,n.warn)("Unterminated string"),t=!0
 break
 case 40:++e,a.push("(")
 break
-case 41:0==--e?(this.nextChar(),t=!0):a.push(")")
+case 41:0===--e?(this.nextChar(),t=!0):a.push(")")
 break
 case 92:switch(r=this.nextChar(),r){case-1:(0,n.warn)("Unterminated string"),t=!0
 break
@@ -2304,7 +2305,7 @@ const i=w(e)
 if(-1===i){if((0,n.warn)(`Lexer_getName: Illegal digit (${String.fromCharCode(e)}) in hexadecimal number.`),a.push("#",String.fromCharCode(t)),y[e])break
 a.push(String.fromCharCode(e))
 continue}a.push(String.fromCharCode(r<<4|i))}else a.push("#",String.fromCharCode(e))}else a.push(String.fromCharCode(e))
-return a.length>127&&(0,n.warn)(`Name token is longer than allowed by the spec: ${a.length}`),r.Name.get(a.join(""))}_hexStringWarn(e){5!=this._hexStringNumWarn++?this._hexStringNumWarn>5||(0,n.warn)(`getHexString - ignoring invalid character: ${e}`):(0,n.warn)("getHexString - ignoring additional invalid characters.")}getHexString(){const e=this.strBuf
+return a.length>127&&(0,n.warn)(`Name token is longer than allowed by the spec: ${a.length}`),r.Name.get(a.join(""))}_hexStringWarn(e){5!==this._hexStringNumWarn++?this._hexStringNumWarn>5||(0,n.warn)(`getHexString - ignoring invalid character: ${e}`):(0,n.warn)("getHexString - ignoring additional invalid characters.")}getHexString(){const e=this.strBuf
 e.length=0
 let t,a,r=this.currentChar,i=!0
 for(this._hexStringNumWarn=0;;){if(r<0){(0,n.warn)("Unterminated hex string")
@@ -2463,11 +2464,11 @@ if(t[0]===s)return this._eatBits(s),[!0,t[1],!0]}}return[!1,0,!1]}_getTwoDimCode
 if(this.eoblock){if(t=this._lookBits(7),e=i[t],e?.[0]>0)return this._eatBits(e[0]),e[1]}else{const e=this._findTableCode(1,7,i)
 if(e[0]&&e[2])return e[1]}return(0,n.info)("Bad two dim code"),r}_getWhiteCode(){let e,t=0
 if(this.eoblock){if(t=this._lookBits(12),t===r)return 1
-if(e=t>>5==0?s[t]:o[t>>3],e[0]>0)return this._eatBits(e[0]),e[1]}else{let e=this._findTableCode(1,9,o)
+if(e=t>>5?o[t>>3]:s[t],e[0]>0)return this._eatBits(e[0]),e[1]}else{let e=this._findTableCode(1,9,o)
 if(e[0])return e[1]
 if(e=this._findTableCode(11,12,s),e[0])return e[1]}return(0,n.info)("bad white code"),this._eatBits(1),1}_getBlackCode(){let e,t
 if(this.eoblock){if(e=this._lookBits(13),e===r)return 1
-if(t=e>>7==0?c[e]:e>>9==0&&e>>7!=0?l[(e>>1)-64]:h[e>>7],t[0]>0)return this._eatBits(t[0]),t[1]}else{let e=this._findTableCode(2,6,h)
+if(t=e>>7?!(e>>9)&&e>>7?l[(e>>1)-64]:h[e>>7]:c[e],t[0]>0)return this._eatBits(t[0]),t[1]}else{let e=this._findTableCode(2,6,h)
 if(e[0])return e[1]
 if(e=this._findTableCode(7,12,l,64),e[0])return e[1]
 if(e=this._findTableCode(10,13,c),e[0])return e[1]}return(0,n.info)("bad black code"),this._eatBits(1),1}_lookBits(e){let t
@@ -2547,70 +2548,69 @@ this.buffer=a,this.bufferLength=r,this.eof=!0}}t.Jbig2Stream=c},(e,t,a)=>{Object
 var n=a(2),r=a(3),i=a(25),s=a(21)
 class o extends n.BaseException{constructor(e){super(`JBIG2 error: ${e}`,"Jbig2Error")}}class c{getContexts(e){return e in this?this[e]:this[e]=new Int8Array(65536)}}class l{constructor(e,t,a){this.data=e,this.start=t,this.end=a}get decoder(){const e=new i.ArithmeticDecoder(this.data,this.start,this.end)
 return(0,n.shadow)(this,"decoder",e)}get contextCache(){const e=new c
-return(0,n.shadow)(this,"contextCache",e)}}const h=2**31-1,u=-(2**31)
-function d(e,t,a){const n=e.getContexts(t)
+return(0,n.shadow)(this,"contextCache",e)}}function h(e,t,a){const n=e.getContexts(t)
 let r=1
 function i(e){let t=0
 for(let i=0;i<e;i++){const e=a.readBit(n,r)
 r=r<256?r<<1|e:511&(r<<1|e)|256,t=t<<1|e}return t>>>0}const s=i(1),o=i(1)?i(1)?i(1)?i(1)?i(1)?i(32)+4436:i(12)+340:i(8)+84:i(6)+20:i(4)+4:i(2)
 let c
-return 0===s?c=o:o>0&&(c=-o),c>=u&&c<=h?c:null}function f(e,t,a){const n=e.getContexts("IAID")
+return 0===s?c=o:o>0&&(c=-o),c>=-2147483648&&c<=2147483647?c:null}function u(e,t,a){const n=e.getContexts("IAID")
 let r=1
-for(let i=0;i<a;i++){r=r<<1|t.readBit(n,r)}return a<31?r&(1<<a)-1:2147483647&r}const g=["SymbolDictionary",null,null,null,"IntermediateTextRegion",null,"ImmediateTextRegion","ImmediateLosslessTextRegion",null,null,null,null,null,null,null,null,"PatternDictionary",null,null,null,"IntermediateHalftoneRegion",null,"ImmediateHalftoneRegion","ImmediateLosslessHalftoneRegion",null,null,null,null,null,null,null,null,null,null,null,null,"IntermediateGenericRegion",null,"ImmediateGenericRegion","ImmediateLosslessGenericRegion","IntermediateGenericRefinementRegion",null,"ImmediateGenericRefinementRegion","ImmediateLosslessGenericRefinementRegion",null,null,null,null,"PageInformation","EndOfPage","EndOfStripe","EndOfFile","Profiles","Tables",null,null,null,null,null,null,null,null,"Extension"],p=[[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:2,y:-1},{x:-4,y:0},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}],[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:2,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:2,y:-1},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}],[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-2,y:0},{x:-1,y:0}],[{x:-3,y:-1},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-4,y:0},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}]],m=[{coding:[{x:0,y:-1},{x:1,y:-1},{x:-1,y:0}],reference:[{x:0,y:-1},{x:1,y:-1},{x:-1,y:0},{x:0,y:0},{x:1,y:0},{x:-1,y:1},{x:0,y:1},{x:1,y:1}]},{coding:[{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-1,y:0}],reference:[{x:0,y:-1},{x:-1,y:0},{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}]}],b=[39717,1941,229,405],y=[32,8]
-function w(e,t,a,n,r,i,s,o){if(e){return $(new R(o.data,o.start,o.end),t,a,!1)}if(0===n&&!i&&!r&&4===s.length&&3===s[0].x&&-1===s[0].y&&-3===s[1].x&&-1===s[1].y&&2===s[2].x&&-2===s[2].y&&-2===s[3].x&&-2===s[3].y)return function(e,t,a){const n=a.decoder,r=a.contextCache.getContexts("GB"),i=[]
+for(let i=0;i<a;i++){r=r<<1|t.readBit(n,r)}return a<31?r&(1<<a)-1:2147483647&r}const d=["SymbolDictionary",null,null,null,"IntermediateTextRegion",null,"ImmediateTextRegion","ImmediateLosslessTextRegion",null,null,null,null,null,null,null,null,"PatternDictionary",null,null,null,"IntermediateHalftoneRegion",null,"ImmediateHalftoneRegion","ImmediateLosslessHalftoneRegion",null,null,null,null,null,null,null,null,null,null,null,null,"IntermediateGenericRegion",null,"ImmediateGenericRegion","ImmediateLosslessGenericRegion","IntermediateGenericRefinementRegion",null,"ImmediateGenericRefinementRegion","ImmediateLosslessGenericRefinementRegion",null,null,null,null,"PageInformation","EndOfPage","EndOfStripe","EndOfFile","Profiles","Tables",null,null,null,null,null,null,null,null,"Extension"],f=[[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:2,y:-1},{x:-4,y:0},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}],[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:2,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:2,y:-1},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}],[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-2,y:0},{x:-1,y:0}],[{x:-3,y:-1},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-4,y:0},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}]],g=[{coding:[{x:0,y:-1},{x:1,y:-1},{x:-1,y:0}],reference:[{x:0,y:-1},{x:1,y:-1},{x:-1,y:0},{x:0,y:0},{x:1,y:0},{x:-1,y:1},{x:0,y:1},{x:1,y:1}]},{coding:[{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-1,y:0}],reference:[{x:0,y:-1},{x:-1,y:0},{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}]}],p=[39717,1941,229,405],m=[32,8]
+function b(e,t,a,n,r,i,s,o){if(e){return E(new N(o.data,o.start,o.end),t,a,!1)}if(0===n&&!i&&!r&&4===s.length&&3===s[0].x&&-1===s[0].y&&-3===s[1].x&&-1===s[1].y&&2===s[2].x&&-2===s[2].y&&-2===s[3].x&&-2===s[3].y)return function(e,t,a){const n=a.decoder,r=a.contextCache.getContexts("GB"),i=[]
 let s,o,c,l,h,u,d
 for(o=0;o<t;o++)for(h=i[o]=new Uint8Array(e),u=o<1?h:i[o-1],d=o<2?h:i[o-2],s=d[0]<<13|d[1]<<12|d[2]<<11|u[0]<<7|u[1]<<6|u[2]<<5|u[3]<<4,c=0;c<e;c++)h[c]=l=n.readBit(r,s),s=(31735&s)<<1|(c+3<e?d[c+3]<<11:0)|(c+4<e?u[c+4]<<4:0)|l
 return i}(t,a,o)
-const c=!!i,l=p[n].concat(s)
+const c=!!i,l=f[n].concat(s)
 l.sort((function(e,t){return e.y-t.y||e.x-t.x}))
-const h=l.length,u=new Int8Array(h),d=new Int8Array(h),f=[]
-let g,m,y=0,w=0,x=0,S=0
-for(m=0;m<h;m++)u[m]=l[m].x,d[m]=l[m].y,w=Math.min(w,l[m].x),x=Math.max(x,l[m].x),S=Math.min(S,l[m].y),m<h-1&&l[m].y===l[m+1].y&&l[m].x===l[m+1].x-1?y|=1<<h-1-m:f.push(m)
-const A=f.length,k=new Int8Array(A),C=new Int8Array(A),v=new Uint16Array(A)
-for(g=0;g<A;g++)m=f[g],k[g]=l[m].x,C[g]=l[m].y,v[g]=1<<h-1-m
-const F=-w,O=-S,I=t-x,T=b[n]
+const h=l.length,u=new Int8Array(h),d=new Int8Array(h),g=[]
+let m,b,y=0,w=0,x=0,S=0
+for(b=0;b<h;b++)u[b]=l[b].x,d[b]=l[b].y,w=Math.min(w,l[b].x),x=Math.max(x,l[b].x),S=Math.min(S,l[b].y),b<h-1&&l[b].y===l[b+1].y&&l[b].x===l[b+1].x-1?y|=1<<h-1-b:g.push(b)
+const A=g.length,k=new Int8Array(A),C=new Int8Array(A),v=new Uint16Array(A)
+for(m=0;m<A;m++)b=g[m],k[m]=l[b].x,C[m]=l[b].y,v[m]=1<<h-1-b
+const F=-w,O=-S,I=t-x,T=p[n]
 let M=new Uint8Array(t)
-const P=[],N=o.decoder,D=o.contextCache.getContexts("GB")
-let E,B,L,_,j,U=0,X=0
-for(let p=0;p<a;p++){if(r){if(U^=N.readBit(D,T),U){P.push(M)
-continue}}for(M=new Uint8Array(M),P.push(M),E=0;E<t;E++){if(c&&i[p][E]){M[E]=0
-continue}if(E>=F&&E<I&&p>=O)for(X=X<<1&y,m=0;m<A;m++)B=p+C[m],L=E+k[m],_=P[B][L],_&&(_=v[m],X|=_)
-else for(X=0,j=h-1,m=0;m<h;m++,j--)L=E+u[m],L>=0&&L<t&&(B=p+d[m],B>=0&&(_=P[B][L],_&&(X|=_<<j)))
-const e=N.readBit(D,X)
-M[E]=e}}return P}function x(e,t,a,n,r,i,s,c,l){let h=m[a].coding
+const P=[],D=o.decoder,R=o.contextCache.getContexts("GB")
+let B,$,L,_,j,U=0,X=0
+for(let f=0;f<a;f++){if(r){if(U^=D.readBit(R,T),U){P.push(M)
+continue}}for(M=new Uint8Array(M),P.push(M),B=0;B<t;B++){if(c&&i[f][B]){M[B]=0
+continue}if(B>=F&&B<I&&f>=O)for(X=X<<1&y,b=0;b<A;b++)$=f+C[b],L=B+k[b],_=P[$][L],_&&(_=v[b],X|=_)
+else for(X=0,j=h-1,b=0;b<h;b++,j--)L=B+u[b],L>=0&&L<t&&($=f+d[b],$>=0&&(_=P[$][L],_&&(X|=_<<j)))
+const e=D.readBit(R,X)
+M[B]=e}}return P}function y(e,t,a,n,r,i,s,c,l){let h=g[a].coding
 0===a&&(h=h.concat([c[0]]))
 const u=h.length,d=new Int32Array(u),f=new Int32Array(u)
-let g
-for(g=0;g<u;g++)d[g]=h[g].x,f[g]=h[g].y
-let p=m[a].reference
-0===a&&(p=p.concat([c[1]]))
-const b=p.length,w=new Int32Array(b),x=new Int32Array(b)
-for(g=0;g<b;g++)w[g]=p[g].x,x[g]=p[g].y
-const S=n[0].length,A=n.length,k=y[a],C=[],v=l.decoder,F=l.contextCache.getContexts("GR")
+let p
+for(p=0;p<u;p++)d[p]=h[p].x,f[p]=h[p].y
+let b=g[a].reference
+0===a&&(b=b.concat([c[1]]))
+const y=b.length,w=new Int32Array(y),x=new Int32Array(y)
+for(p=0;p<y;p++)w[p]=b[p].x,x[p]=b[p].y
+const S=n[0].length,A=n.length,k=m[a],C=[],v=l.decoder,F=l.contextCache.getContexts("GR")
 let O=0
-for(let m=0;m<t;m++){if(s){if(O^=v.readBit(F,k),O)throw new o("prediction is not supported")}const t=new Uint8Array(e)
+for(let g=0;g<t;g++){if(s){if(O^=v.readBit(F,k),O)throw new o("prediction is not supported")}const t=new Uint8Array(e)
 C.push(t)
 for(let a=0;a<e;a++){let s,o,c=0
-for(g=0;g<u;g++)s=m+f[g],o=a+d[g],s<0||o<0||o>=e?c<<=1:c=c<<1|C[s][o]
-for(g=0;g<b;g++)s=m+x[g]-i,o=a+w[g]-r,s<0||s>=A||o<0||o>=S?c<<=1:c=c<<1|n[s][o]
+for(p=0;p<u;p++)s=g+f[p],o=a+d[p],s<0||o<0||o>=e?c<<=1:c=c<<1|C[s][o]
+for(p=0;p<y;p++)s=g+x[p]-i,o=a+w[p]-r,s<0||s>=A||o<0||o>=S?c<<=1:c=c<<1|n[s][o]
 const l=v.readBit(F,c)
-t[a]=l}}return C}function S(e,t,a,n,r,i,s,c,l,h,u,g,p,m,b,y,w,S,A){if(e&&t)throw new o("refinement with Huffman is not supported")
+t[a]=l}}return C}function w(e,t,a,n,r,i,s,c,l,d,f,g,p,m,b,w,x,S,A){if(e&&t)throw new o("refinement with Huffman is not supported")
 const k=[]
 let C,v
 for(C=0;C<n;C++){if(v=new Uint8Array(a),r)for(let e=0;e<a;e++)v[e]=r
-k.push(v)}const F=w.decoder,O=w.contextCache
-let I=e?-m.tableDeltaT.decode(A):-d(O,"IADT",F),T=0
-for(C=0;C<i;){I+=e?m.tableDeltaT.decode(A):d(O,"IADT",F)
-T+=e?m.tableFirstS.decode(A):d(O,"IAFS",F)
+k.push(v)}const F=x.decoder,O=x.contextCache
+let I=e?-m.tableDeltaT.decode(A):-h(O,"IADT",F),T=0
+for(C=0;C<i;){I+=e?m.tableDeltaT.decode(A):h(O,"IADT",F)
+T+=e?m.tableFirstS.decode(A):h(O,"IAFS",F)
 let n=T
 for(;;){let r=0
-s>1&&(r=e?A.readBits(S):d(O,"IAIT",F))
-const i=s*I+r,T=e?m.symbolIDTable.decode(A):f(O,F,l),M=t&&(e?A.readBit():d(O,"IARI",F))
+s>1&&(r=e?A.readBits(S):h(O,"IAIT",F))
+const i=s*I+r,T=e?m.symbolIDTable.decode(A):u(O,F,l),M=t&&(e?A.readBit():h(O,"IARI",F))
 let P=c[T],N=P[0].length,D=P.length
-if(M){const e=d(O,"IARDW",F),t=d(O,"IARDH",F)
-N+=e,D+=t,P=x(N,D,b,P,(e>>1)+d(O,"IARDX",F),(t>>1)+d(O,"IARDY",F),!1,y,w)}const R=i-(1&g?0:D-1),E=n-(2&g?N-1:0)
+if(M){const e=h(O,"IARDW",F),t=h(O,"IARDH",F)
+N+=e,D+=t,P=y(N,D,b,P,(e>>1)+h(O,"IARDX",F),(t>>1)+h(O,"IARDY",F),!1,w,x)}const R=i-(1&g?0:D-1),E=n-(2&g?N-1:0)
 let B,$,L
-if(h){for(B=0;B<D;B++){if(v=k[E+B],!v)continue
+if(d){for(B=0;B<D;B++){if(v=k[E+B],!v)continue
 L=P[B]
 const e=Math.min(a-R,N)
 switch(p){case 0:for($=0;$<e;$++)v[R+$]|=L[$]
@@ -2622,13 +2622,13 @@ break
 case 2:for(B=0;B<N;B++)v[E+B]^=L[B]
 break
 default:throw new o(`operator ${p} is not supported`)}n+=N-1}C++
-const _=e?m.tableDeltaS.decode(A):d(O,"IADS",F)
+const _=e?m.tableDeltaS.decode(A):h(O,"IADS",F)
 if(null===_)break
-n+=_+u}}return k}function A(e,t){const a={}
+n+=_+f}}return k}function x(e,t){const a={}
 a.number=(0,r.readUint32)(e,t)
 const n=e[t+4],i=63&n
-if(!g[i])throw new o("invalid segment type: "+i)
-a.type=i,a.typeName=g[i],a.deferredNonRetain=!!(128&n)
+if(!d[i])throw new o("invalid segment type: "+i)
+a.type=i,a.typeName=d[i],a.deferredNonRetain=!!(128&n)
 const s=!!(64&n),c=e[t+5]
 let l=c>>5&7
 const h=[31&c]
@@ -2637,24 +2637,24 @@ if(7===c){l=536870911&(0,r.readUint32)(e,u-1),u+=3
 let t=l+7>>3
 for(h[0]=e[u++];--t>0;)h.push(e[u++])}else if(5===c||6===c)throw new o("invalid referred-to flags")
 a.retainBits=h
-let d=4
-a.number<=256?d=1:a.number<=65536&&(d=2)
-const f=[]
+let f=4
+a.number<=256?f=1:a.number<=65536&&(f=2)
+const g=[]
 let p,m
 for(p=0;p<l;p++){let t
-t=1===d?e[u]:2===d?(0,r.readUint16)(e,u):(0,r.readUint32)(e,u),f.push(t),u+=d}if(a.referredTo=f,s?(a.pageAssociation=(0,r.readUint32)(e,u),u+=4):a.pageAssociation=e[u++],a.length=(0,r.readUint32)(e,u),u+=4,4294967295===a.length){if(38!==i)throw new o("invalid unknown segment length")
-{const t=C(e,u),n=!!(1&e[u+v]),r=6,i=new Uint8Array(r)
+t=1===f?e[u]:2===f?(0,r.readUint16)(e,u):(0,r.readUint32)(e,u),g.push(t),u+=f}if(a.referredTo=g,s?(a.pageAssociation=(0,r.readUint32)(e,u),u+=4):a.pageAssociation=e[u++],a.length=(0,r.readUint32)(e,u),u+=4,4294967295===a.length){if(38!==i)throw new o("invalid unknown segment length")
+{const t=A(e,u),n=!!(1&e[u+k]),r=6,i=new Uint8Array(r)
 for(n||(i[0]=255,i[1]=172),i[2]=t.height>>>24&255,i[3]=t.height>>16&255,i[4]=t.height>>8&255,i[5]=255&t.height,p=u,m=e.length;p<m;p++){let t=0
 for(;t<r&&i[t]===e[p+t];)t++
 if(t===r){a.length=p+r
-break}}if(4294967295===a.length)throw new o("segment end was not found")}}return a.headerEnd=u,a}function k(e,t,a,n){const r=[]
+break}}if(4294967295===a.length)throw new o("segment end was not found")}}return a.headerEnd=u,a}function S(e,t,a,n){const r=[]
 let i=a
-for(;i<n;){const a=A(t,i)
+for(;i<n;){const a=x(t,i)
 i=a.headerEnd
 const n={header:a,data:t}
 if(e.randomAccess||(n.start=i,i+=a.length,n.end=i),r.push(n),51===a.type)break}if(e.randomAccess)for(let s=0,o=r.length;s<o;s++)r[s].start=i,i+=r[s].header.length,r[s].end=i
-return r}function C(e,t){return{width:(0,r.readUint32)(e,t),height:(0,r.readUint32)(e,t+4),x:(0,r.readUint32)(e,t+8),y:(0,r.readUint32)(e,t+12),combinationOperator:7&e[t+16]}}const v=17
-function F(e,t){const a=e.header,n=e.data,i=e.end
+return r}function A(e,t){return{width:(0,r.readUint32)(e,t),height:(0,r.readUint32)(e,t+4),x:(0,r.readUint32)(e,t+8),y:(0,r.readUint32)(e,t+12),combinationOperator:7&e[t+16]}}const k=17
+function C(e,t){const a=e.header,n=e.data,i=e.end
 let s,c,l,h,u=e.start
 switch(a.type){case 0:const e={},t=(0,r.readUint16)(n,u)
 if(e.huffman=!!(1&t),e.refinement=!!(2&t),e.huffmanDHSelector=t>>2&3,e.huffmanDWSelector=t>>4&3,e.bitmapSizeSelector=t>>6&1,e.aggregationInstancesSelector=t>>7&1,e.bitmapCodingContextUsed=!!(256&t),e.bitmapCodingContextRetained=!!(512&t),e.template=t>>10&3,e.refinementTemplate=t>>12&1,u+=2,!e.huffman){for(h=0===e.template?4:1,c=[],l=0;l<h;l++)c.push({x:(0,r.readInt8)(n,u),y:(0,r.readInt8)(n,u+1)}),u+=2
@@ -2662,7 +2662,7 @@ e.at=c}if(e.refinement&&!e.refinementTemplate){for(c=[],l=0;l<2;l++)c.push({x:(0
 e.refinementAt=c}e.numberOfExportedSymbols=(0,r.readUint32)(n,u),u+=4,e.numberOfNewSymbols=(0,r.readUint32)(n,u),u+=4,s=[e,a.number,a.referredTo,n,u,i]
 break
 case 6:case 7:const d={}
-d.info=C(n,u),u+=v
+d.info=A(n,u),u+=k
 const f=(0,r.readUint16)(n,u)
 if(u+=2,d.huffman=!!(1&f),d.refinement=!!(2&f),d.logStripSize=f>>2&3,d.stripSize=1<<d.logStripSize,d.referenceCorner=f>>4&3,d.transposed=!!(64&f),d.combinationOperator=f>>7&3,d.defaultPixelValue=f>>9&1,d.dsOffset=f<<17>>27,d.refinementTemplate=f>>15&1,d.huffman){const e=(0,r.readUint16)(n,u)
 u+=2,d.huffmanFS=3&e,d.huffmanDS=e>>2&3,d.huffmanDT=e>>4&3,d.huffmanRefinementDW=e>>6&3,d.huffmanRefinementDH=e>>8&3,d.huffmanRefinementDX=e>>10&3,d.huffmanRefinementDY=e>>12&3,d.huffmanRefinementSizeSelector=!!(16384&e)}if(d.refinement&&!d.refinementTemplate){for(c=[],l=0;l<2;l++)c.push({x:(0,r.readInt8)(n,u),y:(0,r.readInt8)(n,u+1)}),u+=2
@@ -2672,12 +2672,12 @@ case 16:const g={},p=n[u++]
 g.mmr=!!(1&p),g.template=p>>1&3,g.patternWidth=n[u++],g.patternHeight=n[u++],g.maxPatternIndex=(0,r.readUint32)(n,u),u+=4,s=[g,a.number,n,u,i]
 break
 case 22:case 23:const m={}
-m.info=C(n,u),u+=v
+m.info=A(n,u),u+=k
 const b=n[u++]
 m.mmr=!!(1&b),m.template=b>>1&3,m.enableSkip=!!(8&b),m.combinationOperator=b>>4&7,m.defaultPixelValue=b>>7&1,m.gridWidth=(0,r.readUint32)(n,u),u+=4,m.gridHeight=(0,r.readUint32)(n,u),u+=4,m.gridOffsetX=4294967295&(0,r.readUint32)(n,u),u+=4,m.gridOffsetY=4294967295&(0,r.readUint32)(n,u),u+=4,m.gridVectorX=(0,r.readUint16)(n,u),u+=2,m.gridVectorY=(0,r.readUint16)(n,u),u+=2,s=[m,a.referredTo,n,u,i]
 break
 case 38:case 39:const y={}
-y.info=C(n,u),u+=v
+y.info=A(n,u),u+=k
 const w=n[u++]
 if(y.mmr=!!(1&w),y.template=w>>1&3,y.prediction=!!(8&w),!y.mmr){for(h=0===y.template?4:1,c=[],l=0;l<h;l++)c.push({x:(0,r.readInt8)(n,u),y:(0,r.readInt8)(n,u+1)}),u+=2
 y.at=c}s=[y,n,u,i]
@@ -2690,7 +2690,7 @@ case 49:case 50:case 51:case 62:break
 case 53:s=[a.number,n,u,i]
 break
 default:throw new o(`segment type ${a.typeName}(${a.type}) is not implemented`)}const d="on"+a.typeName
-d in t&&t[d].apply(t,s)}function O(e,t){for(let a=0,n=e.length;a<n;a++)F(e[a],t)}class I{onPageInformation(e){this.currentPageInfo=e
+d in t&&t[d].apply(t,s)}function v(e,t){for(let a=0,n=e.length;a<n;a++)C(e[a],t)}class F{onPageInformation(e){this.currentPageInfo=e
 const t=e.width+7>>3,a=new Uint8ClampedArray(t*e.height)
 e.defaultPixelValue&&a.fill(255),this.buffer=a}drawBitmap(e,t){const a=this.currentPageInfo,n=e.width,r=e.height,i=a.width+7>>3,s=a.combinationOperatorOverride?e.combinationOperator:a.combinationOperator,c=this.buffer,l=128>>(7&e.x)
 let h,u,d,f,g=e.y*i+(e.x>>3)
@@ -2698,62 +2698,62 @@ switch(s){case 0:for(h=0;h<r;h++){for(d=l,f=g,u=0;u<n;u++)t[h][u]&&(c[f]|=d),d>>
 g+=i}break
 case 2:for(h=0;h<r;h++){for(d=l,f=g,u=0;u<n;u++)t[h][u]&&(c[f]^=d),d>>=1,d||(d=128,f++)
 g+=i}break
-default:throw new o(`operator ${s} is not supported`)}}onImmediateGenericRegion(e,t,a,n){const r=e.info,i=new l(t,a,n),s=w(e.mmr,r.width,r.height,e.template,e.prediction,null,e.at,i)
-this.drawBitmap(r,s)}onImmediateLosslessGenericRegion(){this.onImmediateGenericRegion(...arguments)}onSymbolDictionary(e,t,a,n,i,s){let c,h
+default:throw new o(`operator ${s} is not supported`)}}onImmediateGenericRegion(e,t,a,n){const r=e.info,i=new l(t,a,n),s=b(e.mmr,r.width,r.height,e.template,e.prediction,null,e.at,i)
+this.drawBitmap(r,s)}onImmediateLosslessGenericRegion(){this.onImmediateGenericRegion(...arguments)}onSymbolDictionary(e,t,a,n,i,s){let c,d
 e.huffman&&(c=function(e,t,a){let n,r,i,s,c=0
-switch(e.huffmanDHSelector){case 0:case 1:n=D(e.huffmanDHSelector+4)
+switch(e.huffmanDHSelector){case 0:case 1:n=P(e.huffmanDHSelector+4)
 break
-case 3:n=E(c,t,a),c++
+case 3:n=D(c,t,a),c++
 break
-default:throw new o("invalid Huffman DH selector")}switch(e.huffmanDWSelector){case 0:case 1:r=D(e.huffmanDWSelector+2)
+default:throw new o("invalid Huffman DH selector")}switch(e.huffmanDWSelector){case 0:case 1:r=P(e.huffmanDWSelector+2)
 break
-case 3:r=E(c,t,a),c++
+case 3:r=D(c,t,a),c++
 break
-default:throw new o("invalid Huffman DW selector")}e.bitmapSizeSelector?(i=E(c,t,a),c++):i=D(1)
-s=e.aggregationInstancesSelector?E(c,t,a):D(1)
-return{tableDeltaHeight:n,tableDeltaWidth:r,tableBitmapSize:i,tableAggregateInstances:s}}(e,a,this.customTables),h=new R(n,i,s))
-let u=this.symbols
-u||(this.symbols=u={})
+default:throw new o("invalid Huffman DW selector")}e.bitmapSizeSelector?(i=D(c,t,a),c++):i=P(1)
+s=e.aggregationInstancesSelector?D(c,t,a):P(1)
+return{tableDeltaHeight:n,tableDeltaWidth:r,tableBitmapSize:i,tableAggregateInstances:s}}(e,a,this.customTables),d=new N(n,i,s))
+let f=this.symbols
+f||(this.symbols=f={})
 const g=[]
-for(const r of a){const e=u[r]
+for(const r of a){const e=f[r]
 e&&g.push(...e)}const p=new l(n,i,s)
-u[t]=function(e,t,a,n,i,s,c,l,h,u,g,p){if(e&&t)throw new o("symbol refinement with Huffman is not supported")
+f[t]=function(e,t,a,n,i,s,c,l,d,f,g,p){if(e&&t)throw new o("symbol refinement with Huffman is not supported")
 const m=[]
-let b=0,y=(0,r.log2)(a.length+n)
+let x=0,S=(0,r.log2)(a.length+n)
 const A=g.decoder,k=g.contextCache
 let C,v
-for(e&&(C=D(1),v=[],y=Math.max(y,1));m.length<n;){b+=e?s.tableDeltaHeight.decode(p):d(k,"IADH",A)
+for(e&&(C=P(1),v=[],S=Math.max(S,1));m.length<n;){x+=e?s.tableDeltaHeight.decode(p):h(k,"IADH",A)
 let n=0,r=0
 const i=e?v.length:0
-for(;;){const i=e?s.tableDeltaWidth.decode(p):d(k,"IADW",A)
+for(;;){const i=e?s.tableDeltaWidth.decode(p):h(k,"IADW",A)
 if(null===i)break
 let o
-if(n+=i,r+=n,t){const r=d(k,"IAAI",A)
-if(r>1)o=S(e,t,n,b,0,r,1,a.concat(m),y,0,0,1,0,s,h,u,g,0,p)
-else{const e=f(k,A,y),t=d(k,"IARDX",A),r=d(k,"IARDY",A)
-o=x(n,b,h,e<a.length?a[e]:m[e-a.length],t,r,!1,u,g)}m.push(o)}else e?v.push(n):(o=w(!1,n,b,c,!1,null,l,g),m.push(o))}if(e&&!t){const e=s.tableBitmapSize.decode(p)
+if(n+=i,r+=n,t){const r=h(k,"IAAI",A)
+if(r>1)o=w(e,t,n,x,0,r,1,a.concat(m),S,0,0,1,0,s,d,f,g,0,p)
+else{const e=u(k,A,S),t=h(k,"IARDX",A),r=h(k,"IARDY",A)
+o=y(n,x,d,e<a.length?a[e]:m[e-a.length],t,r,!1,f,g)}m.push(o)}else e?v.push(n):(o=b(!1,n,x,c,!1,null,l,g),m.push(o))}if(e&&!t){const e=s.tableBitmapSize.decode(p)
 let t
-if(p.byteAlign(),0===e)t=B(p,r,b)
+if(p.byteAlign(),0===e)t=R(p,r,x)
 else{const a=p.end,n=p.position+e
-p.end=n,t=$(p,r,b,!1),p.end=a,p.position=n}const a=v.length
+p.end=n,t=E(p,r,x,!1),p.end=a,p.position=n}const a=v.length
 if(i===a-1)m.push(t)
 else{let e,n,r,s,o,c=0
-for(e=i;e<a;e++){for(s=v[e],r=c+s,o=[],n=0;n<b;n++)o.push(t[n].subarray(c,r))
+for(e=i;e<a;e++){for(s=v[e],r=c+s,o=[],n=0;n<x;n++)o.push(t[n].subarray(c,r))
 m.push(o),c=r}}}}const F=[],O=[]
 let I,T,M=!1
-const P=a.length+n
-for(;O.length<P;){let t=e?C.decode(p):d(k,"IAEX",A)
+const N=a.length+n
+for(;O.length<N;){let t=e?C.decode(p):h(k,"IAEX",A)
 for(;t--;)O.push(M)
 M=!M}for(I=0,T=a.length;I<T;I++)O[I]&&F.push(a[I])
 for(let r=0;r<n;I++,r++)O[I]&&F.push(m[r])
-return F}(e.huffman,e.refinement,g,e.numberOfNewSymbols,e.numberOfExportedSymbols,c,e.template,e.at,e.refinementTemplate,e.refinementAt,p,h)}onImmediateTextRegion(e,t,a,n,i){const s=e.info
+return F}(e.huffman,e.refinement,g,e.numberOfNewSymbols,e.numberOfExportedSymbols,c,e.template,e.at,e.refinementTemplate,e.refinementAt,p,d)}onImmediateTextRegion(e,t,a,n,i){const s=e.info
 let c,h
 const u=this.symbols,d=[]
 for(const r of t){const e=u[r]
 e&&d.push(...e)}const f=(0,r.log2)(d.length)
-e.huffman&&(h=new R(a,n,i),c=function(e,t,a,n,r){const i=[]
+e.huffman&&(h=new N(a,n,i),c=function(e,t,a,n,r){const i=[]
 for(let o=0;o<=34;o++){const e=r.readBits(4)
-i.push(new T([o,e,0,0]))}const s=new P(i,!1)
+i.push(new O([o,e,0,0]))}const s=new T(i,!1)
 i.length=0
 for(let f=0;f<n;){const e=s.decode(r)
 if(e>=32){let t,a,n
@@ -2764,59 +2764,59 @@ case 33:a=r.readBits(3)+3,t=0
 break
 case 34:a=r.readBits(7)+11,t=0
 break
-default:throw new o("invalid code length in symbol ID table")}for(n=0;n<a;n++)i.push(new T([f,t,0,0])),f++}else i.push(new T([f,e,0,0])),f++}r.byteAlign()
-const c=new P(i,!1)
+default:throw new o("invalid code length in symbol ID table")}for(n=0;n<a;n++)i.push(new O([f,t,0,0])),f++}else i.push(new O([f,e,0,0])),f++}r.byteAlign()
+const c=new T(i,!1)
 let l,h,u,d=0
-switch(e.huffmanFS){case 0:case 1:l=D(e.huffmanFS+6)
+switch(e.huffmanFS){case 0:case 1:l=P(e.huffmanFS+6)
 break
-case 3:l=E(d,t,a),d++
+case 3:l=D(d,t,a),d++
 break
-default:throw new o("invalid Huffman FS selector")}switch(e.huffmanDS){case 0:case 1:case 2:h=D(e.huffmanDS+8)
+default:throw new o("invalid Huffman FS selector")}switch(e.huffmanDS){case 0:case 1:case 2:h=P(e.huffmanDS+8)
 break
-case 3:h=E(d,t,a),d++
+case 3:h=D(d,t,a),d++
 break
-default:throw new o("invalid Huffman DS selector")}switch(e.huffmanDT){case 0:case 1:case 2:u=D(e.huffmanDT+11)
+default:throw new o("invalid Huffman DS selector")}switch(e.huffmanDT){case 0:case 1:case 2:u=P(e.huffmanDT+11)
 break
-case 3:u=E(d,t,a),d++
+case 3:u=D(d,t,a),d++
 break
 default:throw new o("invalid Huffman DT selector")}if(e.refinement)throw new o("refinement with Huffman is not supported")
 return{symbolIDTable:c,tableFirstS:l,tableDeltaS:h,tableDeltaT:u}}(e,t,this.customTables,d.length,h))
-const g=new l(a,n,i),p=S(e.huffman,e.refinement,s.width,s.height,e.defaultPixelValue,e.numberOfSymbolInstances,e.stripSize,d,f,e.transposed,e.dsOffset,e.referenceCorner,e.combinationOperator,c,e.refinementTemplate,e.refinementAt,g,e.logStripSize,h)
+const g=new l(a,n,i),p=w(e.huffman,e.refinement,s.width,s.height,e.defaultPixelValue,e.numberOfSymbolInstances,e.stripSize,d,f,e.transposed,e.dsOffset,e.referenceCorner,e.combinationOperator,c,e.refinementTemplate,e.refinementAt,g,e.logStripSize,h)
 this.drawBitmap(s,p)}onImmediateLosslessTextRegion(){this.onImmediateTextRegion(...arguments)}onPatternDictionary(e,t,a,n,r){let i=this.patterns
 i||(this.patterns=i={})
 const s=new l(a,n,r)
 i[t]=function(e,t,a,n,r,i){const s=[]
 e||(s.push({x:-t,y:0}),0===r&&s.push({x:-3,y:-1},{x:2,y:-2},{x:-2,y:-2}))
-const o=w(e,(n+1)*t,a,r,!1,null,s,i),c=[]
+const o=b(e,(n+1)*t,a,r,!1,null,s,i),c=[]
 for(let l=0;l<=n;l++){const e=[],n=t*l,r=n+t
 for(let t=0;t<a;t++)e.push(o[t].subarray(n,r))
 c.push(e)}return c}(e.mmr,e.patternWidth,e.patternHeight,e.maxPatternIndex,e.template,s)}onImmediateHalftoneRegion(e,t,a,n,i){const s=this.patterns[t[0]],c=e.info,h=new l(a,n,i),u=function(e,t,a,n,i,s,c,l,h,u,d,f,g,p,m){if(c)throw new o("skip is not supported")
 if(0!==l)throw new o(`operator "${l}" is not supported in halftone region`)
-const b=[]
-let y,x,S
-for(y=0;y<i;y++){if(S=new Uint8Array(n),s)for(x=0;x<n;x++)S[x]=s
-b.push(S)}const A=t.length,k=t[0],C=k[0].length,v=k.length,F=(0,r.log2)(A),O=[]
+const y=[]
+let w,x,S
+for(w=0;w<i;w++){if(S=new Uint8Array(n),s)for(x=0;x<n;x++)S[x]=s
+y.push(S)}const A=t.length,k=t[0],C=k[0].length,v=k.length,F=(0,r.log2)(A),O=[]
 e||(O.push({x:a<=1?3:2,y:-1}),0===a&&O.push({x:-3,y:-1},{x:2,y:-2},{x:-2,y:-2}))
 const I=[]
-let T,M,P,N,D,E,B,L,_,j,U
-for(e&&(T=new R(m.data,m.start,m.end)),y=F-1;y>=0;y--)M=e?$(T,h,u,!0):w(!1,h,u,a,!1,null,O,m),I[y]=M
-for(P=0;P<u;P++)for(N=0;N<h;N++){for(D=0,E=0,x=F-1;x>=0;x--)D^=I[x][P][N],E|=D<<x
-if(B=t[E],L=d+P*p+N*g>>8,_=f+P*g-N*p>>8,L>=0&&L+C<=n&&_>=0&&_+v<=i)for(y=0;y<v;y++)for(U=b[_+y],j=B[y],x=0;x<C;x++)U[L+x]|=j[x]
+let T,M,P,D,R,B,$,L,_,j,U
+for(e&&(T=new N(m.data,m.start,m.end)),w=F-1;w>=0;w--)M=e?E(T,h,u,!0):b(!1,h,u,a,!1,null,O,m),I[w]=M
+for(P=0;P<u;P++)for(D=0;D<h;D++){for(R=0,B=0,x=F-1;x>=0;x--)R^=I[x][P][D],B|=R<<x
+if($=t[B],L=d+P*p+D*g>>8,_=f+P*g-D*p>>8,L>=0&&L+C<=n&&_>=0&&_+v<=i)for(w=0;w<v;w++)for(U=y[_+w],j=$[w],x=0;x<C;x++)U[L+x]|=j[x]
 else{let e,t
-for(y=0;y<v;y++)if(t=_+y,!(t<0||t>=i))for(U=b[t],j=B[y],x=0;x<C;x++)e=L+x,e>=0&&e<n&&(U[e]|=j[x])}}return b}(e.mmr,s,e.template,c.width,c.height,e.defaultPixelValue,e.enableSkip,e.combinationOperator,e.gridWidth,e.gridHeight,e.gridOffsetX,e.gridOffsetY,e.gridVectorX,e.gridVectorY,h)
+for(w=0;w<v;w++)if(t=_+w,!(t<0||t>=i))for(U=y[t],j=$[w],x=0;x<C;x++)e=L+x,e>=0&&e<n&&(U[e]|=j[x])}}return y}(e.mmr,s,e.template,c.width,c.height,e.defaultPixelValue,e.enableSkip,e.combinationOperator,e.gridWidth,e.gridHeight,e.gridOffsetX,e.gridOffsetY,e.gridVectorX,e.gridVectorY,h)
 this.drawBitmap(c,u)}onImmediateLosslessHalftoneRegion(){this.onImmediateHalftoneRegion(...arguments)}onTables(e,t,a,n){let i=this.customTables
-i||(this.customTables=i={}),i[e]=function(e,t,a){const n=e[t],i=4294967295&(0,r.readUint32)(e,t+1),s=4294967295&(0,r.readUint32)(e,t+5),o=new R(e,t+9,a),c=1+(n>>1&7),l=1+(n>>4&7),h=[]
+i||(this.customTables=i={}),i[e]=function(e,t,a){const n=e[t],i=4294967295&(0,r.readUint32)(e,t+1),s=4294967295&(0,r.readUint32)(e,t+5),o=new N(e,t+9,a),c=1+(n>>1&7),l=1+(n>>4&7),h=[]
 let u,d,f=i
-do{u=o.readBits(c),d=o.readBits(l),h.push(new T([f,u,d,0])),f+=1<<d}while(f<s)
-u=o.readBits(c),h.push(new T([i-1,u,32,0,"lower"])),u=o.readBits(c),h.push(new T([s,u,32,0])),1&n&&(u=o.readBits(c),h.push(new T([u,0])))
-return new P(h,!1)}(t,a,n)}}class T{constructor(e){2===e.length?(this.isOOB=!0,this.rangeLow=0,this.prefixLength=e[0],this.rangeLength=0,this.prefixCode=e[1],this.isLowerRange=!1):(this.isOOB=!1,this.rangeLow=e[0],this.prefixLength=e[1],this.rangeLength=e[2],this.prefixCode=e[3],this.isLowerRange="lower"===e[4])}}class M{constructor(e){this.children=[],e?(this.isLeaf=!0,this.rangeLength=e.rangeLength,this.rangeLow=e.rangeLow,this.isLowerRange=e.isLowerRange,this.isOOB=e.isOOB):this.isLeaf=!1}buildTree(e,t){const a=e.prefixCode>>t&1
-if(t<=0)this.children[a]=new M(e)
+do{u=o.readBits(c),d=o.readBits(l),h.push(new O([f,u,d,0])),f+=1<<d}while(f<s)
+u=o.readBits(c),h.push(new O([i-1,u,32,0,"lower"])),u=o.readBits(c),h.push(new O([s,u,32,0])),1&n&&(u=o.readBits(c),h.push(new O([u,0])))
+return new T(h,!1)}(t,a,n)}}class O{constructor(e){2===e.length?(this.isOOB=!0,this.rangeLow=0,this.prefixLength=e[0],this.rangeLength=0,this.prefixCode=e[1],this.isLowerRange=!1):(this.isOOB=!1,this.rangeLow=e[0],this.prefixLength=e[1],this.rangeLength=e[2],this.prefixCode=e[3],this.isLowerRange="lower"===e[4])}}class I{constructor(e){this.children=[],e?(this.isLeaf=!0,this.rangeLength=e.rangeLength,this.rangeLow=e.rangeLow,this.isLowerRange=e.isLowerRange,this.isOOB=e.isOOB):this.isLeaf=!1}buildTree(e,t){const a=e.prefixCode>>t&1
+if(t<=0)this.children[a]=new I(e)
 else{let n=this.children[a]
-n||(this.children[a]=n=new M(null)),n.buildTree(e,t-1)}}decodeNode(e){if(this.isLeaf){if(this.isOOB)return null
+n||(this.children[a]=n=new I(null)),n.buildTree(e,t-1)}}decodeNode(e){if(this.isLeaf){if(this.isOOB)return null
 const t=e.readBits(this.rangeLength)
 return this.rangeLow+(this.isLowerRange?-t:t)}const t=this.children[e.readBit()]
 if(!t)throw new o("invalid Huffman data")
-return t.decodeNode(e)}}class P{constructor(e,t){t||this.assignPrefixCodes(e),this.rootNode=new M(null)
+return t.decodeNode(e)}}class T{constructor(e,t){t||this.assignPrefixCodes(e),this.rootNode=new I(null)
 for(let a=0,n=e.length;a<n;a++){const t=e[a]
 t.prefixLength>0&&this.rootNode.buildTree(t,t.prefixLength-1)}}decode(e){return this.rootNode.decodeNode(e)}assignPrefixCodes(e){const t=e.length
 let a=0
@@ -2825,8 +2825,8 @@ const n=new Uint32Array(a+1)
 for(let l=0;l<t;l++)n[e[l].prefixLength]++
 let r,i,s,o=1,c=0
 for(n[0]=0;o<=a;){for(c=c+n[o-1]<<1,r=c,i=0;i<t;)s=e[i],s.prefixLength===o&&(s.prefixCode=r,r++),i++
-o++}}}const N={}
-function D(e){let t,a=N[e]
+o++}}}const M={}
+function P(e){let t,a=M[e]
 if(a)return a
 switch(e){case 1:t=[[0,1,4,0],[16,2,8,2],[272,3,16,6],[65808,3,32,7]]
 break
@@ -2858,27 +2858,27 @@ case 14:t=[[-2,3,0,4],[-1,3,0,5],[0,1,0,0],[1,3,0,6],[2,3,0,7]]
 break
 case 15:t=[[-24,7,4,124],[-8,6,2,60],[-4,5,1,28],[-2,4,0,12],[-1,3,0,4],[0,1,0,0],[1,3,0,5],[2,4,0,13],[3,5,1,29],[5,6,2,61],[9,7,4,125],[-25,7,32,126,"lower"],[25,7,32,127]]
 break
-default:throw new o(`standard table B.${e} does not exist`)}for(let n=0,r=t.length;n<r;n++)t[n]=new T(t[n])
-return a=new P(t,!0),N[e]=a,a}class R{constructor(e,t,a){this.data=e,this.start=t,this.end=a,this.position=t,this.shift=-1,this.currentByte=0}readBit(){if(this.shift<0){if(this.position>=this.end)throw new o("end of data while reading bit")
+default:throw new o(`standard table B.${e} does not exist`)}for(let n=0,r=t.length;n<r;n++)t[n]=new O(t[n])
+return a=new T(t,!0),M[e]=a,a}class N{constructor(e,t,a){this.data=e,this.start=t,this.end=a,this.position=t,this.shift=-1,this.currentByte=0}readBit(){if(this.shift<0){if(this.position>=this.end)throw new o("end of data while reading bit")
 this.currentByte=this.data[this.position++],this.shift=7}const e=this.currentByte>>this.shift&1
 return this.shift--,e}readBits(e){let t,a=0
 for(t=e-1;t>=0;t--)a|=this.readBit()<<t
-return a}byteAlign(){this.shift=-1}next(){return this.position>=this.end?-1:this.data[this.position++]}}function E(e,t,a){let n=0
+return a}byteAlign(){this.shift=-1}next(){return this.position>=this.end?-1:this.data[this.position++]}}function D(e,t,a){let n=0
 for(let r=0,i=t.length;r<i;r++){const i=a[t[r]]
 if(i){if(e===n)return i
-n++}}throw new o("can't find custom Huffman table")}function B(e,t,a){const n=[]
+n++}}throw new o("can't find custom Huffman table")}function R(e,t,a){const n=[]
 for(let r=0;r<a;r++){const a=new Uint8Array(t)
 n.push(a)
 for(let n=0;n<t;n++)a[n]=e.readBit()
-e.byteAlign()}return n}function $(e,t,a,n){const r={K:-1,Columns:t,Rows:a,BlackIs1:!0,EndOfBlock:n},i=new s.CCITTFaxDecoder(e,r),o=[]
+e.byteAlign()}return n}function E(e,t,a,n){const r={K:-1,Columns:t,Rows:a,BlackIs1:!0,EndOfBlock:n},i=new s.CCITTFaxDecoder(e,r),o=[]
 let c,l=!1
 for(let s=0;s<a;s++){const e=new Uint8Array(t)
 o.push(e)
 let a=-1
 for(let n=0;n<t;n++)a<0&&(c=i.readNextChar(),-1===c&&(c=0,l=!0),a=7),e[n]=c>>a&1,a--}if(n&&!l){const e=5
-for(let t=0;t<e&&-1!==i.readNextChar();t++);}return o}t.Jbig2Image=class{parseChunks(e){return function(e){const t=new I
+for(let t=0;t<e&&-1!==i.readNextChar();t++);}return o}t.Jbig2Image=class{parseChunks(e){return function(e){const t=new F
 for(let a=0,n=e.length;a<n;a++){const n=e[a]
-O(k({},n.data,n.start,n.end),t)}return t.buffer}(e)}parse(e){throw new Error("Not implemented: Jbig2Image.parse")}}},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.ArithmeticDecoder=void 0
+v(S({},n.data,n.start,n.end),t)}return t.buffer}(e)}parse(e){throw new Error("Not implemented: Jbig2Image.parse")}}},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.ArithmeticDecoder=void 0
 const a=[{qe:22017,nmps:1,nlps:1,switchFlag:1},{qe:13313,nmps:2,nlps:6,switchFlag:0},{qe:6145,nmps:3,nlps:9,switchFlag:0},{qe:2753,nmps:4,nlps:12,switchFlag:0},{qe:1313,nmps:5,nlps:29,switchFlag:0},{qe:545,nmps:38,nlps:33,switchFlag:0},{qe:22017,nmps:7,nlps:6,switchFlag:1},{qe:21505,nmps:8,nlps:14,switchFlag:0},{qe:18433,nmps:9,nlps:14,switchFlag:0},{qe:14337,nmps:10,nlps:14,switchFlag:0},{qe:12289,nmps:11,nlps:17,switchFlag:0},{qe:9217,nmps:12,nlps:18,switchFlag:0},{qe:7169,nmps:13,nlps:20,switchFlag:0},{qe:5633,nmps:29,nlps:21,switchFlag:0},{qe:22017,nmps:15,nlps:14,switchFlag:1},{qe:21505,nmps:16,nlps:14,switchFlag:0},{qe:20737,nmps:17,nlps:15,switchFlag:0},{qe:18433,nmps:18,nlps:16,switchFlag:0},{qe:14337,nmps:19,nlps:17,switchFlag:0},{qe:13313,nmps:20,nlps:18,switchFlag:0},{qe:12289,nmps:21,nlps:19,switchFlag:0},{qe:10241,nmps:22,nlps:19,switchFlag:0},{qe:9217,nmps:23,nlps:20,switchFlag:0},{qe:8705,nmps:24,nlps:21,switchFlag:0},{qe:7169,nmps:25,nlps:22,switchFlag:0},{qe:6145,nmps:26,nlps:23,switchFlag:0},{qe:5633,nmps:27,nlps:24,switchFlag:0},{qe:5121,nmps:28,nlps:25,switchFlag:0},{qe:4609,nmps:29,nlps:26,switchFlag:0},{qe:4353,nmps:30,nlps:27,switchFlag:0},{qe:2753,nmps:31,nlps:28,switchFlag:0},{qe:2497,nmps:32,nlps:29,switchFlag:0},{qe:2209,nmps:33,nlps:30,switchFlag:0},{qe:1313,nmps:34,nlps:31,switchFlag:0},{qe:1089,nmps:35,nlps:32,switchFlag:0},{qe:673,nmps:36,nlps:33,switchFlag:0},{qe:545,nmps:37,nlps:34,switchFlag:0},{qe:321,nmps:38,nlps:35,switchFlag:0},{qe:273,nmps:39,nlps:36,switchFlag:0},{qe:133,nmps:40,nlps:37,switchFlag:0},{qe:73,nmps:41,nlps:38,switchFlag:0},{qe:37,nmps:42,nlps:39,switchFlag:0},{qe:21,nmps:43,nlps:40,switchFlag:0},{qe:9,nmps:44,nlps:41,switchFlag:0},{qe:5,nmps:45,nlps:42,switchFlag:0},{qe:1,nmps:45,nlps:43,switchFlag:0},{qe:22017,nmps:46,nlps:46,switchFlag:0}]
 t.ArithmeticDecoder=class{constructor(e,t,a){this.data=e,this.bp=t,this.dataEnd=a,this.chigh=e[t],this.clow=0,this.byteIn(),this.chigh=this.chigh<<7&65535|this.clow>>9&127,this.clow=this.clow<<7&65535,this.ct-=7,this.a=32768}byteIn(){const e=this.data
 let t=this.bp
@@ -2886,8 +2886,8 @@ let t=this.bp
 const i=a[n],s=i.qe
 let o,c=this.a-s
 if(this.chigh<s)c<s?(c=s,o=r,n=i.nmps):(c=s,o=1^r,1===i.switchFlag&&(r=o),n=i.nlps)
-else{if(this.chigh-=s,0!=(32768&c))return this.a=c,r
-c<s?(o=1^r,1===i.switchFlag&&(r=o),n=i.nlps):(o=r,n=i.nmps)}do{0===this.ct&&this.byteIn(),c<<=1,this.chigh=this.chigh<<1&65535|this.clow>>15&1,this.clow=this.clow<<1&65535,this.ct--}while(0==(32768&c))
+else{if(this.chigh-=s,32768&c)return this.a=c,r
+c<s?(o=1^r,1===i.switchFlag&&(r=o),n=i.nlps):(o=r,n=i.nmps)}do{0===this.ct&&this.byteIn(),c<<=1,this.chigh=this.chigh<<1&65535|this.clow>>15&1,this.clow=this.clow<<1&65535,this.ct--}while(!(32768&c))
 return this.a=c,e[t]=n<<1|r,o}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.JpegStream=void 0
 var n=a(18),r=a(4),i=a(27),s=a(2)
 class o extends n.DecodeStream{constructor(e,t,a){let n
@@ -2975,9 +2975,9 @@ if(j.invalid){const e=a>0?"unexpected":"excessive";(0,n.warn)(`decodeScan - ${e}
 t+=2}return t-y}function S(e,t,a){const n=e.quantizationTable,r=e.blockData
 let i,o,c,l,y,w,x,S,A,k,C,v,F,O,I,T,M
 if(!n)throw new s("missing required Quantization Table.")
-for(let s=0;s<64;s+=8)if(A=r[t+s],k=r[t+s+1],C=r[t+s+2],v=r[t+s+3],F=r[t+s+4],O=r[t+s+5],I=r[t+s+6],T=r[t+s+7],A*=n[s],0!=(k|C|v|F|O|I|T)){k*=n[s+1],C*=n[s+2],v*=n[s+3],F*=n[s+4],O*=n[s+5],I*=n[s+6],T*=n[s+7],i=m*A+128>>8,o=m*F+128>>8,c=C,l=I,y=b*(k-T)+128>>8,S=b*(k+T)+128>>8,w=v<<4,x=O<<4,i=i+o+1>>1,o=i-o,M=c*p+l*g+128>>8,c=c*g-l*p+128>>8,l=M,y=y+x+1>>1,x=y-x,S=S+w+1>>1,w=S-w,i=i+l+1>>1,l=i-l,o=o+c+1>>1,c=o-c,M=y*f+S*d+2048>>12,y=y*d-S*f+2048>>12
+for(let s=0;s<64;s+=8)if(A=r[t+s],k=r[t+s+1],C=r[t+s+2],v=r[t+s+3],F=r[t+s+4],O=r[t+s+5],I=r[t+s+6],T=r[t+s+7],A*=n[s],0!==(k|C|v|F|O|I|T)){k*=n[s+1],C*=n[s+2],v*=n[s+3],F*=n[s+4],O*=n[s+5],I*=n[s+6],T*=n[s+7],i=m*A+128>>8,o=m*F+128>>8,c=C,l=I,y=b*(k-T)+128>>8,S=b*(k+T)+128>>8,w=v<<4,x=O<<4,i=i+o+1>>1,o=i-o,M=c*p+l*g+128>>8,c=c*g-l*p+128>>8,l=M,y=y+x+1>>1,x=y-x,S=S+w+1>>1,w=S-w,i=i+l+1>>1,l=i-l,o=o+c+1>>1,c=o-c,M=y*f+S*d+2048>>12,y=y*d-S*f+2048>>12
 S=M,M=w*u+x*h+2048>>12,w=w*h-x*u+2048>>12,x=M,a[s]=i+S,a[s+7]=i-S,a[s+1]=o+x,a[s+6]=o-x,a[s+2]=c+w,a[s+5]=c-w,a[s+3]=l+y,a[s+4]=l-y}else M=m*A+512>>10,a[s]=M,a[s+1]=M,a[s+2]=M,a[s+3]=M,a[s+4]=M,a[s+5]=M,a[s+6]=M,a[s+7]=M
-for(let s=0;s<8;++s)if(A=a[s],k=a[s+8],C=a[s+16],v=a[s+24],F=a[s+32],O=a[s+40],I=a[s+48],T=a[s+56],0!=(k|C|v|F|O|I|T)){i=m*A+2048>>12,o=m*F+2048>>12,c=C,l=I,y=b*(k-T)+2048>>12,S=b*(k+T)+2048>>12,w=v,x=O,i=4112+(i+o+1>>1),o=i-o,M=c*p+l*g+2048>>12,c=c*g-l*p+2048>>12,l=M,y=y+x+1>>1,x=y-x,S=S+w+1>>1,w=S-w,i=i+l+1>>1,l=i-l,o=o+c+1>>1,c=o-c,M=y*f+S*d+2048>>12,y=y*d-S*f+2048>>12,S=M,M=w*u+x*h+2048>>12,w=w*h-x*u+2048>>12,x=M,A=i+S,T=i-S,k=o+x
+for(let s=0;s<8;++s)if(A=a[s],k=a[s+8],C=a[s+16],v=a[s+24],F=a[s+32],O=a[s+40],I=a[s+48],T=a[s+56],0!==(k|C|v|F|O|I|T)){i=m*A+2048>>12,o=m*F+2048>>12,c=C,l=I,y=b*(k-T)+2048>>12,S=b*(k+T)+2048>>12,w=v,x=O,i=4112+(i+o+1>>1),o=i-o,M=c*p+l*g+2048>>12,c=c*g-l*p+2048>>12,l=M,y=y+x+1>>1,x=y-x,S=S+w+1>>1,w=S-w,i=i+l+1>>1,l=i-l,o=o+c+1>>1,c=o-c,M=y*f+S*d+2048>>12,y=y*d-S*f+2048>>12,S=M,M=w*u+x*h+2048>>12,w=w*h-x*u+2048>>12,x=M,A=i+S,T=i-S,k=o+x
 I=o-x,C=c+w,O=c-w,v=l+y,F=l-y,A<16?A=0:A>=4080?A=255:A>>=4,k<16?k=0:k>=4080?k=255:k>>=4,C<16?C=0:C>=4080?C=255:C>>=4,v<16?v=0:v>=4080?v=255:v>>=4,F<16?F=0:F>=4080?F=255:F>>=4,O<16?O=0:O>=4080?O=255:O>>=4,I<16?I=0:I>=4080?I=255:I>>=4,T<16?T=0:T>=4080?T=255:T>>=4,r[t+s]=A,r[t+s+8]=k,r[t+s+16]=C,r[t+s+24]=v,r[t+s+32]=F,r[t+s+40]=O,r[t+s+48]=I,r[t+s+56]=T}else M=m*A+8192>>14,M=M<-2040?0:M>=2024?255:M+2056>>4,r[t+s]=M,r[t+s+8]=M,r[t+s+16]=M,r[t+s+24]=M,r[t+s+32]=M,r[t+s+40]=M,r[t+s+48]=M,r[t+s+56]=M}function A(e,t){const a=t.blocksPerLine,n=t.blocksPerColumn,r=new Int16Array(64)
 for(let i=0;i<n;i++)for(let e=0;e<a;e++){S(t,w(t,i,e),r)}return t.blockData}function k(e,t,a=t){const n=e.length-1
 let r=a<t?a:t
@@ -3008,9 +3008,9 @@ d+=2
 const T=I+d-2
 let M
 for(;d<T;){const t=e[d++],a=new Uint16Array(64)
-if(t>>4==0)for(v=0;v<64;v++)M=l[v],a[M]=e[d++]
-else{if(t>>4!=1)throw new s("DQT - invalid table spec")
-for(v=0;v<64;v++)M=l[v],a[M]=(0,i.readUint16)(e,d),d+=2}m[15&t]=a}break
+if(t>>4){if(t>>4!=1)throw new s("DQT - invalid table spec")
+for(v=0;v<64;v++)M=l[v],a[M]=(0,i.readUint16)(e,d),d+=2}else for(v=0;v<64;v++)M=l[v],a[M]=e[d++]
+m[15&t]=a}break
 case 65472:case 65473:case 65474:if(h)throw new s("Only single frame JPEGs supported")
 d+=2,h={},h.extended=65473===S,h.progressive=65474===S,h.precision=e[d++]
 const P=(0,i.readUint16)(e,d)
@@ -3028,10 +3028,10 @@ let n=0
 for(v=0;v<16;v++,d++)n+=a[v]=e[d]
 const r=new Uint8Array(n)
 for(v=0;v<n;v++,d++)r[v]=e[d]
-A+=17+n,(t>>4==0?w:b)[15&t]=y(a,r)}break
+A+=17+n,(t>>4?b:w)[15&t]=y(a,r)}break
 case 65501:d+=2,u=(0,i.readUint16)(e,d),d+=2
 break
-case 65498:const B=1==++p&&!t
+case 65498:const B=1===++p&&!t
 d+=2
 const $=e[d++],L=[]
 for(A=0;A<$;A++){const t=e[d++],a=h.componentIds[t],n=h.components[a]
@@ -3162,7 +3162,7 @@ this.nextPacket=function(){for(;h<i;++h){const e=n.components[h],t=o.components[
 for(;d<t.maxNumHigh;d++){for(;u<t.maxNumWide;u++){for(;l<=a;l++){const a=e.resolutions[l],n=t.resolutions[l],i=w(u,d,n,t,a)
 if(null!==i){for(;c<r;){const e=f(a,i,c)
 return c++,e}c=0}}l=0}u=0}d=0}throw new s("Out of packets")}}function w(e,t,a,n,r){const i=e*n.minWidth,s=t*n.minHeight
-if(i%a.width!=0||s%a.height!=0)return null
+if(i%a.width!==0||s%a.height!==0)return null
 const o=s/a.width*r.precinctParameters.numprecinctswide
 return i/a.height+o}function x(e){const t=e.components.length
 let a=Number.MAX_VALUE,n=Number.MAX_VALUE,r=0,i=0
@@ -3405,9 +3405,9 @@ h=t>0&&0!==i[a-1],t+1<n&&0!==i[a+1]?(l=s[a+1],h?(c=s[a-1],o=1-l-c):o=1-l-l):h?(c
 const f=3*o
 return h=e>0&&0!==i[a-n],e+1<r&&0!==i[a+n]?(l=s[a+n],h?(c=s[a-n],o=1-l-c+f):o=1-l-l+f):h?(c=s[a-n],o=1-c-c+f):o=f,o>=0?(u=9+o,d=this.decoder.readBit(this.contexts,u)):(u=9-o,d=1^this.decoder.readBit(this.contexts,u)),d}runMagnitudeRefinementPass(){const e=this.decoder,t=this.width,a=this.height,n=this.coefficentsMagnitude,r=this.neighborsSignificance,i=this.contexts,s=this.bitsDecoded,o=this.processingFlags,c=t*a,l=4*t
 for(let h,u=0;u<c;u=h){h=Math.min(c,u+l)
-for(let a=0;a<t;a++)for(let c=u+a;c<h;c+=t){if(!n[c]||0!=(1&o[c]))continue
+for(let a=0;a<t;a++)for(let c=u+a;c<h;c+=t){if(!n[c]||1&o[c])continue
 let t=16
-if(0!=(2&o[c])){o[c]^=2
+if(2&o[c]){o[c]^=2
 t=0===(127&r[c])?15:14}const a=e.readBit(i,t)
 n[c]=n[c]<<1|a,s[c]++,o[c]|=1}}}runCleanupPass(){const e=this.decoder,t=this.width,a=this.height,n=this.neighborsSignificance,r=this.coefficentsMagnitude,i=this.coefficentsSign,s=this.contexts,o=this.contextLabelTable,c=this.bitsDecoded,l=this.processingFlags,h=t,u=2*t,d=3*t
 let f
@@ -3418,7 +3418,7 @@ let y,w=0,x=b,S=g
 if(m&&0===l[b]&&0===l[b+h]&&0===l[b+u]&&0===l[b+d]&&0===n[b]&&0===n[b+h]&&0===n[b+u]&&0===n[b+d]){if(!e.readBit(s,I.RUNLENGTH_CONTEXT)){c[b]++,c[b+h]++,c[b+u]++,c[b+d]++
 continue}w=e.readBit(s,I.UNIFORM_CONTEXT)<<1|e.readBit(s,I.UNIFORM_CONTEXT),0!==w&&(S=g+w,x+=w*t),y=this.decodeSignBit(S,a,x),i[x]=y,r[x]=1,this.setNeighborsSignificance(S,a,x),l[x]|=2,x=b
 for(let e=g;e<=S;e++,x+=t)c[x]++
-w++}for(S=g+w;S<f;S++,x+=t){if(r[x]||0!=(1&l[x]))continue
+w++}for(S=g+w;S<f;S++,x+=t){if(r[x]||1&l[x])continue
 const t=o[n[x]]
 1===e.readBit(s,t)&&(y=this.decodeSignBit(S,a,x),i[x]=y,r[x]=1,this.setNeighborsSignificance(S,a,x),l[x]|=2),c[x]++}}}}checkSegmentationSymbol(){const e=this.decoder,t=this.contexts
 if(10!==(e.readBit(t,I.UNIFORM_CONTEXT)<<3|e.readBit(t,I.UNIFORM_CONTEXT)<<2|e.readBit(t,I.UNIFORM_CONTEXT)<<1|e.readBit(t,I.UNIFORM_CONTEXT)))throw new s("Invalid segmentation symbol")}}class T{constructor(){this.constructor===T&&(0,n.unreachable)("Cannot initialize Transform.")}calculate(e,t,a){let n=e[0]
@@ -3431,18 +3431,18 @@ let h,u,d,f,g,p
 for(d=0,h=0;h<i;h++)for(f=2*h*o,u=0;u<r;u++,d++,f+=2)l[f]=s[d]
 s=e.items=null
 const m=new Float32Array(o+8)
-if(1===o){if(0!=(1&a))for(p=0,d=0;p<c;p++,d+=o)l[d]*=.5}else for(p=0,d=0;p<c;p++,d+=o)m.set(l.subarray(d,d+o),4),this.extend(m,4,o),this.filter(m,4,o),l.set(m.subarray(4,4+o),d)
+if(1===o){if(1&a)for(p=0,d=0;p<c;p++,d+=o)l[d]*=.5}else for(p=0,d=0;p<c;p++,d+=o)m.set(l.subarray(d,d+o),4),this.extend(m,4,o),this.filter(m,4,o),l.set(m.subarray(4,4+o),d)
 let b=16
 const y=[]
 for(h=0;h<b;h++)y.push(new Float32Array(c+8))
 let w,x=0
-if(e=4+c,1===c){if(0!=(1&n))for(g=0;g<o;g++)l[g]*=.5}else for(g=0;g<o;g++){if(0===x){for(b=Math.min(o-g,b),d=g,f=4;f<e;d+=o,f++)for(w=0;w<b;w++)y[w][f]=l[d+w]
+if(e=4+c,1===c){if(1&n)for(g=0;g<o;g++)l[g]*=.5}else for(g=0;g<o;g++){if(0===x){for(b=Math.min(o-g,b),d=g,f=4;f<e;d+=o,f++)for(w=0;w<b;w++)y[w][f]=l[d+w]
 x=b}x--
 const t=y[x]
 if(this.extend(t,4,c),this.filter(t,4,c),0===x)for(d=g-b+1,f=4;f<e;d+=o,f++)for(w=0;w<b;w++)l[d+w]=y[w][f]}return{width:o,height:c,items:l}}}class M extends T{filter(e,t,a){const n=a>>1
 let r,i,s,o
-const c=-1.586134342059924,l=-.052980118572961,h=.882911075530934,u=.443506852043971,d=1.230174104914001
-for(r=(t|=0)-3,i=n+4;i--;r+=2)e[r]*=.8128930661159609
+const c=-1.586134342059924,l=-.052980118572961,h=.882911075530934,u=.443506852043971,d=1.230174104914001,f=1/d
+for(r=(t|=0)-3,i=n+4;i--;r+=2)e[r]*=f
 for(r=t-2,s=u*e[r-1],i=n+3;i--&&(o=u*e[r+1],e[r]=d*e[r]-s-o,i--);r+=2)r+=2,s=u*e[r+1],e[r]=d*e[r]-s-o
 for(r=t-1,s=h*e[r-1],i=n+2;i--&&(o=h*e[r+1],e[r]-=s+o,i--);r+=2)r+=2,s=h*e[r+1],e[r]-=s+o
 for(r=t,s=l*e[r-1],i=n+1;i--&&(o=l*e[r+1],e[r]-=s+o,i--);r+=2)r+=2,s=l*e[r+1],e[r]-=s+o
@@ -4873,9 +4873,9 @@ try{i=e.getBytes(t),s=i.length}catch{}if(s===t&&(c=l(i,a,t-2*a.length),c.found&&
 for((0,r.warn)('Invalid "Length1" property in Type1 font -- trying to recover.'),e.pos=n;c=l(e.peekBytes(2048),a,0),0!==c.length;)if(e.pos+=c.length,c.found){h=e.pos-n
 break}return e.pos=n,h?{stream:new o.Stream(e.getBytes(h)),length:h}:((0,r.warn)('Unable to recover "Length1" property in Type1 font -- using as is.'),{stream:new o.Stream(e.getBytes(t)),length:t})}(t,n)
 new c.Type1Parser(d.stream,!1,i.SEAC_ANALYSIS_ENABLED).extractFontHeader(a),u&&(h=t.getBytes(6),s=h[5]<<24|h[4]<<16|h[3]<<8|h[2])
-const f=function(e,t){const a=e.getBytes()
-if(0===a.length)throw new r.FormatError("getEexecBlock - no font program found.")
-return{stream:new o.Stream(a),length:a.length}}(t),g=new c.Type1Parser(f.stream,!0,i.SEAC_ANALYSIS_ENABLED).extractFontProgram(a)
+const f=function(e){const t=e.getBytes()
+if(0===t.length)throw new r.FormatError("getEexecBlock - no font program found.")
+return{stream:new o.Stream(t),length:t.length}}(t),g=new c.Type1Parser(f.stream,!0,i.SEAC_ANALYSIS_ENABLED).extractFontProgram(a)
 for(const r in g.properties)a[r]=g.properties[r]
 const p=g.charstrings,m=this.getType2Charstrings(p),b=this.getType2Subrs(g.subrs)
 this.charstrings=p,this.data=this.wrap(e,m,this.charstrings,b,a),this.seacs=this.getSeacs(g.charstrings)}get numGlyphs(){return this.charstrings.length+1}getCharset(){const e=[".notdef"]
@@ -4983,7 +4983,7 @@ if(0===y&&3===A){const e=this.stack.splice(-17,17)
 this.stack.push(e[2]+e[0],e[3]+e[1],e[4],e[5],e[6],e[7],e[8],e[9],e[10],e[11],e[12],e[13],e[14]),w=this.executeCommand(13,d,!0),this.flexing=!1,this.stack.push(e[15],e[16])}else 1===y&&0===A&&(this.flexing=!0)
 break
 case 3089:break
-default:(0,s.warn)('Unknown type 1 charstring command of "'+n+'"')}if(w)break}else n<=246?n-=139:n=n<=250?256*(n-247)+e[++x]+108:n<=254?-256*(n-251)-e[++x]-108:(255&e[++x])<<24|(255&e[++x])<<16|(255&e[++x])<<8|(255&e[++x])<<0,this.stack.push(n)}return w}executeCommand(e,t,a){const n=this.stack.length
+default:(0,s.warn)('Unknown type 1 charstring command of "'+n+'"')}if(w)break}else n<=246?n-=139:n=n<=250?256*(n-247)+e[++x]+108:n<=254?-256*(n-251)-e[++x]-108:(255&e[++x])<<24|(255&e[++x])<<16|(255&e[++x])<<8|255&e[++x],this.stack.push(n)}return w}executeCommand(e,t,a){const n=this.stack.length
 if(e>n)return!0
 const r=n-e
 for(let i=r;i<n;i++){let e=this.stack[i]
@@ -5063,7 +5063,7 @@ e.builtInEncoding=i
 break
 case"FontBBox":const s=this.readNumberArray()
 e.ascent=Math.max(s[3],s[1]),e.descent=Math.min(s[1],s[3]),e.ascentScaled=!0}}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Pattern=void 0,t.clearPatternCaches=function(){m=Object.create(null)},t.getTilingPatternIR=function(e,t,a){const r=t.getArray("Matrix"),i=n.Util.normalizeRect(t.getArray("BBox")),s=t.get("XStep"),o=t.get("YStep"),c=t.get("PaintType"),l=t.get("TilingType")
-if(i[2]-i[0]==0||i[3]-i[1]==0)throw new n.FormatError(`Invalid getTilingPatternIR /BBox array: [${i}].`)
+if(i[2]-i[0]===0||i[3]-i[1]===0)throw new n.FormatError(`Invalid getTilingPatternIR /BBox array: [${i}].`)
 return["TilingPattern",a,e,r,i,s,o,c,l]}
 var n=a(2),r=a(5),i=a(12),s=a(3)
 const o=2,c=3,l=4,h=5,u=6,d=7
@@ -5606,7 +5606,7 @@ e>=0&&h(d,e,w.length)}for(m=0,b=d.length;m<b;++m){const e=d[m]
 "<"!==e&&">"!==e||(d[m]="")}return u(d.join(""),g)}
 var n=a(2)
 const r=["BN","BN","BN","BN","BN","BN","BN","BN","BN","S","B","S","WS","B","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","B","B","B","S","WS","ON","ON","ET","ET","ET","ON","ON","ON","ON","ON","ES","CS","ES","CS","CS","EN","EN","EN","EN","EN","EN","EN","EN","EN","EN","CS","ON","ON","ON","ON","ON","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","ON","ON","ON","ON","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","ON","ON","ON","BN","BN","BN","BN","BN","BN","B","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","CS","ON","ET","ET","ET","ET","ON","ON","ON","ON","L","ON","ON","BN","ON","ON","ET","ET","EN","EN","ON","L","ON","ON","ON","EN","L","ON","ON","ON","ON","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","L","L","L","L","L","L","L","L"],i=["AN","AN","AN","AN","AN","AN","ON","ON","AL","ET","ET","AL","CS","AL","ON","ON","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AL","AL","","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AN","AN","AN","AN","AN","AN","AN","AN","AN","AN","ET","AN","AN","AL","AL","AL","NSM","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AN","ON","NSM","NSM","NSM","NSM","NSM","NSM","AL","AL","NSM","NSM","ON","NSM","NSM","NSM","NSM","AL","AL","EN","EN","EN","EN","EN","EN","EN","EN","EN","EN","AL","AL","AL","AL","AL","AL"]
-function s(e){return 0!=(1&e)}function o(e){return 0==(1&e)}function c(e,t,a){let n,r
+function s(e){return!!(1&e)}function o(e){return!(1&e)}function c(e,t,a){let n,r
 for(n=t,r=e.length;n<r;++n)if(e[n]!==a)return n
 return n}function l(e,t,a,n){for(let r=t;r<a;++r)e[r]=n}function h(e,t,a){for(let n=t,r=a-1;n<r;++n,--r){const t=e[n]
 e[n]=e[r],e[r]=t}}function u(e,t,a=!1){let n="ltr"
@@ -5833,7 +5833,7 @@ let h,u,d=0
 if(1===t){let t,a,r
 for(let i=0;i<n;i++){for(a=d+(-8&c),r=d+c;d<a;)u=e[o++],s[d]=u>>7&1,s[d+1]=u>>6&1,s[d+2]=u>>5&1,s[d+3]=u>>4&1,s[d+4]=u>>3&1,s[d+5]=u>>2&1,s[d+6]=u>>1&1,s[d+7]=1&u,d+=8
 if(d<r)for(u=e[o++],t=128;d<r;)s[d++]=+!!(u&t),t>>=1}}else{let a=0
-for(u=0,d=0,h=i;d<h;++d){for(d%c==0&&(u=0,a=0);a<t;)u=u<<8|e[o++],a+=8
+for(u=0,d=0,h=i;d<h;++d){for(d%c===0&&(u=0,a=0);a<t;)u=u<<8|e[o++],a+=8
 const n=a-t
 let r=u>>n
 r<0?r=0:r>l&&(r=l),s[d]=r,u&=(1<<n)-1,a=n}}return s}fillOpacity(e,t,a,r,i){const s=this.smask,o=this.mask
@@ -6131,7 +6131,7 @@ let c,l,h=e.get("A")
 if(h instanceof i.Dict||(e.has("Dest")?h=e.get("Dest"):(h=e.get("AA"),h instanceof i.Dict&&(h.has("D")?h=h.get("D"):h.has("U")&&(h=h.get("U"))))),h instanceof i.Dict){const e=h.get("S")
 if(!(e instanceof i.Name))return void(0,r.warn)("parseDestDictionary: Invalid type in Action dictionary.")
 const a=e.name
-switch(a){case"ResetForm":const e=h.get("Flags"),u=0==(1&("number"==typeof e?e:0)),d=[],f=[]
+switch(a){case"ResetForm":const e=h.get("Flags"),u=!(1&("number"==typeof e?e:0)),d=[],f=[]
 for(const t of h.get("Fields")||[])t instanceof i.Ref?f.push(t.toString()):"string"==typeof t&&d.push((0,r.stringToPDFString)(t))
 t.resetForm={fields:d,refs:f,include:u}
 break
@@ -7351,7 +7351,7 @@ let h
 o[n.$extra]={numberOfUse:1,pageIndex:o.pageArea.children.indexOf(r),pageSetIndex:0}
 let u=null,d=null,f=!0,g=0,p=0
 for(;;){if(f)g=0
-else if(a.children.pop(),3==++g)return(0,l.warn)("XFA - Something goes wrong: please file a bug."),a
+else if(a.children.pop(),3===++g)return(0,l.warn)("XFA - Something goes wrong: please file a bug."),a
 h=null,this[n.$extra].currentPageArea=r
 const t=r[n.$toHTML]().html
 a.children.push(t),u&&(this[n.$extra].noLayoutFailure=!0,t.children.push(u[n.$toHTML](r[n.$extra].space).html),u=null),d&&(this[n.$extra].noLayoutFailure=!0,t.children.push(d[n.$toHTML](r[n.$extra].space).html),d=null)
