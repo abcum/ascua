@@ -114,11 +114,11 @@ export default class Resize {
 
 		if (size[0] > 120 && size[1] > 30) {
 			const area = this.sizer.getBoundingClientRect();
-			this.sizer.style.left = Math.round(rect.left + rect.width + window.pageXOffset - area.width - 8) + 'px';
-			this.sizer.style.top = Math.round(rect.top + rect.height + window.pageYOffset - area.height - 8) + 'px';
+			this.sizer.style.left = Math.round(rect.left + rect.width - area.width - 8) + 'px';
+			this.sizer.style.top = Math.round(rect.top + rect.height - area.height - 8) + 'px';
 		} else {
-			this.sizer.style.left = Math.round(rect.left + rect.width + window.pageXOffset + 8) + 'px';
-			this.sizer.style.top = Math.round(rect.top + rect.height + window.pageYOffset + 8) + 'px';
+			this.sizer.style.left = Math.round(rect.left + rect.width + 8) + 'px';
+			this.sizer.style.top = Math.round(rect.top + rect.height + 8) + 'px';
 		}
 
 	}
@@ -128,7 +128,7 @@ export default class Resize {
 	// for resizing the image.
 
 	showBoxes() {
-		for (let i=0; i<edges.length; i++) {
+		for (let i = 0; i < edges.length; i++) {
 			this.boxes[i] = document.createElement('div');
 			this.boxes[i].classList.add('ql-resizehandle');
 			this.boxes[i].classList.add(edges[i]);
@@ -150,16 +150,20 @@ export default class Resize {
 
 		if (!this.img || !this.sizer) return;
 
+		const handleSize = 12; // Size of the resize handle in pixels
+		const offset = handleSize / 2; // Center the handle on the edge
+
 		let positions = [
-			{ left: rect.left - 6, top: rect.top - 6 },
-			{ left: rect.left + rect.width - 6, top: rect.top - 6 },
-			{ left: rect.left + rect.width - 6, top: rect.top + rect.height - 6 },
-			{ left: rect.left - 6, top: rect.top + rect.height - 6 },
+			{ left: rect.left - offset, top: rect.top - offset },
+			{ left: rect.left + rect.width - offset, top: rect.top - offset },
+			{ left: rect.left + rect.width - offset, top: rect.top + rect.height - offset },
+			{ left: rect.left - offset, top: rect.top + rect.height - offset },
+
 		];
 
 		positions.forEach((pos, idx) => {
-			this.boxes[idx].style.top = Math.round(pos.top + window.pageYOffset) + 'px';
-			this.boxes[idx].style.left = Math.round(pos.left + window.pageXOffset) + 'px';
+			this.boxes[idx].style.top = Math.round(pos.top) + 'px';
+			this.boxes[idx].style.left = Math.round(pos.left) + 'px';
 		});
 
 	}
