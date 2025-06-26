@@ -1,6 +1,6 @@
 {
   "name": "@ascua/bignumber.js",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Small description for @ascua/bignumber.js goes here",
   "keywords": [
     "ember-addon"

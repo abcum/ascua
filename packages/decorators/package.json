@@ -1,6 +1,6 @@
 {
   "name": "@ascua/decorators",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Small description for @ascua/decorators goes here",
   "keywords": [
     "ember-addon"
