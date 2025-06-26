@@ -50,7 +50,9 @@ export default function(type) {
 								case v instanceof Field:
 									return v;
 								default:
-									return model.create({ ...v, parent: this });
+									const field = model.create(v);
+									field.parent = this;
+									return field;
 							}
 						}, ...value);
 					}
@@ -150,7 +152,9 @@ export default function(type) {
 
 					if (model && model.class.prototype instanceof Field) {
 						return this[RECORD].data[key] = Array.create(this, (v) => {
-							return model.create({ ...v, parent: this });
+							const field = model.create(v);
+							field.parent = this;
+							return field;
 						}, ...value);
 					}
 

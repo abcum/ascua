@@ -42,7 +42,9 @@ export default function(type) {
 						setProperties(this[RECORD].data[key], value);
 						return this[RECORD].data[key];
 					case this[RECORD].data[key] === undefined:
-						return this[RECORD].data[key] = model.create({ ...value, parent: this });
+						const field = model.create(value);
+						field.parent = this;
+						return this[RECORD].data[key] = field;
 					}
 				}
 
