@@ -19,9 +19,9 @@
     "@ascua/service": "file:../service",
     "@electron/notarize": "^3.0.1",
     "builder-util": "^26.0.11",
-    "electron": "36.4.0",
-    "electron-builder": "^26.0.12",
-    "electron-updater": "^6.6.2",
+    "electron": "39.0.0",
+    "electron-builder": "^26.1.0",
+    "electron-updater": "^6.7.0",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0"
   },
