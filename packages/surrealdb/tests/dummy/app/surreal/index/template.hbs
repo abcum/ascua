@@ -1,0 +1,42 @@
+{{#unless this.surreal.authenticated}}
+  <button type="button" {{on "click" this.signin}}>Sign in</button>
+{{/unless}}
+<button type="button" {{on "click" (fn this.loadData "person")}}>Load Data</button>
+<button type="button" {{on "click" this.closeConnection}}>Close Connection</button>
+
+<div>
+  <label for="user-question">Enter a name:</label>
+  <Input id="add-person" @type="text" @value={{this.name}} />
+  <button type="button" {{on "click" this.addPerson}}>Add Person</button>
+</div>
+
+<div>
+  <label for="user-question">Search:</label>
+  <Input id="search-person" @type="search" @value={{this.searchName}} />
+  <button type="button" {{on "click" this.searchPerson}}>Search Person</button>
+</div>
+
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each this.model as |item|}}
+        <tr>
+          <td>{{item.name}}</td>
+          <td><button
+              type="button"
+              {{on "click" (fn this.deletePerson item)}}
+            >Delete Person</button></td>
+          <td><LinkTo @route="surreal.person" @model={{item}}>View Person</LinkTo></td>
+        </tr>
+      {{else}}
+        Click load data button to display something here!!
+      {{/each}}
+    </tbody>
+  </table>
+</div>
