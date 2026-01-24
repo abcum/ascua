@@ -92,7 +92,9 @@ export default class extends Service {
 
 		document.body.setAttribute('platform', this.platform);
 
-		const { autoUpdater } = Remote.require('electron-updater');
+		const autoUpdater = this.autoUpdater;
+
+		if (!autoUpdater) return;
 
 		autoUpdater.on('update-available', () => {
 			this.emit('updatefound');
@@ -112,11 +114,9 @@ export default class extends Service {
 
 	@action reset() {
 
-		if (Electron === null) return;
+		const autoUpdater = this.autoUpdater;
 
-		if (Remote.app.isPackaged === false) return;
-
-		const { autoUpdater } = Remote.require('electron-updater');
+		if (!autoUpdater) return;
 
 		autoUpdater.quitAndInstall(true, true);
 
@@ -132,13 +132,30 @@ export default class extends Service {
 
 		if (this.updateready) return;
 
-		if (Electron === null) return;
+		const autoUpdater = this.autoUpdater;
 
-		if (Remote.app.isPackaged === false) return;
-
-		const { autoUpdater } = Remote.require('electron-updater');
+		if (!autoUpdater) return;
 
 		autoUpdater.checkForUpdates().catch(() => {});
+
+	}
+
+	// Fetches the updater instance
+	// when available, or returns
+	// undefined if not available.
+
+	get autoUpdater() {
+
+		if (Electron === null) return undefined;
+
+		if (Remote.app.isPackaged === false) return undefined;
+
+		try {
+			return Remote.require('electron-updater').autoUpdater;
+		} catch (error) {
+			if (error && error.code === 'MODULE_NOT_FOUND') return undefined;
+			throw error;
+		}
 
 	}
 
