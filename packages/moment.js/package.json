@@ -19,7 +19,7 @@
     "@ascua/decorators": "file:../decorators",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0",
-    "moment": "^2.29.1"
+    "moment": "^2.30.1"
   },
   "ember-addon": {
     "demoURL": "https://abcum.github.io/ascua"

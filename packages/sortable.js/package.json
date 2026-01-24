@@ -20,7 +20,7 @@
     "@ascua/transform": "file:../transform",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0",
-    "sortablejs": "^1.15.0"
+    "sortablejs": "^1.15.6"
   },
   "ember-addon": {
     "demoURL": "https://abcum.github.io/ascua"

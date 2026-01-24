@@ -17,7 +17,7 @@
   "dependencies": {
     "@ascua/modifiers": "file:../modifiers",
     "@ascua/transform": "file:../transform",
-    "chart.js": "^4.4.0",
+    "chart.js": "^4.5.1",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0"
   },

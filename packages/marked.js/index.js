@@ -8,7 +8,7 @@ module.exports = {
 
 		this._super.included.apply(this, ...arguments);
 
-		app.import('node_modules/marked/marked.min.js');
+		app.import('node_modules/marked/lib/marked.umd.js');
 
 		app.import('vendor/marked.js', {
 			exports: { marked: ['default'] }

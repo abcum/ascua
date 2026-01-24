@@ -20,7 +20,7 @@
     "@ascua/transform": "file:../transform",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0",
-    "jsoneditor": "^9.10.3"
+    "jsoneditor": "^10.4.2"
   },
   "ember-addon": {
     "demoURL": "https://abcum.github.io/ascua"

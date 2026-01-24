@@ -13,14 +13,18 @@ module.exports = {
 
 		return {
 			babel(tree) {
-				return Transpile(tree, {
-					...babel.buildBabelOptions(),
-					sourceType: 'script',
+				return new Transpile(tree, {
+					babel: {
+						...babel.buildBabelOptions('babel'),
+						sourceType: 'script',
+					},
 				});
 			},
 			fastboot(tree) {
 				return Stew.map(tree, (v) => {
-					return `if (typeof FastBoot === "undefined") { ${v} }`;
+					return `if (typeof FastBoot === "undefined") {
+						${v}
+					}`;
 				});
 			},
 		};

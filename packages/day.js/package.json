@@ -17,7 +17,7 @@
   "dependencies": {
     "@ascua/clock": "file:../clock",
     "@ascua/decorators": "file:../decorators",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.19",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0"
   },
