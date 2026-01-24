@@ -1,6 +1,6 @@
 {
   "name": "@ascua/select",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Small description for @ascua/select goes here",
   "keywords": [
     "ember-addon"
