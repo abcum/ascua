@@ -1,6 +1,6 @@
 {
   "name": "@ascua/jsoneditor.js",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Small description for @ascua/jsoneditor.js goes here",
   "keywords": [
     "ember-addon"

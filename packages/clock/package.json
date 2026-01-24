@@ -1,6 +1,6 @@
 {
   "name": "@ascua/clock",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Small description for @ascua/clock goes here",
   "keywords": [
     "ember-addon"
