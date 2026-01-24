@@ -15,7 +15,7 @@
     "url": "https://surrealdb.com"
   },
   "dependencies": {
-    "decimal.js": "^10.4.3",
+    "decimal.js": "^10.6.0",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0"
   },

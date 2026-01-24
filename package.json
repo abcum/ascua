@@ -12,6 +12,9 @@
     "name": "Tobie Morgan Hitchcock",
     "url": "https://surrealdb.com"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "directories": {
     "doc": "doc",
     "test": "tests"

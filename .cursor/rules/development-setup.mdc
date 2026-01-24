@@ -1,0 +1,33 @@
+---
+description: "Development setup and dependency management for this Lerna monorepo"
+alwaysApply: true
+---
+
+# Development Setup
+
+This is a Lerna-managed monorepo. **Always use the Makefile commands** for dependency management.
+
+## Cleaning Dependencies
+
+Use `make clean` to clean node_modules and temporary files:
+- Removes all `node_modules` directories
+- Cleans Lerna packages with `lerna clean`
+- Removes temporary files, build artifacts, and unnecessary config files from packages
+- Cleans `dist`, `tmp`, and other build directories
+
+## Installing Dependencies
+
+Use `make setup` to install dependencies:
+- Runs `npm install` to set up the monorepo correctly
+- Properly configures all Lerna-managed packages
+
+**IMPORTANT**: Do NOT manually run `npm install`, `npm ci`, or other npm commands without using the Makefile. This may not properly configure the Lerna workspace.
+
+## Other Available Commands
+
+- `make serve` - Start the development server (with Fastboot disabled)
+- `make version` - Version packages using Lerna
+- `make publish` - Publish packages to npm
+- `make deploy` - Deploy to production
+
+Reference @Makefile for the complete list of available commands.

@@ -19,7 +19,7 @@
     "@ascua/events": "file:../events",
     "@ascua/modifiers": "file:../modifiers",
     "@ascua/transform": "file:../transform",
-    "codemirror": "^5.65.15",
+    "codemirror": "^5.65.20",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0"
   },

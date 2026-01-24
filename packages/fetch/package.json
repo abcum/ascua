@@ -17,7 +17,7 @@
   "dependencies": {
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0",
-    "whatwg-fetch": "^3.6.19"
+    "whatwg-fetch": "^3.6.20"
   },
   "ember-addon": {
     "demoURL": "https://abcum.github.io/ascua"
