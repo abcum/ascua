@@ -8,11 +8,11 @@ export default function(value, inline) {
 	switch (inline) {
 	case true:
 		return marked.parseInline(String(value), {
-			gfm: true, breaks: true, renderer: renderer,
+			async: false, gfm: true, breaks: true, renderer: renderer,
 		});
 	case false:
 		return marked.parse(String(value), {
-			gfm: true, breaks: true,
+			async: false, gfm: true, breaks: true,
 		});
 	}
 
