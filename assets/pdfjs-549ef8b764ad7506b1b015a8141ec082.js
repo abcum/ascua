@@ -19,25 +19,25 @@
  * @licend The above is the entire license notice for the
  * JavaScript code in this page
  */
-(function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=t.pdfjsLib=e():"function"==typeof define&&define.amd?define("pdfjs-dist/build/pdf",[],(()=>t.pdfjsLib=e())):"object"==typeof exports?exports["pdfjs-dist/build/pdf"]=t.pdfjsLib=e():t["pdfjs-dist/build/pdf"]=t.pdfjsLib=e()})(globalThis,(()=>(()=>{"use strict"
-var __webpack_modules__=[,(t,e)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.VerbosityLevel=e.Util=e.UnknownErrorException=e.UnexpectedResponseException=e.TextRenderingMode=e.RenderingIntentFlag=e.PromiseCapability=e.PermissionFlag=e.PasswordResponses=e.PasswordException=e.PageActionEventType=e.OPS=e.MissingPDFException=e.MAX_IMAGE_SIZE_TO_CACHE=e.LINE_FACTOR=e.LINE_DESCENT_FACTOR=e.InvalidPDFException=e.ImageKind=e.IDENTITY_MATRIX=e.FormatError=e.FeatureTest=e.FONT_IDENTITY_MATRIX=e.DocumentActionEventType=e.CMapCompressionType=e.BaseException=e.BASELINE_FACTOR=e.AnnotationType=e.AnnotationReplyType=e.AnnotationPrefix=e.AnnotationMode=e.AnnotationFlag=e.AnnotationFieldFlag=e.AnnotationEditorType=e.AnnotationEditorPrefix=e.AnnotationEditorParamsType=e.AnnotationBorderStyleType=e.AnnotationActionEventType=e.AbortException=void 0,e.assert=function(t,e){t||r(e)},e.bytesToString=h,e.createValidAbsoluteUrl=function(t,e=null,s=null){if(!t)return null
+(function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=t.pdfjsLib=e():"function"==typeof define&&define.amd?define("pdfjs-dist/build/pdf",[],()=>t.pdfjsLib=e()):"object"==typeof exports?exports["pdfjs-dist/build/pdf"]=t.pdfjsLib=e():t["pdfjs-dist/build/pdf"]=t.pdfjsLib=e()})(globalThis,()=>(()=>{"use strict"
+var __webpack_modules__=[,(t,e)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.VerbosityLevel=e.Util=e.UnknownErrorException=e.UnexpectedResponseException=e.TextRenderingMode=e.RenderingIntentFlag=e.PromiseCapability=e.PermissionFlag=e.PasswordResponses=e.PasswordException=e.PageActionEventType=e.OPS=e.MissingPDFException=e.MAX_IMAGE_SIZE_TO_CACHE=e.LINE_FACTOR=e.LINE_DESCENT_FACTOR=e.InvalidPDFException=e.ImageKind=e.IDENTITY_MATRIX=e.FormatError=e.FeatureTest=e.FONT_IDENTITY_MATRIX=e.DocumentActionEventType=e.CMapCompressionType=e.BaseException=e.BASELINE_FACTOR=e.AnnotationType=e.AnnotationReplyType=e.AnnotationPrefix=e.AnnotationMode=e.AnnotationFlag=e.AnnotationFieldFlag=e.AnnotationEditorType=e.AnnotationEditorPrefix=e.AnnotationEditorParamsType=e.AnnotationBorderStyleType=e.AnnotationActionEventType=e.AbortException=void 0,e.assert=function(t,e){t||o(e)},e.bytesToString=c,e.createValidAbsoluteUrl=function(t,e=null,s=null){if(!t)return null
 try{if(s&&"string"==typeof t){if(s.addDefaultProtocol&&t.startsWith("www.")){const e=t.match(/\./g)
-e?.length>=2&&(t=`http://${t}`)}if(s.tryConvertEncoding)try{t=p(t)}catch{}}const i=e?new URL(t,e):new URL(t)
+e?.length>=2&&(t=`http://${t}`)}if(s.tryConvertEncoding)try{t=g(t)}catch{}}const i=e?new URL(t,e):new URL(t)
 if(function(t){switch(t?.protocol){case"http:":case"https:":case"ftp:":case"mailto:":case"tel:":return!0
 default:return!1}}(i))return i}catch{}return null},e.getModificationDate=function(t=new Date){return[t.getUTCFullYear().toString(),(t.getUTCMonth()+1).toString().padStart(2,"0"),t.getUTCDate().toString().padStart(2,"0"),t.getUTCHours().toString().padStart(2,"0"),t.getUTCMinutes().toString().padStart(2,"0"),t.getUTCSeconds().toString().padStart(2,"0")].join("")},e.getUuid=function(){if("undefined"!=typeof crypto&&"function"==typeof crypto?.randomUUID)return crypto.randomUUID()
 const t=new Uint8Array(32)
 if("undefined"!=typeof crypto&&"function"==typeof crypto?.getRandomValues)crypto.getRandomValues(t)
 else for(let e=0;e<32;e++)t[e]=Math.floor(255*Math.random())
-return h(t)},e.getVerbosityLevel=function(){return n},e.info=function(t){n>=i.INFOS&&console.log(`Info: ${t}`)},e.isArrayBuffer=function(t){return"object"==typeof t&&void 0!==t?.byteLength},e.isArrayEqual=function(t,e){if(t.length!==e.length)return!1
+return c(t)},e.getVerbosityLevel=function(){return a},e.info=function(t){a>=n.INFOS&&console.log(`Info: ${t}`)},e.isArrayBuffer=function(t){return"object"==typeof t&&void 0!==t?.byteLength},e.isArrayEqual=function(t,e){if(t.length!==e.length)return!1
 for(let s=0,i=t.length;s<i;s++)if(t[s]!==e[s])return!1
-return!0},e.isNodeJS=void 0,e.normalizeUnicode=function(t){g||(g=/([\u00a0\u00b5\u037e\u0eb3\u2000-\u200a\u202f\u2126\ufb00-\ufb04\ufb06\ufb20-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufba1\ufba4-\ufba9\ufbae-\ufbb1\ufbd3-\ufbdc\ufbde-\ufbe7\ufbea-\ufbf8\ufbfc-\ufbfd\ufc00-\ufc5d\ufc64-\ufcf1\ufcf5-\ufd3d\ufd88\ufdf4\ufdfa-\ufdfb\ufe71\ufe77\ufe79\ufe7b\ufe7d]+)|(\ufb05+)/gu,m=new Map([["ﬅ","ſt"]]))
-return t.replaceAll(g,((t,e,s)=>e?e.normalize("NFKC"):m.get(s)))},e.objectFromMap=function(t){const e=Object.create(null)
+return!0},e.isNodeJS=void 0,e.normalizeUnicode=function(t){m||(m=/([\u00a0\u00b5\u037e\u0eb3\u2000-\u200a\u202f\u2126\ufb00-\ufb04\ufb06\ufb20-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufba1\ufba4-\ufba9\ufbae-\ufbb1\ufbd3-\ufbdc\ufbde-\ufbe7\ufbea-\ufbf8\ufbfc-\ufbfd\ufc00-\ufc5d\ufc64-\ufcf1\ufcf5-\ufd3d\ufd88\ufdf4\ufdfa-\ufdfb\ufe71\ufe77\ufe79\ufe7b\ufe7d]+)|(\ufb05+)/gu,f=new Map([["ﬅ","ſt"]]))
+return t.replaceAll(m,(t,e,s)=>e?e.normalize("NFKC"):f.get(s))},e.objectFromMap=function(t){const e=Object.create(null)
 for(const[s,i]of t)e[s]=i
-return e},e.objectSize=function(t){return Object.keys(t).length},e.setVerbosityLevel=function(t){Number.isInteger(t)&&(n=t)},e.shadow=o,e.string32=function(t){return String.fromCharCode(t>>24&255,t>>16&255,t>>8&255,255&t)},e.stringToBytes=c,e.stringToPDFString=function(t){if(t[0]>="ï"){let e
-if("þ"===t[0]&&"ÿ"===t[1]?e="utf-16be":"ÿ"===t[0]&&"þ"===t[1]?e="utf-16le":"ï"===t[0]&&"»"===t[1]&&"¿"===t[2]&&(e="utf-8"),e)try{const s=new TextDecoder(e,{fatal:!0}),i=c(t)
-return s.decode(i)}catch(s){a(`stringToPDFString: "${s}".`)}}const e=[]
-for(let i=0,n=t.length;i<n;i++){const s=u[t.charCodeAt(i)]
-e.push(s?String.fromCharCode(s):t.charAt(i))}return e.join("")},e.stringToUTF8String=p,e.unreachable=r,e.utf8StringToString=function(t){return unescape(encodeURIComponent(t))},e.warn=a
+return e},e.objectSize=function(t){return Object.keys(t).length},e.setVerbosityLevel=function(t){Number.isInteger(t)&&(a=t)},e.shadow=l,e.string32=function(t){return String.fromCharCode(t>>24&255,t>>16&255,t>>8&255,255&t)},e.stringToBytes=d,e.stringToPDFString=function(t){if(t[0]>="ï"){let e
+if("þ"===t[0]&&"ÿ"===t[1]?e="utf-16be":"ÿ"===t[0]&&"þ"===t[1]?e="utf-16le":"ï"===t[0]&&"»"===t[1]&&"¿"===t[2]&&(e="utf-8"),e)try{const s=new TextDecoder(e,{fatal:!0}),i=d(t)
+return s.decode(i)}catch(s){r(`stringToPDFString: "${s}".`)}}const e=[]
+for(let i=0,n=t.length;i<n;i++){const s=p[t.charCodeAt(i)]
+e.push(s?String.fromCharCode(s):t.charAt(i))}return e.join("")},e.stringToUTF8String=g,e.unreachable=o,e.utf8StringToString=function(t){return unescape(encodeURIComponent(t))},e.warn=r
 const s=!("object"!=typeof process||process+""!="[object process]"||process.versions.nw||process.versions.electron&&process.type&&"browser"!==process.type)
 e.isNodeJS=s
 e.IDENTITY_MATRIX=[1,0,0,1,0,0]
@@ -45,7 +45,8 @@ e.FONT_IDENTITY_MATRIX=[.001,0,0,.001,0,0]
 e.MAX_IMAGE_SIZE_TO_CACHE=1e7
 e.LINE_FACTOR=1.35
 e.LINE_DESCENT_FACTOR=.35
-e.BASELINE_FACTOR=.25925925925925924
+const i=.35/1.35
+e.BASELINE_FACTOR=i
 e.RenderingIntentFlag={ANY:1,DISPLAY:2,PRINT:4,SAVE:8,ANNOTATIONS_FORMS:16,ANNOTATIONS_STORAGE:32,ANNOTATIONS_DISABLE:64,OPLIST:256}
 e.AnnotationMode={DISABLE:0,ENABLE:1,ENABLE_FORMS:2,ENABLE_STORAGE:3}
 e.AnnotationEditorPrefix="pdfjs_internal_editor_"
@@ -62,33 +63,33 @@ e.AnnotationBorderStyleType={SOLID:1,DASHED:2,BEVELED:3,INSET:4,UNDERLINE:5}
 e.AnnotationActionEventType={E:"Mouse Enter",X:"Mouse Exit",D:"Mouse Down",U:"Mouse Up",Fo:"Focus",Bl:"Blur",PO:"PageOpen",PC:"PageClose",PV:"PageVisible",PI:"PageInvisible",K:"Keystroke",F:"Format",V:"Validate",C:"Calculate"}
 e.DocumentActionEventType={WC:"WillClose",WS:"WillSave",DS:"DidSave",WP:"WillPrint",DP:"DidPrint"}
 e.PageActionEventType={O:"PageOpen",C:"PageClose"}
-const i={ERRORS:0,WARNINGS:1,INFOS:5}
-e.VerbosityLevel=i
+const n={ERRORS:0,WARNINGS:1,INFOS:5}
+e.VerbosityLevel=n
 e.CMapCompressionType={NONE:0,BINARY:1}
 e.OPS={dependency:1,setLineWidth:2,setLineCap:3,setLineJoin:4,setMiterLimit:5,setDash:6,setRenderingIntent:7,setFlatness:8,setGState:9,save:10,restore:11,transform:12,moveTo:13,lineTo:14,curveTo:15,curveTo2:16,curveTo3:17,closePath:18,rectangle:19,stroke:20,closeStroke:21,fill:22,eoFill:23,fillStroke:24,eoFillStroke:25,closeFillStroke:26,closeEOFillStroke:27,endPath:28,clip:29,eoClip:30,beginText:31,endText:32,setCharSpacing:33,setWordSpacing:34,setHScale:35,setLeading:36,setFont:37,setTextRenderingMode:38,setTextRise:39,moveText:40,setLeadingMoveText:41,setTextMatrix:42,nextLine:43,showText:44,showSpacedText:45,nextLineShowText:46,nextLineSetSpacingShowText:47,setCharWidth:48,setCharWidthAndBounds:49,setStrokeColorSpace:50,setFillColorSpace:51,setStrokeColor:52,setStrokeColorN:53,setFillColor:54,setFillColorN:55,setStrokeGray:56,setFillGray:57,setStrokeRGBColor:58,setFillRGBColor:59,setStrokeCMYKColor:60,setFillCMYKColor:61,shadingFill:62,beginInlineImage:63,beginImageData:64,endInlineImage:65,paintXObject:66,markPoint:67,markPointProps:68,beginMarkedContent:69,beginMarkedContentProps:70,endMarkedContent:71,beginCompat:72,endCompat:73,paintFormXObjectBegin:74,paintFormXObjectEnd:75,beginGroup:76,endGroup:77,beginAnnotation:80,endAnnotation:81,paintImageMaskXObject:83,paintImageMaskXObjectGroup:84,paintImageXObject:85,paintInlineImageXObject:86,paintInlineImageXObjectGroup:87,paintImageXObjectRepeat:88,paintImageMaskXObjectRepeat:89,paintSolidColorImageMask:90,constructPath:91}
 e.PasswordResponses={NEED_PASSWORD:1,INCORRECT_PASSWORD:2}
-let n=i.WARNINGS
-function a(t){n>=i.WARNINGS&&console.log(`Warning: ${t}`)}function r(t){throw new Error(t)}function o(t,e,s,i=!1){return Object.defineProperty(t,e,{value:s,enumerable:!i,configurable:!0,writable:!1}),s}const l=function(){function t(e,s){this.constructor===t&&r("Cannot initialize BaseException."),this.message=e,this.name=s}return t.prototype=new Error,t.constructor=t,t}()
-e.BaseException=l
-e.PasswordException=class extends l{constructor(t,e){super(t,"PasswordException"),this.code=e}}
-e.UnknownErrorException=class extends l{constructor(t,e){super(t,"UnknownErrorException"),this.details=e}}
-e.InvalidPDFException=class extends l{constructor(t){super(t,"InvalidPDFException")}}
-e.MissingPDFException=class extends l{constructor(t){super(t,"MissingPDFException")}}
-e.UnexpectedResponseException=class extends l{constructor(t,e){super(t,"UnexpectedResponseException"),this.status=e}}
-e.FormatError=class extends l{constructor(t){super(t,"FormatError")}}
-function h(t){"object"==typeof t&&void 0!==t?.length||r("Invalid argument for bytesToString")
+let a=n.WARNINGS
+function r(t){a>=n.WARNINGS&&console.log(`Warning: ${t}`)}function o(t){throw new Error(t)}function l(t,e,s,i=!1){return Object.defineProperty(t,e,{value:s,enumerable:!i,configurable:!0,writable:!1}),s}const h=function(){function t(e,s){this.constructor===t&&o("Cannot initialize BaseException."),this.message=e,this.name=s}return t.prototype=new Error,t.constructor=t,t}()
+e.BaseException=h
+e.PasswordException=class extends h{constructor(t,e){super(t,"PasswordException"),this.code=e}}
+e.UnknownErrorException=class extends h{constructor(t,e){super(t,"UnknownErrorException"),this.details=e}}
+e.InvalidPDFException=class extends h{constructor(t){super(t,"InvalidPDFException")}}
+e.MissingPDFException=class extends h{constructor(t){super(t,"MissingPDFException")}}
+e.UnexpectedResponseException=class extends h{constructor(t,e){super(t,"UnexpectedResponseException"),this.status=e}}
+e.FormatError=class extends h{constructor(t){super(t,"FormatError")}}
+function c(t){"object"==typeof t&&void 0!==t?.length||o("Invalid argument for bytesToString")
 const e=t.length,s=8192
 if(e<s)return String.fromCharCode.apply(null,t)
 const i=[]
 for(let n=0;n<e;n+=s){const a=Math.min(n+s,e),r=t.subarray(n,a)
-i.push(String.fromCharCode.apply(null,r))}return i.join("")}function c(t){"string"!=typeof t&&r("Invalid argument for stringToBytes")
+i.push(String.fromCharCode.apply(null,r))}return i.join("")}function d(t){"string"!=typeof t&&o("Invalid argument for stringToBytes")
 const e=t.length,s=new Uint8Array(e)
 for(let i=0;i<e;++i)s[i]=255&t.charCodeAt(i)
-return s}e.AbortException=class extends l{constructor(t){super(t,"AbortException")}}
-e.FeatureTest=class{static get isLittleEndian(){return o(this,"isLittleEndian",function(){const t=new Uint8Array(4)
-return t[0]=1,1===new Uint32Array(t.buffer,0,1)[0]}())}static get isEvalSupported(){return o(this,"isEvalSupported",function(){try{return new Function(""),!0}catch{return!1}}())}static get isOffscreenCanvasSupported(){return o(this,"isOffscreenCanvasSupported","undefined"!=typeof OffscreenCanvas)}static get platform(){return"undefined"==typeof navigator?o(this,"platform",{isWin:!1,isMac:!1}):o(this,"platform",{isWin:navigator.platform.includes("Win"),isMac:navigator.platform.includes("Mac")})}static get isCSSRoundSupported(){return o(this,"isCSSRoundSupported",globalThis.CSS?.supports?.("width: round(1.5px, 1px)"))}}
-const d=[...Array(256).keys()].map((t=>t.toString(16).padStart(2,"0")))
-e.Util=class{static makeHexColor(t,e,s){return`#${d[t]}${d[e]}${d[s]}`}static scaleMinMax(t,e){let s
+return s}e.AbortException=class extends h{constructor(t){super(t,"AbortException")}}
+e.FeatureTest=class{static get isLittleEndian(){return l(this,"isLittleEndian",function(){const t=new Uint8Array(4)
+return t[0]=1,1===new Uint32Array(t.buffer,0,1)[0]}())}static get isEvalSupported(){return l(this,"isEvalSupported",function(){try{return new Function(""),!0}catch{return!1}}())}static get isOffscreenCanvasSupported(){return l(this,"isOffscreenCanvasSupported","undefined"!=typeof OffscreenCanvas)}static get platform(){return"undefined"==typeof navigator?l(this,"platform",{isWin:!1,isMac:!1}):l(this,"platform",{isWin:navigator.platform.includes("Win"),isMac:navigator.platform.includes("Mac")})}static get isCSSRoundSupported(){return l(this,"isCSSRoundSupported",globalThis.CSS?.supports?.("width: round(1.5px, 1px)"))}}
+const u=[...Array(256).keys()].map(t=>t.toString(16).padStart(2,"0"))
+e.Util=class{static makeHexColor(t,e,s){return`#${u[t]}${u[e]}${u[s]}`}static scaleMinMax(t,e){let s
 t[0]?(t[0]<0&&(s=e[0],e[0]=e[1],e[1]=s),e[0]*=t[0],e[1]*=t[0],t[3]<0&&(s=e[2],e[2]=e[3],e[3]=s),e[2]*=t[3],e[3]*=t[3]):(s=e[0],e[0]=e[2],e[2]=s,s=e[1],e[1]=e[3],e[3]=s,t[1]<0&&(s=e[2],e[2]=e[3],e[3]=s),e[2]*=t[1],e[3]*=t[1],t[2]<0&&(s=e[0],e[0]=e[1],e[1]=s),e[0]*=t[2],e[1]*=t[2]),e[0]+=t[4],e[1]+=t[4],e[2]+=t[5],e[3]+=t[5]}static transform(t,e){return[t[0]*e[0]+t[2]*e[1],t[1]*e[0]+t[3]*e[1],t[0]*e[2]+t[2]*e[3],t[1]*e[2]+t[3]*e[3],t[0]*e[4]+t[2]*e[5]+t[4],t[1]*e[4]+t[3]*e[5]+t[5]]}static applyTransform(t,e){return[t[0]*e[0]+t[1]*e[2]+e[4],t[0]*e[1]+t[1]*e[3]+e[5]]}static applyInverseTransform(t,e){const s=e[0]*e[3]-e[1]*e[2]
 return[(t[0]*e[3]-t[1]*e[2]+e[2]*e[5]-e[4]*e[3])/s,(-t[0]*e[1]+t[1]*e[0]+e[4]*e[1]-e[5]*e[0])/s]}static getAxialAlignedBoundingBox(t,e){const s=this.applyTransform(t,e),i=this.applyTransform(t.slice(2,4),e),n=this.applyTransform([t[0],t[3]],e),a=this.applyTransform([t[2],t[1]],e)
 return[Math.min(s[0],i[0],n[0],a[0]),Math.min(s[1],i[1],n[1],a[1]),Math.max(s[0],i[0],n[0],a[0]),Math.max(s[1],i[1],n[1],a[1])]}static inverseTransform(t){const e=t[0]*t[3]-t[1]*t[2]
@@ -105,10 +106,10 @@ let _,A=l.length
 const v=A
 for(;A--;)p=l[A],_=1-p,h[0][A]=_*_*_*t+3*_*_*p*s+3*_*p*p*n+p*p*p*r,h[1][A]=_*_*_*e+3*_*_*p*i+3*_*p*p*a+p*p*p*o
 return h[0][v]=t,h[1][v]=e,h[0][v+1]=r,h[1][v+1]=o,h[0].length=h[1].length=v+2,[Math.min(...h[0]),Math.min(...h[1]),Math.max(...h[0]),Math.max(...h[1])]}}
-const u=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,728,711,710,729,733,731,730,732,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8226,8224,8225,8230,8212,8211,402,8260,8249,8250,8722,8240,8222,8220,8221,8216,8217,8218,8482,64257,64258,321,338,352,376,381,305,322,339,353,382,0,8364]
-function p(t){return decodeURIComponent(escape(t))}e.PromiseCapability=class{#t=!1
-constructor(){this.promise=new Promise(((t,e)=>{this.resolve=e=>{this.#t=!0,t(e)},this.reject=t=>{this.#t=!0,e(t)}}))}get settled(){return this.#t}}
-let g=null,m=null
+const p=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,728,711,710,729,733,731,730,732,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8226,8224,8225,8230,8212,8211,402,8260,8249,8250,8722,8240,8222,8220,8221,8216,8217,8218,8482,64257,64258,321,338,352,376,381,305,322,339,353,382,0,8364]
+function g(t){return decodeURIComponent(escape(t))}e.PromiseCapability=class{#t=!1
+constructor(){this.promise=new Promise((t,e)=>{this.resolve=e=>{this.#t=!0,t(e)},this.reject=t=>{this.#t=!0,e(t)}})}get settled(){return this.#t}}
+let m=null,f=null
 e.AnnotationPrefix="pdfjs_internal_id_"},(__unused_webpack_module,exports,__w_pdfjs_require__)=>{Object.defineProperty(exports,"__esModule",{value:!0}),exports.RenderTask=exports.PDFWorkerUtil=exports.PDFWorker=exports.PDFPageProxy=exports.PDFDocumentProxy=exports.PDFDocumentLoadingTask=exports.PDFDataRangeTransport=exports.LoopbackPort=exports.DefaultStandardFontDataFactory=exports.DefaultFilterFactory=exports.DefaultCanvasFactory=exports.DefaultCMapReaderFactory=void 0,Object.defineProperty(exports,"SVGGraphics",{enumerable:!0,get:function(){return _displaySvg.SVGGraphics}}),exports.build=void 0,exports.getDocument=getDocument,exports.version=void 0
 var _util=__w_pdfjs_require__(1),_annotation_storage=__w_pdfjs_require__(3),_display_utils=__w_pdfjs_require__(6),_font_loader=__w_pdfjs_require__(9),_displayNode_utils=__w_pdfjs_require__(10),_canvas=__w_pdfjs_require__(11),_worker_options=__w_pdfjs_require__(14),_message_handler=__w_pdfjs_require__(15),_metadata=__w_pdfjs_require__(16),_optional_content_config=__w_pdfjs_require__(17),_transport_stream=__w_pdfjs_require__(18),_displayFetch_stream=__w_pdfjs_require__(19),_displayNetwork=__w_pdfjs_require__(22),_displayNode_stream=__w_pdfjs_require__(23),_displaySvg=__w_pdfjs_require__(24),_xfa_text=__w_pdfjs_require__(25)
 const DEFAULT_RANGE_CHUNK_SIZE=65536,RENDERING_CANCELLED_TIMEOUT=100,DELAYED_CLEANUP_TIMEOUT=5e3,DefaultCanvasFactory=_util.isNodeJS?_displayNode_utils.NodeCanvasFactory:_display_utils.DOMCanvasFactory
@@ -126,13 +127,13 @@ const d=t.verbosity,u="string"!=typeof t.docBaseUrl||(0,_display_utils.isDataSch
 const O={canvasFactory:I,filterFactory:L}
 if(D||(O.cMapReaderFactory=new m({baseUrl:p,isCompressed:g}),O.standardFontDataFactory=new b({baseUrl:f})),!c){const t={verbosity:d,port:_worker_options.GlobalWorkerOptions.workerPort}
 c=t.port?PDFWorker.fromPort(t):new PDFWorker(t),e._worker=c}const N={docId:s,apiVersion:"3.11.174",data:n,password:o,disableAutoFetch:M,rangeChunkSize:h,length:F,docBaseUrl:u,enableXfa:w,evaluatorOptions:{maxImageSize:A,disableFontFace:x,ignoreErrors:_,isEvalSupported:v,isOffscreenCanvasSupported:y,canvasMaxAreaInBytes:S,fontExtraProperties:E,useSystemFonts:R,cMapUrl:D?p:null,standardFontDataUrl:D?f:null}},B={ignoreErrors:_,isEvalSupported:v,disableFontFace:x,fontExtraProperties:E,enableXfa:w,ownerDocument:C,disableAutoFetch:M,pdfBug:k,styleElement:null}
-return c.promise.then((function(){if(e.destroyed)throw new Error("Loading aborted")
-const t=_fetchDocument(c,N),o=new Promise((function(t){let e
+return c.promise.then(function(){if(e.destroyed)throw new Error("Loading aborted")
+const t=_fetchDocument(c,N),o=new Promise(function(t){let e
 if(l)e=new _transport_stream.PDFDataTransportStream({length:F,initialData:l.initialData,progressiveDone:l.progressiveDone,contentDispositionFilename:l.contentDispositionFilename,disableRange:T,disableStream:P},l)
-else if(!n){e=(t=>_util.isNodeJS?new _displayNode_stream.PDFNodeStream(t):(0,_display_utils.isValidFetchUrl)(t.url)?new _displayFetch_stream.PDFFetchStream(t):new _displayNetwork.PDFNetworkStream(t))({url:i,length:F,httpHeaders:a,withCredentials:r,rangeChunkSize:h,disableRange:T,disableStream:P})}t(e)}))
-return Promise.all([t,o]).then((function([t,i]){if(e.destroyed)throw new Error("Loading aborted")
+else if(!n){e=(t=>_util.isNodeJS?new _displayNode_stream.PDFNodeStream(t):(0,_display_utils.isValidFetchUrl)(t.url)?new _displayFetch_stream.PDFFetchStream(t):new _displayNetwork.PDFNetworkStream(t))({url:i,length:F,httpHeaders:a,withCredentials:r,rangeChunkSize:h,disableRange:T,disableStream:P})}t(e)})
+return Promise.all([t,o]).then(function([t,i]){if(e.destroyed)throw new Error("Loading aborted")
 const n=new _message_handler.MessageHandler(s,t,c.port),a=new WorkerTransport(n,e,i,B,O)
-e._transport=a,n.send("Ready",null)}))})).catch(e._capability.reject),e}async function _fetchDocument(t,e){if(t.destroyed)throw new Error("Worker was destroyed")
+e._transport=a,n.send("Ready",null)})}).catch(e._capability.reject),e}async function _fetchDocument(t,e){if(t.destroyed)throw new Error("Worker was destroyed")
 const s=await t.messageHandler.sendWithPromise("GetDocRequest",e,e.data?[e.data.buffer]:null)
 if(t.destroyed)throw new Error("Worker was destroyed")
 return s}function getUrlProp(t){if(t instanceof URL)return t.href
@@ -144,11 +145,11 @@ throw new Error("Invalid PDF binary data: either TypedArray, string, or array-li
 class PDFDocumentLoadingTask{static#e=0
 constructor(){this._capability=new _util.PromiseCapability,this._transport=null,this._worker=null,this.docId="d"+PDFDocumentLoadingTask.#e++,this.destroyed=!1,this.onPassword=null,this.onProgress=null}get promise(){return this._capability.promise}async destroy(){this.destroyed=!0
 try{this._worker?.port&&(this._worker._pendingDestroy=!0),await(this._transport?.destroy())}catch(t){throw this._worker?.port&&delete this._worker._pendingDestroy,t}this._transport=null,this._worker&&(this._worker.destroy(),this._worker=null)}}exports.PDFDocumentLoadingTask=PDFDocumentLoadingTask
-class PDFDataRangeTransport{constructor(t,e,s=!1,i=null){this.length=t,this.initialData=e,this.progressiveDone=s,this.contentDispositionFilename=i,this._rangeListeners=[],this._progressListeners=[],this._progressiveReadListeners=[],this._progressiveDoneListeners=[],this._readyCapability=new _util.PromiseCapability}addRangeListener(t){this._rangeListeners.push(t)}addProgressListener(t){this._progressListeners.push(t)}addProgressiveReadListener(t){this._progressiveReadListeners.push(t)}addProgressiveDoneListener(t){this._progressiveDoneListeners.push(t)}onDataRange(t,e){for(const s of this._rangeListeners)s(t,e)}onDataProgress(t,e){this._readyCapability.promise.then((()=>{for(const s of this._progressListeners)s(t,e)}))}onDataProgressiveRead(t){this._readyCapability.promise.then((()=>{for(const e of this._progressiveReadListeners)e(t)}))}onDataProgressiveDone(){this._readyCapability.promise.then((()=>{for(const t of this._progressiveDoneListeners)t()}))}transportReady(){this._readyCapability.resolve()}requestDataRange(t,e){(0,_util.unreachable)("Abstract method PDFDataRangeTransport.requestDataRange")}abort(){}}exports.PDFDataRangeTransport=PDFDataRangeTransport
-class PDFDocumentProxy{constructor(t,e){this._pdfInfo=t,this._transport=e,Object.defineProperty(this,"getJavaScript",{value:()=>((0,_display_utils.deprecated)("`PDFDocumentProxy.getJavaScript`, please use `PDFDocumentProxy.getJSActions` instead."),this.getJSActions().then((t=>{if(!t)return t
+class PDFDataRangeTransport{constructor(t,e,s=!1,i=null){this.length=t,this.initialData=e,this.progressiveDone=s,this.contentDispositionFilename=i,this._rangeListeners=[],this._progressListeners=[],this._progressiveReadListeners=[],this._progressiveDoneListeners=[],this._readyCapability=new _util.PromiseCapability}addRangeListener(t){this._rangeListeners.push(t)}addProgressListener(t){this._progressListeners.push(t)}addProgressiveReadListener(t){this._progressiveReadListeners.push(t)}addProgressiveDoneListener(t){this._progressiveDoneListeners.push(t)}onDataRange(t,e){for(const s of this._rangeListeners)s(t,e)}onDataProgress(t,e){this._readyCapability.promise.then(()=>{for(const s of this._progressListeners)s(t,e)})}onDataProgressiveRead(t){this._readyCapability.promise.then(()=>{for(const e of this._progressiveReadListeners)e(t)})}onDataProgressiveDone(){this._readyCapability.promise.then(()=>{for(const t of this._progressiveDoneListeners)t()})}transportReady(){this._readyCapability.resolve()}requestDataRange(t,e){(0,_util.unreachable)("Abstract method PDFDataRangeTransport.requestDataRange")}abort(){}}exports.PDFDataRangeTransport=PDFDataRangeTransport
+class PDFDocumentProxy{constructor(t,e){this._pdfInfo=t,this._transport=e,Object.defineProperty(this,"getJavaScript",{value:()=>((0,_display_utils.deprecated)("`PDFDocumentProxy.getJavaScript`, please use `PDFDocumentProxy.getJSActions` instead."),this.getJSActions().then(t=>{if(!t)return t
 const e=[]
 for(const s in t)e.push(...t[s])
-return e})))})}get annotationStorage(){return this._transport.annotationStorage}get filterFactory(){return this._transport.filterFactory}get numPages(){return this._pdfInfo.numPages}get fingerprints(){return this._pdfInfo.fingerprints}get isPureXfa(){return(0,_util.shadow)(this,"isPureXfa",!!this._transport._htmlForXfa)}get allXfaHtml(){return this._transport._htmlForXfa}getPage(t){return this._transport.getPage(t)}getPageIndex(t){return this._transport.getPageIndex(t)}getDestinations(){return this._transport.getDestinations()}getDestination(t){return this._transport.getDestination(t)}getPageLabels(){return this._transport.getPageLabels()}getPageLayout(){return this._transport.getPageLayout()}getPageMode(){return this._transport.getPageMode()}getViewerPreferences(){return this._transport.getViewerPreferences()}getOpenAction(){return this._transport.getOpenAction()}getAttachments(){return this._transport.getAttachments()}getJSActions(){return this._transport.getDocJSActions()}getOutline(){return this._transport.getOutline()}getOptionalContentConfig(){return this._transport.getOptionalContentConfig()}getPermissions(){return this._transport.getPermissions()}getMetadata(){return this._transport.getMetadata()}getMarkInfo(){return this._transport.getMarkInfo()}getData(){return this._transport.getData()}saveDocument(){return this._transport.saveDocument()}getDownloadInfo(){return this._transport.downloadInfoCapability.promise}cleanup(t=!1){return this._transport.startCleanup(t||this.isPureXfa)}destroy(){return this.loadingTask.destroy()}get loadingParams(){return this._transport.loadingParams}get loadingTask(){return this._transport.loadingTask}getFieldObjects(){return this._transport.getFieldObjects()}hasJSActions(){return this._transport.hasJSActions()}getCalculationOrderIds(){return this._transport.getCalculationOrderIds()}}exports.PDFDocumentProxy=PDFDocumentProxy
+return e}))})}get annotationStorage(){return this._transport.annotationStorage}get filterFactory(){return this._transport.filterFactory}get numPages(){return this._pdfInfo.numPages}get fingerprints(){return this._pdfInfo.fingerprints}get isPureXfa(){return(0,_util.shadow)(this,"isPureXfa",!!this._transport._htmlForXfa)}get allXfaHtml(){return this._transport._htmlForXfa}getPage(t){return this._transport.getPage(t)}getPageIndex(t){return this._transport.getPageIndex(t)}getDestinations(){return this._transport.getDestinations()}getDestination(t){return this._transport.getDestination(t)}getPageLabels(){return this._transport.getPageLabels()}getPageLayout(){return this._transport.getPageLayout()}getPageMode(){return this._transport.getPageMode()}getViewerPreferences(){return this._transport.getViewerPreferences()}getOpenAction(){return this._transport.getOpenAction()}getAttachments(){return this._transport.getAttachments()}getJSActions(){return this._transport.getDocJSActions()}getOutline(){return this._transport.getOutline()}getOptionalContentConfig(){return this._transport.getOptionalContentConfig()}getPermissions(){return this._transport.getPermissions()}getMetadata(){return this._transport.getMetadata()}getMarkInfo(){return this._transport.getMarkInfo()}getData(){return this._transport.getData()}saveDocument(){return this._transport.saveDocument()}getDownloadInfo(){return this._transport.downloadInfoCapability.promise}cleanup(t=!1){return this._transport.startCleanup(t||this.isPureXfa)}destroy(){return this.loadingTask.destroy()}get loadingParams(){return this._transport.loadingParams}get loadingTask(){return this._transport.loadingTask}getFieldObjects(){return this._transport.getFieldObjects()}hasJSActions(){return this._transport.hasJSActions()}getCalculationOrderIds(){return this._transport.getCalculationOrderIds()}}exports.PDFDocumentProxy=PDFDocumentProxy
 class PDFPageProxy{#s=null
 #i=!1
 constructor(t,e,s,i=!1){this._pageIndex=t,this._pageInfo=e,this._transport=s,this._stats=i?new _display_utils.StatTimer:null,this._pdfBug=i,this.commonObjs=s.commonObjs,this.objs=new PDFObjects,this._maybeCleanupAfterRender=!1,this._intentStates=new Map,this.destroyed=!1}get pageNumber(){return this._pageIndex+1}get rotate(){return this._pageInfo.rotate}get ref(){return this._pageInfo.ref}get userUnit(){return this._pageInfo.userUnit}get view(){return this._pageInfo.view}getViewport({scale:t,rotation:e=this.rotate,offsetX:s=0,offsetY:i=0,dontFlip:n=!1}={}){return new _display_utils.PageViewport({viewBox:this.view,scale:t,rotation:e,offsetX:s,offsetY:i,dontFlip:n})}getAnnotations({intent:t="display"}={}){const e=this._transport.getRenderingIntent(t)
@@ -161,17 +162,17 @@ const u=!!(c.renderingIntent&_util.RenderingIntentFlag.PRINT)
 d.displayReadyCapability||(d.displayReadyCapability=new _util.PromiseCapability,d.operatorList={fnArray:[],argsArray:[],lastChunk:!1,separateAnnots:null},this._stats?.time("Page Request"),this._pumpOperatorList(c))
 const p=t=>{d.renderTasks.delete(g),(this._maybeCleanupAfterRender||u)&&(this.#i=!0),this.#a(!u),t?(g.capability.reject(t),this._abortOperatorList({intentState:d,reason:t instanceof Error?t:new Error(t)})):g.capability.resolve(),this._stats?.timeEnd("Rendering"),this._stats?.timeEnd("Overall")},g=new InternalRenderTask({callback:p,params:{canvasContext:t,viewport:e,transform:n,background:a},objs:this.objs,commonObjs:this.commonObjs,annotationCanvasMap:o,operatorList:d.operatorList,pageIndex:this._pageIndex,canvasFactory:this._transport.canvasFactory,filterFactory:this._transport.filterFactory,useRequestAnimationFrame:!u,pdfBug:this._pdfBug,pageColors:l});(d.renderTasks||=new Set).add(g)
 const m=g.task
-return Promise.all([d.displayReadyCapability.promise,r]).then((([t,e])=>{this.destroyed?p():(this._stats?.time("Rendering"),g.initializeGraphics({transparency:t,optionalContentConfig:e}),g.operatorListChanged())})).catch(p),m}getOperatorList({intent:t="display",annotationMode:e=_util.AnnotationMode.ENABLE,printAnnotationStorage:s=null}={}){const i=this._transport.getRenderingIntent(t,e,s,!0)
+return Promise.all([d.displayReadyCapability.promise,r]).then(([t,e])=>{this.destroyed?p():(this._stats?.time("Rendering"),g.initializeGraphics({transparency:t,optionalContentConfig:e}),g.operatorListChanged())}).catch(p),m}getOperatorList({intent:t="display",annotationMode:e=_util.AnnotationMode.ENABLE,printAnnotationStorage:s=null}={}){const i=this._transport.getRenderingIntent(t,e,s,!0)
 let n,a=this._intentStates.get(i.cacheKey)
-return a||(a=Object.create(null),this._intentStates.set(i.cacheKey,a)),a.opListReadCapability||(n=Object.create(null),n.operatorListChanged=function(){a.operatorList.lastChunk&&(a.opListReadCapability.resolve(a.operatorList),a.renderTasks.delete(n))},a.opListReadCapability=new _util.PromiseCapability,(a.renderTasks||=new Set).add(n),a.operatorList={fnArray:[],argsArray:[],lastChunk:!1,separateAnnots:null},this._stats?.time("Page Request"),this._pumpOperatorList(i)),a.opListReadCapability.promise}streamTextContent({includeMarkedContent:t=!1,disableNormalization:e=!1}={}){return this._transport.messageHandler.sendWithStream("GetTextContent",{pageIndex:this._pageIndex,includeMarkedContent:!0===t,disableNormalization:!0===e},{highWaterMark:100,size:t=>t.items.length})}getTextContent(t={}){if(this._transport._htmlForXfa)return this.getXfa().then((t=>_xfa_text.XfaText.textContent(t)))
+return a||(a=Object.create(null),this._intentStates.set(i.cacheKey,a)),a.opListReadCapability||(n=Object.create(null),n.operatorListChanged=function(){a.operatorList.lastChunk&&(a.opListReadCapability.resolve(a.operatorList),a.renderTasks.delete(n))},a.opListReadCapability=new _util.PromiseCapability,(a.renderTasks||=new Set).add(n),a.operatorList={fnArray:[],argsArray:[],lastChunk:!1,separateAnnots:null},this._stats?.time("Page Request"),this._pumpOperatorList(i)),a.opListReadCapability.promise}streamTextContent({includeMarkedContent:t=!1,disableNormalization:e=!1}={}){return this._transport.messageHandler.sendWithStream("GetTextContent",{pageIndex:this._pageIndex,includeMarkedContent:!0===t,disableNormalization:!0===e},{highWaterMark:100,size:t=>t.items.length})}getTextContent(t={}){if(this._transport._htmlForXfa)return this.getXfa().then(t=>_xfa_text.XfaText.textContent(t))
 const e=this.streamTextContent(t)
-return new Promise((function(t,s){const i=e.getReader(),n={items:[],styles:Object.create(null)};(function e(){i.read().then((function({value:s,done:i}){i?t(n):(Object.assign(n.styles,s.styles),n.items.push(...s.items),e())}),s)})()}))}getStructTree(){return this._transport.getStructTree(this._pageIndex)}_destroy(){this.destroyed=!0
+return new Promise(function(t,s){const i=e.getReader(),n={items:[],styles:Object.create(null)};(function e(){i.read().then(function({value:s,done:i}){i?t(n):(Object.assign(n.styles,s.styles),n.items.push(...s.items),e())},s)})()})}getStructTree(){return this._transport.getStructTree(this._pageIndex)}_destroy(){this.destroyed=!0
 const t=[]
 for(const e of this._intentStates.values())if(this._abortOperatorList({intentState:e,reason:new Error("Page was destroyed."),force:!0}),!e.opListReadCapability)for(const s of e.renderTasks)t.push(s.completed),s.cancel()
 return this.objs.clear(),this.#i=!1,this.#n(),Promise.all(t)}cleanup(t=!1){this.#i=!0
 const e=this.#a(!1)
 return t&&e&&(this._stats&&=new _display_utils.StatTimer),e}#a(t=!1){if(this.#n(),!this.#i||this.destroyed)return!1
-if(t)return this.#s=setTimeout((()=>{this.#s=null,this.#a(!1)}),DELAYED_CLEANUP_TIMEOUT),!1
+if(t)return this.#s=setTimeout(()=>{this.#s=null,this.#a(!1)},DELAYED_CLEANUP_TIMEOUT),!1
 for(const{renderTasks:e,operatorList:s}of this._intentStates.values())if(e.size>0||!s.lastChunk)return!1
 return this._intentStates.clear(),this.objs.clear(),this.#i=!1,!0}#n(){this.#s&&(clearTimeout(this.#s),this.#s=null)}_startRenderPage(t,e){const s=this._intentStates.get(e)
 s&&(this._stats?.timeEnd("Page Request"),s.displayReadyCapability?.resolve(t))}_renderPageChunk(t,e){for(let s=0,i=t.length;s<i;s++)e.operatorList.fnArray.push(t.fnArray[s]),e.operatorList.argsArray.push(t.argsArray[s])
@@ -179,19 +180,19 @@ e.operatorList.lastChunk=t.lastChunk,e.operatorList.separateAnnots=t.separateAnn
 for(const s of e.renderTasks)s.operatorListChanged()
 t.lastChunk&&this.#a(!0)}_pumpOperatorList({renderingIntent:t,cacheKey:e,annotationStorageSerializable:s}){const{map:i,transfers:n}=s,a=this._transport.messageHandler.sendWithStream("GetOperatorList",{pageIndex:this._pageIndex,intent:t,cacheKey:e,annotationStorage:i},n).getReader(),r=this._intentStates.get(e)
 r.streamReader=a
-const o=()=>{a.read().then((({value:t,done:e})=>{e?r.streamReader=null:this._transport.destroyed||(this._renderPageChunk(t,r),o())}),(t=>{if(r.streamReader=null,!this._transport.destroyed){if(r.operatorList){r.operatorList.lastChunk=!0
+const o=()=>{a.read().then(({value:t,done:e})=>{e?r.streamReader=null:this._transport.destroyed||(this._renderPageChunk(t,r),o())},t=>{if(r.streamReader=null,!this._transport.destroyed){if(r.operatorList){r.operatorList.lastChunk=!0
 for(const t of r.renderTasks)t.operatorListChanged()
 this.#a(!0)}if(r.displayReadyCapability)r.displayReadyCapability.reject(t)
 else{if(!r.opListReadCapability)throw t
-r.opListReadCapability.reject(t)}}}))}
+r.opListReadCapability.reject(t)}}})}
 o()}_abortOperatorList({intentState:t,reason:e,force:s=!1}){if(t.streamReader){if(t.streamReaderCancelTimeout&&(clearTimeout(t.streamReaderCancelTimeout),t.streamReaderCancelTimeout=null),!s){if(t.renderTasks.size>0)return
 if(e instanceof _display_utils.RenderingCancelledException){let s=RENDERING_CANCELLED_TIMEOUT
-return e.extraDelay>0&&e.extraDelay<1e3&&(s+=e.extraDelay),void(t.streamReaderCancelTimeout=setTimeout((()=>{t.streamReaderCancelTimeout=null,this._abortOperatorList({intentState:t,reason:e,force:!0})}),s))}}if(t.streamReader.cancel(new _util.AbortException(e.message)).catch((()=>{})),t.streamReader=null,!this._transport.destroyed){for(const[e,s]of this._intentStates)if(s===t){this._intentStates.delete(e)
+return e.extraDelay>0&&e.extraDelay<1e3&&(s+=e.extraDelay),void(t.streamReaderCancelTimeout=setTimeout(()=>{t.streamReaderCancelTimeout=null,this._abortOperatorList({intentState:t,reason:e,force:!0})},s))}}if(t.streamReader.cancel(new _util.AbortException(e.message)).catch(()=>{}),t.streamReader=null,!this._transport.destroyed){for(const[e,s]of this._intentStates)if(s===t){this._intentStates.delete(e)
 break}this.cleanup()}}}get stats(){return this._stats}}exports.PDFPageProxy=PDFPageProxy
 class LoopbackPort{#r=new Set
 #o=Promise.resolve()
 postMessage(t,e){const s={data:structuredClone(t,e?{transfer:e}:null)}
-this.#o.then((()=>{for(const t of this.#r)t.call(this,s)}))}addEventListener(t,e){this.#r.add(e)}removeEventListener(t,e){this.#r.delete(e)}terminate(){this.#r.clear()}}exports.LoopbackPort=LoopbackPort
+this.#o.then(()=>{for(const t of this.#r)t.call(this,s)})}addEventListener(t,e){this.#r.add(e)}removeEventListener(t,e){this.#r.delete(e)}terminate(){this.#r.clear()}}exports.LoopbackPort=LoopbackPort
 const PDFWorkerUtil={isWorkerDisabled:!1,fallbackWorkerSrc:null,fakeWorkerId:0}
 if(exports.PDFWorkerUtil=PDFWorkerUtil,_util.isNodeJS&&"function"==typeof require)PDFWorkerUtil.isWorkerDisabled=!0,PDFWorkerUtil.fallbackWorkerSrc="./pdf.worker.js"
 else if("object"==typeof document){const t=document?.currentScript?.src
@@ -201,20 +202,20 @@ return s.origin===i.origin},PDFWorkerUtil.createCDNWrapper=function(t){const e=`
 return URL.createObjectURL(new Blob([e]))}
 class PDFWorker{static#l
 constructor({name:t=null,port:e=null,verbosity:s=(0,_util.getVerbosityLevel)()}={}){if(this.name=t,this.destroyed=!1,this.verbosity=s,this._readyCapability=new _util.PromiseCapability,this._port=null,this._webWorker=null,this._messageHandler=null,e){if(PDFWorker.#l?.has(e))throw new Error("Cannot use more than one PDFWorker per port.")
-return(PDFWorker.#l||=new WeakMap).set(e,this),void this._initializeFromPort(e)}this._initialize()}get promise(){return this._readyCapability.promise}get port(){return this._port}get messageHandler(){return this._messageHandler}_initializeFromPort(t){this._port=t,this._messageHandler=new _message_handler.MessageHandler("main","worker",t),this._messageHandler.on("ready",(function(){})),this._readyCapability.resolve(),this._messageHandler.send("configure",{verbosity:this.verbosity})}_initialize(){if(!PDFWorkerUtil.isWorkerDisabled&&!PDFWorker._mainThreadWorkerMessageHandler){let{workerSrc:t}=PDFWorker
+return(PDFWorker.#l||=new WeakMap).set(e,this),void this._initializeFromPort(e)}this._initialize()}get promise(){return this._readyCapability.promise}get port(){return this._port}get messageHandler(){return this._messageHandler}_initializeFromPort(t){this._port=t,this._messageHandler=new _message_handler.MessageHandler("main","worker",t),this._messageHandler.on("ready",function(){}),this._readyCapability.resolve(),this._messageHandler.send("configure",{verbosity:this.verbosity})}_initialize(){if(!PDFWorkerUtil.isWorkerDisabled&&!PDFWorker._mainThreadWorkerMessageHandler){let{workerSrc:t}=PDFWorker
 try{PDFWorkerUtil.isSameOrigin(window.location.href,t)||(t=PDFWorkerUtil.createCDNWrapper(new URL(t,window.location).href))
 const e=new Worker(t),s=new _message_handler.MessageHandler("main","worker",e),i=()=>{e.removeEventListener("error",n),s.destroy(),e.terminate(),this.destroyed?this._readyCapability.reject(new Error("Worker was destroyed")):this._setupFakeWorker()},n=()=>{this._webWorker||i()}
-e.addEventListener("error",n),s.on("test",(t=>{e.removeEventListener("error",n),this.destroyed?i():t?(this._messageHandler=s,this._port=e,this._webWorker=e,this._readyCapability.resolve(),s.send("configure",{verbosity:this.verbosity})):(this._setupFakeWorker(),s.destroy(),e.terminate())})),s.on("ready",(t=>{if(e.removeEventListener("error",n),this.destroyed)i()
-else try{a()}catch{this._setupFakeWorker()}}))
+e.addEventListener("error",n),s.on("test",t=>{e.removeEventListener("error",n),this.destroyed?i():t?(this._messageHandler=s,this._port=e,this._webWorker=e,this._readyCapability.resolve(),s.send("configure",{verbosity:this.verbosity})):(this._setupFakeWorker(),s.destroy(),e.terminate())}),s.on("ready",t=>{if(e.removeEventListener("error",n),this.destroyed)i()
+else try{a()}catch{this._setupFakeWorker()}})
 const a=()=>{const t=new Uint8Array
 s.send("test",t,[t.buffer])}
-return void a()}catch{(0,_util.info)("The worker has been disabled.")}}this._setupFakeWorker()}_setupFakeWorker(){PDFWorkerUtil.isWorkerDisabled||((0,_util.warn)("Setting up fake worker."),PDFWorkerUtil.isWorkerDisabled=!0),PDFWorker._setupFakeWorkerGlobal.then((t=>{if(this.destroyed)return void this._readyCapability.reject(new Error("Worker was destroyed"))
+return void a()}catch{(0,_util.info)("The worker has been disabled.")}}this._setupFakeWorker()}_setupFakeWorker(){PDFWorkerUtil.isWorkerDisabled||((0,_util.warn)("Setting up fake worker."),PDFWorkerUtil.isWorkerDisabled=!0),PDFWorker._setupFakeWorkerGlobal.then(t=>{if(this.destroyed)return void this._readyCapability.reject(new Error("Worker was destroyed"))
 const e=new LoopbackPort
 this._port=e
 const s="fake"+PDFWorkerUtil.fakeWorkerId++,i=new _message_handler.MessageHandler(s+"_worker",s,e)
 t.setup(i,e)
 const n=new _message_handler.MessageHandler(s,s+"_worker",e)
-this._messageHandler=n,this._readyCapability.resolve(),n.send("configure",{verbosity:this.verbosity})})).catch((t=>{this._readyCapability.reject(new Error(`Setting up fake worker failed: "${t.message}".`))}))}destroy(){this.destroyed=!0,this._webWorker&&(this._webWorker.terminate(),this._webWorker=null),PDFWorker.#l?.delete(this._port),this._port=null,this._messageHandler&&(this._messageHandler.destroy(),this._messageHandler=null)}static fromPort(t){if(!t?.port)throw new Error("PDFWorker.fromPort - invalid method signature.")
+this._messageHandler=n,this._readyCapability.resolve(),n.send("configure",{verbosity:this.verbosity})}).catch(t=>{this._readyCapability.reject(new Error(`Setting up fake worker failed: "${t.message}".`))})}destroy(){this.destroyed=!0,this._webWorker&&(this._webWorker.terminate(),this._webWorker=null),PDFWorker.#l?.delete(this._port),this._port=null,this._messageHandler&&(this._messageHandler.destroy(),this._messageHandler=null)}static fromPort(t){if(!t?.port)throw new Error("PDFWorker.fromPort - invalid method signature.")
 const e=this.#l?.get(t.port)
 if(e){if(e._pendingDestroy)throw new Error("PDFWorker.fromPort - the worker is being destroyed.\nPlease remember to await `PDFDocumentLoadingTask.destroy()`-calls.")
 return e}return new PDFWorker(t)}static get workerSrc(){if(_worker_options.GlobalWorkerOptions.workerSrc)return _worker_options.GlobalWorkerOptions.workerSrc
@@ -251,11 +252,11 @@ const t=[]
 for(const s of this.#c.values())t.push(s._destroy())
 this.#c.clear(),this.#d.clear(),this.hasOwnProperty("annotationStorage")&&this.annotationStorage.resetModified()
 const e=this.messageHandler.sendWithPromise("Terminate",null)
-return t.push(e),Promise.all(t).then((()=>{this.commonObjs.clear(),this.fontLoader.clear(),this.#h.clear(),this.filterFactory.destroy(),this._networkStream?.cancelAllRequests(new _util.AbortException("Worker was terminated.")),this.messageHandler&&(this.messageHandler.destroy(),this.messageHandler=null),this.destroyCapability.resolve()}),this.destroyCapability.reject),this.destroyCapability.promise}setupMessageHandler(){const{messageHandler:t,loadingTask:e}=this
-t.on("GetReader",((t,e)=>{(0,_util.assert)(this._networkStream,"GetReader - no `IPDFStream` instance available."),this._fullReader=this._networkStream.getFullReader(),this._fullReader.onProgress=t=>{this._lastProgress={loaded:t.loaded,total:t.total}},e.onPull=()=>{this._fullReader.read().then((function({value:t,done:s}){s?e.close():((0,_util.assert)(t instanceof ArrayBuffer,"GetReader - expected an ArrayBuffer."),e.enqueue(new Uint8Array(t),1,[t]))})).catch((t=>{e.error(t)}))},e.onCancel=t=>{this._fullReader.cancel(t),e.ready.catch((t=>{if(!this.destroyed)throw t}))}})),t.on("ReaderHeadersReady",(t=>{const s=new _util.PromiseCapability,i=this._fullReader
-return i.headersReady.then((()=>{i.isStreamingSupported&&i.isRangeSupported||(this._lastProgress&&e.onProgress?.(this._lastProgress),i.onProgress=t=>{e.onProgress?.({loaded:t.loaded,total:t.total})}),s.resolve({isStreamingSupported:i.isStreamingSupported,isRangeSupported:i.isRangeSupported,contentLength:i.contentLength})}),s.reject),s.promise})),t.on("GetRangeReader",((t,e)=>{(0,_util.assert)(this._networkStream,"GetRangeReader - no `IPDFStream` instance available.")
+return t.push(e),Promise.all(t).then(()=>{this.commonObjs.clear(),this.fontLoader.clear(),this.#h.clear(),this.filterFactory.destroy(),this._networkStream?.cancelAllRequests(new _util.AbortException("Worker was terminated.")),this.messageHandler&&(this.messageHandler.destroy(),this.messageHandler=null),this.destroyCapability.resolve()},this.destroyCapability.reject),this.destroyCapability.promise}setupMessageHandler(){const{messageHandler:t,loadingTask:e}=this
+t.on("GetReader",(t,e)=>{(0,_util.assert)(this._networkStream,"GetReader - no `IPDFStream` instance available."),this._fullReader=this._networkStream.getFullReader(),this._fullReader.onProgress=t=>{this._lastProgress={loaded:t.loaded,total:t.total}},e.onPull=()=>{this._fullReader.read().then(function({value:t,done:s}){s?e.close():((0,_util.assert)(t instanceof ArrayBuffer,"GetReader - expected an ArrayBuffer."),e.enqueue(new Uint8Array(t),1,[t]))}).catch(t=>{e.error(t)})},e.onCancel=t=>{this._fullReader.cancel(t),e.ready.catch(t=>{if(!this.destroyed)throw t})}}),t.on("ReaderHeadersReady",t=>{const s=new _util.PromiseCapability,i=this._fullReader
+return i.headersReady.then(()=>{i.isStreamingSupported&&i.isRangeSupported||(this._lastProgress&&e.onProgress?.(this._lastProgress),i.onProgress=t=>{e.onProgress?.({loaded:t.loaded,total:t.total})}),s.resolve({isStreamingSupported:i.isStreamingSupported,isRangeSupported:i.isRangeSupported,contentLength:i.contentLength})},s.reject),s.promise}),t.on("GetRangeReader",(t,e)=>{(0,_util.assert)(this._networkStream,"GetRangeReader - no `IPDFStream` instance available.")
 const s=this._networkStream.getRangeReader(t.begin,t.end)
-s?(e.onPull=()=>{s.read().then((function({value:t,done:s}){s?e.close():((0,_util.assert)(t instanceof ArrayBuffer,"GetRangeReader - expected an ArrayBuffer."),e.enqueue(new Uint8Array(t),1,[t]))})).catch((t=>{e.error(t)}))},e.onCancel=t=>{s.cancel(t),e.ready.catch((t=>{if(!this.destroyed)throw t}))}):e.close()})),t.on("GetDoc",(({pdfInfo:t})=>{this._numPages=t.numPages,this._htmlForXfa=t.htmlForXfa,delete t.htmlForXfa,e._capability.resolve(new PDFDocumentProxy(t,this))})),t.on("DocException",(function(t){let s
+s?(e.onPull=()=>{s.read().then(function({value:t,done:s}){s?e.close():((0,_util.assert)(t instanceof ArrayBuffer,"GetRangeReader - expected an ArrayBuffer."),e.enqueue(new Uint8Array(t),1,[t]))}).catch(t=>{e.error(t)})},e.onCancel=t=>{s.cancel(t),e.ready.catch(t=>{if(!this.destroyed)throw t})}):e.close()}),t.on("GetDoc",({pdfInfo:t})=>{this._numPages=t.numPages,this._htmlForXfa=t.htmlForXfa,delete t.htmlForXfa,e._capability.resolve(new PDFDocumentProxy(t,this))}),t.on("DocException",function(t){let s
 switch(t.name){case"PasswordException":s=new _util.PasswordException(t.message,t.code)
 break
 case"InvalidPDFException":s=new _util.InvalidPDFException(t.message)
@@ -266,17 +267,17 @@ case"UnexpectedResponseException":s=new _util.UnexpectedResponseException(t.mess
 break
 case"UnknownErrorException":s=new _util.UnknownErrorException(t.message,t.details)
 break
-default:(0,_util.unreachable)("DocException - expected a valid Error.")}e._capability.reject(s)})),t.on("PasswordRequest",(t=>{if(this.#u=new _util.PromiseCapability,e.onPassword){const i=t=>{t instanceof Error?this.#u.reject(t):this.#u.resolve({password:t})}
+default:(0,_util.unreachable)("DocException - expected a valid Error.")}e._capability.reject(s)}),t.on("PasswordRequest",t=>{if(this.#u=new _util.PromiseCapability,e.onPassword){const i=t=>{t instanceof Error?this.#u.reject(t):this.#u.resolve({password:t})}
 try{e.onPassword(i,t.code)}catch(s){this.#u.reject(s)}}else this.#u.reject(new _util.PasswordException(t.message,t.code))
-return this.#u.promise})),t.on("DataLoaded",(t=>{e.onProgress?.({loaded:t.length,total:t.length}),this.downloadInfoCapability.resolve(t)})),t.on("StartRenderPage",(t=>{if(this.destroyed)return
-this.#c.get(t.pageIndex)._startRenderPage(t.transparency,t.cacheKey)})),t.on("commonobj",(([e,s,i])=>{if(!this.destroyed&&!this.commonObjs.has(e))switch(s){case"Font":const n=this._params
+return this.#u.promise}),t.on("DataLoaded",t=>{e.onProgress?.({loaded:t.length,total:t.length}),this.downloadInfoCapability.resolve(t)}),t.on("StartRenderPage",t=>{if(this.destroyed)return
+this.#c.get(t.pageIndex)._startRenderPage(t.transparency,t.cacheKey)}),t.on("commonobj",([e,s,i])=>{if(!this.destroyed&&!this.commonObjs.has(e))switch(s){case"Font":const n=this._params
 if("error"in i){const t=i.error;(0,_util.warn)(`Error during font loading: ${t}`),this.commonObjs.resolve(e,t)
 break}const a=n.pdfBug&&globalThis.FontInspector?.enabled?(t,e)=>globalThis.FontInspector.fontAdded(t,e):null,r=new _font_loader.FontFaceObject(i,{isEvalSupported:n.isEvalSupported,disableFontFace:n.disableFontFace,ignoreErrors:n.ignoreErrors,inspectFont:a})
-this.fontLoader.bind(r).catch((s=>t.sendWithPromise("FontFallback",{id:e}))).finally((()=>{!n.fontExtraProperties&&r.data&&(r.data=null),this.commonObjs.resolve(e,r)}))
+this.fontLoader.bind(r).catch(s=>t.sendWithPromise("FontFallback",{id:e})).finally(()=>{!n.fontExtraProperties&&r.data&&(r.data=null),this.commonObjs.resolve(e,r)})
 break
 case"FontPath":case"Image":case"Pattern":this.commonObjs.resolve(e,i)
 break
-default:throw new Error(`Got unknown common object type ${s}`)}})),t.on("obj",(([t,e,s,i])=>{if(this.destroyed)return
+default:throw new Error(`Got unknown common object type ${s}`)}}),t.on("obj",([t,e,s,i])=>{if(this.destroyed)return
 const n=this.#c.get(e)
 if(!n.objs.has(t))switch(s){case"Image":if(n.objs.resolve(t,i),i){let t
 if(i.bitmap){const{width:e,height:s}=i
@@ -284,22 +285,22 @@ t=e*s*4}else t=i.data?.length||0
 t>_util.MAX_IMAGE_SIZE_TO_CACHE&&(n._maybeCleanupAfterRender=!0)}break
 case"Pattern":n.objs.resolve(t,i)
 break
-default:throw new Error(`Got unknown object type ${s}`)}})),t.on("DocProgress",(t=>{this.destroyed||e.onProgress?.({loaded:t.loaded,total:t.total})})),t.on("FetchBuiltInCMap",(t=>this.destroyed?Promise.reject(new Error("Worker was destroyed.")):this.cMapReaderFactory?this.cMapReaderFactory.fetch(t):Promise.reject(new Error("CMapReaderFactory not initialized, see the `useWorkerFetch` parameter.")))),t.on("FetchStandardFontData",(t=>this.destroyed?Promise.reject(new Error("Worker was destroyed.")):this.standardFontDataFactory?this.standardFontDataFactory.fetch(t):Promise.reject(new Error("StandardFontDataFactory not initialized, see the `useWorkerFetch` parameter."))))}getData(){return this.messageHandler.sendWithPromise("GetData",null)}saveDocument(){this.annotationStorage.size<=0&&(0,_util.warn)("saveDocument called while `annotationStorage` is empty, please use the getData-method instead.")
+default:throw new Error(`Got unknown object type ${s}`)}}),t.on("DocProgress",t=>{this.destroyed||e.onProgress?.({loaded:t.loaded,total:t.total})}),t.on("FetchBuiltInCMap",t=>this.destroyed?Promise.reject(new Error("Worker was destroyed.")):this.cMapReaderFactory?this.cMapReaderFactory.fetch(t):Promise.reject(new Error("CMapReaderFactory not initialized, see the `useWorkerFetch` parameter."))),t.on("FetchStandardFontData",t=>this.destroyed?Promise.reject(new Error("Worker was destroyed.")):this.standardFontDataFactory?this.standardFontDataFactory.fetch(t):Promise.reject(new Error("StandardFontDataFactory not initialized, see the `useWorkerFetch` parameter.")))}getData(){return this.messageHandler.sendWithPromise("GetData",null)}saveDocument(){this.annotationStorage.size<=0&&(0,_util.warn)("saveDocument called while `annotationStorage` is empty, please use the getData-method instead.")
 const{map:t,transfers:e}=this.annotationStorage.serializable
-return this.messageHandler.sendWithPromise("SaveDocument",{isPureXfa:!!this._htmlForXfa,numPages:this._numPages,annotationStorage:t,filename:this._fullReader?.filename??null},e).finally((()=>{this.annotationStorage.resetModified()}))}getPage(t){if(!Number.isInteger(t)||t<=0||t>this._numPages)return Promise.reject(new Error("Invalid page request."))
+return this.messageHandler.sendWithPromise("SaveDocument",{isPureXfa:!!this._htmlForXfa,numPages:this._numPages,annotationStorage:t,filename:this._fullReader?.filename??null},e).finally(()=>{this.annotationStorage.resetModified()})}getPage(t){if(!Number.isInteger(t)||t<=0||t>this._numPages)return Promise.reject(new Error("Invalid page request."))
 const e=t-1,s=this.#d.get(e)
 if(s)return s
-const i=this.messageHandler.sendWithPromise("GetPage",{pageIndex:e}).then((t=>{if(this.destroyed)throw new Error("Transport destroyed")
+const i=this.messageHandler.sendWithPromise("GetPage",{pageIndex:e}).then(t=>{if(this.destroyed)throw new Error("Transport destroyed")
 const s=new PDFPageProxy(e,t,this,this._params.pdfBug)
-return this.#c.set(e,s),s}))
-return this.#d.set(e,i),i}getPageIndex(t){return"object"!=typeof t||null===t||!Number.isInteger(t.num)||t.num<0||!Number.isInteger(t.gen)||t.gen<0?Promise.reject(new Error("Invalid pageIndex request.")):this.messageHandler.sendWithPromise("GetPageIndex",{num:t.num,gen:t.gen})}getAnnotations(t,e){return this.messageHandler.sendWithPromise("GetAnnotations",{pageIndex:t,intent:e})}getFieldObjects(){return this.#p("GetFieldObjects")}hasJSActions(){return this.#p("HasJSActions")}getCalculationOrderIds(){return this.messageHandler.sendWithPromise("GetCalculationOrderIds",null)}getDestinations(){return this.messageHandler.sendWithPromise("GetDestinations",null)}getDestination(t){return"string"!=typeof t?Promise.reject(new Error("Invalid destination request.")):this.messageHandler.sendWithPromise("GetDestination",{id:t})}getPageLabels(){return this.messageHandler.sendWithPromise("GetPageLabels",null)}getPageLayout(){return this.messageHandler.sendWithPromise("GetPageLayout",null)}getPageMode(){return this.messageHandler.sendWithPromise("GetPageMode",null)}getViewerPreferences(){return this.messageHandler.sendWithPromise("GetViewerPreferences",null)}getOpenAction(){return this.messageHandler.sendWithPromise("GetOpenAction",null)}getAttachments(){return this.messageHandler.sendWithPromise("GetAttachments",null)}getDocJSActions(){return this.#p("GetDocJSActions")}getPageJSActions(t){return this.messageHandler.sendWithPromise("GetPageJSActions",{pageIndex:t})}getStructTree(t){return this.messageHandler.sendWithPromise("GetStructTree",{pageIndex:t})}getOutline(){return this.messageHandler.sendWithPromise("GetOutline",null)}getOptionalContentConfig(){return this.messageHandler.sendWithPromise("GetOptionalContentConfig",null).then((t=>new _optional_content_config.OptionalContentConfig(t)))}getPermissions(){return this.messageHandler.sendWithPromise("GetPermissions",null)}getMetadata(){const t="GetMetadata",e=this.#h.get(t)
+return this.#c.set(e,s),s})
+return this.#d.set(e,i),i}getPageIndex(t){return"object"!=typeof t||null===t||!Number.isInteger(t.num)||t.num<0||!Number.isInteger(t.gen)||t.gen<0?Promise.reject(new Error("Invalid pageIndex request.")):this.messageHandler.sendWithPromise("GetPageIndex",{num:t.num,gen:t.gen})}getAnnotations(t,e){return this.messageHandler.sendWithPromise("GetAnnotations",{pageIndex:t,intent:e})}getFieldObjects(){return this.#p("GetFieldObjects")}hasJSActions(){return this.#p("HasJSActions")}getCalculationOrderIds(){return this.messageHandler.sendWithPromise("GetCalculationOrderIds",null)}getDestinations(){return this.messageHandler.sendWithPromise("GetDestinations",null)}getDestination(t){return"string"!=typeof t?Promise.reject(new Error("Invalid destination request.")):this.messageHandler.sendWithPromise("GetDestination",{id:t})}getPageLabels(){return this.messageHandler.sendWithPromise("GetPageLabels",null)}getPageLayout(){return this.messageHandler.sendWithPromise("GetPageLayout",null)}getPageMode(){return this.messageHandler.sendWithPromise("GetPageMode",null)}getViewerPreferences(){return this.messageHandler.sendWithPromise("GetViewerPreferences",null)}getOpenAction(){return this.messageHandler.sendWithPromise("GetOpenAction",null)}getAttachments(){return this.messageHandler.sendWithPromise("GetAttachments",null)}getDocJSActions(){return this.#p("GetDocJSActions")}getPageJSActions(t){return this.messageHandler.sendWithPromise("GetPageJSActions",{pageIndex:t})}getStructTree(t){return this.messageHandler.sendWithPromise("GetStructTree",{pageIndex:t})}getOutline(){return this.messageHandler.sendWithPromise("GetOutline",null)}getOptionalContentConfig(){return this.messageHandler.sendWithPromise("GetOptionalContentConfig",null).then(t=>new _optional_content_config.OptionalContentConfig(t))}getPermissions(){return this.messageHandler.sendWithPromise("GetPermissions",null)}getMetadata(){const t="GetMetadata",e=this.#h.get(t)
 if(e)return e
-const s=this.messageHandler.sendWithPromise(t,null).then((t=>({info:t[0],metadata:t[1]?new _metadata.Metadata(t[1]):null,contentDispositionFilename:this._fullReader?.filename??null,contentLength:this._fullReader?.contentLength??null})))
+const s=this.messageHandler.sendWithPromise(t,null).then(t=>({info:t[0],metadata:t[1]?new _metadata.Metadata(t[1]):null,contentDispositionFilename:this._fullReader?.filename??null,contentLength:this._fullReader?.contentLength??null}))
 return this.#h.set(t,s),s}getMarkInfo(){return this.messageHandler.sendWithPromise("GetMarkInfo",null)}async startCleanup(t=!1){if(!this.destroyed){await this.messageHandler.sendWithPromise("Cleanup",null)
 for(const t of this.#c.values()){if(!t.cleanup())throw new Error(`startCleanup: Page ${t.pageNumber} is currently rendering.`)}this.commonObjs.clear(),t||this.fontLoader.clear(),this.#h.clear(),this.filterFactory.destroy(!0)}}get loadingParams(){const{disableAutoFetch:t,enableXfa:e}=this._params
 return(0,_util.shadow)(this,"loadingParams",{disableAutoFetch:t,enableXfa:e})}}class PDFObjects{#g=Object.create(null)
 #m(t){return this.#g[t]||={capability:new _util.PromiseCapability,data:null}}get(t,e=null){if(e){const s=this.#m(t)
-return s.capability.promise.then((()=>e(s.data))),null}const s=this.#g[t]
+return s.capability.promise.then(()=>e(s.data)),null}const s=this.#g[t]
 if(!s?.capability.settled)throw new Error(`Requesting object that isn't resolved yet ${t}.`)
 return s.data}has(t){const e=this.#g[t]
 return e?.capability.settled||!1}resolve(t,e=null){const s=this.#m(t)
@@ -310,11 +311,11 @@ if(!t)return!1
 const{annotationCanvasMap:e}=this.#f
 return t.form||t.canvas&&e?.size>0}}exports.RenderTask=RenderTask
 class InternalRenderTask{static#b=new WeakSet
-constructor({callback:t,params:e,objs:s,commonObjs:i,annotationCanvasMap:n,operatorList:a,pageIndex:r,canvasFactory:o,filterFactory:l,useRequestAnimationFrame:h=!1,pdfBug:c=!1,pageColors:d=null}){this.callback=t,this.params=e,this.objs=s,this.commonObjs=i,this.annotationCanvasMap=n,this.operatorListIdx=null,this.operatorList=a,this._pageIndex=r,this.canvasFactory=o,this.filterFactory=l,this._pdfBug=c,this.pageColors=d,this.running=!1,this.graphicsReadyCallback=null,this.graphicsReady=!1,this._useRequestAnimationFrame=!0===h&&"undefined"!=typeof window,this.cancelled=!1,this.capability=new _util.PromiseCapability,this.task=new RenderTask(this),this._cancelBound=this.cancel.bind(this),this._continueBound=this._continue.bind(this),this._scheduleNextBound=this._scheduleNext.bind(this),this._nextBound=this._next.bind(this),this._canvas=e.canvasContext.canvas}get completed(){return this.capability.promise.catch((function(){}))}initializeGraphics({transparency:t=!1,optionalContentConfig:e}){if(this.cancelled)return
+constructor({callback:t,params:e,objs:s,commonObjs:i,annotationCanvasMap:n,operatorList:a,pageIndex:r,canvasFactory:o,filterFactory:l,useRequestAnimationFrame:h=!1,pdfBug:c=!1,pageColors:d=null}){this.callback=t,this.params=e,this.objs=s,this.commonObjs=i,this.annotationCanvasMap=n,this.operatorListIdx=null,this.operatorList=a,this._pageIndex=r,this.canvasFactory=o,this.filterFactory=l,this._pdfBug=c,this.pageColors=d,this.running=!1,this.graphicsReadyCallback=null,this.graphicsReady=!1,this._useRequestAnimationFrame=!0===h&&"undefined"!=typeof window,this.cancelled=!1,this.capability=new _util.PromiseCapability,this.task=new RenderTask(this),this._cancelBound=this.cancel.bind(this),this._continueBound=this._continue.bind(this),this._scheduleNextBound=this._scheduleNext.bind(this),this._nextBound=this._next.bind(this),this._canvas=e.canvasContext.canvas}get completed(){return this.capability.promise.catch(function(){})}initializeGraphics({transparency:t=!1,optionalContentConfig:e}){if(this.cancelled)return
 if(this._canvas){if(InternalRenderTask.#b.has(this._canvas))throw new Error("Cannot use the same canvas during multiple render() operations. Use different canvas or ensure previous operations were cancelled or completed.")
 InternalRenderTask.#b.add(this._canvas)}this._pdfBug&&globalThis.StepperManager?.enabled&&(this.stepper=globalThis.StepperManager.create(this._pageIndex),this.stepper.init(this.operatorList),this.stepper.nextBreakPoint=this.stepper.getNextBreakPoint())
 const{canvasContext:s,viewport:i,transform:n,background:a}=this.params
-this.gfx=new _canvas.CanvasGraphics(s,this.commonObjs,this.objs,this.canvasFactory,this.filterFactory,{optionalContentConfig:e},this.annotationCanvasMap,this.pageColors),this.gfx.beginDrawing({transform:n,viewport:i,transparency:t,background:a}),this.operatorListIdx=0,this.graphicsReady=!0,this.graphicsReadyCallback?.()}cancel(t=null,e=0){this.running=!1,this.cancelled=!0,this.gfx?.endDrawing(),InternalRenderTask.#b.delete(this._canvas),this.callback(t||new _display_utils.RenderingCancelledException(`Rendering cancelled, page ${this._pageIndex+1}`,e))}operatorListChanged(){this.graphicsReady?(this.stepper?.updateOperatorList(this.operatorList),this.running||this._continue()):this.graphicsReadyCallback||=this._continueBound}_continue(){this.running=!0,this.cancelled||(this.task.onContinue?this.task.onContinue(this._scheduleNextBound):this._scheduleNext())}_scheduleNext(){this._useRequestAnimationFrame?window.requestAnimationFrame((()=>{this._nextBound().catch(this._cancelBound)})):Promise.resolve().then(this._nextBound).catch(this._cancelBound)}async _next(){this.cancelled||(this.operatorListIdx=this.gfx.executeOperatorList(this.operatorList,this.operatorListIdx,this._continueBound,this.stepper),this.operatorListIdx===this.operatorList.argsArray.length&&(this.running=!1,this.operatorList.lastChunk&&(this.gfx.endDrawing(),InternalRenderTask.#b.delete(this._canvas),this.callback())))}}const version="3.11.174"
+this.gfx=new _canvas.CanvasGraphics(s,this.commonObjs,this.objs,this.canvasFactory,this.filterFactory,{optionalContentConfig:e},this.annotationCanvasMap,this.pageColors),this.gfx.beginDrawing({transform:n,viewport:i,transparency:t,background:a}),this.operatorListIdx=0,this.graphicsReady=!0,this.graphicsReadyCallback?.()}cancel(t=null,e=0){this.running=!1,this.cancelled=!0,this.gfx?.endDrawing(),InternalRenderTask.#b.delete(this._canvas),this.callback(t||new _display_utils.RenderingCancelledException(`Rendering cancelled, page ${this._pageIndex+1}`,e))}operatorListChanged(){this.graphicsReady?(this.stepper?.updateOperatorList(this.operatorList),this.running||this._continue()):this.graphicsReadyCallback||=this._continueBound}_continue(){this.running=!0,this.cancelled||(this.task.onContinue?this.task.onContinue(this._scheduleNextBound):this._scheduleNext())}_scheduleNext(){this._useRequestAnimationFrame?window.requestAnimationFrame(()=>{this._nextBound().catch(this._cancelBound)}):Promise.resolve().then(this._nextBound).catch(this._cancelBound)}async _next(){this.cancelled||(this.operatorListIdx=this.gfx.executeOperatorList(this.operatorList,this.operatorListIdx,this._continueBound,this.stepper),this.operatorListIdx===this.operatorList.argsArray.length&&(this.running=!1,this.operatorList.lastChunk&&(this.gfx.endDrawing(),InternalRenderTask.#b.delete(this._canvas),this.callback())))}}const version="3.11.174"
 exports.version=version
 const build="ce8716743"
 exports.build=build},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.SerializableEmpty=e.PrintAnnotationStorage=e.AnnotationStorage=void 0
@@ -367,7 +368,7 @@ const{rotation:e,rawDims:{pageWidth:s,pageHeight:i,pageX:a,pageY:o}}=this.parent
 this.rotation=e,this.pageRotation=(360+e-this._uiManager.viewParameters.rotation)%360,this.pageDimensions=[s,i],this.pageTranslation=[a,o]
 const[l,h]=this.parentDimensions
 this.x=t.x/l,this.y=t.y/h,this.isAttachedToDOM=!1,this.deleted=!1}get editorType(){return Object.getPrototypeOf(this).constructor._type}static get _defaultLineColor(){return(0,n.shadow)(this,"_defaultLineColor",this._colorManager.getHexCode("CanvasText"))}static deleteAnnotationElement(t){const e=new o({id:t.parent.getNextId(),parent:t.parent,uiManager:t._uiManager})
-e.annotationElementId=t.annotationElementId,e.deleted=!0,e._uiManager.addToAnnotationStorage(e)}static initialize(t,e=null){if(r._l10nPromise||=new Map(["editor_alt_text_button_label","editor_alt_text_edit_button_label","editor_alt_text_decorative_tooltip"].map((e=>[e,t.get(e)]))),e?.strings)for(const i of e.strings)r._l10nPromise.set(i,t.get(i))
+e.annotationElementId=t.annotationElementId,e.deleted=!0,e._uiManager.addToAnnotationStorage(e)}static initialize(t,e=null){if(r._l10nPromise||=new Map(["editor_alt_text_button_label","editor_alt_text_edit_button_label","editor_alt_text_decorative_tooltip"].map(e=>[e,t.get(e)])),e?.strings)for(const i of e.strings)r._l10nPromise.set(i,t.get(i))
 if(-1!==r._borderLineWidth)return
 const s=getComputedStyle(document.documentElement)
 r._borderLineWidth=parseFloat(s.getPropertyValue("--outline-width"))||0}static updateDefaultParams(t,e){}static get defaultPropertiesToUpdate(){return[]}static isHandlingMimeForPasting(t){return!1}static paste(t,e){(0,n.unreachable)("Not implemented")}get propertiesToUpdate(){return[]}get _isDraggable(){return this.#I}set _isDraggable(t){this.#I=t,this.div?.classList.toggle("draggable",t)}center(){const[t,e]=this.pageDimensions
@@ -462,17 +463,17 @@ this.width=k,this.height=F,this.x=R,this.y=D,this.setDims(s*k,i*F),this.fixAndSe
 const t=this.#E=document.createElement("button")
 t.className="altText"
 const e=await r._l10nPromise.get("editor_alt_text_button_label")
-if(t.textContent=e,t.setAttribute("aria-label",e),t.tabIndex="0",t.addEventListener("contextmenu",a.noContextMenu),t.addEventListener("pointerdown",(t=>t.stopPropagation())),t.addEventListener("click",(t=>{t.preventDefault(),this._uiManager.editAltText(this)}),{capture:!0}),t.addEventListener("keydown",(e=>{e.target===t&&"Enter"===e.key&&(e.preventDefault(),this._uiManager.editAltText(this))})),this.#W(),this.div.append(t),!r.SMALL_EDITOR_SIZE){const e=40
+if(t.textContent=e,t.setAttribute("aria-label",e),t.tabIndex="0",t.addEventListener("contextmenu",a.noContextMenu),t.addEventListener("pointerdown",t=>t.stopPropagation()),t.addEventListener("click",t=>{t.preventDefault(),this._uiManager.editAltText(this)},{capture:!0}),t.addEventListener("keydown",e=>{e.target===t&&"Enter"===e.key&&(e.preventDefault(),this._uiManager.editAltText(this))}),this.#W(),this.div.append(t),!r.SMALL_EDITOR_SIZE){const e=40
 r.SMALL_EDITOR_SIZE=Math.min(128,Math.round(t.getBoundingClientRect().width*(1+e/100)))}}async#W(){const t=this.#E
 if(!t)return
 if(!this.#S&&!this.#x)return t.classList.remove("done"),void this.#w?.remove()
-r._l10nPromise.get("editor_alt_text_edit_button_label").then((e=>{t.setAttribute("aria-label",e)}))
+r._l10nPromise.get("editor_alt_text_edit_button_label").then(e=>{t.setAttribute("aria-label",e)})
 let e=this.#w
 if(!e){this.#w=e=document.createElement("span"),e.className="tooltip",e.setAttribute("role","tooltip")
 const s=e.id=`alt-text-tooltip-${this.id}`
 t.setAttribute("aria-describedby",s)
 const i=100
-t.addEventListener("mouseenter",(()=>{this.#C=setTimeout((()=>{this.#C=null,this.#w.classList.add("show"),this._uiManager._eventBus.dispatch("reporttelemetry",{source:this,details:{type:"editing",subtype:this.editorType,data:{action:"alt_text_tooltip"}}})}),i)})),t.addEventListener("mouseleave",(()=>{clearTimeout(this.#C),this.#C=null,this.#w?.classList.remove("show")}))}t.classList.add("done"),e.innerText=this.#x?await r._l10nPromise.get("editor_alt_text_decorative_tooltip"):this.#S,e.parentNode||t.append(e)}getClientDimensions(){return this.div.getBoundingClientRect()}get altTextData(){return{altText:this.#S,decorative:this.#x}}set altTextData({altText:t,decorative:e}){this.#S===t&&this.#x===e||(this.#S=t,this.#x=e,this.#W())}render(){this.div=document.createElement("div"),this.div.setAttribute("data-editor-rotation",(360-this.rotation)%360),this.div.className=this.name,this.div.setAttribute("id",this.id),this.div.setAttribute("tabIndex",0),this.setInForeground(),this.div.addEventListener("focusin",this.#M),this.div.addEventListener("focusout",this.#k)
+t.addEventListener("mouseenter",()=>{this.#C=setTimeout(()=>{this.#C=null,this.#w.classList.add("show"),this._uiManager._eventBus.dispatch("reporttelemetry",{source:this,details:{type:"editing",subtype:this.editorType,data:{action:"alt_text_tooltip"}}})},i)}),t.addEventListener("mouseleave",()=>{clearTimeout(this.#C),this.#C=null,this.#w?.classList.remove("show")})}t.classList.add("done"),e.innerText=this.#x?await r._l10nPromise.get("editor_alt_text_decorative_tooltip"):this.#S,e.parentNode||t.append(e)}getClientDimensions(){return this.div.getBoundingClientRect()}get altTextData(){return{altText:this.#S,decorative:this.#x}}set altTextData({altText:t,decorative:e}){this.#S===t&&this.#x===e||(this.#S=t,this.#x=e,this.#W())}render(){this.div=document.createElement("div"),this.div.setAttribute("data-editor-rotation",(360-this.rotation)%360),this.div.className=this.name,this.div.setAttribute("id",this.id),this.div.setAttribute("tabIndex",0),this.setInForeground(),this.div.addEventListener("focusin",this.#M),this.div.addEventListener("focusout",this.#k)
 const[t,e]=this.parentDimensions
 this.parentRotation%180!=0&&(this.div.style.maxWidth=`${(100*e/t).toFixed(2)}%`,this.div.style.maxHeight=`${(100*t/e).toFixed(2)}%`)
 const[s,n]=this.getInitialTranslation()
@@ -508,7 +509,7 @@ getId(){return`${i.AnnotationEditorPrefix}${this.#q++}`}}class r{#V=(0,i.getUuid
 #$=null
 static get _isSVGFittingCanvas(){const t=new OffscreenCanvas(1,3).getContext("2d"),e=new Image
 e.src='data:image/svg+xml;charset=UTF-8,<svg viewBox="0 0 1 1" width="1" height="1" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" style="fill:red;"/></svg>'
-const s=e.decode().then((()=>(t.drawImage(e,0,0,1,1,0,0,1,3),0===new Uint32Array(t.getImageData(0,0,1,1).data.buffer)[0])))
+const s=e.decode().then(()=>(t.drawImage(e,0,0,1,1,0,0,1,3),0===new Uint32Array(t.getImageData(0,0,1,1).data.buffer)[0]))
 return(0,i.shadow)(this,"_isSVGFittingCanvas",s)}async#X(t,e){this.#$||=new Map
 let s=this.#$.get(t)
 if(null===s)return null
@@ -518,8 +519,8 @@ if(s||={bitmap:null,id:`image_${this.#V}_${this.#q++}`,refCounter:0,isSvg:!1},"s
 const i=await fetch(e)
 if(!i.ok)throw new Error(i.statusText)
 t=await i.blob()}else t=s.file=e
-if("image/svg+xml"===t.type){const e=r._isSVGFittingCanvas,i=new FileReader,n=new Image,a=new Promise(((t,a)=>{n.onload=()=>{s.bitmap=n,s.isSvg=!0,t()},i.onload=async()=>{const t=s.svgUrl=i.result
-n.src=await e?`${t}#svgView(preserveAspectRatio(none))`:t},n.onerror=i.onerror=a}))
+if("image/svg+xml"===t.type){const e=r._isSVGFittingCanvas,i=new FileReader,n=new Image,a=new Promise((t,a)=>{n.onload=()=>{s.bitmap=n,s.isSvg=!0,t()},i.onload=async()=>{const t=s.svgUrl=i.result
+n.src=await e?`${t}#svgView(preserveAspectRatio(none))`:t},n.onerror=i.onerror=a})
 i.readAsDataURL(t),await a}else s.bitmap=await createImageBitmap(t)
 s.refCounter=1}catch(i){console.error(i),s=null}return this.#$.set(t,s),s&&this.#$.set(s.id,s),s}async getFromFile(t){const{lastModified:e,name:s,size:i,type:n}=t
 return this.#X(`${e}_${s}_${i}_${n}`,t)}async getFromUrl(t){return this.#X(t,t)}async getFromId(t){this.#$||=new Map
@@ -551,7 +552,7 @@ class h{static _colorsMapping=new Map([["CanvasText",[0,0,0]],["Canvas",[255,255
 get _colors(){const t=new Map([["CanvasText",null],["Canvas",null]])
 return(0,n.getColorValues)(t),(0,i.shadow)(this,"_colors",t)}convert(t){const e=(0,n.getRGB)(t)
 if(!window.matchMedia("(forced-colors: active)").matches)return e
-for(const[s,i]of this._colors)if(i.every(((t,s)=>t===e[s])))return h._colorsMapping.get(s)
+for(const[s,i]of this._colors)if(i.every((t,s)=>t===e[s]))return h._colorsMapping.get(s)
 return e}getHexCode(t){const e=this._colors.get(t)
 return e?i.Util.makeHexColor(...e):t}}e.ColorManager=h
 class c{#tt=null
@@ -601,7 +602,7 @@ const{activeElement:t}=document
 for(const e of this.#bt)if(e.div.contains(t)){this.#mt=[e,t],e._focusEventsAllowed=!1
 break}}focus(){if(!this.#mt)return
 const[t,e]=this.#mt
-this.#mt=null,e.addEventListener("focusin",(()=>{t._focusEventsAllowed=!0}),{once:!0}),e.focus()}#Nt(){window.addEventListener("keydown",this.#Et,{capture:!0})}#It(){window.removeEventListener("keydown",this.#Et,{capture:!0})}#Bt(){document.addEventListener("copy",this.#yt),document.addEventListener("cut",this.#St),document.addEventListener("paste",this.#xt)}#Ut(){document.removeEventListener("copy",this.#yt),document.removeEventListener("cut",this.#St),document.removeEventListener("paste",this.#xt)}addEditListeners(){this.#Nt(),this.#Bt()}removeEditListeners(){this.#It(),this.#Ut()}copy(t){if(t.preventDefault(),this.#tt?.commitOrRemove(),!this.hasSelection)return
+this.#mt=null,e.addEventListener("focusin",()=>{t._focusEventsAllowed=!0},{once:!0}),e.focus()}#Nt(){window.addEventListener("keydown",this.#Et,{capture:!0})}#It(){window.removeEventListener("keydown",this.#Et,{capture:!0})}#Bt(){document.addEventListener("copy",this.#yt),document.addEventListener("cut",this.#St),document.addEventListener("paste",this.#xt)}#Ut(){document.removeEventListener("copy",this.#yt),document.removeEventListener("cut",this.#St),document.removeEventListener("paste",this.#xt)}addEditListeners(){this.#Nt(),this.#Bt()}removeEditListeners(){this.#It(),this.#Ut()}copy(t){if(t.preventDefault(),this.#tt?.commitOrRemove(),!this.hasSelection)return
 const e=[]
 for(const s of this.#bt){const t=s.serialize(!0)
 t&&e.push(t)}0!==e.length&&t.clipboardData.setData("application/pdfjs",JSON.stringify(e))}cut(t){this.copy(t),this.delete()}paste(t){t.preventDefault()
@@ -617,7 +618,7 @@ for(const a of s){const e=n.deserialize(a)
 if(!e)return
 t.push(e)}const e=()=>{for(const e of t)this.#jt(e)
 this.#zt(t)},i=()=>{for(const e of t)e.remove()}
-this.addCommands({cmd:e,undo:i,mustExec:!0})}catch(a){(0,i.warn)(`paste: "${a.message}".`)}}keydown(t){this.getActive()?.shouldGetKeyboardEvents()||c._keyboardManager.exec(this,t)}onEditingAction(t){["undo","redo","delete","selectAll"].includes(t.name)&&this[t.name]()}#Ht(t){Object.entries(t).some((([t,e])=>this.#Mt[t]!==e))&&this._eventBus.dispatch("annotationeditorstateschanged",{source:this,details:Object.assign(this.#Mt,t)})}#Wt(t){this._eventBus.dispatch("annotationeditorparamschanged",{source:this,details:t})}setEditingState(t){t?(this.#Ot(),this.#Nt(),this.#Bt(),this.#Ht({isEditing:this.#ft!==i.AnnotationEditorType.NONE,isEmpty:this.#Gt(),hasSomethingToUndo:this.#at.hasSomethingToUndo(),hasSomethingToRedo:this.#at.hasSomethingToRedo(),hasSelectedEditor:!1})):(this.#Lt(),this.#It(),this.#Ut(),this.#Ht({isEditing:!1}),this.disableUserSelect(!1))}registerEditorTypes(t){if(!this.#ht){this.#ht=t
+this.addCommands({cmd:e,undo:i,mustExec:!0})}catch(a){(0,i.warn)(`paste: "${a.message}".`)}}keydown(t){this.getActive()?.shouldGetKeyboardEvents()||c._keyboardManager.exec(this,t)}onEditingAction(t){["undo","redo","delete","selectAll"].includes(t.name)&&this[t.name]()}#Ht(t){Object.entries(t).some(([t,e])=>this.#Mt[t]!==e)&&this._eventBus.dispatch("annotationeditorstateschanged",{source:this,details:Object.assign(this.#Mt,t)})}#Wt(t){this._eventBus.dispatch("annotationeditorparamschanged",{source:this,details:t})}setEditingState(t){t?(this.#Ot(),this.#Nt(),this.#Bt(),this.#Ht({isEditing:this.#ft!==i.AnnotationEditorType.NONE,isEmpty:this.#Gt(),hasSomethingToUndo:this.#at.hasSomethingToUndo(),hasSomethingToRedo:this.#at.hasSomethingToRedo(),hasSelectedEditor:!1})):(this.#Lt(),this.#It(),this.#Ut(),this.#Ht({isEditing:!1}),this.disableUserSelect(!1))}registerEditorTypes(t){if(!this.#ht){this.#ht=t
 for(const t of this.#ht)this.#Wt(t.defaultPropertiesToUpdate)}}getId(){return this.#ut.getId()}get currentLayer(){return this.#st.get(this.#rt)}getLayer(t){return this.#st.get(t)}get currentPageIndex(){return this.#rt}addLayer(t){this.#st.set(t.pageIndex,t),this.#pt?t.enable():t.disable()}removeLayer(t){this.#st.delete(t.pageIndex)}updateMode(t,e=null){if(this.#ft!==t){if(this.#ft=t,t===i.AnnotationEditorType.NONE)return this.setEditingState(!1),void this.#qt()
 this.setEditingState(!0),this.#Vt(),this.unselectAll()
 for(const e of this.#st.values())e.updateMode(t)
@@ -643,7 +644,7 @@ else if(this.hasSelection){for(const t of this.#bt)t.unselect()
 this.#bt.clear(),this.#Ht({hasSelectedEditor:!1})}}translateSelectedEditors(t,e,s=!1){if(s||this.commitOrRemove(),!this.hasSelection)return
 this.#kt[0]+=t,this.#kt[1]+=e
 const[i,n]=this.#kt,a=[...this.#bt]
-this.#Ft&&clearTimeout(this.#Ft),this.#Ft=setTimeout((()=>{this.#Ft=null,this.#kt[0]=this.#kt[1]=0,this.addCommands({cmd:()=>{for(const t of a)this.#et.has(t.id)&&t.translateInPage(i,n)},undo:()=>{for(const t of a)this.#et.has(t.id)&&t.translateInPage(-i,-n)},mustExec:!1})}),1e3)
+this.#Ft&&clearTimeout(this.#Ft),this.#Ft=setTimeout(()=>{this.#Ft=null,this.#kt[0]=this.#kt[1]=0,this.addCommands({cmd:()=>{for(const t of a)this.#et.has(t.id)&&t.translateInPage(i,n)},undo:()=>{for(const t of a)this.#et.has(t.id)&&t.translateInPage(-i,-n)},mustExec:!1})},1e3)
 for(const r of a)r.translateInPage(t,e)}setUpDragSession(){if(this.hasSelection){this.disableUserSelect(!0),this.#lt=new Map
 for(const t of this.#bt)this.#lt.set(t,{savedX:t.x,savedY:t.y,savedPageIndex:t.pageIndex,newX:0,newY:0,newPageIndex:-1})}}endDragSession(){if(!this.#lt)return!1
 this.disableUserSelect(!1)
@@ -667,8 +668,8 @@ if(m(t))return(0,n.warn)('getPdfFilenameFromUrl: ignore "data:"-URL for performa
 const s=/[^/?#=]+\.pdf\b(?!.*\.pdf\b)/i,i=/^(?:(?:[^:]+:)?\/\/[^/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/.exec(t)
 let a=s.exec(i[1])||s.exec(i[2])||s.exec(i[3])
 if(a&&(a=a[0],a.includes("%")))try{a=s.exec(decodeURIComponent(a))[0]}catch{}return a||e},e.getRGB=_,e.getXfaPageViewport=function(t,{scale:e=1,rotation:s=0}){const{width:i,height:n}=t.attributes.style,a=[0,0,parseInt(i),parseInt(n)]
-return new p({viewBox:a,scale:e,rotation:s})},e.isDataScheme=m,e.isPdfFile=function(t){return"string"==typeof t&&/\.pdf$/i.test(t)},e.isValidFetchUrl=f,e.loadScript=function(t,e=!1){return new Promise(((s,i)=>{const n=document.createElement("script")
-n.src=t,n.onload=function(t){e&&n.remove(),s(t)},n.onerror=function(){i(new Error(`Cannot load script at: ${n.src}`))},(document.head||document.documentElement).append(n)}))},e.noContextMenu=function(t){t.preventDefault()},e.setLayerDimensions=function(t,e,s=!1,i=!0){if(e instanceof p){const{pageWidth:i,pageHeight:a}=e.rawDims,{style:r}=t,o=n.FeatureTest.isCSSRoundSupported,l=`var(--scale-factor) * ${i}px`,h=`var(--scale-factor) * ${a}px`,c=o?`round(${l}, 1px)`:`calc(${l})`,d=o?`round(${h}, 1px)`:`calc(${h})`
+return new p({viewBox:a,scale:e,rotation:s})},e.isDataScheme=m,e.isPdfFile=function(t){return"string"==typeof t&&/\.pdf$/i.test(t)},e.isValidFetchUrl=f,e.loadScript=function(t,e=!1){return new Promise((s,i)=>{const n=document.createElement("script")
+n.src=t,n.onload=function(t){e&&n.remove(),s(t)},n.onerror=function(){i(new Error(`Cannot load script at: ${n.src}`))},(document.head||document.documentElement).append(n)})},e.noContextMenu=function(t){t.preventDefault()},e.setLayerDimensions=function(t,e,s=!1,i=!0){if(e instanceof p){const{pageWidth:i,pageHeight:a}=e.rawDims,{style:r}=t,o=n.FeatureTest.isCSSRoundSupported,l=`var(--scale-factor) * ${i}px`,h=`var(--scale-factor) * ${a}px`,c=o?`round(${l}, 1px)`:`calc(${l})`,d=o?`round(${h}, 1px)`:`calc(${h})`
 s&&e.rotation%180!=0?(r.width=d,r.height=c):(r.width=c,r.height=d)}i&&t.setAttribute("data-main-rotation",e.rotation)}
 var i=s(7),n=s(1)
 const a="http://www.w3.org/2000/svg"
@@ -734,10 +735,10 @@ i.append(n),this.#oe(n,"feFuncR",t),this.#oe(n,"feFuncG",e),this.#oe(n,"feFuncB"
 class l extends i.BaseCanvasFactory{constructor({ownerDocument:t=globalThis.document}={}){super(),this._document=t}_createCanvas(t,e){const s=this._document.createElement("canvas")
 return s.width=t,s.height=e,s}}async function h(t,e=!1){if(f(t,document.baseURI)){const s=await fetch(t)
 if(!s.ok)throw new Error(s.statusText)
-return e?new Uint8Array(await s.arrayBuffer()):(0,n.stringToBytes)(await s.text())}return new Promise(((s,i)=>{const a=new XMLHttpRequest
+return e?new Uint8Array(await s.arrayBuffer()):(0,n.stringToBytes)(await s.text())}return new Promise((s,i)=>{const a=new XMLHttpRequest
 a.open("GET",t,!0),e&&(a.responseType="arraybuffer"),a.onreadystatechange=()=>{if(a.readyState===XMLHttpRequest.DONE){if(200===a.status||0===a.status){let t
-if(e&&a.response?t=new Uint8Array(a.response):!e&&a.responseText&&(t=(0,n.stringToBytes)(a.responseText)),t)return void s(t)}i(new Error(a.statusText))}},a.send(null)}))}e.DOMCanvasFactory=l
-class c extends i.BaseCMapReaderFactory{_fetchData(t,e){return h(t,this.isCompressed).then((t=>({cMapData:t,compressionType:e})))}}e.DOMCMapReaderFactory=c
+if(e&&a.response?t=new Uint8Array(a.response):!e&&a.responseText&&(t=(0,n.stringToBytes)(a.responseText)),t)return void s(t)}i(new Error(a.statusText))}},a.send(null)})}e.DOMCanvasFactory=l
+class c extends i.BaseCMapReaderFactory{_fetchData(t,e){return h(t,this.isCompressed).then(t=>({cMapData:t,compressionType:e}))}}e.DOMCMapReaderFactory=c
 class d extends i.BaseStandardFontDataFactory{_fetchData(t){return h(t,!0)}}e.DOMStandardFontDataFactory=d
 class u extends i.BaseSVGFactory{_createSVG(t){return document.createElementNS(a,t)}}e.DOMSVGFactory=u
 class p{constructor({viewBox:t,scale:e,rotation:s,offsetX:i=0,offsetY:n=0,dontFlip:a=!1}){this.viewBox=t,this.scale=e,this.rotation=s,this.offsetX=i,this.offsetY=n
@@ -768,7 +769,7 @@ for(const{name:s}of this.times)e=Math.max(s.length,e)
 for(const{name:s,start:i,end:n}of this.times)t.push(`${s.padEnd(e)} ${n-i}ms\n`)
 return t.join("")}}
 function _(t){if(t.startsWith("#")){const e=parseInt(t.slice(1),16)
-return[(16711680&e)>>16,(65280&e)>>8,255&e]}return t.startsWith("rgb(")?t.slice(4,-1).split(",").map((t=>parseInt(t))):t.startsWith("rgba(")?t.slice(5,-1).split(",").map((t=>parseInt(t))).slice(0,3):((0,n.warn)(`Not a valid color format: "${t}"`),[0,0,0])}e.PDFDateString=class{static toDateObject(t){if(!t||"string"!=typeof t)return null
+return[(16711680&e)>>16,(65280&e)>>8,255&e]}return t.startsWith("rgb(")?t.slice(4,-1).split(",").map(t=>parseInt(t)):t.startsWith("rgba(")?t.slice(5,-1).split(",").map(t=>parseInt(t)).slice(0,3):((0,n.warn)(`Not a valid color format: "${t}"`),[0,0,0])}e.PDFDateString=class{static toDateObject(t){if(!t||"string"!=typeof t)return null
 b||=new RegExp("^D:(\\d{4})(\\d{2})?(\\d{2})?(\\d{2})?(\\d{2})?(\\d{2})?([Z|+|-])?(\\d{2})?'?(\\d{2})?'?")
 const e=b.exec(t)
 if(!e)return null
@@ -799,11 +800,11 @@ t.canvas.width=0,t.canvas.height=0,t.canvas=null,t.context=null}_createCanvas(t,
 class r{constructor({baseUrl:t=null,isCompressed:e=!0}){this.constructor===r&&(0,i.unreachable)("Cannot initialize BaseCMapReaderFactory."),this.baseUrl=t,this.isCompressed=e}async fetch({name:t}){if(!this.baseUrl)throw new Error('The CMap "baseUrl" parameter must be specified, ensure that the "cMapUrl" and "cMapPacked" API parameters are provided.')
 if(!t)throw new Error("CMap name must be specified.")
 const e=this.baseUrl+t+(this.isCompressed?".bcmap":""),s=this.isCompressed?i.CMapCompressionType.BINARY:i.CMapCompressionType.NONE
-return this._fetchData(e,s).catch((t=>{throw new Error(`Unable to load ${this.isCompressed?"binary ":""}CMap at: ${e}`)}))}_fetchData(t,e){(0,i.unreachable)("Abstract method `_fetchData` called.")}}e.BaseCMapReaderFactory=r
+return this._fetchData(e,s).catch(t=>{throw new Error(`Unable to load ${this.isCompressed?"binary ":""}CMap at: ${e}`)})}_fetchData(t,e){(0,i.unreachable)("Abstract method `_fetchData` called.")}}e.BaseCMapReaderFactory=r
 class o{constructor({baseUrl:t=null}){this.constructor===o&&(0,i.unreachable)("Cannot initialize BaseStandardFontDataFactory."),this.baseUrl=t}async fetch({filename:t}){if(!this.baseUrl)throw new Error('The standard font "baseUrl" parameter must be specified, ensure that the "standardFontDataUrl" API parameter is provided.')
 if(!t)throw new Error("Font filename must be specified.")
 const e=`${this.baseUrl}${t}`
-return this._fetchData(e).catch((t=>{throw new Error(`Unable to load font data at: ${e}`)}))}_fetchData(t){(0,i.unreachable)("Abstract method `_fetchData` called.")}}e.BaseStandardFontDataFactory=o
+return this._fetchData(e).catch(t=>{throw new Error(`Unable to load font data at: ${e}`)})}_fetchData(t){(0,i.unreachable)("Abstract method `_fetchData` called.")}}e.BaseStandardFontDataFactory=o
 class l{constructor(){this.constructor===l&&(0,i.unreachable)("Cannot initialize BaseSVGFactory.")}create(t,e,s=!1){if(t<=0||e<=0)throw new Error("Invalid SVG dimensions")
 const i=this._createSVG("svg:svg")
 return i.setAttribute("version","1.1"),s||(i.setAttribute("width",`${t}px`),i.setAttribute("height",`${e}px`)),i.setAttribute("preserveAspectRatio","none"),i.setAttribute("viewBox",`0 0 ${t} ${e}`),i}createElement(t){if("string"!=typeof t)throw new Error("Invalid SVG element type")
@@ -827,16 +828,16 @@ e.FontLoader=class{#le=new Set
 constructor({ownerDocument:t=globalThis.document,styleElement:e=null}){this._document=t,this.nativeFontFaces=new Set,this.styleElement=null,this.loadingRequests=[],this.loadTestFontId=0}addNativeFontFace(t){this.nativeFontFaces.add(t),this._document.fonts.add(t)}removeNativeFontFace(t){this.nativeFontFaces.delete(t),this._document.fonts.delete(t)}insertRule(t){this.styleElement||(this.styleElement=this._document.createElement("style"),this._document.documentElement.getElementsByTagName("head")[0].append(this.styleElement))
 const e=this.styleElement.sheet
 e.insertRule(t,e.cssRules.length)}clear(){for(const t of this.nativeFontFaces)this._document.fonts.delete(t)
-this.nativeFontFaces.clear(),this.#le.clear(),this.styleElement&&(this.styleElement.remove(),this.styleElement=null)}async loadSystemFont(t){if(t&&!this.#le.has(t.loadedName))if((0,i.assert)(!this.disableFontFace,"loadSystemFont shouldn't be called when `disableFontFace` is set."),this.isFontLoadingAPISupported){const{loadedName:e,src:s,style:n}=t,a=new FontFace(e,s,n)
+this.nativeFontFaces.clear(),this.#le.clear(),this.styleElement&&(this.styleElement.remove(),this.styleElement=null)}async loadSystemFont(t){if(t&&!this.#le.has(t.loadedName)){if((0,i.assert)(!this.disableFontFace,"loadSystemFont shouldn't be called when `disableFontFace` is set."),this.isFontLoadingAPISupported){const{loadedName:e,src:s,style:n}=t,a=new FontFace(e,s,n)
 this.addNativeFontFace(a)
-try{await a.load(),this.#le.add(e)}catch{(0,i.warn)(`Cannot load system font: ${t.baseFontName}, installing it could help to improve PDF rendering.`),this.removeNativeFontFace(a)}}else(0,i.unreachable)("Not implemented: loadSystemFont without the Font Loading API.")}async bind(t){if(t.attached||t.missingFile&&!t.systemFontInfo)return
+try{await a.load(),this.#le.add(e)}catch{(0,i.warn)(`Cannot load system font: ${t.baseFontName}, installing it could help to improve PDF rendering.`),this.removeNativeFontFace(a)}return}(0,i.unreachable)("Not implemented: loadSystemFont without the Font Loading API.")}}async bind(t){if(t.attached||t.missingFile&&!t.systemFontInfo)return
 if(t.attached=!0,t.systemFontInfo)return void await this.loadSystemFont(t.systemFontInfo)
 if(this.isFontLoadingAPISupported){const e=t.createNativeFontFace()
 if(e){this.addNativeFontFace(e)
 try{await e.loaded}catch(s){throw(0,i.warn)(`Failed to load font '${e.family}': '${s}'.`),t.disableFontFace=!0,s}}return}const e=t.createFontFaceRule()
 if(e){if(this.insertRule(e),this.isSyncFontLoadingSupported)return
-await new Promise((e=>{const s=this._queueLoadingCallback(e)
-this._prepareFontLoadEvent(t,s)}))}}get isFontLoadingAPISupported(){const t=!!this._document?.fonts
+await new Promise(e=>{const s=this._queueLoadingCallback(e)
+this._prepareFontLoadEvent(t,s)})}}get isFontLoadingAPISupported(){const t=!!this._document?.fonts
 return(0,i.shadow)(this,"isFontLoadingAPISupported",t)}get isSyncFontLoadingSupported(){let t=!1
 return(i.isNodeJS||"undefined"!=typeof navigator&&/Mozilla\/5.0.*?rv:\d+.*? Gecko/.test(navigator.userAgent))&&(t=!0),(0,i.shadow)(this,"isSyncFontLoadingSupported",t)}_queueLoadingCallback(t){const{loadingRequests:e}=this,s={done:!1,complete:function(){for((0,i.assert)(!s.done,"completeRequest() cannot be called twice."),s.done=!0;e.length>0&&e[0].done;){const t=e.shift()
 setTimeout(t.callback,0)}},callback:t}
@@ -859,7 +860,7 @@ const m=this._document.createElement("div")
 m.style.visibility="hidden",m.style.width=m.style.height="10px",m.style.position="absolute",m.style.top=m.style.left="0px"
 for(const i of[t.loadedName,c]){const t=this._document.createElement("span")
 t.textContent="Hi",t.style.fontFamily=i,m.append(t)}this._document.body.append(m),function t(e,s){if(++h>30)return(0,i.warn)("Load test font never loaded."),void s()
-l.font="30px "+e,l.fillText(".",0,20),l.getImageData(0,0,1,1).data[3]>0?s():setTimeout(t.bind(null,e,s))}(c,(()=>{m.remove(),e.complete()}))}}
+l.font="30px "+e,l.fillText(".",0,20),l.getImageData(0,0,1,1).data[3]>0?s():setTimeout(t.bind(null,e,s))}(c,()=>{m.remove(),e.complete()})}}
 e.FontFaceObject=class{constructor(t,{isEvalSupported:e=!0,disableFontFace:s=!1,ignoreErrors:i=!1,inspectFont:n=null}){this.compiledGlyphs=Object.create(null)
 for(const a in t)this[a]=t[a]
 this.isEvalSupported=!1!==e,this.disableFontFace=!0===s,this.ignoreErrors=!0===i,this._inspectFont=n}createNativeFontFace(){if(!this.data||this.disableFontFace)return null
@@ -879,10 +880,10 @@ for(const e of s){const s=void 0!==e.args?e.args.join(","):""
 t.push("c.",e.cmd,"(",s,");\n")}return this.compiledGlyphs[e]=new Function("c","size",t.join(""))}return this.compiledGlyphs[e]=function(t,e){for(const i of s)"scale"===i.cmd&&(i.args=[e,-e]),t[i.cmd].apply(t,i.args)}}}},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.NodeStandardFontDataFactory=e.NodeFilterFactory=e.NodeCanvasFactory=e.NodeCMapReaderFactory=void 0
 var i=s(7)
 s(1)
-const n=function(t){return new Promise(((e,s)=>{require("fs").readFile(t,((t,i)=>{!t&&i?e(new Uint8Array(i)):s(new Error(t))}))}))}
+const n=function(t){return new Promise((e,s)=>{require("fs").readFile(t,(t,i)=>{!t&&i?e(new Uint8Array(i)):s(new Error(t))})})}
 class a extends i.BaseFilterFactory{}e.NodeFilterFactory=a
 class r extends i.BaseCanvasFactory{_createCanvas(t,e){return require("canvas").createCanvas(t,e)}}e.NodeCanvasFactory=r
-class o extends i.BaseCMapReaderFactory{_fetchData(t,e){return n(t).then((t=>({cMapData:t,compressionType:e})))}}e.NodeCMapReaderFactory=o
+class o extends i.BaseCMapReaderFactory{_fetchData(t,e){return n(t).then(t=>({cMapData:t,compressionType:e}))}}e.NodeCMapReaderFactory=o
 class l extends i.BaseStandardFontDataFactory{_fetchData(t){return n(t)}}e.NodeStandardFontDataFactory=l},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.CanvasGraphics=void 0
 var i=s(1),n=s(6),a=s(12),r=s(13)
 const o=4096,l=16
@@ -926,9 +927,9 @@ void 0!==t.setLineDash&&(e.setLineDash(t.getLineDash()),e.lineDashOffset=t.lineD
 for(let a=3;a<n;a+=4){const n=t[a]
 if(0===n)t[a-3]=e,t[a-2]=s,t[a-1]=i
 else if(n<255){const r=255-n
-t[a-3]=t[a-3]*n+e*r>>8,t[a-2]=t[a-2]*n+s*r>>8,t[a-1]=t[a-1]*n+i*r>>8}}}function b(t,e,s){const i=t.length
-for(let n=3;n<i;n+=4){const i=s?s[t[n]]:t[n]
-e[n]=e[n]*i*.00392156862745098|0}}function _(t,e,s){const i=t.length
+t[a-3]=t[a-3]*n+e*r>>8,t[a-2]=t[a-2]*n+s*r>>8,t[a-1]=t[a-1]*n+i*r>>8}}}function b(t,e,s){const i=t.length,n=1/255
+for(let a=3;a<i;a+=4){const i=s?s[t[a]]:t[a]
+e[a]=e[a]*i*n|0}}function _(t,e,s){const i=t.length
 for(let n=3;n<i;n+=4){const i=77*t[n-3]+152*t[n-2]+28*t[n-1]
 e[n]=s?e[n]*s[i>>8]>>8:e[n]*i>>16}}function A(t,e,s,i){const n=i[0],a=i[1],r=i[2]-n,o=i[3]-a
 0!==r&&0!==o&&(function(t,e,s,i,n,a,r,o,l,h,c){const d=!!a,u=d?a[0]:0,p=d?a[1]:0,g=d?a[2]:0,m="Luminosity"===n?_:b,A=Math.min(i,Math.ceil(1048576/s))
@@ -1212,7 +1213,7 @@ a=h>e?h/e:1,r=l>e?l/e:1}}this._cachedScaleForStroking[0]=a,this._cachedScaleForS
 if(e.lineWidth=s||1,1===i&&1===n)return void e.stroke()
 const a=e.getLineDash()
 if(t&&e.save(),e.scale(i,n),a.length>0){const t=Math.max(i,n)
-e.setLineDash(a.map((e=>e/t))),e.lineDashOffset/=t}e.stroke(),t&&e.restore()}isContentVisible(){for(let t=this.markedContentStack.length-1;t>=0;t--)if(!this.markedContentStack[t].visible)return!1
+e.setLineDash(a.map(e=>e/t)),e.lineDashOffset/=t}e.stroke(),t&&e.restore()}isContentVisible(){for(let t=this.markedContentStack.length-1;t>=0;t--)if(!this.markedContentStack[t].visible)return!1
 return!0}}e.CanvasGraphics=w
 for(const C in i.OPS)void 0!==w.prototype[C]&&(w.prototype[i.OPS[C]]=w.prototype[C])},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.TilingPattern=e.PathType=void 0,e.getShadingPattern=function(t){switch(t[0]){case"RadialAxial":return new l(t)
 case"Mesh":return new d(t)
@@ -1315,7 +1316,7 @@ else{if(e.callback!==a)throw new Error("Unexpected callback case")
 s.reject(g(e.reason))}return}const i=this.actionHandler[e.action]
 if(!i)throw new Error(`Unknown action from worker: ${e.action}`)
 if(e.callbackId){const t=this.sourceName,r=e.sourceName
-new Promise((function(t){t(i(e.data))})).then((function(i){s.postMessage({sourceName:t,targetName:r,callback:n,callbackId:e.callbackId,data:i})}),(function(i){s.postMessage({sourceName:t,targetName:r,callback:a,callbackId:e.callbackId,reason:g(i)})}))}else e.streamId?this.#ue(e):i(e.data)},s.addEventListener("message",this._onComObjOnMessage)}on(t,e){const s=this.actionHandler
+return void new Promise(function(t){t(i(e.data))}).then(function(i){s.postMessage({sourceName:t,targetName:r,callback:n,callbackId:e.callbackId,data:i})},function(i){s.postMessage({sourceName:t,targetName:r,callback:a,callbackId:e.callbackId,reason:g(i)})})}e.streamId?this.#ue(e):i(e.data)},s.addEventListener("message",this._onComObjOnMessage)}on(t,e){const s=this.actionHandler
 if(s[t])throw new Error(`There is already an actionName called "${t}"`)
 s[t]=e}send(t,e,s){this.comObj.postMessage({sourceName:this.sourceName,targetName:this.targetName,action:t,data:e},s)}sendWithPromise(t,e,s){const n=this.callbackId++,a=new i.PromiseCapability
 this.callbackCapabilities[n]=a
@@ -1327,13 +1328,13 @@ const e=new i.PromiseCapability
 return this.streamControllers[a].cancelCall=e,this.streamControllers[a].isClosed=!0,h.postMessage({sourceName:o,targetName:l,stream:r,streamId:a,reason:g(t)}),e.promise}},s)}#ue(t){const e=t.streamId,s=this.sourceName,n=t.sourceName,a=this.comObj,r=this,o=this.actionHandler[t.action],d={enqueue(t,r=1,o){if(this.isCancelled)return
 const l=this.desiredSize
 this.desiredSize-=r,l>0&&this.desiredSize<=0&&(this.sinkCapability=new i.PromiseCapability,this.ready=this.sinkCapability.promise),a.postMessage({sourceName:s,targetName:n,stream:h,streamId:e,chunk:t},o)},close(){this.isCancelled||(this.isCancelled=!0,a.postMessage({sourceName:s,targetName:n,stream:l,streamId:e}),delete r.streamSinks[e])},error(t){(0,i.assert)(t instanceof Error,"error must have a valid reason"),this.isCancelled||(this.isCancelled=!0,a.postMessage({sourceName:s,targetName:n,stream:c,streamId:e,reason:g(t)}))},sinkCapability:new i.PromiseCapability,onPull:null,onCancel:null,isCancelled:!1,desiredSize:t.desiredSize,ready:null}
-d.sinkCapability.resolve(),d.ready=d.sinkCapability.promise,this.streamSinks[e]=d,new Promise((function(e){e(o(t.data,d))})).then((function(){a.postMessage({sourceName:s,targetName:n,stream:p,streamId:e,success:!0})}),(function(t){a.postMessage({sourceName:s,targetName:n,stream:p,streamId:e,reason:g(t)})}))}#de(t){const e=t.streamId,s=this.sourceName,n=t.sourceName,a=this.comObj,m=this.streamControllers[e],f=this.streamSinks[e]
+d.sinkCapability.resolve(),d.ready=d.sinkCapability.promise,this.streamSinks[e]=d,new Promise(function(e){e(o(t.data,d))}).then(function(){a.postMessage({sourceName:s,targetName:n,stream:p,streamId:e,success:!0})},function(t){a.postMessage({sourceName:s,targetName:n,stream:p,streamId:e,reason:g(t)})})}#de(t){const e=t.streamId,s=this.sourceName,n=t.sourceName,a=this.comObj,m=this.streamControllers[e],f=this.streamSinks[e]
 switch(t.stream){case p:t.success?m.startCall.resolve():m.startCall.reject(g(t.reason))
 break
 case u:t.success?m.pullCall.resolve():m.pullCall.reject(g(t.reason))
 break
 case d:if(!f){a.postMessage({sourceName:s,targetName:n,stream:u,streamId:e,success:!0})
-break}f.desiredSize<=0&&t.desiredSize>0&&f.sinkCapability.resolve(),f.desiredSize=t.desiredSize,new Promise((function(t){t(f.onPull?.())})).then((function(){a.postMessage({sourceName:s,targetName:n,stream:u,streamId:e,success:!0})}),(function(t){a.postMessage({sourceName:s,targetName:n,stream:u,streamId:e,reason:g(t)})}))
+break}f.desiredSize<=0&&t.desiredSize>0&&f.sinkCapability.resolve(),f.desiredSize=t.desiredSize,new Promise(function(t){t(f.onPull?.())}).then(function(){a.postMessage({sourceName:s,targetName:n,stream:u,streamId:e,success:!0})},function(t){a.postMessage({sourceName:s,targetName:n,stream:u,streamId:e,reason:g(t)})})
 break
 case h:if((0,i.assert)(m,"enqueue should have stream controller"),m.isClosed)break
 m.controller.enqueue(t.chunk)
@@ -1346,7 +1347,7 @@ break
 case o:t.success?m.cancelCall.resolve():m.cancelCall.reject(g(t.reason)),this.#pe(m,e)
 break
 case r:if(!f)break
-new Promise((function(e){e(f.onCancel?.(g(t.reason)))})).then((function(){a.postMessage({sourceName:s,targetName:n,stream:o,streamId:e,success:!0})}),(function(t){a.postMessage({sourceName:s,targetName:n,stream:o,streamId:e,reason:g(t)})})),f.sinkCapability.reject(g(t.reason)),f.isCancelled=!0,delete this.streamSinks[e]
+new Promise(function(e){e(f.onCancel?.(g(t.reason)))}).then(function(){a.postMessage({sourceName:s,targetName:n,stream:o,streamId:e,success:!0})},function(t){a.postMessage({sourceName:s,targetName:n,stream:o,streamId:e,reason:g(t)})}),f.sinkCapability.reject(g(t.reason)),f.isCancelled=!0,delete this.streamSinks[e]
 break
 default:throw new Error("Unexpected stream case")}}async#pe(t,e){await Promise.allSettled([t.startCall?.promise,t.pullCall?.promise,t.cancelCall?.promise]),delete this.streamControllers[e]}destroy(){this.comObj.removeEventListener("message",this._onComObjOnMessage)}}},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.Metadata=void 0
 var i=s(1)
@@ -1391,9 +1392,9 @@ for(const[e,s]of this.#_e)t.update(`${e}:${s.visible}`)
 return this.#be=t.hexdigest()}}},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.PDFDataTransportStream=void 0
 var i=s(1),n=s(6)
 e.PDFDataTransportStream=class{constructor({length:t,initialData:e,progressiveDone:s=!1,contentDispositionFilename:n=null,disableRange:a=!1,disableStream:r=!1},o){if((0,i.assert)(o,'PDFDataTransportStream - missing required "pdfDataRangeTransport" argument.'),this._queuedChunks=[],this._progressiveDone=s,this._contentDispositionFilename=n,e?.length>0){const t=e instanceof Uint8Array&&e.byteLength===e.buffer.byteLength?e.buffer:new Uint8Array(e).buffer
-this._queuedChunks.push(t)}this._pdfDataRangeTransport=o,this._isStreamingSupported=!r,this._isRangeSupported=!a,this._contentLength=t,this._fullRequestReader=null,this._rangeReaders=[],this._pdfDataRangeTransport.addRangeListener(((t,e)=>{this._onReceiveData({begin:t,chunk:e})})),this._pdfDataRangeTransport.addProgressListener(((t,e)=>{this._onProgress({loaded:t,total:e})})),this._pdfDataRangeTransport.addProgressiveReadListener((t=>{this._onReceiveData({chunk:t})})),this._pdfDataRangeTransport.addProgressiveDoneListener((()=>{this._onProgressiveDone()})),this._pdfDataRangeTransport.transportReady()}_onReceiveData({begin:t,chunk:e}){const s=e instanceof Uint8Array&&e.byteLength===e.buffer.byteLength?e.buffer:new Uint8Array(e).buffer
+this._queuedChunks.push(t)}this._pdfDataRangeTransport=o,this._isStreamingSupported=!r,this._isRangeSupported=!a,this._contentLength=t,this._fullRequestReader=null,this._rangeReaders=[],this._pdfDataRangeTransport.addRangeListener((t,e)=>{this._onReceiveData({begin:t,chunk:e})}),this._pdfDataRangeTransport.addProgressListener((t,e)=>{this._onProgress({loaded:t,total:e})}),this._pdfDataRangeTransport.addProgressiveReadListener(t=>{this._onReceiveData({chunk:t})}),this._pdfDataRangeTransport.addProgressiveDoneListener(()=>{this._onProgressiveDone()}),this._pdfDataRangeTransport.transportReady()}_onReceiveData({begin:t,chunk:e}){const s=e instanceof Uint8Array&&e.byteLength===e.buffer.byteLength?e.buffer:new Uint8Array(e).buffer
 if(void 0===t)this._fullRequestReader?this._fullRequestReader._enqueue(s):this._queuedChunks.push(s)
-else{const e=this._rangeReaders.some((function(e){return e._begin===t&&(e._enqueue(s),!0)}));(0,i.assert)(e,"_onReceiveData - no `PDFDataTransportStreamRangeReader` instance found.")}}get _progressiveDataLength(){return this._fullRequestReader?._loaded??0}_onProgress(t){void 0===t.total?this._rangeReaders[0]?.onProgress?.({loaded:t.loaded}):this._fullRequestReader?.onProgress?.({loaded:t.loaded,total:t.total})}_onProgressiveDone(){this._fullRequestReader?.progressiveDone(),this._progressiveDone=!0}_removeRangeReader(t){const e=this._rangeReaders.indexOf(t)
+else{const e=this._rangeReaders.some(function(e){return e._begin===t&&(e._enqueue(s),!0)});(0,i.assert)(e,"_onReceiveData - no `PDFDataTransportStreamRangeReader` instance found.")}}get _progressiveDataLength(){return this._fullRequestReader?._loaded??0}_onProgress(t){void 0===t.total?this._rangeReaders[0]?.onProgress?.({loaded:t.loaded}):this._fullRequestReader?.onProgress?.({loaded:t.loaded,total:t.total})}_onProgressiveDone(){this._fullRequestReader?.progressiveDone(),this._progressiveDone=!0}_removeRangeReader(t){const e=this._rangeReaders.indexOf(t)
 e>=0&&this._rangeReaders.splice(e,1)}getFullReader(){(0,i.assert)(!this._fullRequestReader,"PDFDataTransportStream.getFullReader can only be called once.")
 const t=this._queuedChunks
 return this._queuedChunks=null,new a(this,t,this._progressiveDone,this._contentDispositionFilename)}getRangeReader(t,e){if(e<=this._progressiveDataLength)return null
@@ -1428,17 +1429,17 @@ class l{constructor(t){this._stream=t,this._reader=null,this._loaded=0,this._fil
 const e=t.source
 this._withCredentials=e.withCredentials||!1,this._contentLength=e.length,this._headersCapability=new i.PromiseCapability,this._disableRange=e.disableRange||!1,this._rangeChunkSize=e.rangeChunkSize,this._rangeChunkSize||this._disableRange||(this._disableRange=!0),this._abortController=new AbortController,this._isStreamingSupported=!e.disableStream,this._isRangeSupported=!e.disableRange,this._headers=r(this._stream.httpHeaders)
 const s=e.url
-fetch(s,a(this._headers,this._withCredentials,this._abortController)).then((t=>{if(!(0,n.validateResponseStatus)(t.status))throw(0,n.createResponseStatusError)(t.status,s)
+fetch(s,a(this._headers,this._withCredentials,this._abortController)).then(t=>{if(!(0,n.validateResponseStatus)(t.status))throw(0,n.createResponseStatusError)(t.status,s)
 this._reader=t.body.getReader(),this._headersCapability.resolve()
 const e=e=>t.headers.get(e),{allowRangeRequests:a,suggestedLength:r}=(0,n.validateRangeRequestCapabilities)({getResponseHeader:e,isHttp:this._stream.isHttp,rangeChunkSize:this._rangeChunkSize,disableRange:this._disableRange})
-this._isRangeSupported=a,this._contentLength=r||this._contentLength,this._filename=(0,n.extractFilenameFromHeader)(e),!this._isStreamingSupported&&this._isRangeSupported&&this.cancel(new i.AbortException("Streaming is disabled."))})).catch(this._headersCapability.reject),this.onProgress=null}get headersReady(){return this._headersCapability.promise}get filename(){return this._filename}get contentLength(){return this._contentLength}get isRangeSupported(){return this._isRangeSupported}get isStreamingSupported(){return this._isStreamingSupported}async read(){await this._headersCapability.promise
+this._isRangeSupported=a,this._contentLength=r||this._contentLength,this._filename=(0,n.extractFilenameFromHeader)(e),!this._isStreamingSupported&&this._isRangeSupported&&this.cancel(new i.AbortException("Streaming is disabled."))}).catch(this._headersCapability.reject),this.onProgress=null}get headersReady(){return this._headersCapability.promise}get filename(){return this._filename}get contentLength(){return this._contentLength}get isRangeSupported(){return this._isRangeSupported}get isStreamingSupported(){return this._isStreamingSupported}async read(){await this._headersCapability.promise
 const{value:t,done:e}=await this._reader.read()
 return e?{value:t,done:e}:(this._loaded+=t.byteLength,this.onProgress?.({loaded:this._loaded,total:this._contentLength}),{value:o(t),done:!1})}cancel(t){this._reader?.cancel(t),this._abortController.abort()}}class h{constructor(t,e,s){this._stream=t,this._reader=null,this._loaded=0
 const o=t.source
 this._withCredentials=o.withCredentials||!1,this._readCapability=new i.PromiseCapability,this._isStreamingSupported=!o.disableStream,this._abortController=new AbortController,this._headers=r(this._stream.httpHeaders),this._headers.append("Range",`bytes=${e}-${s-1}`)
 const l=o.url
-fetch(l,a(this._headers,this._withCredentials,this._abortController)).then((t=>{if(!(0,n.validateResponseStatus)(t.status))throw(0,n.createResponseStatusError)(t.status,l)
-this._readCapability.resolve(),this._reader=t.body.getReader()})).catch(this._readCapability.reject),this.onProgress=null}get isStreamingSupported(){return this._isStreamingSupported}async read(){await this._readCapability.promise
+fetch(l,a(this._headers,this._withCredentials,this._abortController)).then(t=>{if(!(0,n.validateResponseStatus)(t.status))throw(0,n.createResponseStatusError)(t.status,l)
+this._readCapability.resolve(),this._reader=t.body.getReader()}).catch(this._readCapability.reject),this.onProgress=null}get isStreamingSupported(){return this._isStreamingSupported}async read(){await this._readCapability.promise
 const{value:t,done:e}=await this._reader.read()
 return e?{value:t,done:e}:(this._loaded+=t.byteLength,this.onProgress?.({loaded:this._loaded}),{value:o(t),done:!1})}cancel(t){this._reader?.cancel(t),this._abortController.abort()}}},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.createResponseStatusError=function(t,e){if(404===t||0===t&&e.startsWith("file:"))return new i.MissingPDFException('Missing PDF "'+e+'".')
 return new i.UnexpectedResponseException(`Unexpected server response (${t}) while retrieving PDF "${e}".`,t)},e.extractFilenameFromHeader=function(t){const e=t("Content-Disposition")
@@ -1466,8 +1467,8 @@ try{const n=new TextDecoder(t,{fatal:!0}),a=(0,i.stringToBytes)(s)
 s=n.decode(a),e=!1}catch{}}return s}function r(t){return e&&/[\x80-\xff]/.test(t)&&(t=a("utf-8",t),e&&(t=a("iso-8859-1",t))),t}function o(t){if(t.startsWith('"')){const e=t.slice(1).split('\\"')
 for(let t=0;t<e.length;++t){const s=e[t].indexOf('"');-1!==s&&(e[t]=e[t].slice(0,s),e.length=t+1),e[t]=e[t].replaceAll(/\\(.)/g,"$1")}t=e.join('"')}return t}function l(t){const e=t.indexOf("'")
 if(-1===e)return t
-return a(t.slice(0,e),t.slice(e+1).replace(/^[^']*'/,""))}function h(t){return!t.startsWith("=?")||/[\x00-\x19\x80-\xff]/.test(t)?t:t.replaceAll(/=\?([\w-]*)\?([QqBb])\?((?:[^?]|\?(?!=))*)\?=/g,(function(t,e,s,i){if("q"===s||"Q"===s)return a(e,i=(i=i.replaceAll("_"," ")).replaceAll(/=([0-9a-fA-F]{2})/g,(function(t,e){return String.fromCharCode(parseInt(e,16))})))
-try{i=atob(i)}catch{}return a(e,i)}))}return""}
+return a(t.slice(0,e),t.slice(e+1).replace(/^[^']*'/,""))}function h(t){return!t.startsWith("=?")||/[\x00-\x19\x80-\xff]/.test(t)?t:t.replaceAll(/=\?([\w-]*)\?([QqBb])\?((?:[^?]|\?(?!=))*)\?=/g,function(t,e,s,i){if("q"===s||"Q"===s)return a(e,i=(i=i.replaceAll("_"," ")).replaceAll(/=([0-9a-fA-F]{2})/g,function(t,e){return String.fromCharCode(parseInt(e,16))}))
+try{i=atob(i)}catch{}return a(e,i)})}return""}
 var i=s(1)},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.PDFNetworkStream=void 0
 var i=s(1),n=s(20)
 class a{constructor(t,e={}){this.url=t,this.isHttp=/^https?:/i.test(t),this.httpHeaders=this.isHttp&&e.httpHeaders||Object.create(null),this.withCredentials=e.withCredentials||!1,this.currXhrId=0,this.pendingRequests=Object.create(null)}requestRange(t,e,s){const i={begin:t,end:e}
@@ -1533,34 +1534,33 @@ if(this._storedError)throw this._storedError
 const t=this._readableStream.read()
 if(null===t)return this._readCapability=new i.PromiseCapability,this.read()
 this._loaded+=t.length,this.onProgress?.({loaded:this._loaded,total:this._contentLength})
-return{value:new Uint8Array(t).buffer,done:!1}}cancel(t){this._readableStream?this._readableStream.destroy(t):this._error(t)}_error(t){this._storedError=t,this._readCapability.resolve()}_setReadableStream(t){this._readableStream=t,t.on("readable",(()=>{this._readCapability.resolve()})),t.on("end",(()=>{t.destroy(),this._done=!0,this._readCapability.resolve()})),t.on("error",(t=>{this._error(t)})),!this._isStreamingSupported&&this._isRangeSupported&&this._error(new i.AbortException("streaming is disabled")),this._storedError&&this._readableStream.destroy(this._storedError)}}class o{constructor(t){this._url=t.url,this._done=!1,this._storedError=null,this.onProgress=null,this._loaded=0,this._readableStream=null,this._readCapability=new i.PromiseCapability
+return{value:new Uint8Array(t).buffer,done:!1}}cancel(t){this._readableStream?this._readableStream.destroy(t):this._error(t)}_error(t){this._storedError=t,this._readCapability.resolve()}_setReadableStream(t){this._readableStream=t,t.on("readable",()=>{this._readCapability.resolve()}),t.on("end",()=>{t.destroy(),this._done=!0,this._readCapability.resolve()}),t.on("error",t=>{this._error(t)}),!this._isStreamingSupported&&this._isRangeSupported&&this._error(new i.AbortException("streaming is disabled")),this._storedError&&this._readableStream.destroy(this._storedError)}}class o{constructor(t){this._url=t.url,this._done=!1,this._storedError=null,this.onProgress=null,this._loaded=0,this._readableStream=null,this._readCapability=new i.PromiseCapability
 const e=t.source
 this._isStreamingSupported=!e.disableStream}get isStreamingSupported(){return this._isStreamingSupported}async read(){if(await this._readCapability.promise,this._done)return{value:void 0,done:!0}
 if(this._storedError)throw this._storedError
 const t=this._readableStream.read()
 if(null===t)return this._readCapability=new i.PromiseCapability,this.read()
 this._loaded+=t.length,this.onProgress?.({loaded:this._loaded})
-return{value:new Uint8Array(t).buffer,done:!1}}cancel(t){this._readableStream?this._readableStream.destroy(t):this._error(t)}_error(t){this._storedError=t,this._readCapability.resolve()}_setReadableStream(t){this._readableStream=t,t.on("readable",(()=>{this._readCapability.resolve()})),t.on("end",(()=>{t.destroy(),this._done=!0,this._readCapability.resolve()})),t.on("error",(t=>{this._error(t)})),this._storedError&&this._readableStream.destroy(this._storedError)}}function l(t,e){return{protocol:t.protocol,auth:t.auth,host:t.hostname,port:t.port,path:t.path,method:"GET",headers:e}}class h extends r{constructor(t){super(t)
+return{value:new Uint8Array(t).buffer,done:!1}}cancel(t){this._readableStream?this._readableStream.destroy(t):this._error(t)}_error(t){this._storedError=t,this._readCapability.resolve()}_setReadableStream(t){this._readableStream=t,t.on("readable",()=>{this._readCapability.resolve()}),t.on("end",()=>{t.destroy(),this._done=!0,this._readCapability.resolve()}),t.on("error",t=>{this._error(t)}),this._storedError&&this._readableStream.destroy(this._storedError)}}function l(t,e){return{protocol:t.protocol,auth:t.auth,host:t.hostname,port:t.port,path:t.path,method:"GET",headers:e}}class h extends r{constructor(t){super(t)
 const e=e=>{if(404===e.statusCode){const t=new i.MissingPDFException(`Missing PDF "${this._url}".`)
 return this._storedError=t,void this._headersCapability.reject(t)}this._headersCapability.resolve(),this._setReadableStream(e)
 const s=t=>this._readableStream.headers[t.toLowerCase()],{allowRangeRequests:a,suggestedLength:r}=(0,n.validateRangeRequestCapabilities)({getResponseHeader:s,isHttp:t.isHttp,rangeChunkSize:this._rangeChunkSize,disableRange:this._disableRange})
 this._isRangeSupported=a,this._contentLength=r||this._contentLength,this._filename=(0,n.extractFilenameFromHeader)(s)}
 if(this._request=null,"http:"===this._url.protocol){const s=require("http")
 this._request=s.request(l(this._url,t.httpHeaders),e)}else{const s=require("https")
-this._request=s.request(l(this._url,t.httpHeaders),e)}this._request.on("error",(t=>{this._storedError=t,this._headersCapability.reject(t)})),this._request.end()}}class c extends o{constructor(t,e,s){super(t),this._httpHeaders={}
+this._request=s.request(l(this._url,t.httpHeaders),e)}this._request.on("error",t=>{this._storedError=t,this._headersCapability.reject(t)}),this._request.end()}}class c extends o{constructor(t,e,s){super(t),this._httpHeaders={}
 for(const i in t.httpHeaders){const e=t.httpHeaders[i]
 void 0!==e&&(this._httpHeaders[i]=e)}this._httpHeaders.Range=`bytes=${e}-${s-1}`
-const n=t=>{if(404!==t.statusCode)this._setReadableStream(t)
-else{const t=new i.MissingPDFException(`Missing PDF "${this._url}".`)
-this._storedError=t}}
+const n=t=>{if(404===t.statusCode){const t=new i.MissingPDFException(`Missing PDF "${this._url}".`)
+return void(this._storedError=t)}this._setReadableStream(t)}
 if(this._request=null,"http:"===this._url.protocol){const t=require("http")
 this._request=t.request(l(this._url,this._httpHeaders),n)}else{const t=require("https")
-this._request=t.request(l(this._url,this._httpHeaders),n)}this._request.on("error",(t=>{this._storedError=t})),this._request.end()}}class d extends r{constructor(t){super(t)
+this._request=t.request(l(this._url,this._httpHeaders),n)}this._request.on("error",t=>{this._storedError=t}),this._request.end()}}class d extends r{constructor(t){super(t)
 let e=decodeURIComponent(this._url.path)
 a.test(this._url.href)&&(e=e.replace(/^\//,""))
 const s=require("fs")
-s.lstat(e,((t,n)=>{if(t)return"ENOENT"===t.code&&(t=new i.MissingPDFException(`Missing PDF "${e}".`)),this._storedError=t,void this._headersCapability.reject(t)
-this._contentLength=n.size,this._setReadableStream(s.createReadStream(e)),this._headersCapability.resolve()}))}}class u extends o{constructor(t,e,s){super(t)
+s.lstat(e,(t,n)=>{if(t)return"ENOENT"===t.code&&(t=new i.MissingPDFException(`Missing PDF "${e}".`)),this._storedError=t,void this._headersCapability.reject(t)
+this._contentLength=n.size,this._setReadableStream(s.createReadStream(e)),this._headersCapability.resolve()})}}class u extends o{constructor(t,e,s){super(t)
 let i=decodeURIComponent(this._url.path)
 a.test(this._url.href)&&(i=i.replace(/^\//,""))
 const n=require("fs")
@@ -1620,11 +1620,11 @@ e.SVGGraphics=class{constructor(t,e,s=!1){(0,i.deprecated)("The SVG back-end is 
 for(const i in n.OPS)this._operatorIdMapping[n.OPS[i]]=i}getObject(t,e=null){return"string"==typeof t?t.startsWith("g_")?this.commonObjs.get(t):this.objs.get(t):e}save(){this.transformStack.push(this.transformMatrix)
 const t=this.current
 this.extraStack.push(t),this.current=t.clone()}restore(){this.transformMatrix=this.transformStack.pop(),this.current=this.extraStack.pop(),this.pendingClip=null,this.tgrp=null}group(t){this.save(),this.executeOpTree(t),this.restore()}loadDependencies(t){const e=t.fnArray,s=t.argsArray
-for(let i=0,a=e.length;i<a;i++)if(e[i]===n.OPS.dependency)for(const t of s[i]){const e=t.startsWith("g_")?this.commonObjs:this.objs,s=new Promise((s=>{e.get(t,s)}))
+for(let i=0,a=e.length;i<a;i++)if(e[i]===n.OPS.dependency)for(const t of s[i]){const e=t.startsWith("g_")?this.commonObjs:this.objs,s=new Promise(s=>{e.get(t,s)})
 this.current.dependencies.push(s)}return Promise.all(this.current.dependencies)}transform(t,e,s,i,a,r){const o=[t,e,s,i,a,r]
 this.transformMatrix=n.Util.transform(this.transformMatrix,o),this.tgrp=null}getSVG(t,e){this.viewport=e
 const s=this._initialize(e)
-return this.loadDependencies(t).then((()=>(this.transformMatrix=n.IDENTITY_MATRIX,this.executeOpTree(this.convertOpList(t)),s)))}convertOpList(t){const e=this._operatorIdMapping,s=t.argsArray,i=t.fnArray,n=[]
+return this.loadDependencies(t).then(()=>(this.transformMatrix=n.IDENTITY_MATRIX,this.executeOpTree(this.convertOpList(t)),s))}convertOpList(t){const e=this._operatorIdMapping,s=t.argsArray,i=t.fnArray,n=[]
 for(let a=0,r=i.length;a<r;a++){const t=i[a]
 n.push({fnId:t,fn:e[t],args:s[a]})}return function(t){let e=[]
 const s=[]
@@ -1824,7 +1824,7 @@ default:(0,n.warn)(`Unimplemented graphic state operator ${e}`)}}fill(){const t=
 t.element&&(t.element.setAttributeNS(null,"fill",t.fillColor),t.element.setAttributeNS(null,"fill-opacity",t.fillAlpha),this.endPath())}stroke(){const t=this.current
 t.element&&(this._setStrokeAttributes(t.element),t.element.setAttributeNS(null,"fill","none"),this.endPath())}_setStrokeAttributes(t,e=1){const s=this.current
 let i=s.dashArray
-1!==e&&i.length>0&&(i=i.map((function(t){return e*t}))),t.setAttributeNS(null,"stroke",s.strokeColor),t.setAttributeNS(null,"stroke-opacity",s.strokeAlpha),t.setAttributeNS(null,"stroke-miterlimit",p(s.miterLimit)),t.setAttributeNS(null,"stroke-linecap",s.lineCap),t.setAttributeNS(null,"stroke-linejoin",s.lineJoin),t.setAttributeNS(null,"stroke-width",p(e*s.lineWidth)+"px"),t.setAttributeNS(null,"stroke-dasharray",i.map(p).join(" ")),t.setAttributeNS(null,"stroke-dashoffset",p(e*s.dashPhase)+"px")}eoFill(){this.current.element?.setAttributeNS(null,"fill-rule","evenodd"),this.fill()}fillStroke(){this.stroke(),this.fill()}eoFillStroke(){this.current.element?.setAttributeNS(null,"fill-rule","evenodd"),this.fillStroke()}closeStroke(){this.closePath(),this.stroke()}closeFillStroke(){this.closePath(),this.fillStroke()}closeEOFillStroke(){this.closePath(),this.eoFillStroke()}paintSolidColorImageMask(){const t=this.svgFactory.createElement("svg:rect")
+1!==e&&i.length>0&&(i=i.map(function(t){return e*t})),t.setAttributeNS(null,"stroke",s.strokeColor),t.setAttributeNS(null,"stroke-opacity",s.strokeAlpha),t.setAttributeNS(null,"stroke-miterlimit",p(s.miterLimit)),t.setAttributeNS(null,"stroke-linecap",s.lineCap),t.setAttributeNS(null,"stroke-linejoin",s.lineJoin),t.setAttributeNS(null,"stroke-width",p(e*s.lineWidth)+"px"),t.setAttributeNS(null,"stroke-dasharray",i.map(p).join(" ")),t.setAttributeNS(null,"stroke-dashoffset",p(e*s.dashPhase)+"px")}eoFill(){this.current.element?.setAttributeNS(null,"fill-rule","evenodd"),this.fill()}fillStroke(){this.stroke(),this.fill()}eoFillStroke(){this.current.element?.setAttributeNS(null,"fill-rule","evenodd"),this.fillStroke()}closeStroke(){this.closePath(),this.stroke()}closeFillStroke(){this.closePath(),this.fillStroke()}closeEOFillStroke(){this.closePath(),this.eoFillStroke()}paintSolidColorImageMask(){const t=this.svgFactory.createElement("svg:rect")
 t.setAttributeNS(null,"x","0"),t.setAttributeNS(null,"y","0"),t.setAttributeNS(null,"width","1px"),t.setAttributeNS(null,"height","1px"),t.setAttributeNS(null,"fill",this.current.fillColor),this._ensureTransformGroup().append(t)}paintImageXObject(t){const e=this.getObject(t)
 e?this.paintInlineImageXObject(e):(0,n.warn)(`Dependent image with object ID ${t} is not ready yet`)}paintInlineImageXObject(t,e){const s=t.width,i=t.height,n=d(t,this.forceDataSchema,!!e),a=this.svgFactory.createElement("svg:rect")
 a.setAttributeNS(null,"x","0"),a.setAttributeNS(null,"y","0"),a.setAttributeNS(null,"width",p(s)),a.setAttributeNS(null,"height",p(i)),this.current.element=a,this.clip("nonzero")
@@ -1851,64 +1851,64 @@ else{if(!s.shouldBuildText(a))return
 i?.attributes?.textContent?n=i.attributes.textContent:i.value&&(n=i.value)}if(null!==n&&e.push({str:n}),i.children)for(const e of i.children)t(e)}(t),i}static shouldBuildText(t){return!("textarea"===t||"input"===t||"option"===t||"select"===t)}}e.XfaText=s},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.TextLayerRenderTask=void 0,e.renderTextLayer=function(t){t.textContentSource||!t.textContent&&!t.textContentStream||((0,n.deprecated)("The TextLayerRender `textContent`/`textContentStream` parameters will be removed in the future, please use `textContentSource` instead."),t.textContentSource=t.textContent||t.textContentStream)
 const{container:e,viewport:s}=t,i=getComputedStyle(e),a=i.getPropertyValue("visibility"),r=parseFloat(i.getPropertyValue("--scale-factor"))
 "visible"===a&&(!r||Math.abs(r-s.scale)>1e-5)&&console.error("The `--scale-factor` CSS-variable must be set, to the same value as `viewport.scale`, either on the `container`-element itself or higher up in the DOM.")
-const o=new d(t)
-return o._render(),o},e.updateTextLayer=function({container:t,viewport:e,textDivs:s,textDivProperties:i,isOffscreenCanvasSupported:a,mustRotate:r=!0,mustRescale:o=!0}){r&&(0,n.setLayerDimensions)(t,{rotation:e.rotation})
-if(o){const t=l(0,a),n={prevFontSize:null,prevFontFamily:null,div:null,scale:e.scale*(globalThis.devicePixelRatio||1),properties:null,ctx:t}
-for(const e of s)n.properties=i.get(e),n.div=e,c(n)}}
+const o=new c(t)
+return o._render(),o},e.updateTextLayer=function({container:t,viewport:e,textDivs:s,textDivProperties:i,isOffscreenCanvasSupported:a,mustRotate:r=!0,mustRescale:l=!0}){r&&(0,n.setLayerDimensions)(t,{rotation:e.rotation})
+if(l){const t=o(0,a),n={prevFontSize:null,prevFontFamily:null,div:null,scale:e.scale*(globalThis.devicePixelRatio||1),properties:null,ctx:t}
+for(const e of s)n.properties=i.get(e),n.div=e,h(n)}}
 var i=s(1),n=s(6)
-const a=30,r=.8,o=new Map
-function l(t,e){let s
+const a=30,r=new Map
+function o(t,e){let s
 if(e&&i.FeatureTest.isOffscreenCanvasSupported)s=new OffscreenCanvas(t,t).getContext("2d",{alpha:!1})
 else{const e=document.createElement("canvas")
-e.width=e.height=t,s=e.getContext("2d",{alpha:!1})}return s}function h(t,e,s){const n=document.createElement("span"),h={angle:0,canvasWidth:0,hasText:""!==e.str,hasEOL:e.hasEOL,fontSize:0}
+e.width=e.height=t,s=e.getContext("2d",{alpha:!1})}return s}function l(t,e,s){const n=document.createElement("span"),l={angle:0,canvasWidth:0,hasText:""!==e.str,hasEOL:e.hasEOL,fontSize:0}
 t._textDivs.push(n)
-const c=i.Util.transform(t._transform,e.transform)
-let d=Math.atan2(c[1],c[0])
-const u=s[e.fontName]
-u.vertical&&(d+=Math.PI/2)
-const p=Math.hypot(c[2],c[3]),g=p*function(t,e){const s=o.get(t)
+const h=i.Util.transform(t._transform,e.transform)
+let c=Math.atan2(h[1],h[0])
+const d=s[e.fontName]
+d.vertical&&(c+=Math.PI/2)
+const u=Math.hypot(h[2],h[3]),p=u*function(t,e){const s=r.get(t)
 if(s)return s
-const i=l(a,e)
-i.font=`${a}px ${t}`
+const i=o(a,e)
+i.font=`30px ${t}`
 const n=i.measureText("")
-let h=n.fontBoundingBoxAscent,c=Math.abs(n.fontBoundingBoxDescent)
-if(h){const e=h/(h+c)
-return o.set(t,e),i.canvas.width=i.canvas.height=0,e}i.strokeStyle="red",i.clearRect(0,0,a,a),i.strokeText("g",0,0)
-let d=i.getImageData(0,0,a,a).data
-c=0
-for(let r=d.length-1-3;r>=0;r-=4)if(d[r]>0){c=Math.ceil(r/4/a)
-break}i.clearRect(0,0,a,a),i.strokeText("A",0,a),d=i.getImageData(0,0,a,a).data,h=0
-for(let r=0,o=d.length;r<o;r+=4)if(d[r]>0){h=a-Math.floor(r/4/a)
-break}if(i.canvas.width=i.canvas.height=0,h){const e=h/(h+c)
-return o.set(t,e),e}return o.set(t,r),r}(u.fontFamily,t._isOffscreenCanvasSupported)
-let m,f
-0===d?(m=c[4],f=c[5]-g):(m=c[4]+g*Math.sin(d),f=c[5]-g*Math.cos(d))
-const b="calc(var(--scale-factor)*",_=n.style
-t._container===t._rootContainer?(_.left=`${(100*m/t._pageWidth).toFixed(2)}%`,_.top=`${(100*f/t._pageHeight).toFixed(2)}%`):(_.left=`${b}${m.toFixed(2)}px)`,_.top=`${b}${f.toFixed(2)}px)`),_.fontSize=`${b}${p.toFixed(2)}px)`,_.fontFamily=u.fontFamily,h.fontSize=p,n.setAttribute("role","presentation"),n.textContent=e.str,n.dir=e.dir,t._fontInspectorEnabled&&(n.dataset.fontName=e.fontName),0!==d&&(h.angle=d*(180/Math.PI))
-let A=!1
-if(e.str.length>1)A=!0
+let l=n.fontBoundingBoxAscent,h=Math.abs(n.fontBoundingBoxDescent)
+if(l){const e=l/(l+h)
+return r.set(t,e),i.canvas.width=i.canvas.height=0,e}i.strokeStyle="red",i.clearRect(0,0,a,a),i.strokeText("g",0,0)
+let c=i.getImageData(0,0,a,a).data
+h=0
+for(let r=c.length-1-3;r>=0;r-=4)if(c[r]>0){h=Math.ceil(r/4/a)
+break}i.clearRect(0,0,a,a),i.strokeText("A",0,a),c=i.getImageData(0,0,a,a).data,l=0
+for(let r=0,o=c.length;r<o;r+=4)if(c[r]>0){l=a-Math.floor(r/4/a)
+break}if(i.canvas.width=i.canvas.height=0,l){const e=l/(l+h)
+return r.set(t,e),e}return r.set(t,.8),.8}(d.fontFamily,t._isOffscreenCanvasSupported)
+let g,m
+0===c?(g=h[4],m=h[5]-p):(g=h[4]+p*Math.sin(c),m=h[5]-p*Math.cos(c))
+const f="calc(var(--scale-factor)*",b=n.style
+t._container===t._rootContainer?(b.left=`${(100*g/t._pageWidth).toFixed(2)}%`,b.top=`${(100*m/t._pageHeight).toFixed(2)}%`):(b.left=`${f}${g.toFixed(2)}px)`,b.top=`${f}${m.toFixed(2)}px)`),b.fontSize=`${f}${u.toFixed(2)}px)`,b.fontFamily=d.fontFamily,l.fontSize=u,n.setAttribute("role","presentation"),n.textContent=e.str,n.dir=e.dir,t._fontInspectorEnabled&&(n.dataset.fontName=e.fontName),0!==c&&(l.angle=c*(180/Math.PI))
+let _=!1
+if(e.str.length>1)_=!0
 else if(" "!==e.str&&e.transform[0]!==e.transform[3]){const t=Math.abs(e.transform[0]),s=Math.abs(e.transform[3])
-t!==s&&Math.max(t,s)/Math.min(t,s)>1.5&&(A=!0)}A&&(h.canvasWidth=u.vertical?e.height:e.width),t._textDivProperties.set(n,h),t._isReadableStream&&t._layoutText(n)}function c(t){const{div:e,scale:s,properties:i,ctx:n,prevFontSize:a,prevFontFamily:r}=t,{style:o}=e
+t!==s&&Math.max(t,s)/Math.min(t,s)>1.5&&(_=!0)}_&&(l.canvasWidth=d.vertical?e.height:e.width),t._textDivProperties.set(n,l),t._isReadableStream&&t._layoutText(n)}function h(t){const{div:e,scale:s,properties:i,ctx:n,prevFontSize:a,prevFontFamily:r}=t,{style:o}=e
 let l=""
 if(0!==i.canvasWidth&&i.hasText){const{fontFamily:h}=o,{canvasWidth:c,fontSize:d}=i
 a===d&&r===h||(n.font=`${d*s}px ${h}`,t.prevFontSize=d,t.prevFontFamily=h)
 const{width:u}=n.measureText(e.textContent)
-u>0&&(l=`scaleX(${c*s/u})`)}0!==i.angle&&(l=`rotate(${i.angle}deg) ${l}`),l.length>0&&(o.transform=l)}class d{constructor({textContentSource:t,container:e,viewport:s,textDivs:a,textDivProperties:r,textContentItemsStr:o,isOffscreenCanvasSupported:h}){this._textContentSource=t,this._isReadableStream=t instanceof ReadableStream,this._container=this._rootContainer=e,this._textDivs=a||[],this._textContentItemsStr=o||[],this._isOffscreenCanvasSupported=h,this._fontInspectorEnabled=!!globalThis.FontInspector?.enabled,this._reader=null,this._textDivProperties=r||new WeakMap,this._canceled=!1,this._capability=new i.PromiseCapability,this._layoutTextParams={prevFontSize:null,prevFontFamily:null,div:null,scale:s.scale*(globalThis.devicePixelRatio||1),properties:null,ctx:l(0,h)}
+u>0&&(l=`scaleX(${c*s/u})`)}0!==i.angle&&(l=`rotate(${i.angle}deg) ${l}`),l.length>0&&(o.transform=l)}class c{constructor({textContentSource:t,container:e,viewport:s,textDivs:a,textDivProperties:r,textContentItemsStr:l,isOffscreenCanvasSupported:h}){this._textContentSource=t,this._isReadableStream=t instanceof ReadableStream,this._container=this._rootContainer=e,this._textDivs=a||[],this._textContentItemsStr=l||[],this._isOffscreenCanvasSupported=h,this._fontInspectorEnabled=!!globalThis.FontInspector?.enabled,this._reader=null,this._textDivProperties=r||new WeakMap,this._canceled=!1,this._capability=new i.PromiseCapability,this._layoutTextParams={prevFontSize:null,prevFontFamily:null,div:null,scale:s.scale*(globalThis.devicePixelRatio||1),properties:null,ctx:o(0,h)}
 const{pageWidth:c,pageHeight:d,pageX:u,pageY:p}=s.rawDims
-this._transform=[1,0,0,-1,-u,p+d],this._pageWidth=c,this._pageHeight=d,(0,n.setLayerDimensions)(e,s),this._capability.promise.finally((()=>{this._layoutTextParams=null})).catch((()=>{}))}get promise(){return this._capability.promise}cancel(){this._canceled=!0,this._reader&&(this._reader.cancel(new i.AbortException("TextLayer task cancelled.")).catch((()=>{})),this._reader=null),this._capability.reject(new i.AbortException("TextLayer task cancelled."))}_processItems(t,e){for(const s of t)if(void 0!==s.str)this._textContentItemsStr.push(s.str),h(this,s,e)
+this._transform=[1,0,0,-1,-u,p+d],this._pageWidth=c,this._pageHeight=d,(0,n.setLayerDimensions)(e,s),this._capability.promise.finally(()=>{this._layoutTextParams=null}).catch(()=>{})}get promise(){return this._capability.promise}cancel(){this._canceled=!0,this._reader&&(this._reader.cancel(new i.AbortException("TextLayer task cancelled.")).catch(()=>{}),this._reader=null),this._capability.reject(new i.AbortException("TextLayer task cancelled."))}_processItems(t,e){for(const s of t)if(void 0!==s.str)this._textContentItemsStr.push(s.str),l(this,s,e)
 else if("beginMarkedContentProps"===s.type||"beginMarkedContent"===s.type){const t=this._container
 this._container=document.createElement("span"),this._container.classList.add("markedContent"),null!==s.id&&this._container.setAttribute("id",`${s.id}`),t.append(this._container)}else"endMarkedContent"===s.type&&(this._container=this._container.parentNode)}_layoutText(t){const e=this._layoutTextParams.properties=this._textDivProperties.get(t)
-if(this._layoutTextParams.div=t,c(this._layoutTextParams),e.hasText&&this._container.append(t),e.hasEOL){const t=document.createElement("br")
+if(this._layoutTextParams.div=t,h(this._layoutTextParams),e.hasText&&this._container.append(t),e.hasEOL){const t=document.createElement("br")
 t.setAttribute("role","presentation"),this._container.append(t)}}_render(){const t=new i.PromiseCapability
 let e=Object.create(null)
-if(this._isReadableStream){const s=()=>{this._reader.read().then((({value:i,done:n})=>{n?t.resolve():(Object.assign(e,i.styles),this._processItems(i.items,e),s())}),t.reject)}
+if(this._isReadableStream){const s=()=>{this._reader.read().then(({value:i,done:n})=>{n?t.resolve():(Object.assign(e,i.styles),this._processItems(i.items,e),s())},t.reject)}
 this._reader=this._textContentSource.getReader(),s()}else{if(!this._textContentSource)throw new Error('No "textContentSource" parameter specified.')
 {const{items:e,styles:s}=this._textContentSource
-this._processItems(e,s),t.resolve()}}t.promise.then((()=>{e=null,function(t){if(t._canceled)return
+this._processItems(e,s),t.resolve()}}t.promise.then(()=>{e=null,function(t){if(t._canceled)return
 const e=t._textDivs,s=t._capability
 if(e.length>1e5)s.resolve()
 else{if(!t._isReadableStream)for(const s of e)t._layoutText(s)
-s.resolve()}}(this)}),this._capability.reject)}}e.TextLayerRenderTask=d},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.AnnotationEditorLayer=void 0
+s.resolve()}}(this)},this._capability.reject)}}e.TextLayerRenderTask=c},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.AnnotationEditorLayer=void 0
 var i=s(1),n=s(4),a=s(28),r=s(33),o=s(6),l=s(34)
 class h{#Se
 #xe=!1
@@ -1940,10 +1940,10 @@ if(this.#Ee){const e=this.#Ee.getEditableAnnotations()
 for(const s of e){const{id:e}=s.data
 t.has(e)||this.#Fe.isDeletedAnnotationElement(e)||s.show()}}this.#Re(),this.isEmpty&&(this.div.hidden=!0),this.#ke=!1}getEditableAnnotation(t){return this.#Ee?.getEditableAnnotation(t)||null}setActiveEditor(t){this.#Fe.getActive()!==t&&this.#Fe.setActiveEditor(t)}enableClick(){this.div.addEventListener("pointerdown",this.#Ce),this.div.addEventListener("pointerup",this.#we)}disableClick(){this.div.removeEventListener("pointerdown",this.#Ce),this.div.removeEventListener("pointerup",this.#we)}attach(t){this.#Te.set(t.id,t)
 const{annotationElementId:e}=t
-e&&this.#Fe.isDeletedAnnotationElement(e)&&this.#Fe.removeDeletedAnnotationElement(t)}detach(t){this.#Te.delete(t.id),this.#Se?.removePointerInTextLayer(t.contentDiv),!this.#ke&&t.annotationElementId&&this.#Fe.addDeletedAnnotationElement(t)}remove(t){this.detach(t),this.#Fe.removeEditor(t),t.div.contains(document.activeElement)&&setTimeout((()=>{this.#Fe.focusMainContainer()}),0),t.div.remove(),t.isAttachedToDOM=!1,this.#Me||this.addInkEditorIfNeeded(!1)}changeParent(t){t.parent!==this&&(t.annotationElementId&&(this.#Fe.addDeletedAnnotationElement(t.annotationElementId),n.AnnotationEditor.deleteAnnotationElement(t),t.annotationElementId=null),this.attach(t),t.parent?.detach(t),t.setParent(this),t.div&&t.isAttachedToDOM&&(t.div.remove(),this.div.append(t.div)))}add(t){if(this.changeParent(t),this.#Fe.addEditor(t),this.attach(t),!t.isAttachedToDOM){const e=t.render()
+e&&this.#Fe.isDeletedAnnotationElement(e)&&this.#Fe.removeDeletedAnnotationElement(t)}detach(t){this.#Te.delete(t.id),this.#Se?.removePointerInTextLayer(t.contentDiv),!this.#ke&&t.annotationElementId&&this.#Fe.addDeletedAnnotationElement(t)}remove(t){this.detach(t),this.#Fe.removeEditor(t),t.div.contains(document.activeElement)&&setTimeout(()=>{this.#Fe.focusMainContainer()},0),t.div.remove(),t.isAttachedToDOM=!1,this.#Me||this.addInkEditorIfNeeded(!1)}changeParent(t){t.parent!==this&&(t.annotationElementId&&(this.#Fe.addDeletedAnnotationElement(t.annotationElementId),n.AnnotationEditor.deleteAnnotationElement(t),t.annotationElementId=null),this.attach(t),t.parent?.detach(t),t.setParent(this),t.div&&t.isAttachedToDOM&&(t.div.remove(),this.div.append(t.div)))}add(t){if(this.changeParent(t),this.#Fe.addEditor(t),this.attach(t),!t.isAttachedToDOM){const e=t.render()
 this.div.append(e),t.isAttachedToDOM=!0}t.fixAndSetPosition(),t.onceAdded(),this.#Fe.addToAnnotationStorage(t)}moveEditorInDOM(t){if(!t.isAttachedToDOM)return
 const{activeElement:e}=document
-t.div.contains(e)&&(t._focusEventsAllowed=!1,setTimeout((()=>{t.div.contains(document.activeElement)?t._focusEventsAllowed=!0:(t.div.addEventListener("focusin",(()=>{t._focusEventsAllowed=!0}),{once:!0}),e.focus())}),0)),t._structTreeParentId=this.#Se?.moveElementInDOM(this.div,t.div,t.contentDiv,!0)}addOrRebuild(t){t.needsToBeRebuilt()?t.rebuild():this.add(t)}addUndoableEditor(t){this.addCommands({cmd:()=>t._uiManager.rebuild(t),undo:()=>{t.remove()},mustExec:!1})}getNextId(){return this.#Fe.getId()}#Ie(t){switch(this.#Fe.getMode()){case i.AnnotationEditorType.FREETEXT:return new a.FreeTextEditor(t)
+t.div.contains(e)&&(t._focusEventsAllowed=!1,setTimeout(()=>{t.div.contains(document.activeElement)?t._focusEventsAllowed=!0:(t.div.addEventListener("focusin",()=>{t._focusEventsAllowed=!0},{once:!0}),e.focus())},0)),t._structTreeParentId=this.#Se?.moveElementInDOM(this.div,t.div,t.contentDiv,!0)}addOrRebuild(t){t.needsToBeRebuilt()?t.rebuild():this.add(t)}addUndoableEditor(t){this.addCommands({cmd:()=>t._uiManager.rebuild(t),undo:()=>{t.remove()},mustExec:!1})}getNextId(){return this.#Fe.getId()}#Ie(t){switch(this.#Fe.getMode()){case i.AnnotationEditorType.FREETEXT:return new a.FreeTextEditor(t)
 case i.AnnotationEditorType.INK:return new r.InkEditor(t)
 case i.AnnotationEditorType.STAMP:return new l.StampEditor(t)}return null}pasteEditor(t,e){this.#Fe.updateToolbar(t),this.#Fe.updateMode(t)
 const{offsetX:s,offsetY:i}=this.#Le(),n=this.getNextId(),a=this.#Ie({parent:this,id:n,x:s,y:i,uiManager:this.#Fe,isCentered:!0,...e})
@@ -2007,7 +2007,7 @@ if(t===e)return
 const s=t=>{this.#ze=t,t?(this.#Ye(),this._uiManager.rebuild(this),this.#$e()):this.remove()}
 this.addCommands({cmd:()=>{s(e)},undo:()=>{s(t)},mustExec:!1}),this.#$e()}shouldGetKeyboardEvents(){return this.isInEditMode()}enterInEditMode(){this.enableEditMode(),this.editorDiv.focus()}dblclick(t){this.enterInEditMode()}keydown(t){t.target===this.div&&"Enter"===t.key&&(this.enterInEditMode(),t.preventDefault())}editorDivKeydown(t){o._keyboardManager.exec(this,t)}editorDivFocus(t){this.isEditing=!0}editorDivBlur(t){this.isEditing=!1}editorDivInput(t){this.parent.div.classList.toggle("freeTextEditing",this.isEmpty())}disableEditing(){this.editorDiv.setAttribute("role","comment"),this.editorDiv.removeAttribute("aria-multiline")}enableEditing(){this.editorDiv.setAttribute("role","textbox"),this.editorDiv.setAttribute("aria-multiline",!0)}render(){if(this.div)return this.div
 let t,e
-this.width&&(t=this.x,e=this.y),super.render(),this.editorDiv=document.createElement("div"),this.editorDiv.className="internal",this.editorDiv.setAttribute("id",this.#He),this.enableEditing(),a.AnnotationEditor._l10nPromise.get("editor_free_text2_aria_label").then((t=>this.editorDiv?.setAttribute("aria-label",t))),a.AnnotationEditor._l10nPromise.get("free_text2_default_content").then((t=>this.editorDiv?.setAttribute("default-content",t))),this.editorDiv.contentEditable=!0
+this.width&&(t=this.x,e=this.y),super.render(),this.editorDiv=document.createElement("div"),this.editorDiv.className="internal",this.editorDiv.setAttribute("id",this.#He),this.enableEditing(),a.AnnotationEditor._l10nPromise.get("editor_free_text2_aria_label").then(t=>this.editorDiv?.setAttribute("aria-label",t)),a.AnnotationEditor._l10nPromise.get("free_text2_default_content").then(t=>this.editorDiv?.setAttribute("default-content",t)),this.editorDiv.contentEditable=!0
 const{style:s}=this.editorDiv
 if(s.fontSize=`calc(${this.#We}px * var(--scale-factor))`,s.color=this.#je,this.div.append(this.editorDiv),this.overlayDiv=document.createElement("div"),this.overlayDiv.classList.add("overlay","enabled"),this.div.append(this.overlayDiv),(0,n.bindEvents)(this,this.div,["dblclick","keydown"]),this.width){const[s,i]=this.parentDimensions
 if(this.annotationElementId){const{position:n}=this.#Ge
@@ -2031,8 +2031,8 @@ return a.#We=t.fontSize,a.#je=i.Util.makeHexColor(...t.color),a.#ze=t.value,a.an
 if(this.deleted)return{pageIndex:this.pageIndex,id:this.annotationElementId,deleted:!0}
 const e=o._internalPadding*this.parentScale,s=this.getRect(e,e),n=a.AnnotationEditor._colorManager.convert(this.isAttachedToDOM?getComputedStyle(this.editorDiv).color:this.#je),r={annotationType:i.AnnotationEditorType.FREETEXT,color:n,fontSize:this.#We,value:this.#ze,pageIndex:this.pageIndex,rect:s,rotation:this.rotation,structTreeParentId:this._structTreeParentId}
 return t?r:this.annotationElementId&&!this.#Je(r)?null:(r.id=this.annotationElementId,r)}#Je(t){const{value:e,fontSize:s,color:i,rect:n,pageIndex:a}=this.#Ge
-return t.value!==e||t.fontSize!==s||t.rect.some(((t,e)=>Math.abs(t-n[e])>=1))||t.color.some(((t,e)=>t!==i[e]))||t.pageIndex!==a}#Xe(t=!1){if(!this.annotationElementId)return
-if(this.#$e(),!t&&(0===this.width||0===this.height))return void setTimeout((()=>this.#Xe(!0)),0)
+return t.value!==e||t.fontSize!==s||t.rect.some((t,e)=>Math.abs(t-n[e])>=1)||t.color.some((t,e)=>t!==i[e])||t.pageIndex!==a}#Xe(t=!1){if(!this.annotationElementId)return
+if(this.#$e(),!t&&(0===this.width||0===this.height))return void setTimeout(()=>this.#Xe(!0),0)
 const e=o._internalPadding*this.parentScale
 this.#Ge.rect=this.getRect(e,e)}}e.FreeTextEditor=o},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.StampAnnotationElement=e.InkAnnotationElement=e.FreeTextAnnotationElement=e.AnnotationLayer=void 0
 var i=s(1),n=s(6),a=s(3),r=s(30),o=s(31),l=s(32)
@@ -2086,7 +2086,7 @@ t%180==0?(r=100*n/s,o=100*a/i):(r=100*a/s,o=100*n/i),e.style.width=`${r}%`,e.sty
 s.target.style[e]=r.ColorConverters[`${n}_HTML`](a),this.annotationStorage.setValue(this.data.id,{[e]:r.ColorConverters[`${n}_rgb`](a)})}
 return(0,i.shadow)(this,"_commonActions",{display:t=>{const{display:e}=t.detail,s=e%2==1
 this.container.style.visibility=s?"hidden":"visible",this.annotationStorage.setValue(this.data.id,{noView:s,noPrint:1===e||2===e})},print:t=>{this.annotationStorage.setValue(this.data.id,{noPrint:!t.detail.print})},hidden:t=>{const{hidden:e}=t.detail
-this.container.style.visibility=e?"hidden":"visible",this.annotationStorage.setValue(this.data.id,{noPrint:e,noView:e})},focus:t=>{setTimeout((()=>t.target.focus({preventScroll:!1})),0)},userName:t=>{t.target.title=t.detail.userName},readonly:t=>{t.target.disabled=t.detail.readonly},required:t=>{this._setRequired(t.target,t.detail.required)},bgColor:e=>{t("bgColor","backgroundColor",e)},fillColor:e=>{t("fillColor","backgroundColor",e)},fgColor:e=>{t("fgColor","color",e)},textColor:e=>{t("textColor","color",e)},borderColor:e=>{t("borderColor","borderColor",e)},strokeColor:e=>{t("strokeColor","borderColor",e)},rotation:t=>{const e=t.detail.rotation
+this.container.style.visibility=e?"hidden":"visible",this.annotationStorage.setValue(this.data.id,{noPrint:e,noView:e})},focus:t=>{setTimeout(()=>t.target.focus({preventScroll:!1}),0)},userName:t=>{t.target.title=t.detail.userName},readonly:t=>{t.target.disabled=t.detail.readonly},required:t=>{this._setRequired(t.target,t.detail.required)},bgColor:e=>{t("bgColor","backgroundColor",e)},fillColor:e=>{t("fillColor","backgroundColor",e)},fgColor:e=>{t("fgColor","color",e)},textColor:e=>{t("textColor","color",e)},borderColor:e=>{t("borderColor","borderColor",e)},strokeColor:e=>{t("strokeColor","borderColor",e)},rotation:t=>{const e=t.detail.rotation
 this.setRotation(e),this.annotationStorage.setValue(this.data.id,{rotation:e})}})}_dispatchEventFromSandbox(t,e){const s=this._commonActions
 for(const i of Object.keys(e.detail)){const n=t[i]||s[i]
 n?.(e)}}_setDefaultPropertiesFromJS(t){if(!this.enableScripting)return
@@ -2121,7 +2121,7 @@ const n="string"==typeof r?r:null,o=document.querySelector(`[data-element-id="${
 n!==e&&(c.has(i)&&s.push({id:n,exportValue:t,domElement:i}))}return s}show(){this.container&&(this.container.hidden=!1),this.popup?.maybeShow()}hide(){this.container&&(this.container.hidden=!0),this.popup?.forceHide()}getElementsToTriggerPopup(){return this.container}addHighlightArea(){const t=this.getElementsToTriggerPopup()
 if(Array.isArray(t))for(const e of t)e.classList.add("highlightArea")
 else t.classList.add("highlightArea")}_editOnDoubleClick(){const{annotationEditorType:t,data:{id:e}}=this
-this.container.addEventListener("dblclick",(()=>{this.linkService.eventBus?.dispatch("switchannotationeditormode",{source:this,mode:t,editId:e})}))}}class g extends p{constructor(t,e=null){super(t,{isRenderable:!0,ignoreBorder:!!e?.ignoreBorder,createQuadrilaterals:!0}),this.isTooltipOnly=t.data.isTooltipOnly}render(){const{data:t,linkService:e}=this,s=document.createElement("a")
+this.container.addEventListener("dblclick",()=>{this.linkService.eventBus?.dispatch("switchannotationeditormode",{source:this,mode:t,editId:e})})}}class g extends p{constructor(t,e=null){super(t,{isRenderable:!0,ignoreBorder:!!e?.ignoreBorder,createQuadrilaterals:!0}),this.isTooltipOnly=t.data.isTooltipOnly}render(){const{data:t,linkService:e}=this,s=document.createElement("a")
 s.setAttribute("data-element-id",t.id)
 let i=!1
 return t.url?(e.addLinkAttributes(s,t.url,t.newWindow),i=!0):t.action?(this._bindNamedAction(s,t.action),i=!0):t.attachment?(this._bindAttachment(s,t.attachment),i=!0):t.setOCGState?(this.#Ze(s,t.setOCGState),i=!0):t.dest?(this._bindLink(s,t.dest),i=!0):(t.actions&&(t.actions.Action||t.actions["Mouse Up"]||t.actions["Mouse Down"])&&this.enableScripting&&this.hasJSActions&&(this._bindJSAction(s,t),i=!0),t.resetForm?(this._bindResetFormAction(s,t.resetForm),i=!0):this.isTooltipOnly&&!i&&(this._bindLink(s,""),i=!0)),this.container.classList.add("linkAnnotation"),i&&this.container.append(s),this.container}#ts(){this.container.setAttribute("data-internal-link","")}_bindLink(t,e){t.href=this.linkService.getDestinationHash(e),t.onclick=()=>(e&&this.linkService.goToDestination(e),!1),(e||""===e)&&this.#ts()}_bindNamedAction(t,e){t.href=this.linkService.getAnchorUrl(""),t.onclick=()=>(this.linkService.executeNamedAction(e),!1),this.#ts()}_bindAttachment(t,e){t.href=this.linkService.getAnchorUrl(""),t.onclick=()=>(this.downloadManager?.openOrDownloadData(this.container,e.content,e.filename),!1),this.#ts()}#Ze(t,e){t.href=this.linkService.getAnchorUrl(""),t.onclick=()=>(this.linkService.executeSetOCGState(e),!1),this.#ts()}_bindJSAction(t,e){t.href=this.linkService.getAnchorUrl("")
@@ -2146,9 +2146,9 @@ break}default:continue}const s=document.querySelector(`[data-element-id="${t}"]`
 s&&(c.has(s)?s.dispatchEvent(new Event("resetform")):(0,i.warn)(`_bindResetFormAction - element not allowed: ${t}`))}return this.enableScripting&&this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:"app",ids:l,name:"ResetForm"}}),!1}}}class m extends p{constructor(t){super(t,{isRenderable:!0})}render(){this.container.classList.add("textAnnotation")
 const t=document.createElement("img")
 return t.src=this.imageResourcesPath+"annotation-"+this.data.name.toLowerCase()+".svg",t.alt="[{{type}} Annotation]",t.dataset.l10nId="text_annotation_type",t.dataset.l10nArgs=JSON.stringify({type:this.data.name}),!this.data.popupRef&&this.hasPopupData&&this._createPopup(),this.container.append(t),this.container}}class f extends p{render(){return this.data.alternativeText&&(this.container.title=this.data.alternativeText),this.container}showElementAndHideCanvas(t){this.data.hasOwnCanvas&&("CANVAS"===t.previousSibling?.nodeName&&(t.previousSibling.hidden=!0),t.hidden=!1)}_getKeyModifier(t){const{isWin:e,isMac:s}=i.FeatureTest.platform
-return e&&t.ctrlKey||s&&t.metaKey}_setEventListener(t,e,s,i,n){s.includes("mouse")?t.addEventListener(s,(t=>{this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:this.data.id,name:i,value:n(t),shift:t.shiftKey,modifier:this._getKeyModifier(t)}})})):t.addEventListener(s,(t=>{if("blur"===s){if(!e.focused||!t.relatedTarget)return
+return e&&t.ctrlKey||s&&t.metaKey}_setEventListener(t,e,s,i,n){s.includes("mouse")?t.addEventListener(s,t=>{this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:this.data.id,name:i,value:n(t),shift:t.shiftKey,modifier:this._getKeyModifier(t)}})}):t.addEventListener(s,t=>{if("blur"===s){if(!e.focused||!t.relatedTarget)return
 e.focused=!1}else if("focus"===s){if(e.focused)return
-e.focused=!0}n&&this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:this.data.id,name:i,value:n(t)}})}))}_setEventListeners(t,e,s,i){for(const[n,a]of s)("Action"===a||this.data.actions?.[a])&&("Focus"!==a&&"Blur"!==a||(e||={focused:!1}),this._setEventListener(t,e,n,a,i),"Focus"!==a||this.data.actions?.Blur?"Blur"!==a||this.data.actions?.Focus||this._setEventListener(t,e,"focus","Focus",null):this._setEventListener(t,e,"blur","Blur",null))}_setBackgroundColor(t){const e=this.data.backgroundColor||null
+e.focused=!0}n&&this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:this.data.id,name:i,value:n(t)}})})}_setEventListeners(t,e,s,i){for(const[n,a]of s)("Action"===a||this.data.actions?.[a])&&("Focus"!==a&&"Blur"!==a||(e||={focused:!1}),this._setEventListener(t,e,n,a,i),"Focus"!==a||this.data.actions?.Blur?"Blur"!==a||this.data.actions?.Focus||this._setEventListener(t,e,"focus","Focus",null):this._setEventListener(t,e,"blur","Blur",null))}_setBackgroundColor(t){const e=this.data.backgroundColor||null
 t.style.backgroundColor=null===e?"transparent":i.Util.makeHexColor(e[0],e[1],e[2])}_setTextStyle(t){const e=["left","center","right"],{fontColor:s}=this.data.defaultAppearanceData,n=this.data.defaultAppearanceData.fontSize||9,a=t.style
 let r
 const o=t=>Math.round(10*t)/10
@@ -2165,29 +2165,29 @@ a&&n.length>a&&(n=n.slice(0,a))
 let r=i.formattedValue||this.data.textContent?.join("\n")||null
 r&&this.data.comb&&(r=r.replaceAll(/\s+/g,""))
 const o={userValue:n,formattedValue:r,lastCommittedValue:null,commitKey:1,focused:!1}
-this.data.multiLine?(s=document.createElement("textarea"),s.textContent=r??n,this.data.doNotScroll&&(s.style.overflowY="hidden")):(s=document.createElement("input"),s.type="text",s.setAttribute("value",r??n),this.data.doNotScroll&&(s.style.overflowX="hidden")),this.data.hasOwnCanvas&&(s.hidden=!0),c.add(s),s.setAttribute("data-element-id",e),s.disabled=this.data.readOnly,s.name=this.data.fieldName,s.tabIndex=h,this._setRequired(s,this.data.required),a&&(s.maxLength=a),s.addEventListener("input",(i=>{t.setValue(e,{value:i.target.value}),this.setPropertyOnSiblings(s,"value",i.target.value,"value"),o.formattedValue=null})),s.addEventListener("resetform",(t=>{const e=this.data.defaultFieldValue??""
-s.value=o.userValue=e,o.formattedValue=null}))
+this.data.multiLine?(s=document.createElement("textarea"),s.textContent=r??n,this.data.doNotScroll&&(s.style.overflowY="hidden")):(s=document.createElement("input"),s.type="text",s.setAttribute("value",r??n),this.data.doNotScroll&&(s.style.overflowX="hidden")),this.data.hasOwnCanvas&&(s.hidden=!0),c.add(s),s.setAttribute("data-element-id",e),s.disabled=this.data.readOnly,s.name=this.data.fieldName,s.tabIndex=h,this._setRequired(s,this.data.required),a&&(s.maxLength=a),s.addEventListener("input",i=>{t.setValue(e,{value:i.target.value}),this.setPropertyOnSiblings(s,"value",i.target.value,"value"),o.formattedValue=null}),s.addEventListener("resetform",t=>{const e=this.data.defaultFieldValue??""
+s.value=o.userValue=e,o.formattedValue=null})
 let l=t=>{const{formattedValue:e}=o
 null!=e&&(t.target.value=e),t.target.scrollLeft=0}
-if(this.enableScripting&&this.hasJSActions){s.addEventListener("focus",(t=>{if(o.focused)return
+if(this.enableScripting&&this.hasJSActions){s.addEventListener("focus",t=>{if(o.focused)return
 const{target:e}=t
-o.userValue&&(e.value=o.userValue),o.lastCommittedValue=e.value,o.commitKey=1,o.focused=!0})),s.addEventListener("updatefromsandbox",(s=>{this.showElementAndHideCanvas(s.target)
+o.userValue&&(e.value=o.userValue),o.lastCommittedValue=e.value,o.commitKey=1,o.focused=!0}),s.addEventListener("updatefromsandbox",s=>{this.showElementAndHideCanvas(s.target)
 const i={value(s){o.userValue=s.detail.value??"",t.setValue(e,{value:o.userValue.toString()}),s.target.value=o.userValue},formattedValue(s){const{formattedValue:i}=s.detail
 o.formattedValue=i,null!=i&&s.target!==document.activeElement&&(s.target.value=i),t.setValue(e,{formattedValue:i})},selRange(t){t.target.setSelectionRange(...t.detail.selRange)},charLimit:s=>{const{charLimit:i}=s.detail,{target:n}=s
 if(0===i)return void n.removeAttribute("maxLength")
 n.setAttribute("maxLength",i)
 let a=o.userValue
 !a||a.length<=i||(a=a.slice(0,i),n.value=o.userValue=a,t.setValue(e,{value:a}),this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:e,name:"Keystroke",value:a,willCommit:!0,commitKey:1,selStart:n.selectionStart,selEnd:n.selectionEnd}}))}}
-this._dispatchEventFromSandbox(i,s)})),s.addEventListener("keydown",(t=>{o.commitKey=1
+this._dispatchEventFromSandbox(i,s)}),s.addEventListener("keydown",t=>{o.commitKey=1
 let s=-1
 if("Escape"===t.key?s=0:"Enter"!==t.key||this.data.multiLine?"Tab"===t.key&&(o.commitKey=3):s=2,-1===s)return
 const{value:i}=t.target
-o.lastCommittedValue!==i&&(o.lastCommittedValue=i,o.userValue=i,this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:e,name:"Keystroke",value:i,willCommit:!0,commitKey:s,selStart:t.target.selectionStart,selEnd:t.target.selectionEnd}}))}))
+o.lastCommittedValue!==i&&(o.lastCommittedValue=i,o.userValue=i,this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:e,name:"Keystroke",value:i,willCommit:!0,commitKey:s,selStart:t.target.selectionStart,selEnd:t.target.selectionEnd}}))})
 const i=l
-l=null,s.addEventListener("blur",(t=>{if(!o.focused||!t.relatedTarget)return
+l=null,s.addEventListener("blur",t=>{if(!o.focused||!t.relatedTarget)return
 o.focused=!1
 const{value:s}=t.target
-o.userValue=s,o.lastCommittedValue!==s&&this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:e,name:"Keystroke",value:s,willCommit:!0,commitKey:o.commitKey,selStart:t.target.selectionStart,selEnd:t.target.selectionEnd}}),i(t)})),this.data.actions?.Keystroke&&s.addEventListener("beforeinput",(t=>{o.lastCommittedValue=null
+o.userValue=s,o.lastCommittedValue!==s&&this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:e,name:"Keystroke",value:s,willCommit:!0,commitKey:o.commitKey,selStart:t.target.selectionStart,selEnd:t.target.selectionEnd}}),i(t)}),this.data.actions?.Keystroke&&s.addEventListener("beforeinput",t=>{o.lastCommittedValue=null
 const{data:s,target:i}=t,{value:n,selectionStart:a,selectionEnd:r}=i
 let l=a,h=r
 switch(t.inputType){case"deleteWordBackward":{const t=n.substring(0,a).match(/\w*[^\w]*$/)
@@ -2196,50 +2196,50 @@ break}case"deleteWordForward":{const t=n.substring(a).match(/^[^\w]*\w*/)
 t&&(h+=t[0].length)
 break}case"deleteContentBackward":a===r&&(l-=1)
 break
-case"deleteContentForward":a===r&&(h+=1)}t.preventDefault(),this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:e,name:"Keystroke",value:n,change:s||"",willCommit:!1,selStart:l,selEnd:h}})})),this._setEventListeners(s,o,[["focus","Focus"],["blur","Blur"],["mousedown","Mouse Down"],["mouseenter","Mouse Enter"],["mouseleave","Mouse Exit"],["mouseup","Mouse Up"]],(t=>t.target.value))}if(l&&s.addEventListener("blur",l),this.data.comb){const t=(this.data.rect[2]-this.data.rect[0])/a
+case"deleteContentForward":a===r&&(h+=1)}t.preventDefault(),this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:e,name:"Keystroke",value:n,change:s||"",willCommit:!1,selStart:l,selEnd:h}})}),this._setEventListeners(s,o,[["focus","Focus"],["blur","Blur"],["mousedown","Mouse Down"],["mouseenter","Mouse Enter"],["mouseleave","Mouse Exit"],["mouseup","Mouse Up"]],t=>t.target.value)}if(l&&s.addEventListener("blur",l),this.data.comb){const t=(this.data.rect[2]-this.data.rect[0])/a
 s.classList.add("comb"),s.style.letterSpacing=`calc(${t}px * var(--scale-factor) - 1ch)`}}else s=document.createElement("div"),s.textContent=this.data.fieldValue,s.style.verticalAlign="middle",s.style.display="table-cell"
 return this._setTextStyle(s),this._setBackgroundColor(s),this._setDefaultPropertiesFromJS(s),this.container.append(s),this.container}}class _ extends f{constructor(t){super(t,{isRenderable:!!t.data.hasOwnCanvas})}}class A extends f{constructor(t){super(t,{isRenderable:t.renderForms})}render(){const t=this.annotationStorage,e=this.data,s=e.id
 let i=t.getValue(s,{value:e.exportValue===e.fieldValue}).value
 "string"==typeof i&&(i="Off"!==i,t.setValue(s,{value:i})),this.container.classList.add("buttonWidgetAnnotation","checkBox")
 const n=document.createElement("input")
-return c.add(n),n.setAttribute("data-element-id",s),n.disabled=e.readOnly,this._setRequired(n,this.data.required),n.type="checkbox",n.name=e.fieldName,i&&n.setAttribute("checked",!0),n.setAttribute("exportValue",e.exportValue),n.tabIndex=h,n.addEventListener("change",(i=>{const{name:n,checked:a}=i.target
+return c.add(n),n.setAttribute("data-element-id",s),n.disabled=e.readOnly,this._setRequired(n,this.data.required),n.type="checkbox",n.name=e.fieldName,i&&n.setAttribute("checked",!0),n.setAttribute("exportValue",e.exportValue),n.tabIndex=h,n.addEventListener("change",i=>{const{name:n,checked:a}=i.target
 for(const r of this._getElementsByName(n,s)){const s=a&&r.exportValue===e.exportValue
-r.domElement&&(r.domElement.checked=s),t.setValue(r.id,{value:s})}t.setValue(s,{value:a})})),n.addEventListener("resetform",(t=>{const s=e.defaultFieldValue||"Off"
-t.target.checked=s===e.exportValue})),this.enableScripting&&this.hasJSActions&&(n.addEventListener("updatefromsandbox",(e=>{const i={value(e){e.target.checked="Off"!==e.detail.value,t.setValue(s,{value:e.target.checked})}}
-this._dispatchEventFromSandbox(i,e)})),this._setEventListeners(n,null,[["change","Validate"],["change","Action"],["focus","Focus"],["blur","Blur"],["mousedown","Mouse Down"],["mouseenter","Mouse Enter"],["mouseleave","Mouse Exit"],["mouseup","Mouse Up"]],(t=>t.target.checked))),this._setBackgroundColor(n),this._setDefaultPropertiesFromJS(n),this.container.append(n),this.container}}class v extends f{constructor(t){super(t,{isRenderable:t.renderForms})}render(){this.container.classList.add("buttonWidgetAnnotation","radioButton")
+r.domElement&&(r.domElement.checked=s),t.setValue(r.id,{value:s})}t.setValue(s,{value:a})}),n.addEventListener("resetform",t=>{const s=e.defaultFieldValue||"Off"
+t.target.checked=s===e.exportValue}),this.enableScripting&&this.hasJSActions&&(n.addEventListener("updatefromsandbox",e=>{const i={value(e){e.target.checked="Off"!==e.detail.value,t.setValue(s,{value:e.target.checked})}}
+this._dispatchEventFromSandbox(i,e)}),this._setEventListeners(n,null,[["change","Validate"],["change","Action"],["focus","Focus"],["blur","Blur"],["mousedown","Mouse Down"],["mouseenter","Mouse Enter"],["mouseleave","Mouse Exit"],["mouseup","Mouse Up"]],t=>t.target.checked)),this._setBackgroundColor(n),this._setDefaultPropertiesFromJS(n),this.container.append(n),this.container}}class v extends f{constructor(t){super(t,{isRenderable:t.renderForms})}render(){this.container.classList.add("buttonWidgetAnnotation","radioButton")
 const t=this.annotationStorage,e=this.data,s=e.id
 let i=t.getValue(s,{value:e.fieldValue===e.buttonValue}).value
 "string"==typeof i&&(i=i!==e.buttonValue,t.setValue(s,{value:i}))
 const n=document.createElement("input")
-if(c.add(n),n.setAttribute("data-element-id",s),n.disabled=e.readOnly,this._setRequired(n,this.data.required),n.type="radio",n.name=e.fieldName,i&&n.setAttribute("checked",!0),n.tabIndex=h,n.addEventListener("change",(e=>{const{name:i,checked:n}=e.target
+if(c.add(n),n.setAttribute("data-element-id",s),n.disabled=e.readOnly,this._setRequired(n,this.data.required),n.type="radio",n.name=e.fieldName,i&&n.setAttribute("checked",!0),n.tabIndex=h,n.addEventListener("change",e=>{const{name:i,checked:n}=e.target
 for(const a of this._getElementsByName(i,s))t.setValue(a.id,{value:!1})
-t.setValue(s,{value:n})})),n.addEventListener("resetform",(t=>{const s=e.defaultFieldValue
-t.target.checked=null!=s&&s===e.buttonValue})),this.enableScripting&&this.hasJSActions){const i=e.buttonValue
-n.addEventListener("updatefromsandbox",(e=>{const n={value:e=>{const n=i===e.detail.value
+t.setValue(s,{value:n})}),n.addEventListener("resetform",t=>{const s=e.defaultFieldValue
+t.target.checked=null!=s&&s===e.buttonValue}),this.enableScripting&&this.hasJSActions){const i=e.buttonValue
+n.addEventListener("updatefromsandbox",e=>{const n={value:e=>{const n=i===e.detail.value
 for(const i of this._getElementsByName(e.target.name)){const e=n&&i.id===s
 i.domElement&&(i.domElement.checked=e),t.setValue(i.id,{value:e})}}}
-this._dispatchEventFromSandbox(n,e)})),this._setEventListeners(n,null,[["change","Validate"],["change","Action"],["focus","Focus"],["blur","Blur"],["mousedown","Mouse Down"],["mouseenter","Mouse Enter"],["mouseleave","Mouse Exit"],["mouseup","Mouse Up"]],(t=>t.target.checked))}return this._setBackgroundColor(n),this._setDefaultPropertiesFromJS(n),this.container.append(n),this.container}}class y extends g{constructor(t){super(t,{ignoreBorder:t.data.hasAppearance})}render(){const t=super.render()
+this._dispatchEventFromSandbox(n,e)}),this._setEventListeners(n,null,[["change","Validate"],["change","Action"],["focus","Focus"],["blur","Blur"],["mousedown","Mouse Down"],["mouseenter","Mouse Enter"],["mouseleave","Mouse Exit"],["mouseup","Mouse Up"]],t=>t.target.checked)}return this._setBackgroundColor(n),this._setDefaultPropertiesFromJS(n),this.container.append(n),this.container}}class y extends g{constructor(t){super(t,{ignoreBorder:t.data.hasAppearance})}render(){const t=super.render()
 t.classList.add("buttonWidgetAnnotation","pushButton"),this.data.alternativeText&&(t.title=this.data.alternativeText)
 const e=t.lastChild
-return this.enableScripting&&this.hasJSActions&&e&&(this._setDefaultPropertiesFromJS(e),e.addEventListener("updatefromsandbox",(t=>{this._dispatchEventFromSandbox({},t)}))),t}}class S extends f{constructor(t){super(t,{isRenderable:t.renderForms})}render(){this.container.classList.add("choiceWidgetAnnotation")
+return this.enableScripting&&this.hasJSActions&&e&&(this._setDefaultPropertiesFromJS(e),e.addEventListener("updatefromsandbox",t=>{this._dispatchEventFromSandbox({},t)})),t}}class S extends f{constructor(t){super(t,{isRenderable:t.renderForms})}render(){this.container.classList.add("choiceWidgetAnnotation")
 const t=this.annotationStorage,e=this.data.id,s=t.getValue(e,{value:this.data.fieldValue}),i=document.createElement("select")
 c.add(i),i.setAttribute("data-element-id",e),i.disabled=this.data.readOnly,this._setRequired(i,this.data.required),i.name=this.data.fieldName,i.tabIndex=h
 let n=this.data.combo&&this.data.options.length>0
-this.data.combo||(i.size=this.data.options.length,this.data.multiSelect&&(i.multiple=!0)),i.addEventListener("resetform",(t=>{const e=this.data.defaultFieldValue
-for(const s of i.options)s.selected=s.value===e}))
+this.data.combo||(i.size=this.data.options.length,this.data.multiSelect&&(i.multiple=!0)),i.addEventListener("resetform",t=>{const e=this.data.defaultFieldValue
+for(const s of i.options)s.selected=s.value===e})
 for(const h of this.data.options){const t=document.createElement("option")
 t.textContent=h.displayValue,t.value=h.exportValue,s.value.includes(h.exportValue)&&(t.setAttribute("selected",!0),n=!1),i.append(t)}let a=null
 if(n){const t=document.createElement("option")
 t.value=" ",t.setAttribute("hidden",!0),t.setAttribute("selected",!0),i.prepend(t),a=()=>{t.remove(),i.removeEventListener("input",a),a=null},i.addEventListener("input",a)}const r=t=>{const e=t?"value":"textContent",{options:s,multiple:n}=i
-return n?Array.prototype.filter.call(s,(t=>t.selected)).map((t=>t[e])):-1===s.selectedIndex?null:s[s.selectedIndex][e]}
+return n?Array.prototype.filter.call(s,t=>t.selected).map(t=>t[e]):-1===s.selectedIndex?null:s[s.selectedIndex][e]}
 let o=r(!1)
 const l=t=>{const e=t.target.options
-return Array.prototype.map.call(e,(t=>({displayValue:t.textContent,exportValue:t.value})))}
-return this.enableScripting&&this.hasJSActions?(i.addEventListener("updatefromsandbox",(s=>{const n={value(s){a?.()
+return Array.prototype.map.call(e,t=>({displayValue:t.textContent,exportValue:t.value}))}
+return this.enableScripting&&this.hasJSActions?(i.addEventListener("updatefromsandbox",s=>{const n={value(s){a?.()
 const n=s.detail.value,l=new Set(Array.isArray(n)?n:[n])
 for(const t of i.options)t.selected=l.has(t.value)
 t.setValue(e,{value:r(!0)}),o=r(!1)},multipleSelection(t){i.multiple=!0},remove(s){const n=i.options,a=s.detail.remove
-if(n[a].selected=!1,i.remove(a),n.length>0){-1===Array.prototype.findIndex.call(n,(t=>t.selected))&&(n[0].selected=!0)}t.setValue(e,{value:r(!0),items:l(s)}),o=r(!1)},clear(s){for(;0!==i.length;)i.remove(0)
+if(n[a].selected=!1,i.remove(a),n.length>0){-1===Array.prototype.findIndex.call(n,t=>t.selected)&&(n[0].selected=!0)}t.setValue(e,{value:r(!0),items:l(s)}),o=r(!1)},clear(s){for(;0!==i.length;)i.remove(0)
 t.setValue(e,{value:null,items:[]}),o=r(!1)},insert(s){const{index:n,displayValue:a,exportValue:h}=s.detail.insert,c=i.children[n],d=document.createElement("option")
 d.textContent=a,d.value=h,c?c.before(d):i.append(d),t.setValue(e,{value:r(!0),items:l(s)}),o=r(!1)},items(s){const{items:n}=s.detail
 for(;0!==i.length;)i.remove(0)
@@ -2247,12 +2247,12 @@ for(const t of n){const{displayValue:e,exportValue:s}=t,n=document.createElement
 n.textContent=e,n.value=s,i.append(n)}i.options.length>0&&(i.options[0].selected=!0),t.setValue(e,{value:r(!0),items:l(s)}),o=r(!1)},indices(s){const i=new Set(s.detail.indices)
 for(const t of s.target.options)t.selected=i.has(t.index)
 t.setValue(e,{value:r(!0)}),o=r(!1)},editable(t){t.target.disabled=!t.detail.editable}}
-this._dispatchEventFromSandbox(n,s)})),i.addEventListener("input",(s=>{const i=r(!0)
-t.setValue(e,{value:i}),s.preventDefault(),this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:e,name:"Keystroke",value:o,changeEx:i,willCommit:!1,commitKey:1,keyDown:!1}})})),this._setEventListeners(i,null,[["focus","Focus"],["blur","Blur"],["mousedown","Mouse Down"],["mouseenter","Mouse Enter"],["mouseleave","Mouse Exit"],["mouseup","Mouse Up"],["input","Action"],["input","Validate"]],(t=>t.target.value))):i.addEventListener("input",(function(s){t.setValue(e,{value:r(!0)})})),this.data.combo&&this._setTextStyle(i),this._setBackgroundColor(i),this._setDefaultPropertiesFromJS(i),this.container.append(i),this.container}}class x extends p{constructor(t){const{data:e,elements:s}=t
+this._dispatchEventFromSandbox(n,s)}),i.addEventListener("input",s=>{const i=r(!0)
+t.setValue(e,{value:i}),s.preventDefault(),this.linkService.eventBus?.dispatch("dispatcheventinsandbox",{source:this,detail:{id:e,name:"Keystroke",value:o,changeEx:i,willCommit:!1,commitKey:1,keyDown:!1}})}),this._setEventListeners(i,null,[["focus","Focus"],["blur","Blur"],["mousedown","Mouse Down"],["mouseenter","Mouse Enter"],["mouseleave","Mouse Exit"],["mouseup","Mouse Up"],["input","Action"],["input","Validate"]],t=>t.target.value)):i.addEventListener("input",function(s){t.setValue(e,{value:r(!0)})}),this.data.combo&&this._setTextStyle(i),this._setBackgroundColor(i),this._setDefaultPropertiesFromJS(i),this.container.append(i),this.container}}class x extends p{constructor(t){const{data:e,elements:s}=t
 super(t,{isRenderable:p._hasPopupData(e)}),this.elements=s}render(){this.container.classList.add("popupAnnotation")
 const t=new E({container:this.container,color:this.data.color,titleObj:this.data.titleObj,modificationDate:this.data.modificationDate,contentsObj:this.data.contentsObj,richText:this.data.richText,rect:this.data.rect,parentRect:this.data.parentRect||null,parent:this.parent,elements:this.elements,open:this.data.open}),e=[]
 for(const s of this.elements)s.popup=t,e.push(s.data.id),s.addHighlightArea()
-return this.container.setAttribute("aria-controls",e.map((t=>`${i.AnnotationPrefix}${t}`)).join(",")),this.container}}class E{#es=null
+return this.container.setAttribute("aria-controls",e.map(t=>`${i.AnnotationPrefix}${t}`).join(",")),this.container}}class E{#es=null
 #ss=this.#is.bind(this)
 #ns=this.#as.bind(this)
 #rs=this.#os.bind(this)
@@ -2271,7 +2271,7 @@ return this.container.setAttribute("aria-controls",e.map((t=>`${i.AnnotationPref
 #As=!1
 constructor({container:t,color:e,elements:s,titleObj:i,modificationDate:a,contentsObj:r,richText:o,parent:l,rect:h,parentRect:c,open:d}){this.#Rt=t,this.#_s=i,this.#cs=r,this.#bs=o,this.#us=l,this.#je=e,this.#fs=h,this.#ps=c,this.#ds=s
 const u=n.PDFDateString.toDateObject(a)
-u&&(this.#es=l.l10n.get("annotation_date_string",{date:u.toLocaleDateString(),time:u.toLocaleTimeString()})),this.trigger=s.flatMap((t=>t.getElementsToTriggerPopup()))
+u&&(this.#es=l.l10n.get("annotation_date_string",{date:u.toLocaleDateString(),time:u.toLocaleTimeString()})),this.trigger=s.flatMap(t=>t.getElementsToTriggerPopup())
 for(const n of this.trigger)n.addEventListener("click",this.#ls),n.addEventListener("mouseenter",this.#rs),n.addEventListener("mouseleave",this.#ns),n.classList.add("popupTriggerArea")
 for(const n of s)n.container?.addEventListener("keydown",this.#ss)
 this.#Rt.hidden=!0,d&&this.#hs()}render(){if(this.#ms)return
@@ -2279,11 +2279,11 @@ const{page:{view:t},viewport:{rawDims:{pageWidth:e,pageHeight:s,pageX:n,pageY:a}
 if(r.className="popup",this.#je){const t=r.style.outlineColor=i.Util.makeHexColor(...this.#je)
 if(CSS.supports("background-color","color-mix(in srgb, red 30%, white)"))r.style.backgroundColor=`color-mix(in srgb, ${t} 30%, white)`
 else{const t=.7
-r.style.backgroundColor=i.Util.makeHexColor(...this.#je.map((e=>Math.floor(t*(255-e)+e))))}}const o=document.createElement("span")
+r.style.backgroundColor=i.Util.makeHexColor(...this.#je.map(e=>Math.floor(t*(255-e)+e)))}}const o=document.createElement("span")
 o.className="header"
 const h=document.createElement("h1")
 if(o.append(h),({dir:h.dir,str:h.textContent}=this.#_s),r.append(o),this.#es){const t=document.createElement("span")
-t.classList.add("popupDate"),this.#es.then((e=>{t.textContent=e})),o.append(t)}const c=this.#cs,d=this.#bs
+t.classList.add("popupDate"),this.#es.then(e=>{t.textContent=e}),o.append(t)}const c=this.#cs,d=this.#bs
 if(!d?.str||c?.str&&c.str!==d.str){const t=this._formatContents(c)
 r.append(t)}else l.XfaLayer.render({xfaHtml:d.html,intent:"richText",div:r}),r.lastChild.classList.add("richText","popupContent")
 let u=!!this.#ps,p=u?this.#ps:this.#fs
@@ -2330,7 +2330,7 @@ const{container:t,data:e}=this
 let s
 e.hasAppearance||0===e.fillAlpha?s=document.createElement("div"):(s=document.createElement("img"),s.src=`${this.imageResourcesPath}annotation-${/paperclip/i.test(e.name)?"paperclip":"pushpin"}.svg`,e.fillAlpha&&e.fillAlpha<1&&(s.style=`filter: opacity(${Math.round(100*e.fillAlpha)}%);`)),s.addEventListener("dblclick",this.#Cs.bind(this)),this.#ws=s
 const{isMac:n}=i.FeatureTest.platform
-return t.addEventListener("keydown",(t=>{"Enter"===t.key&&(n?t.metaKey:t.ctrlKey)&&this.#Cs()})),!e.popupRef&&this.hasPopupData?this._createPopup():s.classList.add("popupTriggerArea"),t.append(s),t}getElementsToTriggerPopup(){return this.#ws}addHighlightArea(){this.container.classList.add("highlightArea")}#Cs(){this.downloadManager?.openOrDownloadData(this.container,this.content,this.filename)}}e.AnnotationLayer=class{#Se=null
+return t.addEventListener("keydown",t=>{"Enter"===t.key&&(n?t.metaKey:t.ctrlKey)&&this.#Cs()}),!e.popupRef&&this.hasPopupData?this._createPopup():s.classList.add("popupTriggerArea"),t.append(s),t}getElementsToTriggerPopup(){return this.#ws}addHighlightArea(){this.container.classList.add("highlightArea")}#Cs(){this.downloadManager?.openOrDownloadData(this.container,this.content,this.filename)}}e.AnnotationLayer=class{#Se=null
 #Ts=null
 #Ps=new Map
 constructor({div:t,accessibilityManager:e,annotationCanvasMap:s,l10n:i,page:n,viewport:a}){this.div=t,this.#Se=e,this.#Ts=s,this.l10n=i,this.page=n,this.viewport=a,this.zIndex=0,this.l10n||=o.NullL10n}#Ms(t,e){const s=t.firstChild||t
@@ -2362,19 +2362,19 @@ const s={of_pages:"of {{pagesCount}}",page_of_pages:"({{pageNumber}} of {{pagesC
 function i(t,e){switch(t){case"find_match_count":t=`find_match_count[${1===e.total?"one":"other"}]`
 break
 case"find_match_count_limit":t=`find_match_count_limit[${1===e.limit?"one":"other"}]`}return s[t]||""}s.print_progress_percent="{{progress}}%"
-const n={getLanguage:async()=>"en-us",getDirection:async()=>"ltr",get:async(t,e=null,s=i(t,e))=>function(t,e){return e?t.replaceAll(/\{\{\s*(\w+)\s*\}\}/g,((t,s)=>s in e?e[s]:"{{"+s+"}}")):t}(s,e),async translate(t){}}
+const n={getLanguage:async()=>"en-us",getDirection:async()=>"ltr",get:async(t,e=null,s=i(t,e))=>function(t,e){return e?t.replaceAll(/\{\{\s*(\w+)\s*\}\}/g,(t,s)=>s in e?e[s]:"{{"+s+"}}"):t}(s,e),async translate(t){}}
 e.NullL10n=n},(t,e,s)=>{Object.defineProperty(e,"__esModule",{value:!0}),e.XfaLayer=void 0
 var i=s(25)
 e.XfaLayer=class{static setupStorage(t,e,s,i,n){const a=i.getValue(e,{value:null})
 switch(s.name){case"textarea":if(null!==a.value&&(t.textContent=a.value),"print"===n)break
-t.addEventListener("input",(t=>{i.setValue(e,{value:t.target.value})}))
+t.addEventListener("input",t=>{i.setValue(e,{value:t.target.value})})
 break
 case"input":if("radio"===s.attributes.type||"checkbox"===s.attributes.type){if(a.value===s.attributes.xfaOn?t.setAttribute("checked",!0):a.value===s.attributes.xfaOff&&t.removeAttribute("checked"),"print"===n)break
-t.addEventListener("change",(t=>{i.setValue(e,{value:t.target.checked?t.target.getAttribute("xfaOn"):t.target.getAttribute("xfaOff")})}))}else{if(null!==a.value&&t.setAttribute("value",a.value),"print"===n)break
-t.addEventListener("input",(t=>{i.setValue(e,{value:t.target.value})}))}break
+t.addEventListener("change",t=>{i.setValue(e,{value:t.target.checked?t.target.getAttribute("xfaOn"):t.target.getAttribute("xfaOff")})})}else{if(null!==a.value&&t.setAttribute("value",a.value),"print"===n)break
+t.addEventListener("input",t=>{i.setValue(e,{value:t.target.value})})}break
 case"select":if(null!==a.value){t.setAttribute("value",a.value)
-for(const t of s.children)t.attributes.value===a.value?t.attributes.selected=!0:t.attributes.hasOwnProperty("selected")&&delete t.attributes.selected}t.addEventListener("input",(t=>{const s=t.target.options,n=-1===s.selectedIndex?"":s[s.selectedIndex].value
-i.setValue(e,{value:n})}))}}static setAttributes({html:t,element:e,storage:s=null,intent:i,linkService:n}){const{attributes:a}=e,r=t instanceof HTMLAnchorElement
+for(const t of s.children)t.attributes.value===a.value?t.attributes.selected=!0:t.attributes.hasOwnProperty("selected")&&delete t.attributes.selected}t.addEventListener("input",t=>{const s=t.target.options,n=-1===s.selectedIndex?"":s[s.selectedIndex].value
+i.setValue(e,{value:n})})}}static setAttributes({html:t,element:e,storage:s=null,intent:i,linkService:n}){const{attributes:a}=e,r=t instanceof HTMLAnchorElement
 "radio"===a.type&&(a.name=`${a.name}-${i}`)
 for(const[o,l]of Object.entries(a))if(null!=l)switch(o){case"class":l.length&&t.setAttribute(o,l.join(" "))
 break
@@ -2455,7 +2455,7 @@ s=[[i,i.slice(),i.slice(),i]]}const i=this.#Ns,n=this.currentPath
 this.currentPath=[],this.#Ns=new Path2D
 this.addCommands({cmd:()=>{this.allRawPaths.push(n),this.paths.push(s),this.bezierPath2D.push(i),this.rebuild()},undo:()=>{this.allRawPaths.pop(),this.paths.pop(),this.bezierPath2D.pop(),0===this.paths.length?this.remove():(this.canvas||(this.#Ks(),this.#Ys()),this.#$s())},mustExec:!0})}#ei(){if(!this.#Us)return
 this.#Us=!1
-const t=Math.ceil(this.thickness*this.parentScale),e=this.currentPath.slice(-3),s=e.map((t=>t[0])),i=e.map((t=>t[1])),{ctx:n}=(Math.min(...s),Math.max(...s),Math.min(...i),Math.max(...i),this)
+const t=Math.ceil(this.thickness*this.parentScale),e=this.currentPath.slice(-3),s=e.map(t=>t[0]),i=e.map(t=>t[1]),{ctx:n}=(Math.min(...s),Math.max(...s),Math.min(...i),Math.max(...i),this)
 n.save(),n.clearRect(0,0,this.canvas.width,this.canvas.height)
 for(const a of this.bezierPath2D)n.stroke(a)
 n.stroke(this.#Ns),n.restore()}#ii(t,e,s,i,n,a,r){const o=(e+i)/2,l=(s+n)/2,h=(i+a)/2,c=(n+r)/2
@@ -2469,10 +2469,10 @@ return e.push([[i,n],h,c,[o,l]]),e}#Xs(){if(this.isEmpty())return void this.#oi(
 this.#Zs()
 const{canvas:t,ctx:e}=this
 e.setTransform(1,0,0,1,0,0),e.clearRect(0,0,t.width,t.height),this.#oi()
-for(const s of this.bezierPath2D)e.stroke(s)}commit(){this.#Bs||(super.commit(),this.isEditing=!1,this.disableEditMode(),this.setInForeground(),this.#Bs=!0,this.div.classList.add("disabled"),this.#$s(!0),this.makeResizable(),this.parent.addInkEditorIfNeeded(!0),this.moveInDOM(),this.div.focus({preventScroll:!0}))}focusin(t){this._focusEventsAllowed&&(super.focusin(t),this.enableEditMode())}canvasPointerdown(t){0===t.button&&this.isInEditMode()&&!this.#Bs&&(this.setInForeground(),t.preventDefault(),"mouse"!==t.type&&this.div.focus(),this.#ti(t.offsetX,t.offsetY))}canvasPointermove(t){t.preventDefault(),this.#si(t.offsetX,t.offsetY)}canvasPointerup(t){t.preventDefault(),this.#li(t)}canvasPointerleave(t){this.#li(t)}#li(t){this.canvas.removeEventListener("pointerleave",this.#Is),this.canvas.removeEventListener("pointermove",this.#Ds),this.canvas.removeEventListener("pointerup",this.#Ls),this.canvas.addEventListener("pointerdown",this.#Os),setTimeout((()=>{this.canvas.removeEventListener("contextmenu",r.noContextMenu)}),10),this.#ai(t.offsetX,t.offsetY),this.addToAnnotationStorage(),this.setInBackground()}#Ks(){this.canvas=document.createElement("canvas"),this.canvas.width=this.canvas.height=0,this.canvas.className="inkEditorCanvas",n.AnnotationEditor._l10nPromise.get("editor_ink_canvas_aria_label").then((t=>this.canvas?.setAttribute("aria-label",t))),this.div.append(this.canvas),this.ctx=this.canvas.getContext("2d")}#Ys(){this.#zs=new ResizeObserver((t=>{const e=t[0].contentRect
-e.width&&e.height&&this.setDimensions(e.width,e.height)})),this.#zs.observe(this.div)}get isResizable(){return!this.isEmpty()&&this.#Bs}render(){if(this.div)return this.div
+for(const s of this.bezierPath2D)e.stroke(s)}commit(){this.#Bs||(super.commit(),this.isEditing=!1,this.disableEditMode(),this.setInForeground(),this.#Bs=!0,this.div.classList.add("disabled"),this.#$s(!0),this.makeResizable(),this.parent.addInkEditorIfNeeded(!0),this.moveInDOM(),this.div.focus({preventScroll:!0}))}focusin(t){this._focusEventsAllowed&&(super.focusin(t),this.enableEditMode())}canvasPointerdown(t){0===t.button&&this.isInEditMode()&&!this.#Bs&&(this.setInForeground(),t.preventDefault(),"mouse"!==t.type&&this.div.focus(),this.#ti(t.offsetX,t.offsetY))}canvasPointermove(t){t.preventDefault(),this.#si(t.offsetX,t.offsetY)}canvasPointerup(t){t.preventDefault(),this.#li(t)}canvasPointerleave(t){this.#li(t)}#li(t){this.canvas.removeEventListener("pointerleave",this.#Is),this.canvas.removeEventListener("pointermove",this.#Ds),this.canvas.removeEventListener("pointerup",this.#Ls),this.canvas.addEventListener("pointerdown",this.#Os),setTimeout(()=>{this.canvas.removeEventListener("contextmenu",r.noContextMenu)},10),this.#ai(t.offsetX,t.offsetY),this.addToAnnotationStorage(),this.setInBackground()}#Ks(){this.canvas=document.createElement("canvas"),this.canvas.width=this.canvas.height=0,this.canvas.className="inkEditorCanvas",n.AnnotationEditor._l10nPromise.get("editor_ink_canvas_aria_label").then(t=>this.canvas?.setAttribute("aria-label",t)),this.div.append(this.canvas),this.ctx=this.canvas.getContext("2d")}#Ys(){this.#zs=new ResizeObserver(t=>{const e=t[0].contentRect
+e.width&&e.height&&this.setDimensions(e.width,e.height)}),this.#zs.observe(this.div)}get isResizable(){return!this.isEmpty()&&this.#Bs}render(){if(this.div)return this.div
 let t,e
-this.width&&(t=this.x,e=this.y),super.render(),n.AnnotationEditor._l10nPromise.get("editor_ink2_aria_label").then((t=>this.div?.setAttribute("aria-label",t)))
+this.width&&(t=this.x,e=this.y),super.render(),n.AnnotationEditor._l10nPromise.get("editor_ink2_aria_label").then(t=>this.div?.setAttribute("aria-label",t))
 const[s,i,a,r]=this.#Qs()
 if(this.setAt(s,i,0,0),this.setDims(a,r),this.#Ks(),this.width){const[s,i]=this.parentDimensions
 this.setAspectRatio(this.width*s,this.height*i),this.setAt(t*s,e*i,this.width*s,this.height*i),this.#js=!0,this.#Js(),this.setDims(this.width*s,this.height*i),this.#Xs(),this.div.classList.add("disabled")}else this.div.classList.add("editing"),this.enableEditMode()
@@ -2546,14 +2546,14 @@ class o extends n.AnnotationEditor{#fi=null
 #xi=!1
 #Ei=!1
 static _type="stamp"
-constructor(t){super({...t,name:"stampEditor"}),this.#Ai=t.bitmapUrl,this.#vi=t.bitmapFile}static initialize(t){n.AnnotationEditor.initialize(t)}static get supportedTypes(){return(0,i.shadow)(this,"supportedTypes",["apng","avif","bmp","gif","jpeg","png","svg+xml","webp","x-icon"].map((t=>`image/${t}`)))}static get supportedTypesStr(){return(0,i.shadow)(this,"supportedTypesStr",this.supportedTypes.join(","))}static isHandlingMimeForPasting(t){return this.supportedTypes.includes(t)}static paste(t,e){e.pasteEditor(i.AnnotationEditorType.STAMP,{bitmapFile:t.getAsFile()})}#wi(t,e=!1){t?(this.#fi=t.bitmap,e||(this.#bi=t.id,this.#xi=t.isSvg),this.#Ks()):this.remove()}#Ci(){this.#_i=null,this._uiManager.enableWaiting(!1),this.#yi&&this.div.focus()}#Ti(){if(this.#bi)return this._uiManager.enableWaiting(!0),void this._uiManager.imageManager.getFromId(this.#bi).then((t=>this.#wi(t,!0))).finally((()=>this.#Ci()))
+constructor(t){super({...t,name:"stampEditor"}),this.#Ai=t.bitmapUrl,this.#vi=t.bitmapFile}static initialize(t){n.AnnotationEditor.initialize(t)}static get supportedTypes(){return(0,i.shadow)(this,"supportedTypes",["apng","avif","bmp","gif","jpeg","png","svg+xml","webp","x-icon"].map(t=>`image/${t}`))}static get supportedTypesStr(){return(0,i.shadow)(this,"supportedTypesStr",this.supportedTypes.join(","))}static isHandlingMimeForPasting(t){return this.supportedTypes.includes(t)}static paste(t,e){e.pasteEditor(i.AnnotationEditorType.STAMP,{bitmapFile:t.getAsFile()})}#wi(t,e=!1){t?(this.#fi=t.bitmap,e||(this.#bi=t.id,this.#xi=t.isSvg),this.#Ks()):this.remove()}#Ci(){this.#_i=null,this._uiManager.enableWaiting(!1),this.#yi&&this.div.focus()}#Ti(){if(this.#bi)return this._uiManager.enableWaiting(!0),void this._uiManager.imageManager.getFromId(this.#bi).then(t=>this.#wi(t,!0)).finally(()=>this.#Ci())
 if(this.#Ai){const t=this.#Ai
-return this.#Ai=null,this._uiManager.enableWaiting(!0),void(this.#_i=this._uiManager.imageManager.getFromUrl(t).then((t=>this.#wi(t))).finally((()=>this.#Ci())))}if(this.#vi){const t=this.#vi
-return this.#vi=null,this._uiManager.enableWaiting(!0),void(this.#_i=this._uiManager.imageManager.getFromFile(t).then((t=>this.#wi(t))).finally((()=>this.#Ci())))}const t=document.createElement("input")
-t.type="file",t.accept=o.supportedTypesStr,this.#_i=new Promise((e=>{t.addEventListener("change",(async()=>{if(t.files&&0!==t.files.length){this._uiManager.enableWaiting(!0)
+return this.#Ai=null,this._uiManager.enableWaiting(!0),void(this.#_i=this._uiManager.imageManager.getFromUrl(t).then(t=>this.#wi(t)).finally(()=>this.#Ci()))}if(this.#vi){const t=this.#vi
+return this.#vi=null,this._uiManager.enableWaiting(!0),void(this.#_i=this._uiManager.imageManager.getFromFile(t).then(t=>this.#wi(t)).finally(()=>this.#Ci()))}const t=document.createElement("input")
+t.type="file",t.accept=o.supportedTypesStr,this.#_i=new Promise(e=>{t.addEventListener("change",async()=>{if(t.files&&0!==t.files.length){this._uiManager.enableWaiting(!0)
 const e=await this._uiManager.imageManager.getFromFile(t.files[0])
 this.#wi(e)}else this.remove()
-e()})),t.addEventListener("cancel",(()=>{this.remove(),e()}))})).finally((()=>this.#Ci())),t.click()}remove(){this.#bi&&(this.#fi=null,this._uiManager.imageManager.deleteId(this.#bi),this.#yi?.remove(),this.#yi=null,this.#zs?.disconnect(),this.#zs=null),super.remove()}rebuild(){this.parent?(super.rebuild(),null!==this.div&&(this.#bi&&this.#Ti(),this.isAttachedToDOM||this.parent.add(this))):this.#bi&&this.#Ti()}onceAdded(){this._isDraggable=!0,this.div.focus()}isEmpty(){return!(this.#_i||this.#fi||this.#Ai||this.#vi)}get isResizable(){return!0}render(){if(this.div)return this.div
+e()}),t.addEventListener("cancel",()=>{this.remove(),e()})}).finally(()=>this.#Ci()),t.click()}remove(){this.#bi&&(this.#fi=null,this._uiManager.imageManager.deleteId(this.#bi),this.#yi?.remove(),this.#yi=null,this.#zs?.disconnect(),this.#zs=null),super.remove()}rebuild(){this.parent?(super.rebuild(),null!==this.div&&(this.#bi&&this.#Ti(),this.isAttachedToDOM||this.parent.add(this))):this.#bi&&this.#Ti()}onceAdded(){this._isDraggable=!0,this.div.focus()}isEmpty(){return!(this.#_i||this.#fi||this.#Ai||this.#vi)}get isResizable(){return!0}render(){if(this.div)return this.div
 let t,e
 if(this.width&&(t=this.x,e=this.y),super.render(),this.div.hidden=!0,this.#fi?this.#Ks():this.#Ti(),this.width){const[s,i]=this.parentDimensions
 this.setAt(t*s,e*i,this.width*s,this.height*i)}return this.div}#Ks(){const{div:t}=this
@@ -2566,7 +2566,7 @@ this.setDims(e*r/i,s*o/n),this._uiManager.enableWaiting(!1)
 const l=this.#yi=document.createElement("canvas")
 t.append(l),t.hidden=!1,this.#Pi(e,s),this.#Ys(),this.#Ei||(this.parent.addUndoableEditor(this),this.#Ei=!0),this._uiManager._eventBus.dispatch("reporttelemetry",{source:this,details:{type:"editing",subtype:this.editorType,data:{action:"inserted_image"}}}),this.addAltTextButton()}#Mi(t,e){const[s,i]=this.parentDimensions
 this.width=t/s,this.height=e/i,this.setDims(t,e),this._initialOptions?.isCentered?this.center():this.fixAndSetPosition(),this._initialOptions=null,null!==this.#Si&&clearTimeout(this.#Si)
-this.#Si=setTimeout((()=>{this.#Si=null,this.#Pi(t,e)}),200)}#ki(t,e){const{width:s,height:i}=this.#fi
+this.#Si=setTimeout(()=>{this.#Si=null,this.#Pi(t,e)},200)}#ki(t,e){const{width:s,height:i}=this.#fi
 let n=s,a=i,r=this.#fi
 for(;n>2*t||a>2*e;){const s=n,i=a
 n>2*t&&(n=n>=16384?Math.floor(n/2)-1:Math.ceil(n/2)),a>2*e&&(a=a>=16384?Math.floor(a/2)-1:Math.ceil(a/2))
@@ -2579,8 +2579,8 @@ const i=this.#xi?this.#fi:this.#ki(t,e),n=s.getContext("2d")
 n.filter=this._uiManager.hcmFilter,n.drawImage(i,0,0,i.width,i.height,0,0,t,e)}#Fi(t){if(t){if(this.#xi){const t=this._uiManager.imageManager.getSvgUrl(this.#bi)
 if(t)return t}const t=document.createElement("canvas");({width:t.width,height:t.height}=this.#fi)
 return t.getContext("2d").drawImage(this.#fi,0,0),t.toDataURL()}if(this.#xi){const[t,e]=this.pageDimensions,s=Math.round(this.width*t*a.PixelsPerInch.PDF_TO_CSS_UNITS),i=Math.round(this.height*e*a.PixelsPerInch.PDF_TO_CSS_UNITS),n=new OffscreenCanvas(s,i)
-return n.getContext("2d").drawImage(this.#fi,0,0,this.#fi.width,this.#fi.height,0,0,s,i),n.transferToImageBitmap()}return structuredClone(this.#fi)}#Ys(){this.#zs=new ResizeObserver((t=>{const e=t[0].contentRect
-e.width&&e.height&&this.#Mi(e.width,e.height)})),this.#zs.observe(this.div)}static deserialize(t,e,s){if(t instanceof r.StampAnnotationElement)return null
+return n.getContext("2d").drawImage(this.#fi,0,0,this.#fi.width,this.#fi.height,0,0,s,i),n.transferToImageBitmap()}return structuredClone(this.#fi)}#Ys(){this.#zs=new ResizeObserver(t=>{const e=t[0].contentRect
+e.width&&e.height&&this.#Mi(e.width,e.height)}),this.#zs.observe(this.div)}static deserialize(t,e,s){if(t instanceof r.StampAnnotationElement)return null
 const i=super.deserialize(t,e,s),{rect:n,bitmapUrl:a,bitmapId:o,isSvg:l,accessibilityData:h}=t
 o&&s.imageManager.isValidId(o)?i.#bi=o:i.#Ai=a,i.#xi=l
 const[c,d]=i.pageDimensions
@@ -2601,4 +2601,4 @@ return __webpack_modules__[t](s,s.exports,__w_pdfjs_require__),s.exports}var __w
 return(()=>{var t=__webpack_exports__
 Object.defineProperty(t,"__esModule",{value:!0}),Object.defineProperty(t,"AbortException",{enumerable:!0,get:function(){return e.AbortException}}),Object.defineProperty(t,"AnnotationEditorLayer",{enumerable:!0,get:function(){return a.AnnotationEditorLayer}}),Object.defineProperty(t,"AnnotationEditorParamsType",{enumerable:!0,get:function(){return e.AnnotationEditorParamsType}}),Object.defineProperty(t,"AnnotationEditorType",{enumerable:!0,get:function(){return e.AnnotationEditorType}}),Object.defineProperty(t,"AnnotationEditorUIManager",{enumerable:!0,get:function(){return r.AnnotationEditorUIManager}}),Object.defineProperty(t,"AnnotationLayer",{enumerable:!0,get:function(){return o.AnnotationLayer}}),Object.defineProperty(t,"AnnotationMode",{enumerable:!0,get:function(){return e.AnnotationMode}}),Object.defineProperty(t,"CMapCompressionType",{enumerable:!0,get:function(){return e.CMapCompressionType}}),Object.defineProperty(t,"DOMSVGFactory",{enumerable:!0,get:function(){return i.DOMSVGFactory}}),Object.defineProperty(t,"FeatureTest",{enumerable:!0,get:function(){return e.FeatureTest}}),Object.defineProperty(t,"GlobalWorkerOptions",{enumerable:!0,get:function(){return l.GlobalWorkerOptions}}),Object.defineProperty(t,"ImageKind",{enumerable:!0,get:function(){return e.ImageKind}}),Object.defineProperty(t,"InvalidPDFException",{enumerable:!0,get:function(){return e.InvalidPDFException}}),Object.defineProperty(t,"MissingPDFException",{enumerable:!0,get:function(){return e.MissingPDFException}}),Object.defineProperty(t,"OPS",{enumerable:!0,get:function(){return e.OPS}}),Object.defineProperty(t,"PDFDataRangeTransport",{enumerable:!0,get:function(){return s.PDFDataRangeTransport}}),Object.defineProperty(t,"PDFDateString",{enumerable:!0,get:function(){return i.PDFDateString}}),Object.defineProperty(t,"PDFWorker",{enumerable:!0,get:function(){return s.PDFWorker}}),Object.defineProperty(t,"PasswordResponses",{enumerable:!0,get:function(){return e.PasswordResponses}}),Object.defineProperty(t,"PermissionFlag",{enumerable:!0,get:function(){return e.PermissionFlag}}),Object.defineProperty(t,"PixelsPerInch",{enumerable:!0,get:function(){return i.PixelsPerInch}}),Object.defineProperty(t,"PromiseCapability",{enumerable:!0,get:function(){return e.PromiseCapability}}),Object.defineProperty(t,"RenderingCancelledException",{enumerable:!0,get:function(){return i.RenderingCancelledException}}),Object.defineProperty(t,"SVGGraphics",{enumerable:!0,get:function(){return s.SVGGraphics}}),Object.defineProperty(t,"UnexpectedResponseException",{enumerable:!0,get:function(){return e.UnexpectedResponseException}}),Object.defineProperty(t,"Util",{enumerable:!0,get:function(){return e.Util}}),Object.defineProperty(t,"VerbosityLevel",{enumerable:!0,get:function(){return e.VerbosityLevel}}),Object.defineProperty(t,"XfaLayer",{enumerable:!0,get:function(){return h.XfaLayer}}),Object.defineProperty(t,"build",{enumerable:!0,get:function(){return s.build}})
 Object.defineProperty(t,"createValidAbsoluteUrl",{enumerable:!0,get:function(){return e.createValidAbsoluteUrl}}),Object.defineProperty(t,"getDocument",{enumerable:!0,get:function(){return s.getDocument}}),Object.defineProperty(t,"getFilenameFromUrl",{enumerable:!0,get:function(){return i.getFilenameFromUrl}}),Object.defineProperty(t,"getPdfFilenameFromUrl",{enumerable:!0,get:function(){return i.getPdfFilenameFromUrl}}),Object.defineProperty(t,"getXfaPageViewport",{enumerable:!0,get:function(){return i.getXfaPageViewport}}),Object.defineProperty(t,"isDataScheme",{enumerable:!0,get:function(){return i.isDataScheme}}),Object.defineProperty(t,"isPdfFile",{enumerable:!0,get:function(){return i.isPdfFile}}),Object.defineProperty(t,"loadScript",{enumerable:!0,get:function(){return i.loadScript}}),Object.defineProperty(t,"noContextMenu",{enumerable:!0,get:function(){return i.noContextMenu}}),Object.defineProperty(t,"normalizeUnicode",{enumerable:!0,get:function(){return e.normalizeUnicode}}),Object.defineProperty(t,"renderTextLayer",{enumerable:!0,get:function(){return n.renderTextLayer}}),Object.defineProperty(t,"setLayerDimensions",{enumerable:!0,get:function(){return i.setLayerDimensions}}),Object.defineProperty(t,"shadow",{enumerable:!0,get:function(){return e.shadow}}),Object.defineProperty(t,"updateTextLayer",{enumerable:!0,get:function(){return n.updateTextLayer}}),Object.defineProperty(t,"version",{enumerable:!0,get:function(){return s.version}})
-var e=__w_pdfjs_require__(1),s=__w_pdfjs_require__(2),i=__w_pdfjs_require__(6),n=__w_pdfjs_require__(26),a=__w_pdfjs_require__(27),r=__w_pdfjs_require__(5),o=__w_pdfjs_require__(29),l=__w_pdfjs_require__(14),h=__w_pdfjs_require__(32)})(),__webpack_exports__})()))
+var e=__w_pdfjs_require__(1),s=__w_pdfjs_require__(2),i=__w_pdfjs_require__(6),n=__w_pdfjs_require__(26),a=__w_pdfjs_require__(27),r=__w_pdfjs_require__(5),o=__w_pdfjs_require__(29),l=__w_pdfjs_require__(14),h=__w_pdfjs_require__(32)})(),__webpack_exports__})())

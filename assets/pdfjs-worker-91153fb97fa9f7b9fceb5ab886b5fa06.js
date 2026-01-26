@@ -19,12 +19,12 @@
  * @licend The above is the entire license notice for the
  * JavaScript code in this page
  */
-(function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=e.pdfjsWorker=t():"function"==typeof define&&define.amd?define("pdfjs-dist/build/pdf.worker",[],(()=>e.pdfjsWorker=t())):"object"==typeof exports?exports["pdfjs-dist/build/pdf.worker"]=e.pdfjsWorker=t():e["pdfjs-dist/build/pdf.worker"]=e.pdfjsWorker=t()})(globalThis,(()=>(()=>{"use strict"
+(function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=e.pdfjsWorker=t():"function"==typeof define&&define.amd?define("pdfjs-dist/build/pdf.worker",[],()=>e.pdfjsWorker=t()):"object"==typeof exports?exports["pdfjs-dist/build/pdf.worker"]=e.pdfjsWorker=t():e["pdfjs-dist/build/pdf.worker"]=e.pdfjsWorker=t()})(globalThis,()=>(()=>{"use strict"
 var e=[,(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.WorkerTask=t.WorkerMessageHandler=void 0
 var n,r=a(2),i=a(3),s=a(4),o=a(6),c=a(10),l=a(68),h=a(73),u=a(104),d=a(105),f=a(72)
 class g{constructor(e){this.name=e,this.terminated=!1,this._capability=new r.PromiseCapability}get finished(){return this._capability.promise}finish(){this._capability.resolve()}terminate(){this.terminated=!0}ensureNotTerminated(){if(this.terminated)throw new Error("Worker task was terminated")}}t.WorkerTask=g
 class p{static setup(e,t){let a=!1
-e.on("test",(function(t){a||(a=!0,e.send("test",t instanceof Uint8Array))})),e.on("configure",(function(e){(0,r.setVerbosityLevel)(e.verbosity)})),e.on("GetDocRequest",(function(e){return p.createDocumentHandler(e,t)}))}static createDocumentHandler(e,t){let a,n=!1,p=null
+e.on("test",function(t){a||(a=!0,e.send("test",t instanceof Uint8Array))}),e.on("configure",function(e){(0,r.setVerbosityLevel)(e.verbosity)}),e.on("GetDocRequest",function(e){return p.createDocumentHandler(e,t)})}static createDocumentHandler(e,t){let a,n=!1,p=null
 const m=new Set,b=(0,r.getVerbosityLevel)(),{docId:y,apiVersion:w}=e,x="3.11.174"
 if(w!==x)throw new Error(`The API version "${w}" does not match the Worker version "${x}".`)
 const S=[]
@@ -35,75 +35,75 @@ let k=new u.MessageHandler(A,y,t)
 function C(){if(n)throw new Error("Worker was terminated")}function v(e){m.add(e)}function F(e){e.finish(),m.delete(e)}async function O(e){await a.ensureDoc("checkHeader"),await a.ensureDoc("parseStartXRef"),await a.ensureDoc("parse",[e]),await a.ensureDoc("checkFirstPage",[e]),await a.ensureDoc("checkLastPage",[e])
 const t=await a.ensureDoc("isPureXfa")
 if(t){const e=new g("loadXfaFonts")
-v(e),await Promise.all([a.loadXfaFonts(k,e).catch((e=>{})).then((()=>F(e))),a.loadXfaImages()])}const[n,r]=await Promise.all([a.ensureDoc("numPages"),a.ensureDoc("fingerprints")])
+v(e),await Promise.all([a.loadXfaFonts(k,e).catch(e=>{}).then(()=>F(e)),a.loadXfaImages()])}const[n,r]=await Promise.all([a.ensureDoc("numPages"),a.ensureDoc("fingerprints")])
 return{numPages:n,fingerprints:r,htmlForXfa:t?await a.ensureDoc("htmlForXfa"):null}}function I({data:e,password:t,disableAutoFetch:a,rangeChunkSize:n,length:s,docBaseUrl:c,enableXfa:l,evaluatorOptions:h}){const u={source:null,disableAutoFetch:a,docBaseUrl:c,docId:y,enableXfa:l,evaluatorOptions:h,handler:k,length:s,password:t,rangeChunkSize:n},f=new r.PromiseCapability
 let g
 if(e){try{u.source=e,g=new o.LocalPdfManager(u),f.resolve(g)}catch(S){f.reject(S)}return f.promise}let m,b=[]
 try{m=new d.PDFWorkerStream(k)}catch(S){return f.reject(S),f.promise}const w=m.getFullReader()
-w.headersReady.then((function(){if(w.isRangeSupported){u.source=m,u.length=w.contentLength,u.disableAutoFetch||=w.isStreamingSupported,g=new o.NetworkPdfManager(u)
+w.headersReady.then(function(){if(w.isRangeSupported){u.source=m,u.length=w.contentLength,u.disableAutoFetch||=w.isStreamingSupported,g=new o.NetworkPdfManager(u)
 for(const e of b)g.sendProgressiveData(e)
-b=[],f.resolve(g),p=null}})).catch((function(e){f.reject(e),p=null}))
+b=[],f.resolve(g),p=null}}).catch(function(e){f.reject(e),p=null})
 let x=0
-return new Promise((function(e,t){const a=function({value:e,done:n}){try{if(C(),n)return g||function(){const e=(0,i.arrayBuffersToBytes)(b)
+return new Promise(function(e,t){const a=function({value:e,done:n}){try{if(C(),n)return g||function(){const e=(0,i.arrayBuffersToBytes)(b)
 s&&e.length!==s&&(0,r.warn)("reported HTTP length is different from actual")
 try{u.source=e,g=new o.LocalPdfManager(u),f.resolve(g)}catch(S){f.reject(S)}b=[]}(),void(p=null)
 x+=e.byteLength,w.isStreamingSupported||k.send("DocProgress",{loaded:x,total:Math.max(x,w.contentLength||0)}),g?g.sendProgressiveData(e):b.push(e),w.read().then(a,t)}catch(c){t(c)}}
-w.read().then(a,t)})).catch((function(e){f.reject(e),p=null})),p=function(e){m.cancelAllRequests(e)},f.promise}return k.on("GetPage",(function(e){return a.getPage(e.pageIndex).then((function(e){return Promise.all([a.ensure(e,"rotate"),a.ensure(e,"ref"),a.ensure(e,"userUnit"),a.ensure(e,"view")]).then((function([e,t,a,n]){return{rotate:e,ref:t,userUnit:a,view:n}}))}))})),k.on("GetPageIndex",(function(e){const t=s.Ref.get(e.num,e.gen)
-return a.ensureCatalog("getPageIndex",[t])})),k.on("GetDestinations",(function(e){return a.ensureCatalog("destinations")})),k.on("GetDestination",(function(e){return a.ensureCatalog("getDestination",[e.id])})),k.on("GetPageLabels",(function(e){return a.ensureCatalog("pageLabels")})),k.on("GetPageLayout",(function(e){return a.ensureCatalog("pageLayout")})),k.on("GetPageMode",(function(e){return a.ensureCatalog("pageMode")})),k.on("GetViewerPreferences",(function(e){return a.ensureCatalog("viewerPreferences")})),k.on("GetOpenAction",(function(e){return a.ensureCatalog("openAction")})),k.on("GetAttachments",(function(e){return a.ensureCatalog("attachments")})),k.on("GetDocJSActions",(function(e){return a.ensureCatalog("jsActions")})),k.on("GetPageJSActions",(function({pageIndex:e}){return a.getPage(e).then((function(e){return a.ensure(e,"jsActions")}))})),k.on("GetOutline",(function(e){return a.ensureCatalog("documentOutline")})),k.on("GetOptionalContentConfig",(function(e){return a.ensureCatalog("optionalContentConfig")})),k.on("GetPermissions",(function(e){return a.ensureCatalog("permissions")})),k.on("GetMetadata",(function(e){return Promise.all([a.ensureDoc("documentInfo"),a.ensureCatalog("metadata")])})),k.on("GetMarkInfo",(function(e){return a.ensureCatalog("markInfo")})),k.on("GetData",(function(e){return a.requestLoadedStream().then((function(e){return e.bytes}))})),k.on("GetAnnotations",(function({pageIndex:e,intent:t}){return a.getPage(e).then((function(a){const n=new g(`GetAnnotations: page ${e}`)
-return v(n),a.getAnnotationsData(k,n,t).then((e=>(F(n),e)),(e=>{throw F(n),e}))}))})),k.on("GetFieldObjects",(function(e){return a.ensureDoc("fieldObjects")})),k.on("HasJSActions",(function(e){return a.ensureDoc("hasJSActions")})),k.on("GetCalculationOrderIds",(function(e){return a.ensureDoc("calculationOrderIds")})),k.on("SaveDocument",(async function({isPureXfa:e,numPages:t,annotationStorage:n,filename:o}){const l=[a.requestLoadedStream(),a.ensureCatalog("acroForm"),a.ensureCatalog("acroFormRef"),a.ensureDoc("startXRef"),a.ensureDoc("xref"),a.ensureDoc("linearization"),a.ensureCatalog("structTreeRoot")],u=[],d=e?null:(0,i.getNewAnnotationsMap)(n),[p,m,b,y,w,x,S]=await Promise.all(l),A=w.trailer.getRaw("Root")||null
+w.read().then(a,t)}).catch(function(e){f.reject(e),p=null}),p=function(e){m.cancelAllRequests(e)},f.promise}return k.on("GetPage",function(e){return a.getPage(e.pageIndex).then(function(e){return Promise.all([a.ensure(e,"rotate"),a.ensure(e,"ref"),a.ensure(e,"userUnit"),a.ensure(e,"view")]).then(function([e,t,a,n]){return{rotate:e,ref:t,userUnit:a,view:n}})})}),k.on("GetPageIndex",function(e){const t=s.Ref.get(e.num,e.gen)
+return a.ensureCatalog("getPageIndex",[t])}),k.on("GetDestinations",function(e){return a.ensureCatalog("destinations")}),k.on("GetDestination",function(e){return a.ensureCatalog("getDestination",[e.id])}),k.on("GetPageLabels",function(e){return a.ensureCatalog("pageLabels")}),k.on("GetPageLayout",function(e){return a.ensureCatalog("pageLayout")}),k.on("GetPageMode",function(e){return a.ensureCatalog("pageMode")}),k.on("GetViewerPreferences",function(e){return a.ensureCatalog("viewerPreferences")}),k.on("GetOpenAction",function(e){return a.ensureCatalog("openAction")}),k.on("GetAttachments",function(e){return a.ensureCatalog("attachments")}),k.on("GetDocJSActions",function(e){return a.ensureCatalog("jsActions")}),k.on("GetPageJSActions",function({pageIndex:e}){return a.getPage(e).then(function(e){return a.ensure(e,"jsActions")})}),k.on("GetOutline",function(e){return a.ensureCatalog("documentOutline")}),k.on("GetOptionalContentConfig",function(e){return a.ensureCatalog("optionalContentConfig")}),k.on("GetPermissions",function(e){return a.ensureCatalog("permissions")}),k.on("GetMetadata",function(e){return Promise.all([a.ensureDoc("documentInfo"),a.ensureCatalog("metadata")])}),k.on("GetMarkInfo",function(e){return a.ensureCatalog("markInfo")}),k.on("GetData",function(e){return a.requestLoadedStream().then(function(e){return e.bytes})}),k.on("GetAnnotations",function({pageIndex:e,intent:t}){return a.getPage(e).then(function(a){const n=new g(`GetAnnotations: page ${e}`)
+return v(n),a.getAnnotationsData(k,n,t).then(e=>(F(n),e),e=>{throw F(n),e})})}),k.on("GetFieldObjects",function(e){return a.ensureDoc("fieldObjects")}),k.on("HasJSActions",function(e){return a.ensureDoc("hasJSActions")}),k.on("GetCalculationOrderIds",function(e){return a.ensureDoc("calculationOrderIds")}),k.on("SaveDocument",async function({isPureXfa:e,numPages:t,annotationStorage:n,filename:o}){const l=[a.requestLoadedStream(),a.ensureCatalog("acroForm"),a.ensureCatalog("acroFormRef"),a.ensureDoc("startXRef"),a.ensureDoc("xref"),a.ensureDoc("linearization"),a.ensureCatalog("structTreeRoot")],u=[],d=e?null:(0,i.getNewAnnotationsMap)(n),[p,m,b,y,w,x,S]=await Promise.all(l),A=w.trailer.getRaw("Root")||null
 let C
 if(d){S?await S.canUpdateStructTree({pdfManager:a,newAnnotationsByPage:d})&&(C=S):await f.StructTreeRoot.canCreateStructureTree({catalogRef:A,pdfManager:a,newAnnotationsByPage:d})&&(C=null)
 const e=c.AnnotationFactory.generateImages(n.values(),w,a.evaluatorOptions.isOffscreenCanvasSupported),t=void 0===C?u:[]
-for(const[n,r]of d)t.push(a.getPage(n).then((t=>{const a=new g(`Save (editor): page ${n}`)
-return t.saveNewAnnotations(k,a,r,e).finally((function(){F(a)}))})))
-null===C?u.push(Promise.all(t).then((async e=>(await f.StructTreeRoot.createStructureTree({newAnnotationsByPage:d,xref:w,catalogRef:A,pdfManager:a,newRefs:e}),e)))):C&&u.push(Promise.all(t).then((async e=>(await C.updateStructureTree({newAnnotationsByPage:d,pdfManager:a,newRefs:e}),e))))}if(e)u.push(a.serializeXfaData(n))
-else for(let r=0;r<t;r++)u.push(a.getPage(r).then((function(e){const t=new g(`Save: page ${r}`)
-return e.save(k,t,n).finally((function(){F(t)}))})))
+for(const[n,r]of d)t.push(a.getPage(n).then(t=>{const a=new g(`Save (editor): page ${n}`)
+return t.saveNewAnnotations(k,a,r,e).finally(function(){F(a)})}))
+null===C?u.push(Promise.all(t).then(async e=>(await f.StructTreeRoot.createStructureTree({newAnnotationsByPage:d,xref:w,catalogRef:A,pdfManager:a,newRefs:e}),e))):C&&u.push(Promise.all(t).then(async e=>(await C.updateStructureTree({newAnnotationsByPage:d,pdfManager:a,newRefs:e}),e)))}if(e)u.push(a.serializeXfaData(n))
+else for(let r=0;r<t;r++)u.push(a.getPage(r).then(function(e){const t=new g(`Save: page ${r}`)
+return e.save(k,t,n).finally(function(){F(t)})}))
 const v=await Promise.all(u)
 let O=[],I=null
 if(e){if(I=v[0],!I)return p.bytes}else if(O=v.flat(2),0===O.length)return p.bytes
-const T=b&&m instanceof s.Dict&&O.some((e=>e.needAppearances)),M=m instanceof s.Dict&&m.get("XFA")||null
+const T=b&&m instanceof s.Dict&&O.some(e=>e.needAppearances),M=m instanceof s.Dict&&m.get("XFA")||null
 let P=null,N=!1
 if(Array.isArray(M)){for(let e=0,t=M.length;e<t;e+=2)"datasets"===M[e]&&(P=M[e+1],N=!0)
 null===P&&(P=w.getNewTemporaryRef())}else M&&(0,r.warn)("Unsupported XFA type.")
 let D=Object.create(null)
 if(w.trailer){const e=Object.create(null),t=w.trailer.get("Info")||null
-t instanceof s.Dict&&t.forEach(((t,a)=>{"string"==typeof a&&(e[t]=(0,r.stringToPDFString)(a))})),D={rootRef:A,encryptRef:w.trailer.getRaw("Encrypt")||null,newRef:w.getNewTemporaryRef(),infoRef:w.trailer.getRaw("Info")||null,info:e,fileIds:w.trailer.get("ID")||null,startXRef:x?y:w.lastXRefStreamPos??y,filename:o}}return(0,h.incrementalUpdate)({originalData:p.bytes,xrefInfo:D,newRefs:O,xref:w,hasXfa:!!M,xfaDatasetsRef:P,hasXfaDatasetsEntry:N,needAppearances:T,acroFormRef:b,acroForm:m,xfaData:I}).finally((()=>{w.resetNewTemporaryRef()}))})),k.on("GetOperatorList",(function(e,t){const n=e.pageIndex
-a.getPage(n).then((function(a){const i=new g(`GetOperatorList: page ${n}`)
+t instanceof s.Dict&&t.forEach((t,a)=>{"string"==typeof a&&(e[t]=(0,r.stringToPDFString)(a))}),D={rootRef:A,encryptRef:w.trailer.getRaw("Encrypt")||null,newRef:w.getNewTemporaryRef(),infoRef:w.trailer.getRaw("Info")||null,info:e,fileIds:w.trailer.get("ID")||null,startXRef:x?y:w.lastXRefStreamPos??y,filename:o}}return(0,h.incrementalUpdate)({originalData:p.bytes,xrefInfo:D,newRefs:O,xref:w,hasXfa:!!M,xfaDatasetsRef:P,hasXfaDatasetsEntry:N,needAppearances:T,acroFormRef:b,acroForm:m,xfaData:I}).finally(()=>{w.resetNewTemporaryRef()})}),k.on("GetOperatorList",function(e,t){const n=e.pageIndex
+a.getPage(n).then(function(a){const i=new g(`GetOperatorList: page ${n}`)
 v(i)
 const s=b>=r.VerbosityLevel.INFOS?Date.now():0
-a.getOperatorList({handler:k,sink:t,task:i,intent:e.intent,cacheKey:e.cacheKey,annotationStorage:e.annotationStorage}).then((function(e){F(i),s&&(0,r.info)(`page=${n+1} - getOperatorList: time=${Date.now()-s}ms, len=${e.length}`),t.close()}),(function(e){F(i),i.terminated||t.error(e)}))}))})),k.on("GetTextContent",(function(e,t){const{pageIndex:n,includeMarkedContent:i,disableNormalization:s}=e
-a.getPage(n).then((function(e){const a=new g("GetTextContent: page "+n)
+a.getOperatorList({handler:k,sink:t,task:i,intent:e.intent,cacheKey:e.cacheKey,annotationStorage:e.annotationStorage}).then(function(e){F(i),s&&(0,r.info)(`page=${n+1} - getOperatorList: time=${Date.now()-s}ms, len=${e.length}`),t.close()},function(e){F(i),i.terminated||t.error(e)})})}),k.on("GetTextContent",function(e,t){const{pageIndex:n,includeMarkedContent:i,disableNormalization:s}=e
+a.getPage(n).then(function(e){const a=new g("GetTextContent: page "+n)
 v(a)
 const o=b>=r.VerbosityLevel.INFOS?Date.now():0
-e.extractTextContent({handler:k,task:a,sink:t,includeMarkedContent:i,disableNormalization:s}).then((function(){F(a),o&&(0,r.info)(`page=${n+1} - getTextContent: time=`+(Date.now()-o)+"ms"),t.close()}),(function(e){F(a),a.terminated||t.error(e)}))}))})),k.on("GetStructTree",(function(e){return a.getPage(e.pageIndex).then((function(e){return a.ensure(e,"getStructTree")}))})),k.on("FontFallback",(function(e){return a.fontFallback(e.id,k)})),k.on("Cleanup",(function(e){return a.cleanup(!0)})),k.on("Terminate",(function(e){n=!0
+e.extractTextContent({handler:k,task:a,sink:t,includeMarkedContent:i,disableNormalization:s}).then(function(){F(a),o&&(0,r.info)(`page=${n+1} - getTextContent: time=`+(Date.now()-o)+"ms"),t.close()},function(e){F(a),a.terminated||t.error(e)})})}),k.on("GetStructTree",function(e){return a.getPage(e.pageIndex).then(function(e){return a.ensure(e,"getStructTree")})}),k.on("FontFallback",function(e){return a.fontFallback(e.id,k)}),k.on("Cleanup",function(e){return a.cleanup(!0)}),k.on("Terminate",function(e){n=!0
 const t=[]
 if(a){a.terminate(new r.AbortException("Worker was terminated."))
 const e=a.cleanup()
 t.push(e),a=null}else(0,l.clearGlobalCaches)()
 p&&p(new r.AbortException("Worker was terminated."))
 for(const a of m)t.push(a.finished),a.terminate()
-return Promise.all(t).then((function(){k.destroy(),k=null}))})),k.on("Ready",(function(t){(function(e){function t(e){C(),k.send("GetDoc",{pdfInfo:e})}function s(e){if(C(),e instanceof r.PasswordException){const t=new g(`PasswordException: response ${e.code}`)
-v(t),k.sendWithPromise("PasswordRequest",e).then((function({password:e}){F(t),a.updatePassword(e),o()})).catch((function(){F(t),k.send("DocException",e)}))}else e instanceof r.InvalidPDFException||e instanceof r.MissingPDFException||e instanceof r.UnexpectedResponseException||e instanceof r.UnknownErrorException?k.send("DocException",e):k.send("DocException",new r.UnknownErrorException(e.message,e.toString()))}function o(){C(),O(!1).then(t,(function(e){C(),e instanceof i.XRefParseException?a.requestLoadedStream().then((function(){C(),O(!0).then(t,s)})):s(e)}))}C(),I(e).then((function(e){if(n)throw e.terminate(new r.AbortException("Worker was terminated.")),new Error("Worker was terminated")
-a=e,a.requestLoadedStream(!0).then((e=>{k.send("DataLoaded",{length:e.bytes.byteLength})}))})).then(o,s)})(e),e=null})),A}static initializeFromPort(e){const t=new u.MessageHandler("worker","main",e)
-p.setup(t,e),t.send("ready",null)}}t.WorkerMessageHandler=p,"undefined"==typeof window&&!r.isNodeJS&&"undefined"!=typeof self&&("function"==typeof(n=self).postMessage&&"onmessage"in n)&&p.initializeFromPort(self)},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.VerbosityLevel=t.Util=t.UnknownErrorException=t.UnexpectedResponseException=t.TextRenderingMode=t.RenderingIntentFlag=t.PromiseCapability=t.PermissionFlag=t.PasswordResponses=t.PasswordException=t.PageActionEventType=t.OPS=t.MissingPDFException=t.MAX_IMAGE_SIZE_TO_CACHE=t.LINE_FACTOR=t.LINE_DESCENT_FACTOR=t.InvalidPDFException=t.ImageKind=t.IDENTITY_MATRIX=t.FormatError=t.FeatureTest=t.FONT_IDENTITY_MATRIX=t.DocumentActionEventType=t.CMapCompressionType=t.BaseException=t.BASELINE_FACTOR=t.AnnotationType=t.AnnotationReplyType=t.AnnotationPrefix=t.AnnotationMode=t.AnnotationFlag=t.AnnotationFieldFlag=t.AnnotationEditorType=t.AnnotationEditorPrefix=t.AnnotationEditorParamsType=t.AnnotationBorderStyleType=t.AnnotationActionEventType=t.AbortException=void 0,t.assert=function(e,t){e||s(t)},t.bytesToString=l,t.createValidAbsoluteUrl=function(e,t=null,a=null){if(!e)return null
+return Promise.all(t).then(function(){k.destroy(),k=null})}),k.on("Ready",function(t){(function(e){function t(e){C(),k.send("GetDoc",{pdfInfo:e})}function s(e){if(C(),e instanceof r.PasswordException){const t=new g(`PasswordException: response ${e.code}`)
+v(t),k.sendWithPromise("PasswordRequest",e).then(function({password:e}){F(t),a.updatePassword(e),o()}).catch(function(){F(t),k.send("DocException",e)})}else e instanceof r.InvalidPDFException||e instanceof r.MissingPDFException||e instanceof r.UnexpectedResponseException||e instanceof r.UnknownErrorException?k.send("DocException",e):k.send("DocException",new r.UnknownErrorException(e.message,e.toString()))}function o(){C(),O(!1).then(t,function(e){C(),e instanceof i.XRefParseException?a.requestLoadedStream().then(function(){C(),O(!0).then(t,s)}):s(e)})}C(),I(e).then(function(e){if(n)throw e.terminate(new r.AbortException("Worker was terminated.")),new Error("Worker was terminated")
+a=e,a.requestLoadedStream(!0).then(e=>{k.send("DataLoaded",{length:e.bytes.byteLength})})}).then(o,s)})(e),e=null}),A}static initializeFromPort(e){const t=new u.MessageHandler("worker","main",e)
+p.setup(t,e),t.send("ready",null)}}t.WorkerMessageHandler=p,"undefined"==typeof window&&!r.isNodeJS&&"undefined"!=typeof self&&("function"==typeof(n=self).postMessage&&"onmessage"in n)&&p.initializeFromPort(self)},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.VerbosityLevel=t.Util=t.UnknownErrorException=t.UnexpectedResponseException=t.TextRenderingMode=t.RenderingIntentFlag=t.PromiseCapability=t.PermissionFlag=t.PasswordResponses=t.PasswordException=t.PageActionEventType=t.OPS=t.MissingPDFException=t.MAX_IMAGE_SIZE_TO_CACHE=t.LINE_FACTOR=t.LINE_DESCENT_FACTOR=t.InvalidPDFException=t.ImageKind=t.IDENTITY_MATRIX=t.FormatError=t.FeatureTest=t.FONT_IDENTITY_MATRIX=t.DocumentActionEventType=t.CMapCompressionType=t.BaseException=t.BASELINE_FACTOR=t.AnnotationType=t.AnnotationReplyType=t.AnnotationPrefix=t.AnnotationMode=t.AnnotationFlag=t.AnnotationFieldFlag=t.AnnotationEditorType=t.AnnotationEditorPrefix=t.AnnotationEditorParamsType=t.AnnotationBorderStyleType=t.AnnotationActionEventType=t.AbortException=void 0,t.assert=function(e,t){e||o(t)},t.bytesToString=h,t.createValidAbsoluteUrl=function(e,t=null,a=null){if(!e)return null
 try{if(a&&"string"==typeof e){if(a.addDefaultProtocol&&e.startsWith("www.")){const t=e.match(/\./g)
-t?.length>=2&&(e=`http://${e}`)}if(a.tryConvertEncoding)try{e=f(e)}catch{}}const n=t?new URL(e,t):new URL(e)
+t?.length>=2&&(e=`http://${e}`)}if(a.tryConvertEncoding)try{e=g(e)}catch{}}const n=t?new URL(e,t):new URL(e)
 if(function(e){switch(e?.protocol){case"http:":case"https:":case"ftp:":case"mailto:":case"tel:":return!0
 default:return!1}}(n))return n}catch{}return null},t.getModificationDate=function(e=new Date){return[e.getUTCFullYear().toString(),(e.getUTCMonth()+1).toString().padStart(2,"0"),e.getUTCDate().toString().padStart(2,"0"),e.getUTCHours().toString().padStart(2,"0"),e.getUTCMinutes().toString().padStart(2,"0"),e.getUTCSeconds().toString().padStart(2,"0")].join("")},t.getUuid=function(){if("undefined"!=typeof crypto&&"function"==typeof crypto?.randomUUID)return crypto.randomUUID()
 const e=new Uint8Array(32)
 if("undefined"!=typeof crypto&&"function"==typeof crypto?.getRandomValues)crypto.getRandomValues(e)
 else for(let t=0;t<32;t++)e[t]=Math.floor(255*Math.random())
-return l(e)},t.getVerbosityLevel=function(){return r},t.info=function(e){r>=n.INFOS&&console.log(`Info: ${e}`)},t.isArrayBuffer=function(e){return"object"==typeof e&&void 0!==e?.byteLength},t.isArrayEqual=function(e,t){if(e.length!==t.length)return!1
+return h(e)},t.getVerbosityLevel=function(){return i},t.info=function(e){i>=r.INFOS&&console.log(`Info: ${e}`)},t.isArrayBuffer=function(e){return"object"==typeof e&&void 0!==e?.byteLength},t.isArrayEqual=function(e,t){if(e.length!==t.length)return!1
 for(let a=0,n=e.length;a<n;a++)if(e[a]!==t[a])return!1
-return!0},t.isNodeJS=void 0,t.normalizeUnicode=function(e){g||(g=/([\u00a0\u00b5\u037e\u0eb3\u2000-\u200a\u202f\u2126\ufb00-\ufb04\ufb06\ufb20-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufba1\ufba4-\ufba9\ufbae-\ufbb1\ufbd3-\ufbdc\ufbde-\ufbe7\ufbea-\ufbf8\ufbfc-\ufbfd\ufc00-\ufc5d\ufc64-\ufcf1\ufcf5-\ufd3d\ufd88\ufdf4\ufdfa-\ufdfb\ufe71\ufe77\ufe79\ufe7b\ufe7d]+)|(\ufb05+)/gu,p=new Map([["ﬅ","ſt"]]))
-return e.replaceAll(g,((e,t,a)=>t?t.normalize("NFKC"):p.get(a)))},t.objectFromMap=function(e){const t=Object.create(null)
+return!0},t.isNodeJS=void 0,t.normalizeUnicode=function(e){p||(p=/([\u00a0\u00b5\u037e\u0eb3\u2000-\u200a\u202f\u2126\ufb00-\ufb04\ufb06\ufb20-\ufb36\ufb38-\ufb3c\ufb3e\ufb40-\ufb41\ufb43-\ufb44\ufb46-\ufba1\ufba4-\ufba9\ufbae-\ufbb1\ufbd3-\ufbdc\ufbde-\ufbe7\ufbea-\ufbf8\ufbfc-\ufbfd\ufc00-\ufc5d\ufc64-\ufcf1\ufcf5-\ufd3d\ufd88\ufdf4\ufdfa-\ufdfb\ufe71\ufe77\ufe79\ufe7b\ufe7d]+)|(\ufb05+)/gu,m=new Map([["ﬅ","ſt"]]))
+return e.replaceAll(p,(e,t,a)=>t?t.normalize("NFKC"):m.get(a))},t.objectFromMap=function(e){const t=Object.create(null)
 for(const[a,n]of e)t[a]=n
-return t},t.objectSize=function(e){return Object.keys(e).length},t.setVerbosityLevel=function(e){Number.isInteger(e)&&(r=e)},t.shadow=o,t.string32=function(e){return String.fromCharCode(e>>24&255,e>>16&255,e>>8&255,255&e)},t.stringToBytes=h,t.stringToPDFString=function(e){if(e[0]>="ï"){let t
-if("þ"===e[0]&&"ÿ"===e[1]?t="utf-16be":"ÿ"===e[0]&&"þ"===e[1]?t="utf-16le":"ï"===e[0]&&"»"===e[1]&&"¿"===e[2]&&(t="utf-8"),t)try{const a=new TextDecoder(t,{fatal:!0}),n=h(e)
-return a.decode(n)}catch(a){i(`stringToPDFString: "${a}".`)}}const t=[]
-for(let n=0,r=e.length;n<r;n++){const a=d[e.charCodeAt(n)]
-t.push(a?String.fromCharCode(a):e.charAt(n))}return t.join("")},t.stringToUTF8String=f,t.unreachable=s,t.utf8StringToString=function(e){return unescape(encodeURIComponent(e))},t.warn=i
+return t},t.objectSize=function(e){return Object.keys(e).length},t.setVerbosityLevel=function(e){Number.isInteger(e)&&(i=e)},t.shadow=c,t.string32=function(e){return String.fromCharCode(e>>24&255,e>>16&255,e>>8&255,255&e)},t.stringToBytes=u,t.stringToPDFString=function(e){if(e[0]>="ï"){let t
+if("þ"===e[0]&&"ÿ"===e[1]?t="utf-16be":"ÿ"===e[0]&&"þ"===e[1]?t="utf-16le":"ï"===e[0]&&"»"===e[1]&&"¿"===e[2]&&(t="utf-8"),t)try{const a=new TextDecoder(t,{fatal:!0}),n=u(e)
+return a.decode(n)}catch(a){s(`stringToPDFString: "${a}".`)}}const t=[]
+for(let n=0,r=e.length;n<r;n++){const a=f[e.charCodeAt(n)]
+t.push(a?String.fromCharCode(a):e.charAt(n))}return t.join("")},t.stringToUTF8String=g,t.unreachable=o,t.utf8StringToString=function(e){return unescape(encodeURIComponent(e))},t.warn=s
 const a=!("object"!=typeof process||process+""!="[object process]"||process.versions.nw||process.versions.electron&&process.type&&"browser"!==process.type)
 t.isNodeJS=a
 t.IDENTITY_MATRIX=[1,0,0,1,0,0]
@@ -111,7 +111,8 @@ t.FONT_IDENTITY_MATRIX=[.001,0,0,.001,0,0]
 t.MAX_IMAGE_SIZE_TO_CACHE=1e7
 t.LINE_FACTOR=1.35
 t.LINE_DESCENT_FACTOR=.35
-t.BASELINE_FACTOR=.25925925925925924
+const n=.35/1.35
+t.BASELINE_FACTOR=n
 t.RenderingIntentFlag={ANY:1,DISPLAY:2,PRINT:4,SAVE:8,ANNOTATIONS_FORMS:16,ANNOTATIONS_STORAGE:32,ANNOTATIONS_DISABLE:64,OPLIST:256}
 t.AnnotationMode={DISABLE:0,ENABLE:1,ENABLE_FORMS:2,ENABLE_STORAGE:3}
 t.AnnotationEditorPrefix="pdfjs_internal_editor_"
@@ -128,33 +129,33 @@ t.AnnotationBorderStyleType={SOLID:1,DASHED:2,BEVELED:3,INSET:4,UNDERLINE:5}
 t.AnnotationActionEventType={E:"Mouse Enter",X:"Mouse Exit",D:"Mouse Down",U:"Mouse Up",Fo:"Focus",Bl:"Blur",PO:"PageOpen",PC:"PageClose",PV:"PageVisible",PI:"PageInvisible",K:"Keystroke",F:"Format",V:"Validate",C:"Calculate"}
 t.DocumentActionEventType={WC:"WillClose",WS:"WillSave",DS:"DidSave",WP:"WillPrint",DP:"DidPrint"}
 t.PageActionEventType={O:"PageOpen",C:"PageClose"}
-const n={ERRORS:0,WARNINGS:1,INFOS:5}
-t.VerbosityLevel=n
+const r={ERRORS:0,WARNINGS:1,INFOS:5}
+t.VerbosityLevel=r
 t.CMapCompressionType={NONE:0,BINARY:1}
 t.OPS={dependency:1,setLineWidth:2,setLineCap:3,setLineJoin:4,setMiterLimit:5,setDash:6,setRenderingIntent:7,setFlatness:8,setGState:9,save:10,restore:11,transform:12,moveTo:13,lineTo:14,curveTo:15,curveTo2:16,curveTo3:17,closePath:18,rectangle:19,stroke:20,closeStroke:21,fill:22,eoFill:23,fillStroke:24,eoFillStroke:25,closeFillStroke:26,closeEOFillStroke:27,endPath:28,clip:29,eoClip:30,beginText:31,endText:32,setCharSpacing:33,setWordSpacing:34,setHScale:35,setLeading:36,setFont:37,setTextRenderingMode:38,setTextRise:39,moveText:40,setLeadingMoveText:41,setTextMatrix:42,nextLine:43,showText:44,showSpacedText:45,nextLineShowText:46,nextLineSetSpacingShowText:47,setCharWidth:48,setCharWidthAndBounds:49,setStrokeColorSpace:50,setFillColorSpace:51,setStrokeColor:52,setStrokeColorN:53,setFillColor:54,setFillColorN:55,setStrokeGray:56,setFillGray:57,setStrokeRGBColor:58,setFillRGBColor:59,setStrokeCMYKColor:60,setFillCMYKColor:61,shadingFill:62,beginInlineImage:63,beginImageData:64,endInlineImage:65,paintXObject:66,markPoint:67,markPointProps:68,beginMarkedContent:69,beginMarkedContentProps:70,endMarkedContent:71,beginCompat:72,endCompat:73,paintFormXObjectBegin:74,paintFormXObjectEnd:75,beginGroup:76,endGroup:77,beginAnnotation:80,endAnnotation:81,paintImageMaskXObject:83,paintImageMaskXObjectGroup:84,paintImageXObject:85,paintInlineImageXObject:86,paintInlineImageXObjectGroup:87,paintImageXObjectRepeat:88,paintImageMaskXObjectRepeat:89,paintSolidColorImageMask:90,constructPath:91}
 t.PasswordResponses={NEED_PASSWORD:1,INCORRECT_PASSWORD:2}
-let r=n.WARNINGS
-function i(e){r>=n.WARNINGS&&console.log(`Warning: ${e}`)}function s(e){throw new Error(e)}function o(e,t,a,n=!1){return Object.defineProperty(e,t,{value:a,enumerable:!n,configurable:!0,writable:!1}),a}const c=function(){function e(t,a){this.constructor===e&&s("Cannot initialize BaseException."),this.message=t,this.name=a}return e.prototype=new Error,e.constructor=e,e}()
-t.BaseException=c
-t.PasswordException=class extends c{constructor(e,t){super(e,"PasswordException"),this.code=t}}
-t.UnknownErrorException=class extends c{constructor(e,t){super(e,"UnknownErrorException"),this.details=t}}
-t.InvalidPDFException=class extends c{constructor(e){super(e,"InvalidPDFException")}}
-t.MissingPDFException=class extends c{constructor(e){super(e,"MissingPDFException")}}
-t.UnexpectedResponseException=class extends c{constructor(e,t){super(e,"UnexpectedResponseException"),this.status=t}}
-t.FormatError=class extends c{constructor(e){super(e,"FormatError")}}
-function l(e){"object"==typeof e&&void 0!==e?.length||s("Invalid argument for bytesToString")
+let i=r.WARNINGS
+function s(e){i>=r.WARNINGS&&console.log(`Warning: ${e}`)}function o(e){throw new Error(e)}function c(e,t,a,n=!1){return Object.defineProperty(e,t,{value:a,enumerable:!n,configurable:!0,writable:!1}),a}const l=function(){function e(t,a){this.constructor===e&&o("Cannot initialize BaseException."),this.message=t,this.name=a}return e.prototype=new Error,e.constructor=e,e}()
+t.BaseException=l
+t.PasswordException=class extends l{constructor(e,t){super(e,"PasswordException"),this.code=t}}
+t.UnknownErrorException=class extends l{constructor(e,t){super(e,"UnknownErrorException"),this.details=t}}
+t.InvalidPDFException=class extends l{constructor(e){super(e,"InvalidPDFException")}}
+t.MissingPDFException=class extends l{constructor(e){super(e,"MissingPDFException")}}
+t.UnexpectedResponseException=class extends l{constructor(e,t){super(e,"UnexpectedResponseException"),this.status=t}}
+t.FormatError=class extends l{constructor(e){super(e,"FormatError")}}
+function h(e){"object"==typeof e&&void 0!==e?.length||o("Invalid argument for bytesToString")
 const t=e.length,a=8192
 if(t<a)return String.fromCharCode.apply(null,e)
 const n=[]
 for(let r=0;r<t;r+=a){const i=Math.min(r+a,t),s=e.subarray(r,i)
-n.push(String.fromCharCode.apply(null,s))}return n.join("")}function h(e){"string"!=typeof e&&s("Invalid argument for stringToBytes")
+n.push(String.fromCharCode.apply(null,s))}return n.join("")}function u(e){"string"!=typeof e&&o("Invalid argument for stringToBytes")
 const t=e.length,a=new Uint8Array(t)
 for(let n=0;n<t;++n)a[n]=255&e.charCodeAt(n)
-return a}t.AbortException=class extends c{constructor(e){super(e,"AbortException")}}
-t.FeatureTest=class{static get isLittleEndian(){return o(this,"isLittleEndian",function(){const e=new Uint8Array(4)
-return e[0]=1,1===new Uint32Array(e.buffer,0,1)[0]}())}static get isEvalSupported(){return o(this,"isEvalSupported",function(){try{return new Function(""),!0}catch{return!1}}())}static get isOffscreenCanvasSupported(){return o(this,"isOffscreenCanvasSupported","undefined"!=typeof OffscreenCanvas)}static get platform(){return"undefined"==typeof navigator?o(this,"platform",{isWin:!1,isMac:!1}):o(this,"platform",{isWin:navigator.platform.includes("Win"),isMac:navigator.platform.includes("Mac")})}static get isCSSRoundSupported(){return o(this,"isCSSRoundSupported",globalThis.CSS?.supports?.("width: round(1.5px, 1px)"))}}
-const u=[...Array(256).keys()].map((e=>e.toString(16).padStart(2,"0")))
-t.Util=class{static makeHexColor(e,t,a){return`#${u[e]}${u[t]}${u[a]}`}static scaleMinMax(e,t){let a
+return a}t.AbortException=class extends l{constructor(e){super(e,"AbortException")}}
+t.FeatureTest=class{static get isLittleEndian(){return c(this,"isLittleEndian",function(){const e=new Uint8Array(4)
+return e[0]=1,1===new Uint32Array(e.buffer,0,1)[0]}())}static get isEvalSupported(){return c(this,"isEvalSupported",function(){try{return new Function(""),!0}catch{return!1}}())}static get isOffscreenCanvasSupported(){return c(this,"isOffscreenCanvasSupported","undefined"!=typeof OffscreenCanvas)}static get platform(){return"undefined"==typeof navigator?c(this,"platform",{isWin:!1,isMac:!1}):c(this,"platform",{isWin:navigator.platform.includes("Win"),isMac:navigator.platform.includes("Mac")})}static get isCSSRoundSupported(){return c(this,"isCSSRoundSupported",globalThis.CSS?.supports?.("width: round(1.5px, 1px)"))}}
+const d=[...Array(256).keys()].map(e=>e.toString(16).padStart(2,"0"))
+t.Util=class{static makeHexColor(e,t,a){return`#${d[e]}${d[t]}${d[a]}`}static scaleMinMax(e,t){let a
 e[0]?(e[0]<0&&(a=t[0],t[0]=t[1],t[1]=a),t[0]*=e[0],t[1]*=e[0],e[3]<0&&(a=t[2],t[2]=t[3],t[3]=a),t[2]*=e[3],t[3]*=e[3]):(a=t[0],t[0]=t[2],t[2]=a,a=t[1],t[1]=t[3],t[3]=a,e[1]<0&&(a=t[2],t[2]=t[3],t[3]=a),t[2]*=e[1],t[3]*=e[1],e[2]<0&&(a=t[0],t[0]=t[1],t[1]=a),t[0]*=e[2],t[1]*=e[2]),t[0]+=e[4],t[1]+=e[4],t[2]+=e[5],t[3]+=e[5]}static transform(e,t){return[e[0]*t[0]+e[2]*t[1],e[1]*t[0]+e[3]*t[1],e[0]*t[2]+e[2]*t[3],e[1]*t[2]+e[3]*t[3],e[0]*t[4]+e[2]*t[5]+e[4],e[1]*t[4]+e[3]*t[5]+e[5]]}static applyTransform(e,t){return[e[0]*t[0]+e[1]*t[2]+t[4],e[0]*t[1]+e[1]*t[3]+t[5]]}static applyInverseTransform(e,t){const a=t[0]*t[3]-t[1]*t[2]
 return[(e[0]*t[3]-e[1]*t[2]+t[2]*t[5]-t[4]*t[3])/a,(-e[0]*t[1]+e[1]*t[0]+t[4]*t[1]-t[5]*t[0])/a]}static getAxialAlignedBoundingBox(e,t){const a=this.applyTransform(e,t),n=this.applyTransform(e.slice(2,4),t),r=this.applyTransform([e[0],e[3]],t),i=this.applyTransform([e[2],e[1]],t)
 return[Math.min(a[0],n[0],r[0],i[0]),Math.min(a[1],n[1],r[1],i[1]),Math.max(a[0],n[0],r[0],i[0]),Math.max(a[1],n[1],r[1],i[1])]}static inverseTransform(e){const t=e[0]*e[3]-e[1]*e[2]
@@ -171,10 +172,10 @@ let y,w=c.length
 const x=w
 for(;w--;)f=c[w],y=1-f,l[0][w]=y*y*y*e+3*y*y*f*a+3*y*f*f*r+f*f*f*s,l[1][w]=y*y*y*t+3*y*y*f*n+3*y*f*f*i+f*f*f*o
 return l[0][x]=e,l[1][x]=t,l[0][x+1]=s,l[1][x+1]=o,l[0].length=l[1].length=x+2,[Math.min(...l[0]),Math.min(...l[1]),Math.max(...l[0]),Math.max(...l[1])]}}
-const d=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,728,711,710,729,733,731,730,732,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8226,8224,8225,8230,8212,8211,402,8260,8249,8250,8722,8240,8222,8220,8221,8216,8217,8218,8482,64257,64258,321,338,352,376,381,305,322,339,353,382,0,8364]
-function f(e){return decodeURIComponent(escape(e))}t.PromiseCapability=class{#e=!1
-constructor(){this.promise=new Promise(((e,t)=>{this.resolve=t=>{this.#e=!0,e(t)},this.reject=e=>{this.#e=!0,t(e)}}))}get settled(){return this.#e}}
-let g=null,p=null
+const f=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,728,711,710,729,733,731,730,732,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8226,8224,8225,8230,8212,8211,402,8260,8249,8250,8722,8240,8222,8220,8221,8216,8217,8218,8482,64257,64258,321,338,352,376,381,305,322,339,353,382,0,8364]
+function g(e){return decodeURIComponent(escape(e))}t.PromiseCapability=class{#e=!1
+constructor(){this.promise=new Promise((e,t)=>{this.resolve=t=>{this.#e=!0,e(t)},this.reject=e=>{this.#e=!0,t(e)}})}get settled(){return this.#e}}
+let p=null,m=null
 t.AnnotationPrefix="pdfjs_internal_id_"},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.XRefParseException=t.XRefEntryException=t.ParserEOFException=t.PDF_VERSION_REGEXP=t.MissingDataException=void 0,t.arrayBuffersToBytes=function(e){const t=e.length
 if(0===t)return new Uint8Array(0)
 if(1===t)return new Uint8Array(e[0])
@@ -199,7 +200,7 @@ return t.join("")},t.escapePDFName=function(e){const t=[]
 let a=0
 for(let n=0,r=e.length;n<r;n++){const r=e.charCodeAt(n);(r<33||r>126||35===r||40===r||41===r||60===r||62===r||91===r||93===r||123===r||125===r||47===r||37===r)&&(a<n&&t.push(e.substring(a,n)),t.push(`#${r.toString(16)}`),a=n+1)}if(0===t.length)return e
 a<e.length&&t.push(e.substring(a,e.length))
-return t.join("")},t.escapeString=function(e){return e.replaceAll(/([()\\\n\r])/g,(e=>"\n"===e?"\\n":"\r"===e?"\\r":`\\${e}`))},t.getInheritableProperty=h,t.getLookupTableFactory=function(e){let t
+return t.join("")},t.escapeString=function(e){return e.replaceAll(/([()\\\n\r])/g,e=>"\n"===e?"\\n":"\r"===e?"\\r":`\\${e}`)},t.getInheritableProperty=h,t.getLookupTableFactory=function(e){let t
 return function(){return e&&(t=Object.create(null),e(t),e=null),t}},t.getNewAnnotationsMap=function(e){if(!e)return null
 const t=new Map
 for(const[a,r]of e){if(!a.startsWith(n.AnnotationEditorPrefix))continue
@@ -213,8 +214,8 @@ const t=Math.round(100*e)
 if(t%100==0)return(t/100).toString()
 if(t%10==0)return e.toFixed(1)
 return e.toFixed(2)},t.parseXFAPath=function(e){const t=/(.+)\[(\d+)\]$/
-return e.split(".").map((e=>{const a=e.match(t)
-return a?{name:a[1],pos:parseInt(a[2],10)}:{name:e,pos:0}}))},t.readInt8=function(e,t){return e[t]<<24>>24},t.readUint16=function(e,t){return e[t]<<8|e[t+1]},t.readUint32=function(e,t){return(e[t]<<24|e[t+1]<<16|e[t+2]<<8|e[t+3])>>>0},t.recoverJsURL=function(e){const t=new RegExp("^\\s*("+["app.launchURL","window.open","xfa.host.gotoURL"].join("|").replaceAll(".","\\.")+")\\((?:'|\")([^'\"]*)(?:'|\")(?:,\\s*(\\w+)\\)|\\))","i").exec(e)
+return e.split(".").map(e=>{const a=e.match(t)
+return a?{name:a[1],pos:parseInt(a[2],10)}:{name:e,pos:0}})},t.readInt8=function(e,t){return e[t]<<24>>24},t.readUint16=function(e,t){return e[t]<<8|e[t+1]},t.readUint32=function(e,t){return(e[t]<<24|e[t+1]<<16|e[t+2]<<8|e[t+3])>>>0},t.recoverJsURL=function(e){const t=new RegExp("^\\s*("+["app.launchURL","window.open","xfa.host.gotoURL"].join("|").replaceAll(".","\\.")+")\\((?:'|\")([^'\"]*)(?:'|\")(?:,\\s*(\\w+)\\)|\\))","i").exec(e)
 if(t?.[2]){const e=t[2]
 let a=!1
 return"true"===t[3]&&"app.launchURL"===t[1]&&(a=!0),{url:e,newWindow:a}}return null},t.stringToUTF16HexString=function(e){const t=[]
@@ -304,9 +305,9 @@ var n=a(3),r=a(2),i=a(8)
 class s extends i.Stream{constructor(e,t,a){super(new Uint8Array(e),0,e,null),this.chunkSize=t,this._loadedChunks=new Set,this.numChunks=Math.ceil(e/t),this.manager=a,this.progressiveDataLength=0,this.lastSuccessfulEnsureByteChunk=-1}getMissingChunks(){const e=[]
 for(let t=0,a=this.numChunks;t<a;++t)this._loadedChunks.has(t)||e.push(t)
 return e}get numChunksLoaded(){return this._loadedChunks.size}get isDataLoaded(){return this.numChunksLoaded===this.numChunks}onReceiveData(e,t){const a=this.chunkSize
-if(e%a!=0)throw new Error(`Bad begin offset: ${e}`)
+if(e%a!==0)throw new Error(`Bad begin offset: ${e}`)
 const n=e+t.byteLength
-if(n%a!=0&&n!==this.bytes.length)throw new Error(`Bad end offset: ${n}`)
+if(n%a!==0&&n!==this.bytes.length)throw new Error(`Bad end offset: ${n}`)
 this.bytes.set(new Uint8Array(t),e)
 const r=Math.floor(e/a),i=Math.floor((n-1)/a)+1
 for(let s=r;s<i;++s)this._loadedChunks.add(s)}onReceiveProgressiveData(e){let t=this.progressiveDataLength
@@ -335,9 +336,9 @@ return r.pos=r.start=e,r.end=e+t||this.end,r.dict=a,r}getBaseStreams(){return[th
 t.ChunkedStreamManager=class{constructor(e,t){this.length=t.length,this.chunkSize=t.rangeChunkSize,this.stream=new s(this.length,this.chunkSize,this),this.pdfNetworkStream=e,this.disableAutoFetch=t.disableAutoFetch,this.msgHandler=t.msgHandler,this.currRequestId=0,this._chunksNeededByRequest=new Map,this._requestsByChunk=new Map,this._promisesByRequest=new Map,this.progressiveDataLength=0,this.aborted=!1,this._loadedStreamCapability=new r.PromiseCapability}sendRequest(e,t){const a=this.pdfNetworkStream.getRangeReader(e,t)
 a.isStreamingSupported||(a.onProgress=this.onProgress.bind(this))
 let r=[],i=0
-return new Promise(((e,t)=>{const s=({value:o,done:c})=>{try{if(c){const t=(0,n.arrayBuffersToBytes)(r)
+return new Promise((e,t)=>{const s=({value:o,done:c})=>{try{if(c){const t=(0,n.arrayBuffersToBytes)(r)
 return r=null,void e(t)}i+=o.byteLength,a.isStreamingSupported&&this.onProgress({loaded:i}),r.push(o),a.read().then(s,t)}catch(l){t(l)}}
-a.read().then(s,t)})).then((t=>{this.aborted||this.onReceiveData({chunk:t,begin:e})}))}requestAllChunks(e=!1){if(!e){const e=this.stream.getMissingChunks()
+a.read().then(s,t)}).then(t=>{this.aborted||this.onReceiveData({chunk:t,begin:e})})}requestAllChunks(e=!1){if(!e){const e=this.stream.getMissingChunks()
 this._requestChunks(e)}return this._loadedStreamCapability.promise}_requestChunks(e){const t=this.currRequestId++,a=new Set
 this._chunksNeededByRequest.set(t,a)
 for(const r of e)this.stream.hasChunk(r)||a.add(r)
@@ -348,12 +349,12 @@ const i=[]
 for(const r of a){let e=this._requestsByChunk.get(r)
 e||(e=[],this._requestsByChunk.set(r,e),i.push(r)),e.push(t)}if(i.length>0){const e=this.groupChunks(i)
 for(const t of e){const e=t.beginChunk*this.chunkSize,a=Math.min(t.endChunk*this.chunkSize,this.length)
-this.sendRequest(e,a).catch(n.reject)}}return n.promise.catch((e=>{if(!this.aborted)throw e}))}getStream(){return this.stream}requestRange(e,t){t=Math.min(t,this.length)
+this.sendRequest(e,a).catch(n.reject)}}return n.promise.catch(e=>{if(!this.aborted)throw e})}getStream(){return this.stream}requestRange(e,t){t=Math.min(t,this.length)
 const a=this.getBeginChunk(e),n=this.getEndChunk(t),r=[]
 for(let i=a;i<n;++i)r.push(i)
 return this._requestChunks(r)}requestRanges(e=[]){const t=[]
 for(const a of e){const e=this.getBeginChunk(a.begin),n=this.getEndChunk(a.end)
-for(let a=e;a<n;++a)t.includes(a)||t.push(a)}return t.sort((function(e,t){return e-t})),this._requestChunks(t)}groupChunks(e){const t=[]
+for(let a=e;a<n;++a)t.includes(a)||t.push(a)}return t.sort(function(e,t){return e-t}),this._requestChunks(t)}groupChunks(e){const t=[]
 let a=-1,n=-1
 for(let r=0,i=e.length;r<i;++r){const i=e[r]
 a<0&&(a=i),n>=0&&n+1!==i&&(t.push({beginChunk:a,endChunk:n+1}),a=i),r+1===e.length&&t.push({beginChunk:a,endChunk:i+1}),n=i}return t}onProgress(e){this.msgHandler.send("DocProgress",{loaded:this.stream.numChunksLoaded*this.chunkSize+e.loaded,total:this.length})}onReceiveData(e){const t=e.chunk,a=void 0===e.begin,n=a?this.progressiveDataLength:e.begin,r=n+t.byteLength,i=Math.floor(n/this.chunkSize),s=r<this.length?Math.floor(r/this.chunkSize):Math.ceil(r/this.chunkSize)
@@ -387,13 +388,13 @@ if(Array.isArray(t)&&4===t.length){if(t=n.Util.normalizeRect(t),t[2]-t[0]>0&&t[3
 return("number"!=typeof e||e<=0)&&(e=1),(0,n.shadow)(this,"userUnit",e)}get view(){const{cropBox:e,mediaBox:t}=this
 if(e!==t&&!(0,n.isArrayEqual)(e,t)){const a=n.Util.intersect(e,t)
 if(a&&a[2]-a[0]>0&&a[3]-a[1]>0)return(0,n.shadow)(this,"view",a);(0,n.warn)("Empty /CropBox and /MediaBox intersection.")}return(0,n.shadow)(this,"view",t)}get rotate(){let e=this._getInheritableProperty("Rotate")||0
-return e%90!=0?e=0:e>=360?e%=360:e<0&&(e=(e%360+360)%360),(0,n.shadow)(this,"rotate",e)}_onSubStreamError(e,t){if(!this.evaluatorOptions.ignoreErrors)throw e;(0,n.warn)(`getContentStream - ignoring sub-stream (${t}): "${e}".`)}getContentStream(){return this.pdfManager.ensure(this,"content").then((e=>e instanceof c.BaseStream?e:Array.isArray(e)?new y.StreamsSequenceStream(e,this._onSubStreamError.bind(this)):new g.NullStream))}get xfaData(){return(0,n.shadow)(this,"xfaData",this.xfaFactory?{bbox:this.xfaFactory.getBoundingBox(this.pageIndex)}:null)}#t(e,t,a){for(const r of e)if(r.id){const e=s.Ref.fromString(r.id)
+return e%90!=0?e=0:e>=360?e%=360:e<0&&(e=(e%360+360)%360),(0,n.shadow)(this,"rotate",e)}_onSubStreamError(e,t){if(!this.evaluatorOptions.ignoreErrors)throw e;(0,n.warn)(`getContentStream - ignoring sub-stream (${t}): "${e}".`)}getContentStream(){return this.pdfManager.ensure(this,"content").then(e=>e instanceof c.BaseStream?e:Array.isArray(e)?new y.StreamsSequenceStream(e,this._onSubStreamError.bind(this)):new g.NullStream)}get xfaData(){return(0,n.shadow)(this,"xfaData",this.xfaFactory?{bbox:this.xfaFactory.getBoundingBox(this.pageIndex)}:null)}#t(e,t,a){for(const r of e)if(r.id){const e=s.Ref.fromString(r.id)
 if(!e){(0,n.warn)(`A non-linked annotation cannot be modified: ${r.id}`)
 continue}if(r.deleted){t.put(e)
 continue}a?.put(e),r.ref=e,delete r.id}}async saveNewAnnotations(e,t,a,n){if(this.xfaFactory)throw new Error("XFA: Cannot save new annotations.")
 const i=new b.PartialEvaluator({xref:this.xref,handler:e,pageIndex:this.pageIndex,idFactory:this._localIdFactory,fontCache:this.fontCache,builtInCMapCache:this.builtInCMapCache,standardFontDataCache:this.standardFontDataCache,globalImageCache:this.globalImageCache,systemFontCache:this.systemFontCache,options:this.evaluatorOptions}),o=new s.RefSet,c=new s.RefSet
 this.#t(a,o,c)
-const l=this.pageDict,h=this.annotations.filter((e=>!(e instanceof s.Ref&&o.has(e)))),u=await r.AnnotationFactory.saveNewAnnotations(i,t,a,n)
+const l=this.pageDict,h=this.annotations.filter(e=>!(e instanceof s.Ref&&o.has(e))),u=await r.AnnotationFactory.saveNewAnnotations(i,t,a,n)
 for(const{ref:r}of u.annotations)r instanceof s.Ref&&!c.has(r)&&h.push(r)
 const d=l.get("Annots")
 l.set("Annots",h)
@@ -401,9 +402,9 @@ const f=[]
 await(0,x.writeObject)(this.ref,l,f,this.xref),d&&l.set("Annots",d)
 const g=u.dependencies
 return g.push({ref:this.ref,data:f.join("")},...u.annotations),g}save(e,t,a){const r=new b.PartialEvaluator({xref:this.xref,handler:e,pageIndex:this.pageIndex,idFactory:this._localIdFactory,fontCache:this.fontCache,builtInCMapCache:this.builtInCMapCache,standardFontDataCache:this.standardFontDataCache,globalImageCache:this.globalImageCache,systemFontCache:this.systemFontCache,options:this.evaluatorOptions})
-return this._parsedAnnotations.then((function(e){const i=[]
-for(const s of e)s.mustBePrinted(a)&&i.push(s.save(r,t,a).catch((function(e){return(0,n.warn)(`save - ignoring annotation data during "${t.name}" task: "${e}".`),null})))
-return Promise.all(i).then((function(e){return e.filter((e=>!!e))}))}))}loadResources(e){return this.resourcesPromise||(this.resourcesPromise=this.pdfManager.ensure(this,"resources")),this.resourcesPromise.then((()=>new p.ObjectLoader(this.resources,e,this.xref).load()))}getOperatorList({handler:e,sink:t,task:a,intent:o,cacheKey:c,annotationStorage:l=null}){const h=this.getContentStream(),u=this.loadResources(["ColorSpace","ExtGState","Font","Pattern","Properties","Shading","XObject"]),d=new b.PartialEvaluator({xref:this.xref,handler:e,pageIndex:this.pageIndex,idFactory:this._localIdFactory,fontCache:this.fontCache,builtInCMapCache:this.builtInCMapCache,standardFontDataCache:this.standardFontDataCache,globalImageCache:this.globalImageCache,systemFontCache:this.systemFontCache,options:this.evaluatorOptions}),f=this.xfaFactory?null:(0,i.getNewAnnotationsMap)(l)
+return this._parsedAnnotations.then(function(e){const i=[]
+for(const s of e)s.mustBePrinted(a)&&i.push(s.save(r,t,a).catch(function(e){return(0,n.warn)(`save - ignoring annotation data during "${t.name}" task: "${e}".`),null}))
+return Promise.all(i).then(function(e){return e.filter(e=>!!e)})})}loadResources(e){return this.resourcesPromise||(this.resourcesPromise=this.pdfManager.ensure(this,"resources")),this.resourcesPromise.then(()=>new p.ObjectLoader(this.resources,e,this.xref).load())}getOperatorList({handler:e,sink:t,task:a,intent:o,cacheKey:c,annotationStorage:l=null}){const h=this.getContentStream(),u=this.loadResources(["ColorSpace","ExtGState","Font","Pattern","Properties","Shading","XObject"]),d=new b.PartialEvaluator({xref:this.xref,handler:e,pageIndex:this.pageIndex,idFactory:this._localIdFactory,fontCache:this.fontCache,builtInCMapCache:this.builtInCMapCache,standardFontDataCache:this.standardFontDataCache,globalImageCache:this.globalImageCache,systemFontCache:this.systemFontCache,options:this.evaluatorOptions}),f=this.xfaFactory?null:(0,i.getNewAnnotationsMap)(l)
 let g=null,p=Promise.resolve(null)
 if(f){const e=f.get(this.pageIndex)
 if(e){const t=this.pdfManager.ensureDoc("annotationGlobals")
@@ -414,18 +415,18 @@ const{isOffscreenCanvasSupported:c}=this.evaluatorOptions
 if(o.size>0){const t=e.slice()
 for(const[e,a]of l)e.startsWith(n.AnnotationEditorPrefix)&&a.bitmap&&o.has(a.bitmapId)&&t.push(a)
 i=r.AnnotationFactory.generateImages(t,this.xref,c)}else i=r.AnnotationFactory.generateImages(e,this.xref,c)
-g=new s.RefSet,this.#t(e,g,null),p=t.then((t=>t?r.AnnotationFactory.printNewAnnotations(t,d,a,e,i):null))}}const y=Promise.all([h,u]).then((([n])=>{const r=new m.OperatorList(o,t)
-return e.send("StartRenderPage",{transparency:d.hasBlendModes(this.resources,this.nonBlendModesSet),pageIndex:this.pageIndex,cacheKey:c}),d.getOperatorList({stream:n,task:a,resources:this.resources,operatorList:r}).then((function(){return r}))}))
-return Promise.all([y,this._parsedAnnotations,p]).then((function([e,t,r]){if(r){t=t.filter((e=>!(e.ref&&g.has(e.ref))))
+g=new s.RefSet,this.#t(e,g,null),p=t.then(t=>t?r.AnnotationFactory.printNewAnnotations(t,d,a,e,i):null)}}const y=Promise.all([h,u]).then(([n])=>{const r=new m.OperatorList(o,t)
+return e.send("StartRenderPage",{transparency:d.hasBlendModes(this.resources,this.nonBlendModesSet),pageIndex:this.pageIndex,cacheKey:c}),d.getOperatorList({stream:n,task:a,resources:this.resources,operatorList:r}).then(function(){return r})})
+return Promise.all([y,this._parsedAnnotations,p]).then(function([e,t,r]){if(r){t=t.filter(e=>!(e.ref&&g.has(e.ref)))
 for(let e=0,a=r.length;e<a;e++){const n=r[e]
-if(n.refToReplace){const i=t.findIndex((e=>e.ref&&(0,s.isRefsEqual)(e.ref,n.refToReplace)))
+if(n.refToReplace){const i=t.findIndex(e=>e.ref&&(0,s.isRefsEqual)(e.ref,n.refToReplace))
 i>=0&&(t.splice(i,1,n),r.splice(e--,1),a--)}}t=t.concat(r)}if(0===t.length||o&n.RenderingIntentFlag.ANNOTATIONS_DISABLE)return e.flush(!0),{length:e.totalLength}
 const i=!!(o&n.RenderingIntentFlag.ANNOTATIONS_FORMS),c=!!(o&n.RenderingIntentFlag.ANY),h=!!(o&n.RenderingIntentFlag.DISPLAY),u=!!(o&n.RenderingIntentFlag.PRINT),f=[]
-for(const s of t)(c||h&&s.mustBeViewed(l,i)||u&&s.mustBePrinted(l))&&f.push(s.getOperatorList(d,a,o,i,l).catch((function(e){return(0,n.warn)(`getOperatorList - ignoring annotation data during "${a.name}" task: "${e}".`),{opList:null,separateForm:!1,separateCanvas:!1}})))
-return Promise.all(f).then((function(t){let a=!1,n=!1
+for(const s of t)(c||h&&s.mustBeViewed(l,i)||u&&s.mustBePrinted(l))&&f.push(s.getOperatorList(d,a,o,i,l).catch(function(e){return(0,n.warn)(`getOperatorList - ignoring annotation data during "${a.name}" task: "${e}".`),{opList:null,separateForm:!1,separateCanvas:!1}}))
+return Promise.all(f).then(function(t){let a=!1,n=!1
 for(const{opList:r,separateForm:i,separateCanvas:s}of t)e.addOpList(r),a||=i,n||=s
-return e.flush(!0,{form:a,canvas:n}),{length:e.totalLength}}))}))}extractTextContent({handler:e,task:t,includeMarkedContent:a,disableNormalization:n,sink:r}){const i=this.getContentStream(),s=this.loadResources(["ExtGState","Font","Properties","XObject"])
-return Promise.all([i,s]).then((([i])=>new b.PartialEvaluator({xref:this.xref,handler:e,pageIndex:this.pageIndex,idFactory:this._localIdFactory,fontCache:this.fontCache,builtInCMapCache:this.builtInCMapCache,standardFontDataCache:this.standardFontDataCache,globalImageCache:this.globalImageCache,systemFontCache:this.systemFontCache,options:this.evaluatorOptions}).getTextContent({stream:i,task:t,resources:this.resources,includeMarkedContent:a,disableNormalization:n,sink:r,viewBox:this.view})))}async getStructTree(){const e=await this.pdfManager.ensureCatalog("structTreeRoot")
+return e.flush(!0,{form:a,canvas:n}),{length:e.totalLength}})})}extractTextContent({handler:e,task:t,includeMarkedContent:a,disableNormalization:n,sink:r}){const i=this.getContentStream(),s=this.loadResources(["ExtGState","Font","Properties","XObject"])
+return Promise.all([i,s]).then(([i])=>new b.PartialEvaluator({xref:this.xref,handler:e,pageIndex:this.pageIndex,idFactory:this._localIdFactory,fontCache:this.fontCache,builtInCMapCache:this.builtInCMapCache,standardFontDataCache:this.standardFontDataCache,globalImageCache:this.globalImageCache,systemFontCache:this.systemFontCache,options:this.evaluatorOptions}).getTextContent({stream:i,task:t,resources:this.resources,includeMarkedContent:a,disableNormalization:n,sink:r,viewBox:this.view}))}async getStructTree(){const e=await this.pdfManager.ensureCatalog("structTreeRoot")
 if(!e)return null
 await this._parsedAnnotations
 return(await this.pdfManager.ensure(this,"_parseStructTree",[e])).serializable}_parseStructTree(e){const t=new w.StructTreePage(e,this.pageDict)
@@ -434,16 +435,16 @@ if(0===r.length)return r
 const i=[],s=[]
 let o
 const c=!!(a&n.RenderingIntentFlag.ANY),l=!!(a&n.RenderingIntentFlag.DISPLAY),h=!!(a&n.RenderingIntentFlag.PRINT)
-for(const u of r){const a=c||l&&u.viewable;(a||h&&u.printable)&&i.push(u.data),u.hasTextContent&&a&&(o||=new b.PartialEvaluator({xref:this.xref,handler:e,pageIndex:this.pageIndex,idFactory:this._localIdFactory,fontCache:this.fontCache,builtInCMapCache:this.builtInCMapCache,standardFontDataCache:this.standardFontDataCache,globalImageCache:this.globalImageCache,systemFontCache:this.systemFontCache,options:this.evaluatorOptions}),s.push(u.extractTextContent(o,t,[-1/0,-1/0,1/0,1/0]).catch((function(e){(0,n.warn)(`getAnnotationsData - ignoring textContent during "${t.name}" task: "${e}".`)}))))}return await Promise.all(s),i}get annotations(){const e=this._getInheritableProperty("Annots")
-return(0,n.shadow)(this,"annotations",Array.isArray(e)?e:[])}get _parsedAnnotations(){const e=this.pdfManager.ensure(this,"annotations").then((async e=>{if(0===e.length)return e
+for(const u of r){const a=c||l&&u.viewable;(a||h&&u.printable)&&i.push(u.data),u.hasTextContent&&a&&(o||=new b.PartialEvaluator({xref:this.xref,handler:e,pageIndex:this.pageIndex,idFactory:this._localIdFactory,fontCache:this.fontCache,builtInCMapCache:this.builtInCMapCache,standardFontDataCache:this.standardFontDataCache,globalImageCache:this.globalImageCache,systemFontCache:this.systemFontCache,options:this.evaluatorOptions}),s.push(u.extractTextContent(o,t,[-1/0,-1/0,1/0,1/0]).catch(function(e){(0,n.warn)(`getAnnotationsData - ignoring textContent during "${t.name}" task: "${e}".`)})))}return await Promise.all(s),i}get annotations(){const e=this._getInheritableProperty("Annots")
+return(0,n.shadow)(this,"annotations",Array.isArray(e)?e:[])}get _parsedAnnotations(){const e=this.pdfManager.ensure(this,"annotations").then(async e=>{if(0===e.length)return e
 const t=await this.pdfManager.ensureDoc("annotationGlobals")
 if(!t)return[]
 const a=[]
-for(const o of e)a.push(r.AnnotationFactory.create(this.xref,o,t,this._localIdFactory,!1,this.ref).catch((function(e){return(0,n.warn)(`_parsedAnnotations: "${e}".`),null})))
+for(const o of e)a.push(r.AnnotationFactory.create(this.xref,o,t,this._localIdFactory,!1,this.ref).catch(function(e){return(0,n.warn)(`_parsedAnnotations: "${e}".`),null}))
 const i=[]
 let s
 for(const n of await Promise.all(a))n&&(n instanceof r.PopupAnnotation?(s||=[]).push(n):i.push(n))
-return s&&i.push(...s),i}))
+return s&&i.push(...s),i})
 return(0,n.shadow)(this,"_parsedAnnotations",e)}get jsActions(){const e=(0,i.collectActions)(this.xref,this.pageDict,n.PageActionEventType)
 return(0,n.shadow)(this,"jsActions",e)}}t.Page=C
 const v=new Uint8Array([37,80,68,70,45]),F=new Uint8Array([115,116,97,114,116,120,114,101,102]),O=new Uint8Array([101,110,100,111,98,106])
@@ -479,10 +480,10 @@ e.moveStart(),e.skip(v.length)
 let t,a=""
 for(;(t=e.getByte())>32&&a.length<7;)a+=String.fromCharCode(t)
 i.PDF_VERSION_REGEXP.test(a)?this._version=a:(0,n.warn)(`Invalid PDF header version: ${a}`)}parseStartXRef(){this.xref.setStartXRef(this.startXRef)}get numPages(){let e=0
-return e=this.catalog.hasActualNumPages?this.catalog.numPages:this.xfaFactory?this.xfaFactory.getNumPages():this.linearization?this.linearization.numPages:this.catalog.numPages,(0,n.shadow)(this,"numPages",e)}_hasOnlyDocumentSignatures(e,t=0){return!!Array.isArray(e)&&e.every((e=>{if(!((e=this.xref.fetchIfRef(e))instanceof s.Dict))return!1
+return e=this.catalog.hasActualNumPages?this.catalog.numPages:this.xfaFactory?this.xfaFactory.getNumPages():this.linearization?this.linearization.numPages:this.catalog.numPages,(0,n.shadow)(this,"numPages",e)}_hasOnlyDocumentSignatures(e,t=0){return!!Array.isArray(e)&&e.every(e=>{if(!((e=this.xref.fetchIfRef(e))instanceof s.Dict))return!1
 if(e.has("Kids"))return++t>10?((0,n.warn)("_hasOnlyDocumentSignatures: maximum recursion depth reached"),!1):this._hasOnlyDocumentSignatures(e.get("Kids"),t)
-const a=(0,s.isName)(e.get("FT"),"Sig"),r=e.get("Rect"),i=Array.isArray(r)&&r.every((e=>0===e))
-return a&&i}))}get _xfaStreams(){const e=this.catalog.acroForm
+const a=(0,s.isName)(e.get("FT"),"Sig"),r=e.get("Rect"),i=Array.isArray(r)&&r.every(e=>0===e)
+return a&&i})}get _xfaStreams(){const e=this.catalog.acroForm
 if(!e)return null
 const t=e.get("XFA"),a={"xdp:xdp":"",template:"",datasets:"",config:"",connectionSet:"",localeSet:"",stylesheet:"","/xdp:xdp":""}
 if(t instanceof c.BaseStream&&!t.isEmpty)return a["xdp:xdp"]=t,a
@@ -493,8 +494,8 @@ const i=this.xref.fetchIfRef(t[n+1])
 i instanceof c.BaseStream&&!i.isEmpty&&(a[e]=i)}return a}get xfaDatasets(){const e=this._xfaStreams
 if(!e)return(0,n.shadow)(this,"xfaDatasets",null)
 for(const t of["datasets","xdp:xdp"]){const a=e[t]
-if(a)try{const e={[t]:(0,n.stringToUTF8String)(a.getString())}
-return(0,n.shadow)(this,"xfaDatasets",new d.DatasetReader(e))}catch{(0,n.warn)("XFA - Invalid utf-8 string.")
+if(a)try{const e=(0,n.stringToUTF8String)(a.getString()),r={[t]:e}
+return(0,n.shadow)(this,"xfaDatasets",new d.DatasetReader(r))}catch{(0,n.warn)("XFA - Invalid utf-8 string.")
 break}}return(0,n.shadow)(this,"xfaDatasets",null)}get xfaData(){const e=this._xfaStreams
 if(!e)return null
 const t=Object.create(null)
@@ -516,13 +517,13 @@ if(!(l instanceof s.Dict))return
 const h=Object.assign(Object.create(null),this.pdfManager.evaluatorOptions)
 h.useSystemFonts=!1
 const u=new b.PartialEvaluator({xref:this.xref,handler:e,pageIndex:-1,idFactory:this._globalIdFactory,fontCache:this.catalog.fontCache,builtInCMapCache:this.catalog.builtInCMapCache,standardFontDataCache:this.catalog.standardFontDataCache,options:h}),d=new m.OperatorList,f=[],g={get font(){return f.at(-1)},set font(e){f.push(e)},clone(){return this}},y=new Map
-l.forEach(((e,t)=>{y.set(e,t)}))
+l.forEach((e,t)=>{y.set(e,t)})
 const w=[]
 for(const[o,p]of y){const e=p.get("FontDescriptor")
 if(!(e instanceof s.Dict))continue
 let a=e.get("FontFamily")
 a=a.replaceAll(/[ ]+(\d)/g,"$1")
-const c={fontFamily:a,fontWeight:e.get("FontWeight"),italicAngle:-e.get("ItalicAngle")};(0,i.validateCSSFont)(c)&&w.push(u.handleSetFont(r,[s.Name.get(o),1],null,d,t,g,null,c).catch((function(e){return(0,n.warn)(`loadXfaFonts: "${e}".`),null})))}await Promise.all(w)
+const c={fontFamily:a,fontWeight:e.get("FontWeight"),italicAngle:-e.get("ItalicAngle")};(0,i.validateCSSFont)(c)&&w.push(u.handleSetFont(r,[s.Name.get(o),1],null,d,t,g,null,c).catch(function(e){return(0,n.warn)(`loadXfaFonts: "${e}".`),null}))}await Promise.all(w)
 const x=this.xfaFactory.setFonts(f)
 if(!x)return
 h.ignoreErrors=!0,w.length=0,f.length=0
@@ -530,7 +531,7 @@ const S=new Set
 for(const n of x)(0,o.getXfaFontName)(`${n}-Regular`)||S.add(n)
 S.size&&x.push("PdfJS-Fallback")
 for(const i of x)if(!S.has(i))for(const e of[{name:"Regular",fontWeight:400,italicAngle:0},{name:"Bold",fontWeight:700,italicAngle:0},{name:"Italic",fontWeight:400,italicAngle:12},{name:"BoldItalic",fontWeight:700,italicAngle:12}]){const a=`${i}-${e.name}`,c=(0,o.getXfaFontDict)(a)
-w.push(u.handleSetFont(r,[s.Name.get(a),1],null,d,t,g,c,{fontFamily:i,fontWeight:e.fontWeight,italicAngle:e.italicAngle}).catch((function(e){return(0,n.warn)(`loadXfaFonts: "${e}".`),null})))}await Promise.all(w),this.xfaFactory.appendFonts(f,S)}async serializeXfaData(e){return this.xfaFactory?this.xfaFactory.serializeData(e):null}get version(){return this.catalog.version||this._version}get formInfo(){const e={hasFields:!1,hasAcroForm:!1,hasXfa:!1,hasSignatures:!1},t=this.catalog.acroForm
+w.push(u.handleSetFont(r,[s.Name.get(a),1],null,d,t,g,c,{fontFamily:i,fontWeight:e.fontWeight,italicAngle:e.italicAngle}).catch(function(e){return(0,n.warn)(`loadXfaFonts: "${e}".`),null}))}await Promise.all(w),this.xfaFactory.appendFonts(f,S)}async serializeXfaData(e){return this.xfaFactory?this.xfaFactory.serializeData(e):null}get version(){return this.catalog.version||this._version}get formInfo(){const e={hasFields:!1,hasAcroForm:!1,hasXfa:!1,hasSignatures:!1},t=this.catalog.acroForm
 if(!t)return(0,n.shadow)(this,"formInfo",e)
 try{const a=t.get("Fields"),n=Array.isArray(a)&&a.length>0
 e.hasFields=n
@@ -563,7 +564,7 @@ if(a instanceof s.Ref&&(a=await r.fetchAsync(a)),(0,s.isName)(a,"Page")||!e.has(
 if(t)return t
 const{catalog:a,linearization:n,xfaFactory:r}=this
 let i
-return i=r?Promise.resolve([s.Dict.empty,null]):n?.pageFirst===e?this._getLinearizationPage(e):a.getPageDict(e),i=i.then((([t,n])=>new C({pdfManager:this.pdfManager,xref:this.xref,pageIndex:e,pageDict:t,ref:n,globalIdFactory:this._globalIdFactory,fontCache:a.fontCache,builtInCMapCache:a.builtInCMapCache,standardFontDataCache:a.standardFontDataCache,globalImageCache:a.globalImageCache,systemFontCache:a.systemFontCache,nonBlendModesSet:a.nonBlendModesSet,xfaFactory:r}))),this._pagePromises.set(e,i),i}async checkFirstPage(e=!1){if(!e)try{await this.getPage(0)}catch(t){if(t instanceof i.XRefEntryException)throw this._pagePromises.delete(0),await this.cleanup(),new i.XRefParseException}}async checkLastPage(e=!1){const{catalog:t,pdfManager:a}=this
+return i=r?Promise.resolve([s.Dict.empty,null]):n?.pageFirst===e?this._getLinearizationPage(e):a.getPageDict(e),i=i.then(([t,n])=>new C({pdfManager:this.pdfManager,xref:this.xref,pageIndex:e,pageDict:t,ref:n,globalIdFactory:this._globalIdFactory,fontCache:a.fontCache,builtInCMapCache:a.builtInCMapCache,standardFontDataCache:a.standardFontDataCache,globalImageCache:a.globalImageCache,systemFontCache:a.systemFontCache,nonBlendModesSet:a.nonBlendModesSet,xfaFactory:r})),this._pagePromises.set(e,i),i}async checkFirstPage(e=!1){if(!e)try{await this.getPage(0)}catch(t){if(t instanceof i.XRefEntryException)throw this._pagePromises.delete(0),await this.cleanup(),new i.XRefParseException}}async checkLastPage(e=!1){const{catalog:t,pdfManager:a}=this
 let r
 t.setActualNumPages()
 try{if(await Promise.all([a.ensureDoc("xfaFactory"),a.ensureDoc("linearization"),a.ensureCatalog("numPages")]),this.xfaFactory)return
@@ -573,18 +574,18 @@ await this.getPage(r-1)}catch(s){if(this._pagePromises.delete(r-1),await this.cl
 let c;(0,n.warn)(`checkLastPage - invalid /Pages tree /Count: ${r}.`)
 try{c=await t.getAllPageDicts(e)}catch(o){if(o instanceof i.XRefEntryException&&!e)throw new i.XRefParseException
 return void t.setActualNumPages(1)}for(const[e,[n,r]]of c){let i
-n instanceof Error?(i=Promise.reject(n),i.catch((()=>{}))):i=Promise.resolve(new C({pdfManager:a,xref:this.xref,pageIndex:e,pageDict:n,ref:r,globalIdFactory:this._globalIdFactory,fontCache:t.fontCache,builtInCMapCache:t.builtInCMapCache,standardFontDataCache:t.standardFontDataCache,globalImageCache:t.globalImageCache,systemFontCache:t.systemFontCache,nonBlendModesSet:t.nonBlendModesSet,xfaFactory:null})),this._pagePromises.set(e,i)}t.setActualNumPages(c.size)}}fontFallback(e,t){return this.catalog.fontFallback(e,t)}async cleanup(e=!1){return this.catalog?this.catalog.cleanup(e):(0,u.clearGlobalCaches)()}#a(e,t,a,i){const s=this.xref.fetchIfRef(t)
+n instanceof Error?(i=Promise.reject(n),i.catch(()=>{})):i=Promise.resolve(new C({pdfManager:a,xref:this.xref,pageIndex:e,pageDict:n,ref:r,globalIdFactory:this._globalIdFactory,fontCache:t.fontCache,builtInCMapCache:t.builtInCMapCache,standardFontDataCache:t.standardFontDataCache,globalImageCache:t.globalImageCache,systemFontCache:t.systemFontCache,nonBlendModesSet:t.nonBlendModesSet,xfaFactory:null})),this._pagePromises.set(e,i)}t.setActualNumPages(c.size)}}fontFallback(e,t){return this.catalog.fontFallback(e,t)}async cleanup(e=!1){return this.catalog?this.catalog.cleanup(e):(0,u.clearGlobalCaches)()}#a(e,t,a,i){const s=this.xref.fetchIfRef(t)
 if(s.has("T")){const t=(0,n.stringToPDFString)(s.get("T"))
-e=""===e?t:`${e}.${t}`}if(a.has(e)||a.set(e,[]),a.get(e).push(r.AnnotationFactory.create(this.xref,t,i,this._localIdFactory,!0,null).then((e=>e?.getFieldObject())).catch((function(e){return(0,n.warn)(`#collectFieldObjects: "${e}".`),null}))),s.has("Kids"))for(const n of s.get("Kids"))this.#a(e,n,a,i)}get fieldObjects(){if(!this.formInfo.hasFields)return(0,n.shadow)(this,"fieldObjects",Promise.resolve(null))
-const e=this.pdfManager.ensureDoc("annotationGlobals").then((async e=>{if(!e)return null
+e=""===e?t:`${e}.${t}`}if(a.has(e)||a.set(e,[]),a.get(e).push(r.AnnotationFactory.create(this.xref,t,i,this._localIdFactory,!0,null).then(e=>e?.getFieldObject()).catch(function(e){return(0,n.warn)(`#collectFieldObjects: "${e}".`),null})),s.has("Kids"))for(const n of s.get("Kids"))this.#a(e,n,a,i)}get fieldObjects(){if(!this.formInfo.hasFields)return(0,n.shadow)(this,"fieldObjects",Promise.resolve(null))
+const e=this.pdfManager.ensureDoc("annotationGlobals").then(async e=>{if(!e)return null
 const t=Object.create(null),a=new Map
 for(const r of this.catalog.acroForm.get("Fields"))this.#a("",r,a,e)
 const n=[]
-for(const[r,i]of a)n.push(Promise.all(i).then((e=>{(e=e.filter((e=>!!e))).length>0&&(t[r]=e)})))
-return await Promise.all(n),t}))
+for(const[r,i]of a)n.push(Promise.all(i).then(e=>{(e=e.filter(e=>!!e)).length>0&&(t[r]=e)}))
+return await Promise.all(n),t})
 return(0,n.shadow)(this,"fieldObjects",e)}get hasJSActions(){const e=this.pdfManager.ensureDoc("_parseHasJSActions")
 return(0,n.shadow)(this,"hasJSActions",e)}async _parseHasJSActions(){const[e,t]=await Promise.all([this.pdfManager.ensureCatalog("jsActions"),this.pdfManager.ensureDoc("fieldObjects")])
-return!!e||!!t&&Object.values(t).some((e=>e.some((e=>null!==e.actions))))}get calculationOrderIds(){const e=this.catalog.acroForm
+return!!e||!!t&&Object.values(t).some(e=>e.some(e=>null!==e.actions))}get calculationOrderIds(){const e=this.catalog.acroForm
 if(!e?.has("CO"))return(0,n.shadow)(this,"calculationOrderIds",null)
 const t=e.get("CO")
 if(!Array.isArray(t)||0===t.length)return(0,n.shadow)(this,"calculationOrderIds",null)
@@ -598,7 +599,7 @@ switch(e.length){case 0:return null
 case 1:return u.ColorSpace.singletons.gray.getRgbItem(e,0,a,0),a
 case 3:return u.ColorSpace.singletons.rgb.getRgbItem(e,0,a,0),a
 case 4:return u.ColorSpace.singletons.cmyk.getRgbItem(e,0,a,0),a
-default:return t}}function w(e){return Array.from(e,(e=>e/255))}function x(e,t){const a=e.getArray("QuadPoints")
+default:return t}}function w(e){return Array.from(e,e=>e/255)}function x(e,t){const a=e.getArray("QuadPoints")
 if(!Array.isArray(a)||0===a.length||a.length%8>0)return null
 const n=[]
 for(let r=0,i=a.length/8;r<i;r++){let e=1/0,i=-1/0,s=1/0,o=-1/0
@@ -607,7 +608,7 @@ e=Math.min(n,e),i=Math.max(n,i),s=Math.min(r,s),o=Math.max(r,o)}if(null!==t&&(e<
 n.push([{x:e,y:o},{x:i,y:o},{x:e,y:s},{x:i,y:s}])}return n}function S(e,t,a){const[r,i,s,o]=n.Util.getAxialAlignedBoundingBox(t,a)
 if(r===s||i===o)return[1,0,0,1,e[0],e[1]]
 const c=(e[2]-e[0])/(s-r),l=(e[3]-e[1])/(o-i)
-return[c,0,0,l,e[0]-r*c,e[1]-i*l]}t.AnnotationFactory=class{static createGlobals(e){return Promise.all([e.ensureCatalog("acroForm"),e.ensureDoc("xfaDatasets"),e.ensureCatalog("structTreeRoot"),e.ensureCatalog("baseUrl"),e.ensureCatalog("attachments")]).then((([t,a,n,r,i])=>({pdfManager:e,acroForm:t instanceof s.Dict?t:s.Dict.empty,xfaDatasets:a,structTreeRoot:n,baseUrl:r,attachments:i})),(e=>((0,n.warn)(`createGlobals: "${e}".`),null)))}static async create(e,t,a,n,r,i){const s=r?await this._getPageIndex(e,t,a.pdfManager):null
+return[c,0,0,l,e[0]-r*c,e[1]-i*l]}t.AnnotationFactory=class{static createGlobals(e){return Promise.all([e.ensureCatalog("acroForm"),e.ensureDoc("xfaDatasets"),e.ensureCatalog("structTreeRoot"),e.ensureCatalog("baseUrl"),e.ensureCatalog("attachments")]).then(([t,a,n,r,i])=>({pdfManager:e,acroForm:t instanceof s.Dict?t:s.Dict.empty,xfaDatasets:a,structTreeRoot:n,baseUrl:r,attachments:i}),e=>((0,n.warn)(`createGlobals: "${e}".`),null))}static async create(e,t,a,n,r,i){const s=r?await this._getPageIndex(e,t,a.pdfManager):null
 return a.pdfManager.ensure(this,"_create",[e,t,a,n,r,s,i])}static _create(e,t,a,i,o=!1,c=null,l=null){const h=e.fetchIfRef(t)
 if(!(h instanceof s.Dict))return
 const{acroForm:u,pdfManager:d}=a,f=t instanceof s.Ref?t.toString():`annot_${i.createObjId()}`
@@ -701,8 +702,8 @@ if(!(n instanceof s.Name&&a.has(n.name)))return
 const r=a.get(n.name)
 r instanceof c.BaseStream&&(this.appearance=r)}setOptionalContent(e){this.oc=null
 const t=e.get("OC")
-t instanceof s.Name?(0,n.warn)("setOptionalContent: Support for /Name-entry is not implemented."):t instanceof s.Dict&&(this.oc=t)}loadResources(e,t){return t.dict.getAsync("Resources").then((t=>{if(!t)return
-return new g.ObjectLoader(t,e,t.xref).load().then((function(){return t}))}))}async getOperatorList(e,t,a,r,i){const c=this.data
+t instanceof s.Name?(0,n.warn)("setOptionalContent: Support for /Name-entry is not implemented."):t instanceof s.Dict&&(this.oc=t)}loadResources(e,t){return t.dict.getAsync("Resources").then(t=>{if(!t)return
+return new g.ObjectLoader(t,e,t.xref).load().then(function(){return t})})}async getOperatorList(e,t,a,r,i){const c=this.data
 let l=this.appearance
 const h=!!(this.data.hasOwnCanvas&&a&n.RenderingIntentFlag.DISPLAY)
 if(!l){if(!h)return{opList:new p.OperatorList,separateForm:!1,separateCanvas:!1}
@@ -779,7 +780,7 @@ e&&(this._hasValueFromXFA=!0,o.fieldValue=c=i.xfaDatasets.getValue(e))}void 0===
 const h=(0,r.getInheritableProperty)({dict:t,key:"FT"})
 o.fieldType=h instanceof s.Name?h.name:null
 const u=(0,r.getInheritableProperty)({dict:t,key:"DR"}),d=i.acroForm.get("DR"),f=this.appearance?.dict.get("Resources")
-this._fieldResources={localResources:u,acroFormResources:d,appearanceResources:f,mergedResources:s.Dict.merge({xref:a,dictArray:[u,f,d],mergeSubDicts:!0})},o.fieldFlags=(0,r.getInheritableProperty)({dict:t,key:"Ff"}),(!Number.isInteger(o.fieldFlags)||o.fieldFlags<0)&&(o.fieldFlags=0),o.readOnly=this.hasFieldFlag(n.AnnotationFieldFlag.READONLY),o.required=this.hasFieldFlag(n.AnnotationFieldFlag.REQUIRED),o.hidden=this._hasFlag(o.annotationFlags,n.AnnotationFlag.HIDDEN)||this._hasFlag(o.annotationFlags,n.AnnotationFlag.NOVIEW)}_decodeFormValue(e){return Array.isArray(e)?e.filter((e=>"string"==typeof e)).map((e=>(0,n.stringToPDFString)(e))):e instanceof s.Name?(0,n.stringToPDFString)(e.name):"string"==typeof e?(0,n.stringToPDFString)(e):null}hasFieldFlag(e){return!!(this.data.fieldFlags&e)}_isViewable(e){return!this._hasFlag(e,n.AnnotationFlag.INVISIBLE)}mustBeViewed(e,t){return t?this.viewable:super.mustBeViewed(e,t)&&!this._hasFlag(this.flags,n.AnnotationFlag.NOVIEW)}getRotationMatrix(e){let t=e?.get(this.data.id)?.rotation
+this._fieldResources={localResources:u,acroFormResources:d,appearanceResources:f,mergedResources:s.Dict.merge({xref:a,dictArray:[u,f,d],mergeSubDicts:!0})},o.fieldFlags=(0,r.getInheritableProperty)({dict:t,key:"Ff"}),(!Number.isInteger(o.fieldFlags)||o.fieldFlags<0)&&(o.fieldFlags=0),o.readOnly=this.hasFieldFlag(n.AnnotationFieldFlag.READONLY),o.required=this.hasFieldFlag(n.AnnotationFieldFlag.REQUIRED),o.hidden=this._hasFlag(o.annotationFlags,n.AnnotationFlag.HIDDEN)||this._hasFlag(o.annotationFlags,n.AnnotationFlag.NOVIEW)}_decodeFormValue(e){return Array.isArray(e)?e.filter(e=>"string"==typeof e).map(e=>(0,n.stringToPDFString)(e)):e instanceof s.Name?(0,n.stringToPDFString)(e.name):"string"==typeof e?(0,n.stringToPDFString)(e):null}hasFieldFlag(e){return!!(this.data.fieldFlags&e)}_isViewable(e){return!this._hasFlag(e,n.AnnotationFlag.INVISIBLE)}mustBeViewed(e,t){return t?this.viewable:super.mustBeViewed(e,t)&&!this._hasFlag(this.flags,n.AnnotationFlag.NOVIEW)}getRotationMatrix(e){let t=e?.get(this.data.id)?.rotation
 if(void 0===t&&(t=this.rotation),0===t)return n.IDENTITY_MATRIX
 const a=this.data.rect[2]-this.data.rect[0],i=this.data.rect[3]-this.data.rect[1]
 return(0,r.getRotationMatrix)(t,a,i)}getBorderAndBackgroundAppearances(e){let t=e?.get(this.data.id)?.rotation
@@ -800,7 +801,7 @@ return await e.getOperatorList({stream:f,task:t,resources:this._fieldResources.m
 return e&&t.set("R",e),this.borderColor&&t.set("BC",w(this.borderColor)),this.backgroundColor&&t.set("BG",w(this.backgroundColor)),t.size>0?t:null}amendSavedDict(e,t){}async save(e,t,a){const i=a?.get(this.data.id)
 let c=i?.value,l=i?.rotation
 if(c===this.data.fieldValue||void 0===c){if(!this._hasValueFromXFA&&void 0===l)return null
-c||=this.data.fieldValue}if(void 0===l&&!this._hasValueFromXFA&&Array.isArray(c)&&Array.isArray(this.data.fieldValue)&&c.length===this.data.fieldValue.length&&c.every(((e,t)=>e===this.data.fieldValue[t])))return null
+c||=this.data.fieldValue}if(void 0===l&&!this._hasValueFromXFA&&Array.isArray(c)&&Array.isArray(this.data.fieldValue)&&c.length===this.data.fieldValue.length&&c.every((e,t)=>e===this.data.fieldValue[t]))return null
 void 0===l&&(l=this.rotation)
 let h=null
 if(!this._needAppearances&&(h=await this._getAppearance(e,t,n.RenderingIntentFlag.SAVE,a),null===h))return null
@@ -826,11 +827,11 @@ let c,l
 if(o&&(c=o.formattedValue||o.value,l=o.rotation),void 0===l&&void 0===c&&!this._needAppearances&&(!this._hasValueFromXFA||this.appearance))return null
 const h=this.getBorderAndBackgroundAppearances(s)
 if(void 0===c&&(c=this.data.fieldValue,!c))return`/Tx BMC q ${h}Q EMC`
-if(Array.isArray(c)&&1===c.length&&(c=c[0]),(0,n.assert)("string"==typeof c,"Expected `value` to be a string."),c=c.trim(),this.data.combo){const e=this.data.options.find((({exportValue:e})=>c===e))
+if(Array.isArray(c)&&1===c.length&&(c=c[0]),(0,n.assert)("string"==typeof c,"Expected `value` to be a string."),c=c.trim(),this.data.combo){const e=this.data.options.find(({exportValue:e})=>c===e)
 c=e?.displayValue||c}if(""===c)return`/Tx BMC q ${h}Q EMC`
 void 0===l&&(l=this.rotation)
 let u,d=-1
-this.data.multiLine?(u=c.split(/\r\n?|\n/).map((e=>e.normalize("NFC"))),d=u.length):u=[c.replace(/\r\n?|\n/,"").normalize("NFC")]
+this.data.multiLine?(u=c.split(/\r\n?|\n/).map(e=>e.normalize("NFC")),d=u.length):u=[c.replace(/\r\n?|\n/,"").normalize("NFC")]
 let f=this.data.rect[3]-this.data.rect[1],g=this.data.rect[2]-this.data.rect[0]
 90!==l&&270!==l||([g,f]=[f,g]),this._defaultAppearance||(this.data.defaultAppearanceData=(0,i.parseDefaultAppearance)(this._defaultAppearance="/Helvetica 0 Tf 0 g"))
 let p,m,b,y=await v._getFontData(e,t,this.data.defaultAppearanceData,this._fieldResources.mergedResources)
@@ -854,7 +855,7 @@ if(this.data.comb)return this._getCombAppearance(p,y,w[0],m,g,f,2,A,S,b,s)
 const C=A+S
 if(0===k||k>2)return`/Tx BMC q ${h}BT `+p+` 1 0 0 1 ${(0,r.numberToString)(2)} ${(0,r.numberToString)(C)} Tm (${(0,r.escapeString)(w[0])}) Tj ET Q EMC`
 return`/Tx BMC q ${h}BT `+p+` 1 0 0 1 0 0 Tm ${this._renderText(w[0],y,m,g,k,{shift:0},2,C)} ET Q EMC`}static async _getFontData(e,t,a,n){const r=new p.OperatorList,i={font:null,clone(){return this}},{fontName:o,fontSize:c}=a
-return await e.handleSetFont(n,[o&&s.Name.get(o),c],null,r,t,i,null),i.font}_getTextWidth(e,t){return t.charsToGlyphs(e).reduce(((e,t)=>e+t.width),0)/1e3}_computeFontSize(e,t,a,r,s){let{fontSize:o}=this.data.defaultAppearanceData,c=(o||12)*n.LINE_FACTOR,l=Math.round(e/c)
+return await e.handleSetFont(n,[o&&s.Name.get(o),c],null,r,t,i,null),i.font}_getTextWidth(e,t){return t.charsToGlyphs(e).reduce((e,t)=>e+t.width,0)/1e3}_computeFontSize(e,t,a,r,s){let{fontSize:o}=this.data.defaultAppearanceData,c=(o||12)*n.LINE_FACTOR,l=Math.round(e/c)
 if(!o){const h=e=>Math.floor(100*e)/100
 if(-1===s){const i=this._getTextWidth(a,r)
 o=h(Math.min(e/n.LINE_FACTOR,i>t?t/i:1/0)),l=1}else{const i=a.split(/\r\n?|\n/),u=[]
@@ -941,7 +942,7 @@ const r=null!==this.data.fieldValue&&"Off"!==this.data.fieldValue?this.data.fiel
 if(0===i.length)i.push("Off",r)
 else if(1===i.length)"Off"===i[0]?i.push(r):i.unshift("Off")
 else if(i.includes(r))i.length=0,i.push("Off",r)
-else{const e=i.find((e=>"Off"!==e))
+else{const e=i.find(e=>"Off"!==e)
 i.length=0,i.push("Off",e)}i.includes(this.data.fieldValue)||(this.data.fieldValue="Off"),this.data.exportValue=i[1]
 const o=a.get(this.data.exportValue)
 this.checkedAppearance=o instanceof c.BaseStream?o:null
@@ -1096,9 +1097,9 @@ for(let t=0,n=r[e].length;t<n;t+=2)this.data.inkLists[e].push({x:a.fetchIfRef(r[
 for(const t of this.data.inkLists)for(const e of t)o[0]=Math.min(o[0],e.x-s),o[1]=Math.min(o[1],e.y-s),o[2]=Math.max(o[2],e.x+s),o[3]=Math.max(o[3],e.y+s)
 n.Util.intersect(this.rectangle,o)||(this.rectangle=o),this._setDefaultAppearance({xref:a,extra:`${i} w`,strokeColor:e,strokeAlpha:r,pointsCallback:(e,t)=>{for(const a of this.data.inkLists){for(let t=0,n=a.length;t<n;t++)e.push(`${a[t].x} ${a[t].y} ${0===t?"m":"l"}`)
 e.push("S")}return[t[0].x,t[1].x,t[3].y,t[1].y]}})}}}static createNewDict(e,t,{apRef:a,ap:r}){const{color:i,opacity:o,paths:c,rect:l,rotation:h,thickness:u}=e,d=new s.Dict(t)
-d.set("Type",s.Name.get("Annot")),d.set("Subtype",s.Name.get("Ink")),d.set("CreationDate",`D:${(0,n.getModificationDate)()}`),d.set("Rect",l),d.set("InkList",c.map((e=>e.points))),d.set("F",4),d.set("Rotate",h)
+d.set("Type",s.Name.get("Annot")),d.set("Subtype",s.Name.get("Ink")),d.set("CreationDate",`D:${(0,n.getModificationDate)()}`),d.set("Rect",l),d.set("InkList",c.map(e=>e.points)),d.set("F",4),d.set("Rotate",h)
 const f=new s.Dict(t)
-d.set("BS",f),f.set("W",u),d.set("C",Array.from(i,(e=>e/255))),d.set("CA",o)
+d.set("BS",f),f.set("W",u),d.set("C",Array.from(i,e=>e/255)),d.set("CA",o)
 const g=new s.Dict(t)
 return d.set("AP",g),a?g.set("N",a):g.set("N",r),d}static async createNewAppearanceStream(e,t,a){const{color:n,rect:c,paths:l,thickness:h,opacity:u}=e,d=[`${h} w 1 J 1 j`,`${(0,i.getPdfColor)(n,!1)}`]
 1!==u&&d.push("/R0 gs")
@@ -1133,9 +1134,9 @@ this.data.annotationType=n.AnnotationType.STRIKEOUT
 if(this.data.quadPoints=x(t,null)){if(!this.appearance){const e=this.color?w(this.color):[0,0,0],n=t.get("CA")
 this._setDefaultAppearance({xref:a,extra:"[] 0 d 1 w",strokeColor:e,strokeAlpha:n,pointsCallback:(e,t)=>(e.push((t[0].x+t[2].x)/2+" "+(t[0].y+t[2].y)/2+" m",(t[1].x+t[3].x)/2+" "+(t[1].y+t[3].y)/2+" l","S"),[t[0].x,t[1].x,t[3].y,t[1].y])})}}else this.data.popupRef=null}}class z extends C{constructor(e){super(e),this.data.annotationType=n.AnnotationType.STAMP,this.data.hasOwnCanvas=this.data.noRotate}static async createImage(e,t){const{width:a,height:r}=e,i=new OffscreenCanvas(a,r),c=i.getContext("2d",{alpha:!0})
 c.drawImage(e,0,0)
-const l=c.getImageData(0,0,a,r).data,h=new Uint32Array(l.buffer),u=h.some(n.FeatureTest.isLittleEndian?e=>e>>>24!=255:e=>255!=(255&e))
+const l=c.getImageData(0,0,a,r).data,h=new Uint32Array(l.buffer),u=h.some(n.FeatureTest.isLittleEndian?e=>e>>>24!=255:e=>!!(255&~e))
 u&&(c.fillStyle="white",c.fillRect(0,0,a,r),c.drawImage(e,0,0))
-const d=i.convertToBlob({type:"image/jpeg",quality:1}).then((e=>e.arrayBuffer())),f=s.Name.get("XObject"),g=s.Name.get("Image"),p=new s.Dict(t)
+const d=i.convertToBlob({type:"image/jpeg",quality:1}).then(e=>e.arrayBuffer()),f=s.Name.get("XObject"),g=s.Name.get("Image"),p=new s.Dict(t)
 p.set("Type",f),p.set("Subtype",g),p.set("BitsPerComponent",8),p.set("ColorSpace",s.Name.get("DeviceRGB")),p.set("Filter",s.Name.get("DCTDecode")),p.set("BBox",[0,0,a,r]),p.set("Width",a),p.set("Height",r)
 let m=null
 if(u){const e=new Uint8Array(h.length)
@@ -1192,7 +1193,7 @@ case i.OPS.setFillCMYKColor:s.ColorSpace.singletons.cmyk.getRgbItem(c,0,t.fontCo
 break
 case i.OPS.showText:case i.OPS.showSpacedText:case i.OPS.nextLineShowText:case i.OPS.nextLineSetSpacingShowText:a=!0}}}catch(o){(0,i.warn)(`parseAppearanceStream - ignoring errors: "${o}".`)}return this.stream.reset(),delete t.scaleFactor,delete t.fillColorSpace,t}get _localColorSpaceCache(){return(0,i.shadow)(this,"_localColorSpaceCache",new c.LocalColorSpaceCache)}get _pdfFunctionFactory(){const e=new l.PDFFunctionFactory({xref:this.xref,isEvalSupported:this.evaluatorOptions.isEvalSupported})
 return(0,i.shadow)(this,"_pdfFunctionFactory",e)}}function f(e,t){if(e[0]===e[1]&&e[1]===e[2]){const a=e[0]/255
-return`${(0,r.numberToString)(a)} ${t?"g":"G"}`}return Array.from(e,(e=>(0,r.numberToString)(e/255))).join(" ")+" "+(t?"rg":"RG")}class g{constructor(e,t){this.xref=e,this.widths=null,this.firstChar=1/0,this.lastChar=-1/0,this.fontFamily=t
+return`${(0,r.numberToString)(a)} ${t?"g":"G"}`}return Array.from(e,e=>(0,r.numberToString)(e/255)).join(" ")+" "+(t?"rg":"RG")}class g{constructor(e,t){this.xref=e,this.widths=null,this.firstChar=1/0,this.lastChar=-1/0,this.fontFamily=t
 const a=new OffscreenCanvas(1,1)
 this.ctxMeasure=a.getContext("2d"),g._fontNameId||(g._fontNameId=1),this.fontName=n.Name.get(`InvalidPDFjsFont_${t}_${g._fontNameId++}`)}get toUnicodeRef(){if(!g._toUnicodeRef){const e="/CIDInit /ProcSet findresource begin\n12 dict begin\nbegincmap\n/CIDSystemInfo\n<< /Registry (Adobe)\n/Ordering (UCS) /Supplement 0 >> def\n/CMapName /Adobe-Identity-UCS def\n/CMapType 2 def\n1 begincodespacerange\n<0000> <FFFF>\nendcodespacerange\n1 beginbfrange\n<0000> <FFFF> <0000>\nendbfrange\nendcmap CMapName currentdict /CMap defineresource pop end end",t=g.toUnicodeStream=new h.StringStream(e),a=new n.Dict(this.xref)
 t.dict=a,a.set("Length",e.length),g._toUnicodeRef=this.xref.getNewPersistentRef(t)}return g._toUnicodeRef}get fontDescriptorRef(){if(!g._fontDescriptorRef){const e=new n.Dict(this.xref)
@@ -1434,7 +1435,7 @@ const t=g.get("S")
 let s=null
 if((0,i.isName)(t,"Transparency")&&(d.isolated=g.get("I")||!1,d.knockout=g.get("K")||!1,g.has("CS"))){const t=g.getRaw("CS"),a=y.ColorSpace.getCached(t,this.xref,c)
 s=a||await this.parseColorSpace({cs:t,resources:e,localColorSpaceCache:c})}a?.backdrop&&(s||=y.ColorSpace.singletons.rgb,a.backdrop=s.getRgb(a.backdrop,0)),r.addOp(n.OPS.beginGroup,[d])}const p=g?[h,null]:[h,f]
-return r.addOp(n.OPS.paintFormXObjectBegin,p),this.getOperatorList({stream:t,task:s,resources:l.get("Resources")||e,operatorList:r,initialState:o}).then((function(){r.addOp(n.OPS.paintFormXObjectEnd,[]),g&&r.addOp(n.OPS.endGroup,[d]),void 0!==u&&r.addOp(n.OPS.endMarkedContent,[])}))}_sendImgData(e,t,a=!1){const n=t?[t.bitmap||t.data.buffer]:null
+return r.addOp(n.OPS.paintFormXObjectBegin,p),this.getOperatorList({stream:t,task:s,resources:l.get("Resources")||e,operatorList:r,initialState:o}).then(function(){r.addOp(n.OPS.paintFormXObjectEnd,[]),g&&r.addOp(n.OPS.endGroup,[d]),void 0!==u&&r.addOp(n.OPS.endMarkedContent,[])})}_sendImgData(e,t,a=!1){const n=t?[t.bitmap||t.data.buffer]:null
 return this.parsingType3Font||a?this.handler.send("commonobj",[e,"Image",t],n):this.handler.send("obj",[e,this.pageIndex,"Image",t],n)}async buildPaintImageXObject({resources:e,image:t,isInline:a=!1,operatorList:r,cacheKey:i,localImageCache:s,localColorSpaceCache:o}){const c=t.dict,l=c.objId,h=c.get("W","Width"),u=c.get("H","Height")
 if(!h||"number"!=typeof h||!u||"number"!=typeof u)return void(0,n.warn)("Image dimensions are missing, or not numbers.")
 const d=this.options.maxImageSize
@@ -1450,8 +1451,8 @@ s.set(i,l,e),l&&this._regionalImageCache.set(null,l,e)}return}const m=`mask_${th
 if(r.addDependency(m),this._sendImgData(m,g),p=[{data:m,width:g.width,height:g.height,interpolate:g.interpolate,count:1}],r.addImageOps(n.OPS.paintImageMaskXObject,p,f),i){const e={fn:n.OPS.paintImageMaskXObject,args:p,optionalContent:f}
 s.set(i,l,e),l&&this._regionalImageCache.set(null,l,e)}return}if(a&&!c.has("SMask")&&!c.has("Mask")&&h+u<200){const i=new I.PDFImage({xref:this.xref,res:e,image:t,isInline:a,pdfFunctionFactory:this._pdfFunctionFactory,localColorSpaceCache:o})
 return g=await i.createImageData(!0,!1),r.isOffscreenCanvasSupported=this.options.isOffscreenCanvasSupported,void r.addImageOps(n.OPS.paintInlineImageXObject,[g],f)}let m=`img_${this.idFactory.createObjId()}`,b=!1
-if(this.parsingType3Font?m=`${this.idFactory.getDocId()}_type3_${m}`:l&&(b=this.globalImageCache.shouldCache(l,this.pageIndex),b&&(m=`${this.idFactory.getDocId()}_${m}`)),r.addDependency(m),p=[m,h,u],I.PDFImage.buildImage({xref:this.xref,res:e,image:t,isInline:a,pdfFunctionFactory:this._pdfFunctionFactory,localColorSpaceCache:o}).then((async e=>{if(g=await e.createImageData(!1,this.options.isOffscreenCanvasSupported),i&&l&&b){const e=g.bitmap?g.width*g.height*4:g.data.length
-this.globalImageCache.addByteSize(l,e)}return this._sendImgData(m,g,b)})).catch((e=>((0,n.warn)(`Unable to decode image "${m}": "${e}".`),this._sendImgData(m,null,b)))),r.addImageOps(n.OPS.paintImageXObject,p,f),i){const e={fn:n.OPS.paintImageXObject,args:p,optionalContent:f}
+if(this.parsingType3Font?m=`${this.idFactory.getDocId()}_type3_${m}`:l&&(b=this.globalImageCache.shouldCache(l,this.pageIndex),b&&(m=`${this.idFactory.getDocId()}_${m}`)),r.addDependency(m),p=[m,h,u],I.PDFImage.buildImage({xref:this.xref,res:e,image:t,isInline:a,pdfFunctionFactory:this._pdfFunctionFactory,localColorSpaceCache:o}).then(async e=>{if(g=await e.createImageData(!1,this.options.isOffscreenCanvasSupported),i&&l&&b){const e=g.bitmap?g.width*g.height*4:g.data.length
+this.globalImageCache.addByteSize(l,e)}return this._sendImgData(m,g,b)}).catch(e=>((0,n.warn)(`Unable to decode image "${m}": "${e}".`),this._sendImgData(m,null,b))),r.addImageOps(n.OPS.paintImageXObject,p,f),i){const e={fn:n.OPS.paintImageXObject,args:p,optionalContent:f}
 s.set(i,l,e),l&&(this._regionalImageCache.set(null,l,e),b&&((0,n.assert)(!a,"Cannot cache an inline image globally."),this.globalImageCache.setData(l,{objId:m,fn:n.OPS.paintImageXObject,args:p,optionalContent:f,byteSize:0})))}}handleSMask(e,t,a,n,r,i){const s=e.get("G"),o={subtype:e.get("S").name,backdrop:e.get("BC")},c=e.get("TR")
 if((0,d.isPDFFunction)(c)){const e=this._pdfFunctionFactory.create(c),t=new Uint8Array(256),a=new Float32Array(1)
 for(let n=0;n<256;n++)a[0]=n/255,e(a,0,a,0),t[n]=255*a[0]|0
@@ -1466,9 +1467,9 @@ continue}if(!(0,d.isPDFFunction)(e))return null
 const t=this._pdfFunctionFactory.create(e),o=new Uint8Array(256),c=new Float32Array(1)
 for(let a=0;a<256;a++)c[0]=a/255,t(c,0,c,0),o[a]=255*c[0]|0
 a.push(o),r++}return 1!==n&&4!==n||0===r?null:a}handleTilingType(e,t,a,r,s,o,c,h){const u=new O.OperatorList,d=i.Dict.merge({xref:this.xref,dictArray:[s.get("Resources"),a]})
-return this.getOperatorList({stream:r,task:c,resources:d,operatorList:u}).then((function(){const a=u.getIR(),n=(0,l.getTilingPatternIR)(a,s,t)
-o.addDependencies(u.dependencies),o.addOp(e,n),s.objId&&h.set(null,s.objId,{operatorListIR:a,dict:s})})).catch((e=>{if(!(e instanceof n.AbortException)){if(!this.options.ignoreErrors)throw e;(0,n.warn)(`handleTilingType - ignoring pattern: "${e}".`)}}))}handleSetFont(e,t,a,n,r,o,c=null,l=null){const h=t?.[0]instanceof i.Name?t[0].name:null
-return this.loadFont(h,a,e,c,l).then((t=>t.font.isType3Font?t.loadType3Data(this,e,r).then((function(){return n.addDependencies(t.type3Dependencies),t})).catch((e=>new $({loadedName:"g_font_error",font:new s.ErrorFont(`Type3 font load error: ${e}`),dict:t.font,evaluatorOptions:this.options}))):t)).then((e=>(o.font=e.font,e.send(this.handler),e.loadedName)))}handleText(e,t){const a=t.font,r=a.charsToGlyphs(e)
+return this.getOperatorList({stream:r,task:c,resources:d,operatorList:u}).then(function(){const a=u.getIR(),n=(0,l.getTilingPatternIR)(a,s,t)
+o.addDependencies(u.dependencies),o.addOp(e,n),s.objId&&h.set(null,s.objId,{operatorListIR:a,dict:s})}).catch(e=>{if(!(e instanceof n.AbortException)){if(!this.options.ignoreErrors)throw e;(0,n.warn)(`handleTilingType - ignoring pattern: "${e}".`)}})}handleSetFont(e,t,a,n,r,o,c=null,l=null){const h=t?.[0]instanceof i.Name?t[0].name:null
+return this.loadFont(h,a,e,c,l).then(t=>t.font.isType3Font?t.loadType3Data(this,e,r).then(function(){return n.addDependencies(t.type3Dependencies),t}).catch(e=>new $({loadedName:"g_font_error",font:new s.ErrorFont(`Type3 font load error: ${e}`),dict:t.font,evaluatorOptions:this.options})):t).then(e=>(o.font=e.font,e.send(this.handler),e.loadedName))}handleText(e,t){const a=t.font,r=a.charsToGlyphs(e)
 if(a.data){(!!(t.textRenderingMode&n.TextRenderingMode.ADD_TO_PATH_FLAG)||"Pattern"===t.fillColorSpace.name||a.disableFontFace||this.options.disableFontFace)&&B.buildFontPaths(a,r,this.handler,this.options)}return r}ensureStateFont(e){if(e.font)return
 const t=new n.FormatError("Missing setFont (Tf) operator before text rendering operator.")
 if(!this.options.ignoreErrors)throw t;(0,n.warn)(`ensureStateFont: "${t}".`)}async setGState({resources:e,gState:t,operatorList:a,cacheKey:r,task:s,stateManager:o,localGStateCache:c,localColorSpaceCache:l}){const h=t.objId
@@ -1479,19 +1480,19 @@ for(const g of t.getKeys()){const r=t.get(g)
 switch(g){case"Type":break
 case"LW":case"LC":case"LJ":case"ML":case"D":case"RI":case"FL":case"CA":case"ca":d.push([g,r])
 break
-case"Font":u=!1,f=f.then((()=>this.handleSetFont(e,null,r[0],a,s,o.state).then((function(e){a.addDependency(e),d.push([g,[e,r[1]]])}))))
+case"Font":u=!1,f=f.then(()=>this.handleSetFont(e,null,r[0],a,s,o.state).then(function(e){a.addDependency(e),d.push([g,[e,r[1]]])}))
 break
 case"BM":d.push([g,D(r)])
 break
 case"SMask":if((0,i.isName)(r,"None")){d.push([g,!1])
-break}r instanceof i.Dict?(u=!1,f=f.then((()=>this.handleSMask(r,e,a,s,o,l))),d.push([g,!0])):(0,n.warn)("Unsupported SMask type")
+break}r instanceof i.Dict?(u=!1,f=f.then(()=>this.handleSMask(r,e,a,s,o,l)),d.push([g,!0])):(0,n.warn)("Unsupported SMask type")
 break
 case"TR":const t=this.handleTransferFunction(r)
 d.push([g,t])
 break
 case"OP":case"op":case"OPM":case"BG":case"BG2":case"UCR":case"UCR2":case"TR2":case"HT":case"SM":case"SA":case"AIS":case"TK":(0,n.info)("graphic state operator "+g)
 break
-default:(0,n.info)("Unknown graphic state operator "+g)}}return f.then((function(){d.length>0&&a.addOp(n.OPS.setGState,[d]),u&&c.set(r,h,d)}))}loadFont(e,t,a,r=null,o=null){const c=async()=>new $({loadedName:"g_font_error",font:new s.ErrorFont(`Font "${e}" is not available.`),dict:t,evaluatorOptions:this.options})
+default:(0,n.info)("Unknown graphic state operator "+g)}}return f.then(function(){d.length>0&&a.addOp(n.OPS.setGState,[d]),u&&c.set(r,h,d)})}loadFont(e,t,a,r=null,o=null){const c=async()=>new $({loadedName:"g_font_error",font:new s.ErrorFont(`Font "${e}" is not available.`),dict:t,evaluatorOptions:this.options})
 let l
 if(t)t instanceof i.Ref&&(l=t)
 else{const t=a.get("Font")
@@ -1506,7 +1507,7 @@ if(f&&d instanceof i.Dict){const e=d.fontAliases||=Object.create(null)
 if(e[f]){const t=e[f].aliasRef
 if(g&&t&&this.fontCache.has(t))return this.fontCache.putAlias(l,t),this.fontCache.get(l)}else e[f]={fontID:this.idFactory.createFontId()}
 g&&(e[f].aliasRef=l),p=e[f].fontID}else p=this.idFactory.createFontId()
-return(0,n.assert)(p?.startsWith("f"),'The "fontID" must be (correctly) defined.'),g?this.fontCache.put(l,h.promise):(t.cacheKey=`cacheKey_${p}`,this.fontCache.put(t.cacheKey,h.promise)),t.loadedName=`${this.idFactory.getDocId()}_${p}`,this.translateFont(u).then((e=>{h.resolve(new $({loadedName:t.loadedName,font:e,dict:t,evaluatorOptions:this.options}))})).catch((e=>{(0,n.warn)(`loadFont - translateFont failed: "${e}".`),h.resolve(new $({loadedName:t.loadedName,font:new s.ErrorFont(e instanceof Error?e.message:e),dict:t,evaluatorOptions:this.options}))})),h.promise}buildPath(e,t,a,r=!1){const i=e.length-1
+return(0,n.assert)(p?.startsWith("f"),'The "fontID" must be (correctly) defined.'),g?this.fontCache.put(l,h.promise):(t.cacheKey=`cacheKey_${p}`,this.fontCache.put(t.cacheKey,h.promise)),t.loadedName=`${this.idFactory.getDocId()}_${p}`,this.translateFont(u).then(e=>{h.resolve(new $({loadedName:t.loadedName,font:e,dict:t,evaluatorOptions:this.options}))}).catch(e=>{(0,n.warn)(`loadFont - translateFont failed: "${e}".`),h.resolve(new $({loadedName:t.loadedName,font:new s.ErrorFont(e instanceof Error?e.message:e),dict:t,evaluatorOptions:this.options}))}),h.promise}buildPath(e,t,a,r=!1){const i=e.length-1
 if(a||(a=[]),i<0||e.fnArray[i]!==n.OPS.constructPath){let i
 switch(r&&((0,n.warn)(`Encountered path operator "${t}" inside of a text object.`),e.addOp(n.OPS.save,null)),t){case n.OPS.rectangle:const e=a[0]+a[2],t=a[1]+a[3]
 i=[Math.min(a[0],e),Math.max(a[0],e),Math.min(a[1],t),Math.max(a[1],t)]
@@ -1519,9 +1520,9 @@ const s=r[2]
 switch(t){case n.OPS.rectangle:const e=a[0]+a[2],t=a[1]+a[3]
 s[0]=Math.min(s[0],a[0],e),s[1]=Math.max(s[1],a[0],e),s[2]=Math.min(s[2],a[1],t),s[3]=Math.max(s[3],a[1],t)
 break
-case n.OPS.moveTo:case n.OPS.lineTo:s[0]=Math.min(s[0],a[0]),s[1]=Math.max(s[1],a[0]),s[2]=Math.min(s[2],a[1]),s[3]=Math.max(s[3],a[1])}}}parseColorSpace({cs:e,resources:t,localColorSpaceCache:a}){return y.ColorSpace.parseAsync({cs:e,xref:this.xref,resources:t,pdfFunctionFactory:this._pdfFunctionFactory,localColorSpaceCache:a}).catch((e=>{if(e instanceof n.AbortException)return null
+case n.OPS.moveTo:case n.OPS.lineTo:s[0]=Math.min(s[0],a[0]),s[1]=Math.max(s[1],a[0]),s[2]=Math.min(s[2],a[1]),s[3]=Math.max(s[3],a[1])}}}parseColorSpace({cs:e,resources:t,localColorSpaceCache:a}){return y.ColorSpace.parseAsync({cs:e,xref:this.xref,resources:t,pdfFunctionFactory:this._pdfFunctionFactory,localColorSpaceCache:a}).catch(e=>{if(e instanceof n.AbortException)return null
 if(this.options.ignoreErrors)return(0,n.warn)(`parseColorSpace - ignoring ColorSpace: "${e}".`),null
-throw e}))}parseShading({shading:e,resources:t,localColorSpaceCache:a,localShadingPatternCache:n}){let r=n.get(e)
+throw e})}parseShading({shading:e,resources:t,localColorSpaceCache:a,localShadingPatternCache:n}){let r=n.get(e)
 if(!r){const i=l.Pattern.parseShading(e,this.xref,t,this._pdfFunctionFactory,a).getIR()
 r=`pattern_${this.idFactory.createObjId()}`,this.parsingType3Font&&(r=`${this.idFactory.getDocId()}_type3_${r}`),n.set(e,r),this.parsingType3Font?this.handler.send("commonobj",[r,"Pattern",i]):this.handler.send("obj",[r,this.pageIndex,"Pattern",i])}return r}handleColorN(e,t,a,r,s,o,c,h,u,d){const f=a.pop()
 if(f instanceof i.Name){const g=s.getRaw(f.name),p=g instanceof i.Ref&&u.getByRef(g)
@@ -1550,14 +1551,14 @@ return{type:r,ids:e,policy:a.get("P")instanceof i.Name?a.get("P").name:null,expr
 const c=this,l=this.xref
 let h=!1
 const u=new g.LocalImageCache,d=new g.LocalColorSpaceCache,f=new g.LocalGStateCache,p=new g.LocalTilingPatternCache,b=new Map,w=a.get("XObject")||i.Dict.empty,x=a.get("Pattern")||i.Dict.empty,S=new L(s),A=new U(e,l,S),k=new E
-function C(e){for(let t=0,a=A.savedStatesDepth;t<a;t++)r.addOp(n.OPS.restore,[])}return new Promise((function e(s,g){const v=function(t){Promise.all([t,r.ready]).then((function(){try{e(s,g)}catch(t){g(t)}}),g)}
+function C(e){for(let t=0,a=A.savedStatesDepth;t<a;t++)r.addOp(n.OPS.restore,[])}return new Promise(function e(s,g){const v=function(t){Promise.all([t,r.ready]).then(function(){try{e(s,g)}catch(t){g(t)}},g)}
 t.ensureNotTerminated(),k.reset()
 const F={}
 let O,I,T,M,P,D
 for(;!(O=k.check())&&(F.args=null,A.read(F));){let e=F.args,s=F.fn
 switch(0|s){case n.OPS.paintXObject:if(D=e[0]instanceof i.Name,P=e[0].name,D){const t=u.getByName(P)
 if(t){r.addImageOps(t.fn,t.args,t.optionalContent),R(t),e=null
-continue}}return void v(new Promise((function(e,s){if(!D)throw new n.FormatError("XObject must be referred to by name.")
+continue}}return void v(new Promise(function(e,s){if(!D)throw new n.FormatError("XObject must be referred to by name.")
 let o=w.getRaw(P)
 if(o instanceof i.Ref){const t=u.getByRef(o)||c._regionalImageCache.getByRef(o)
 if(t)return r.addImageOps(t.fn,t.args,t.optionalContent),R(t),void e()
@@ -1566,10 +1567,10 @@ if(a)return r.addDependency(a.objId),r.addImageOps(a.fn,a.args,a.optionalContent
 o=l.fetch(o)}if(!(o instanceof m.BaseStream))throw new n.FormatError("XObject should be a stream")
 const h=o.dict.get("Subtype")
 if(!(h instanceof i.Name))throw new n.FormatError("XObject should have a Name subtype")
-if("Form"===h.name)return S.save(),void c.buildFormXObject(a,o,null,r,t,S.state.clone(),d).then((function(){S.restore(),e()}),s)
-if("Image"!==h.name){if("PS"!==h.name)throw new n.FormatError(`Unhandled XObject subtype ${h.name}`);(0,n.info)("Ignored XObject subtype PS"),e()}else c.buildPaintImageXObject({resources:a,image:o,operatorList:r,cacheKey:P,localImageCache:u,localColorSpaceCache:d}).then(e,s)})).catch((function(e){if(!(e instanceof n.AbortException)){if(!c.options.ignoreErrors)throw e;(0,n.warn)(`getOperatorList - ignoring XObject: "${e}".`)}})))
+if("Form"===h.name)return S.save(),void c.buildFormXObject(a,o,null,r,t,S.state.clone(),d).then(function(){S.restore(),e()},s)
+if("Image"!==h.name){if("PS"!==h.name)throw new n.FormatError(`Unhandled XObject subtype ${h.name}`);(0,n.info)("Ignored XObject subtype PS"),e()}else c.buildPaintImageXObject({resources:a,image:o,operatorList:r,cacheKey:P,localImageCache:u,localColorSpaceCache:d}).then(e,s)}).catch(function(e){if(!(e instanceof n.AbortException)){if(!c.options.ignoreErrors)throw e;(0,n.warn)(`getOperatorList - ignoring XObject: "${e}".`)}}))
 case n.OPS.setFont:var E=e[1]
-return void v(c.handleSetFont(a,e,null,r,t,S.state,o).then((function(e){r.addDependency(e),r.addOp(n.OPS.setFont,[e,E])})))
+return void v(c.handleSetFont(a,e,null,r,t,S.state,o).then(function(e){r.addDependency(e),r.addOp(n.OPS.setFont,[e,E])}))
 case n.OPS.beginText:h=!0
 break
 case n.OPS.endText:h=!1
@@ -1596,9 +1597,9 @@ case n.OPS.setTextRenderingMode:S.state.textRenderingMode=e[0]
 break
 case n.OPS.setFillColorSpace:{const t=y.ColorSpace.getCached(e[0],l,d)
 if(t){S.state.fillColorSpace=t
-continue}return void v(c.parseColorSpace({cs:e[0],resources:a,localColorSpaceCache:d}).then((function(e){e&&(S.state.fillColorSpace=e)})))}case n.OPS.setStrokeColorSpace:{const t=y.ColorSpace.getCached(e[0],l,d)
+continue}return void v(c.parseColorSpace({cs:e[0],resources:a,localColorSpaceCache:d}).then(function(e){e&&(S.state.fillColorSpace=e)}))}case n.OPS.setStrokeColorSpace:{const t=y.ColorSpace.getCached(e[0],l,d)
 if(t){S.state.strokeColorSpace=t
-continue}return void v(c.parseColorSpace({cs:e[0],resources:a,localColorSpaceCache:d}).then((function(e){e&&(S.state.strokeColorSpace=e)})))}case n.OPS.setFillColor:M=S.state.fillColorSpace,e=M.getRgb(e,0),s=n.OPS.setFillRGBColor
+continue}return void v(c.parseColorSpace({cs:e[0],resources:a,localColorSpaceCache:d}).then(function(e){e&&(S.state.strokeColorSpace=e)}))}case n.OPS.setFillColor:M=S.state.fillColorSpace,e=M.getRgb(e,0),s=n.OPS.setFillRGBColor
 break
 case n.OPS.setStrokeColor:M=S.state.strokeColorSpace,e=M.getRgb(e,0),s=n.OPS.setStrokeRGBColor
 break
@@ -1628,22 +1629,22 @@ e=[c.parseShading({shading:j,resources:a,localColorSpaceCache:d,localShadingPatt
 break
 case n.OPS.setGState:if(D=e[0]instanceof i.Name,P=e[0].name,D){const t=f.getByName(P)
 if(t){t.length>0&&r.addOp(n.OPS.setGState,[t]),e=null
-continue}}return void v(new Promise((function(e,s){if(!D)throw new n.FormatError("GState must be referred to by name.")
+continue}}return void v(new Promise(function(e,s){if(!D)throw new n.FormatError("GState must be referred to by name.")
 const o=a.get("ExtGState")
 if(!(o instanceof i.Dict))throw new n.FormatError("ExtGState should be a dictionary.")
 const l=o.get(P)
 if(!(l instanceof i.Dict))throw new n.FormatError("GState should be a dictionary.")
-c.setGState({resources:a,gState:l,operatorList:r,cacheKey:P,task:t,stateManager:S,localGStateCache:f,localColorSpaceCache:d}).then(e,s)})).catch((function(e){if(!(e instanceof n.AbortException)){if(!c.options.ignoreErrors)throw e;(0,n.warn)(`getOperatorList - ignoring ExtGState: "${e}".`)}})))
+c.setGState({resources:a,gState:l,operatorList:r,cacheKey:P,task:t,stateManager:S,localGStateCache:f,localColorSpaceCache:d}).then(e,s)}).catch(function(e){if(!(e instanceof n.AbortException)){if(!c.options.ignoreErrors)throw e;(0,n.warn)(`getOperatorList - ignoring ExtGState: "${e}".`)}}))
 case n.OPS.moveTo:case n.OPS.lineTo:case n.OPS.curveTo:case n.OPS.curveTo2:case n.OPS.curveTo3:case n.OPS.closePath:case n.OPS.rectangle:c.buildPath(r,s,e,h)
 continue
 case n.OPS.markPoint:case n.OPS.markPointProps:case n.OPS.beginCompat:case n.OPS.endCompat:continue
 case n.OPS.beginMarkedContentProps:if(!(e[0]instanceof i.Name)){(0,n.warn)(`Expected name for beginMarkedContentProps arg0=${e[0]}`)
-continue}if("OC"===e[0].name)return void v(c.parseMarkedContentProps(e[1],a).then((e=>{r.addOp(n.OPS.beginMarkedContentProps,["OC",e])})).catch((e=>{if(!(e instanceof n.AbortException)){if(!c.options.ignoreErrors)throw e;(0,n.warn)(`getOperatorList - ignoring beginMarkedContentProps: "${e}".`)}})))
+continue}if("OC"===e[0].name)return void v(c.parseMarkedContentProps(e[1],a).then(e=>{r.addOp(n.OPS.beginMarkedContentProps,["OC",e])}).catch(e=>{if(!(e instanceof n.AbortException)){if(!c.options.ignoreErrors)throw e;(0,n.warn)(`getOperatorList - ignoring beginMarkedContentProps: "${e}".`)}}))
 e=[e[0].name,e[1]instanceof i.Dict?e[1].get("MCID"):null]
 break
 case n.OPS.beginMarkedContent:case n.OPS.endMarkedContent:default:if(null!==e){for(I=0,T=e.length;I<T&&!(e[I]instanceof i.Dict);I++);if(I<T){(0,n.warn)("getOperatorList - ignoring operator: "+s)
-continue}}}r.addOp(s,e)}O?v(N):(C(),s())})).catch((e=>{if(!(e instanceof n.AbortException)){if(this.options.ignoreErrors)return(0,n.warn)(`getOperatorList - ignoring errors during "${t.name}" task: "${e}".`),void C()
-throw e}}))}getTextContent({stream:e,task:t,resources:a,stateManager:r=null,includeMarkedContent:s=!1,sink:o,seenStyles:c=new Set,viewBox:l,markedContentData:h=null,disableNormalization:u=!1}){a||=i.Dict.empty,r||=new L(new _),s&&(h||={level:0})
+continue}}}r.addOp(s,e)}O?v(N):(C(),s())}).catch(e=>{if(!(e instanceof n.AbortException)){if(this.options.ignoreErrors)return(0,n.warn)(`getOperatorList - ignoring errors during "${t.name}" task: "${e}".`),void C()
+throw e}})}getTextContent({stream:e,task:t,resources:a,stateManager:r=null,includeMarkedContent:s=!1,sink:o,seenStyles:c=new Set,viewBox:l,markedContentData:h=null,disableNormalization:u=!1}){a||=i.Dict.empty,r||=new L(new _),s&&(h||={level:0})
 const d={items:[],styles:Object.create(null)},f={initialized:!1,str:[],totalWidth:0,totalHeight:0,width:0,height:0,vertical:!1,prevTransform:null,textAdvanceScale:0,spaceInFlowMin:0,spaceInFlowMax:0,trackingSpaceMin:1/0,negativeSpaceMax:-1/0,notASpace:-1/0,transform:null,fontName:null,hasEOL:!1},p=[" "," "]
 let y=0
 function w(e){const t=(y+1)%2,a=" "!==p[y]&&" "===p[t]
@@ -1663,7 +1664,7 @@ f.textAdvanceScale=r*n
 const{fontSize:i}=T
 return f.trackingSpaceMin=.102*i,f.notASpace=.03*i,f.negativeSpaceMax=-.2*i,f.spaceInFlowMin=.102*i,f.spaceInFlowMax=.6*i,f.hasEOL=!1,f.initialized=!0,f}function R(){if(!f.initialized)return
 const e=Math.hypot(T.textLineMatrix[0],T.textLineMatrix[1]),t=Math.hypot(T.ctm[0],T.ctm[1])*e
-t!==f.textAdvanceScale&&(f.vertical?(f.totalHeight+=f.height*f.textAdvanceScale,f.height=0):(f.totalWidth+=f.width*f.textAdvanceScale,f.width=0),f.textAdvanceScale=t)}function B(e,r){return A.loadFont(e,r,a).then((function(e){return e.font.isType3Font?e.loadType3Data(A,a,t).catch((function(){})).then((function(){return e})):e})).then((function(e){T.loadedName=e.loadedName,T.font=e.font,T.fontMatrix=e.font.fontMatrix||n.FONT_IDENTITY_MATRIX}))}function $(e,t,a){const n=Math.hypot(a[0],a[1])
+t!==f.textAdvanceScale&&(f.vertical?(f.totalHeight+=f.height*f.textAdvanceScale,f.height=0):(f.totalWidth+=f.width*f.textAdvanceScale,f.width=0),f.textAdvanceScale=t)}function B(e,r){return A.loadFont(e,r,a).then(function(e){return e.font.isType3Font?e.loadType3Data(A,a,t).catch(function(){}).then(function(){return e}):e}).then(function(e){T.loadedName=e.loadedName,T.font=e.font,T.fontMatrix=e.font.fontMatrix||n.FONT_IDENTITY_MATRIX})}function $(e,t,a){const n=Math.hypot(a[0],a[1])
 return[(a[0]*e+a[1]*t)/n,(a[2]*e+a[3]*t)/n]}function j(e){const t=P()
 let a=t[4],n=t[5]
 if(T.font?.vertical){if(a<l[0]||a>l[2]||n+e<l[1]||n>l[3])return!1}else if(a+e<l[0]||a>l[2]||n<l[1]||n>l[3])return!1
@@ -1701,7 +1702,7 @@ u||(t=(0,n.normalizeUnicode)(t))
 const a=(0,b.bidi)(t,-1,e.vertical)
 return{str:a.str,dir:a.dir,width:Math.abs(e.totalWidth),height:Math.abs(e.totalHeight),transform:e.transform,fontName:e.fontName,hasEOL:e.hasEOL}}(f)),f.initialized=!1,f.str.length=0)}function G(e=!1){const t=d.items.length
 0!==t&&(e&&t<10||(o.enqueue(d,t),d.items=[],d.styles=Object.create(null)))}const W=new E
-return new Promise((function e(f,g){const p=function(t){G(!0),Promise.all([t,o.ready]).then((function(){try{e(f,g)}catch(t){g(t)}}),g)}
+return new Promise(function e(f,g){const p=function(t){G(!0),Promise.all([t,o.ready]).then(function(){try{e(f,g)}catch(t){g(t)}},g)}
 t.ensureNotTerminated(),W.reset()
 const b={}
 let y,w=[]
@@ -1750,7 +1751,7 @@ break
 case n.OPS.paintXObject:z(),v||(v=a.get("XObject")||i.Dict.empty)
 var M=w[0]instanceof i.Name,P=w[0].name
 if(M&&F.getByName(P))break
-return void p(new Promise((function(e,d){if(!M)throw new n.FormatError("XObject must be referred to by name.")
+return void p(new Promise(function(e,d){if(!M)throw new n.FormatError("XObject must be referred to by name.")
 let f=v.getRaw(P)
 if(f instanceof i.Ref){if(F.getByRef(f))return void e()
 if(A.globalImageCache.getData(f,A.pageIndex))return void e()
@@ -1761,16 +1762,16 @@ if("Form"!==g.name)return F.set(P,f.dict.objId,!0),void e()
 const p=r.state.clone(),b=new L(p),y=f.dict.getArray("Matrix")
 Array.isArray(y)&&6===y.length&&b.transform(y),G()
 const w={enqueueInvoked:!1,enqueue(e,t){this.enqueueInvoked=!0,o.enqueue(e,t)},get desiredSize(){return o.desiredSize},get ready(){return o.ready}}
-A.getTextContent({stream:f,task:t,resources:f.dict.get("Resources")||a,stateManager:b,includeMarkedContent:s,sink:w,seenStyles:c,viewBox:l,markedContentData:h,disableNormalization:u}).then((function(){w.enqueueInvoked||F.set(P,f.dict.objId,!0),e()}),d)})).catch((function(e){if(!(e instanceof n.AbortException)){if(!A.options.ignoreErrors)throw e;(0,n.warn)(`getTextContent - ignoring XObject: "${e}".`)}})))
+A.getTextContent({stream:f,task:t,resources:f.dict.get("Resources")||a,stateManager:b,includeMarkedContent:s,sink:w,seenStyles:c,viewBox:l,markedContentData:h,disableNormalization:u}).then(function(){w.enqueueInvoked||F.set(P,f.dict.objId,!0),e()},d)}).catch(function(e){if(!(e instanceof n.AbortException)){if(!A.options.ignoreErrors)throw e;(0,n.warn)(`getTextContent - ignoring XObject: "${e}".`)}}))
 case n.OPS.setGState:if(M=w[0]instanceof i.Name,P=w[0].name,M&&O.getByName(P))break
-return void p(new Promise((function(e,t){if(!M)throw new n.FormatError("GState must be referred to by name.")
+return void p(new Promise(function(e,t){if(!M)throw new n.FormatError("GState must be referred to by name.")
 const r=a.get("ExtGState")
 if(!(r instanceof i.Dict))throw new n.FormatError("ExtGState should be a dictionary.")
 const s=r.get(P)
 if(!(s instanceof i.Dict))throw new n.FormatError("GState should be a dictionary.")
 const o=s.get("Font")
 if(!o)return O.set(P,s.objId,!0),void e()
-z(),T.fontName=null,T.fontSize=o[1],B(null,o[0]).then(e,t)})).catch((function(e){if(!(e instanceof n.AbortException)){if(!A.options.ignoreErrors)throw e;(0,n.warn)(`getTextContent - ignoring ExtGState: "${e}".`)}})))
+z(),T.fontName=null,T.fontSize=o[1],B(null,o[0]).then(e,t)}).catch(function(e){if(!(e instanceof n.AbortException)){if(!A.options.ignoreErrors)throw e;(0,n.warn)(`getTextContent - ignoring ExtGState: "${e}".`)}}))
 case n.OPS.beginMarkedContent:z(),s&&(h.level++,d.items.push({type:"beginMarkedContent",tag:w[0]instanceof i.Name?w[0].name:null}))
 break
 case n.OPS.beginMarkedContentProps:if(z(),s){h.level++
@@ -1779,8 +1780,8 @@ w[1]instanceof i.Dict&&(e=w[1].get("MCID")),d.items.push({type:"beginMarkedConte
 case n.OPS.endMarkedContent:if(z(),s){if(0===h.level)break
 h.level--,d.items.push({type:"endMarkedContent"})}break
 case n.OPS.restore:!e||e.font===T.font&&e.fontSize===T.fontSize&&e.fontName===T.fontName||z()}if(d.items.length>=o.desiredSize){y=!0
-break}}y?p(N):(z(),G(),f())})).catch((e=>{if(!(e instanceof n.AbortException)){if(this.options.ignoreErrors)return(0,n.warn)(`getTextContent - ignoring errors during "${t.name}" task: "${e}".`),z(),void G()
-throw e}}))}extractDataStructures(e,t,a){const r=this.xref
+break}}y?p(N):(z(),G(),f())}).catch(e=>{if(!(e instanceof n.AbortException)){if(this.options.ignoreErrors)return(0,n.warn)(`getTextContent - ignoring errors during "${t.name}" task: "${e}".`),z(),void G()
+throw e}})}extractDataStructures(e,t,a){const r=this.xref
 let s
 const l=this.readToUnicode(a.toUnicode||e.get("ToUnicode")||t.get("ToUnicode"))
 if(a.composite){const t=e.get("CIDSystemInfo")
@@ -1798,7 +1799,7 @@ else{const e="Encoding is not a Name nor a Dict"
 if(!this.options.ignoreErrors)throw new n.FormatError(e);(0,n.warn)(e)}"MacRomanEncoding"!==d&&"MacExpertEncoding"!==d&&"WinAnsiEncoding"!==d&&(d=null)}const f=!a.file||a.isInternalFont,g=(0,c.getSymbolsFonts)()[a.name]
 if(d&&f&&g&&(d=null),d)a.defaultEncoding=(0,o.getEncoding)(d)
 else{const e=!!(a.flags&x.FontFlags.Symbolic),t=!!(a.flags&x.FontFlags.Nonsymbolic)
-u=o.StandardEncoding,"TrueType"!==a.type||t||(u=o.WinAnsiEncoding),(e||g)&&(u=o.MacRomanEncoding,f&&(/Symbol/i.test(a.name)?u=o.SymbolSetEncoding:/Dingbats/i.test(a.name)?u=o.ZapfDingbatsEncoding:/Wingdings/i.test(a.name)&&(u=o.WinAnsiEncoding))),a.defaultEncoding=u}return a.differences=h,a.baseEncodingName=d,a.hasEncoding=!!d||h.length>0,a.dict=e,l.then((e=>(a.toUnicode=e,this.buildToUnicode(a)))).then((e=>(a.toUnicode=e,s&&(a.cidToGidMap=this.readCidToGidMap(s,e)),a)))}_simpleFontToUnicode(e,t=!1){(0,n.assert)(!e.composite,"Must be a simple font.")
+u=o.StandardEncoding,"TrueType"!==a.type||t||(u=o.WinAnsiEncoding),(e||g)&&(u=o.MacRomanEncoding,f&&(/Symbol/i.test(a.name)?u=o.SymbolSetEncoding:/Dingbats/i.test(a.name)?u=o.ZapfDingbatsEncoding:/Wingdings/i.test(a.name)&&(u=o.WinAnsiEncoding))),a.defaultEncoding=u}return a.differences=h,a.baseEncodingName=d,a.hasEncoding=!!d||h.length>0,a.dict=e,l.then(e=>(a.toUnicode=e,this.buildToUnicode(a))).then(e=>(a.toUnicode=e,s&&(a.cidToGidMap=this.readCidToGidMap(s,e)),a))}_simpleFontToUnicode(e,t=!1){(0,n.assert)(!e.composite,"Must be a simple font.")
 const a=[],r=e.defaultEncoding.slice(),i=e.baseEncodingName,s=e.differences
 for(const n in s){const e=s[n]
 ".notdef"!==e&&(r[n]=e)}const c=(0,A.getGlyphsUnicode)()
@@ -1822,21 +1823,21 @@ if(e&&(s=e[n])){a[n]=String.fromCharCode(c[s])
 continue}}a[n]=String.fromCodePoint(h)}}return a}async buildToUnicode(e){if(e.hasIncludedToUnicodeMap=e.toUnicode?.length>0,e.hasIncludedToUnicodeMap)return!e.composite&&e.hasEncoding&&(e.fallbackToUnicode=this._simpleFontToUnicode(e)),e.toUnicode
 if(!e.composite)return new u.ToUnicodeMap(this._simpleFontToUnicode(e))
 if(e.composite&&(e.cMap.builtInCMap&&!(e.cMap instanceof r.IdentityCMap)||"Adobe"===e.cidSystemInfo.registry&&("GB1"===e.cidSystemInfo.ordering||"CNS1"===e.cidSystemInfo.ordering||"Japan1"===e.cidSystemInfo.ordering||"Korea1"===e.cidSystemInfo.ordering))){const{registry:t,ordering:a}=e.cidSystemInfo,s=i.Name.get(`${t}-${a}-UCS2`),o=await r.CMapFactory.create({encoding:s,fetchBuiltInCMap:this._fetchBuiltInCMapBound,useCMap:null}),c=[],l=[]
-return e.cMap.forEach((function(e,t){if(t>65535)throw new n.FormatError("Max size of CID is 65,535")
+return e.cMap.forEach(function(e,t){if(t>65535)throw new n.FormatError("Max size of CID is 65,535")
 const a=o.lookup(t)
 if(a){l.length=0
 for(let e=0,t=a.length;e<t;e+=2)l.push((a.charCodeAt(e)<<8)+a.charCodeAt(e+1))
-c[e]=String.fromCharCode(...l)}})),new u.ToUnicodeMap(c)}return new u.IdentityToUnicodeMap(e.firstChar,e.lastChar)}readToUnicode(e){return e?e instanceof i.Name?r.CMapFactory.create({encoding:e,fetchBuiltInCMap:this._fetchBuiltInCMapBound,useCMap:null}).then((function(e){return e instanceof r.IdentityCMap?new u.IdentityToUnicodeMap(0,65535):new u.ToUnicodeMap(e.getMap())})):e instanceof m.BaseStream?r.CMapFactory.create({encoding:e,fetchBuiltInCMap:this._fetchBuiltInCMapBound,useCMap:null}).then((function(e){if(e instanceof r.IdentityCMap)return new u.IdentityToUnicodeMap(0,65535)
+c[e]=String.fromCharCode(...l)}}),new u.ToUnicodeMap(c)}return new u.IdentityToUnicodeMap(e.firstChar,e.lastChar)}readToUnicode(e){return e?e instanceof i.Name?r.CMapFactory.create({encoding:e,fetchBuiltInCMap:this._fetchBuiltInCMapBound,useCMap:null}).then(function(e){return e instanceof r.IdentityCMap?new u.IdentityToUnicodeMap(0,65535):new u.ToUnicodeMap(e.getMap())}):e instanceof m.BaseStream?r.CMapFactory.create({encoding:e,fetchBuiltInCMap:this._fetchBuiltInCMapBound,useCMap:null}).then(function(e){if(e instanceof r.IdentityCMap)return new u.IdentityToUnicodeMap(0,65535)
 const t=new Array(e.length)
-return e.forEach((function(e,a){if("number"==typeof a)return void(t[e]=String.fromCodePoint(a))
+return e.forEach(function(e,a){if("number"==typeof a)return void(t[e]=String.fromCodePoint(a))
 const n=[]
 for(let t=0;t<a.length;t+=2){const e=a.charCodeAt(t)<<8|a.charCodeAt(t+1)
 if(55296!=(63488&e)){n.push(e)
 continue}t+=2
 const r=a.charCodeAt(t)<<8|a.charCodeAt(t+1)
-n.push(((1023&e)<<10)+(1023&r)+65536)}t[e]=String.fromCodePoint(...n)})),new u.ToUnicodeMap(t)}),(e=>{if(e instanceof n.AbortException)return null
+n.push(((1023&e)<<10)+(1023&r)+65536)}t[e]=String.fromCodePoint(...n)}),new u.ToUnicodeMap(t)},e=>{if(e instanceof n.AbortException)return null
 if(this.options.ignoreErrors)return(0,n.warn)(`readToUnicode - ignoring ToUnicode data: "${e}".`),null
-throw e})):Promise.resolve(null):Promise.resolve(null)}readCidToGidMap(e,t){const a=[]
+throw e}):Promise.resolve(null):Promise.resolve(null)}readCidToGidMap(e,t){const a=[]
 for(let n=0,r=e.length;n<r;n++){const r=e[n++]<<8|e[n],i=n>>1;(0!==r||t.has(i))&&(a[i]=r)}return a}extractWidths(e,t,a){const n=this.xref
 let r=[],s=0
 const o=[]
@@ -1899,11 +1900,11 @@ const r=this.getBaseFontMetrics(e),o=e.split("-")[0],h=(this.isSerifFont(o)?x.Fo
 b={type:l,name:e,loadedName:a.loadedName,systemFontInfo:null,widths:r.widths,defaultWidth:r.defaultWidth,isSimulatedFlags:!0,flags:h,firstChar:u,lastChar:d,toUnicode:f,xHeight:0,capHeight:0,italicAngle:0,isType3Font:m}
 const g=t.get("Widths"),p=(0,c.getStandardFontName)(e)
 let y=null
-return p&&(y=await this.fetchStandardFontData(p),b.isInternalFont=!!y),!b.isInternalFont&&this.options.useSystemFonts&&(b.systemFontInfo=(0,S.getFontSubstitution)(this.systemFontCache,this.idFactory,this.options.standardFontDataUrl,e,p)),this.extractDataStructures(t,t,b).then((t=>{if(g){const e=[]
+return p&&(y=await this.fetchStandardFontData(p),b.isInternalFont=!!y),!b.isInternalFont&&this.options.useSystemFonts&&(b.systemFontInfo=(0,S.getFontSubstitution)(this.systemFontCache,this.idFactory,this.options.standardFontDataUrl,e,p)),this.extractDataStructures(t,t,b).then(t=>{if(g){const e=[]
 let a=u
 for(const t of g)e[a++]=this.xref.fetchIfRef(t)
 t.widths=e}else t.widths=this.buildCharCodeToWidth(r.widths,t)
-return new s.Font(e,y,t)}))}(e=new i.Dict(null)).set("FontName",i.Name.get(l)),e.set("FontBBox",t.getArray("FontBBox")||[0,0,0,0])}let y=e.get("FontName"),w=t.get("BaseFont")
+return new s.Font(e,y,t)})}(e=new i.Dict(null)).set("FontName",i.Name.get(l)),e.set("FontBBox",t.getArray("FontBBox")||[0,0,0,0])}let y=e.get("FontName"),w=t.get("BaseFont")
 "string"==typeof y&&(y=i.Name.get(y)),"string"==typeof w&&(w=i.Name.get(w))
 const A=y?.name,k=w?.name
 if(m||A===k||((0,n.info)(`The FontDescriptor's FontName is "${A}" but should be the same as the Font's BaseFont "${k}".`),A&&k&&(k.startsWith(A)||!(0,c.isKnownFontName)(A)&&(0,c.isKnownFontName)(k))&&(y=null)),y||=w,!(y instanceof i.Name))throw new n.FormatError("invalid font name")
@@ -1915,7 +1916,7 @@ e&&(g.fontFamily=`${g.fontFamily}-PdfJS-XFA`,g.metrics=e.metrics||null,M=e.facto
 e&&(C=await this.fetchStandardFontData(e),T=!!C),!T&&this.options.useSystemFonts&&(P=(0,S.getFontSubstitution)(this.systemFontCache,this.idFactory,this.options.standardFontDataUrl,y.name,e))}if(b={type:l,name:y.name,subtype:v,file:C,length1:F,length2:O,length3:I,isInternalFont:T,loadedName:a.loadedName,composite:o,fixedPitch:!1,fontMatrix:t.getArray("FontMatrix")||n.FONT_IDENTITY_MATRIX,firstChar:u,lastChar:d,toUnicode:f,bbox:e.getArray("FontBBox")||t.getArray("FontBBox"),ascent:e.get("Ascent"),descent:e.get("Descent"),xHeight:e.get("XHeight")||0,capHeight:e.get("CapHeight")||0,flags:e.get("Flags"),italicAngle:e.get("ItalicAngle")||0,isType3Font:m,cssFontInfo:g,scaleFactors:M,systemFontInfo:P},o){const e=a.get("Encoding")
 e instanceof i.Name&&(b.cidEncoding=e.name)
 const t=await r.CMapFactory.create({encoding:e,fetchBuiltInCMap:this._fetchBuiltInCMapBound,useCMap:null})
-b.cMap=t,b.vertical=b.cMap.vertical}return this.extractDataStructures(t,a,b).then((a=>(this.extractWidths(t,e,a),new s.Font(y.name,C,a))))}static buildFontPaths(e,t,a,r){function i(t){const i=`${e.loadedName}_path_${t}`
+b.cMap=t,b.vertical=b.cMap.vertical}return this.extractDataStructures(t,a,b).then(a=>(this.extractWidths(t,e,a),new s.Font(y.name,C,a)))}static buildFontPaths(e,t,a,r){function i(t){const i=`${e.loadedName}_path_${t}`
 try{if(e.renderer.hasBuiltPath(t))return
 a.send("commonobj",[i,"FontPath",e.renderer.getPathJs(t)])}catch(s){if(r.ignoreErrors)return void(0,n.warn)(`buildFontPaths - ignoring ${i} glyph: "${s}".`)
 throw s}}for(const n of t){i(n.fontChar)
@@ -1931,12 +1932,12 @@ this.dict.objId&&!s.has(this.dict.objId)&&s.put(this.dict.objId),r.type3FontRefs
 const o=this.font,c=this.type3Dependencies
 let l=Promise.resolve()
 const h=this.dict.get("CharProcs"),u=this.dict.get("Resources")||t,d=Object.create(null),f=n.Util.normalizeRect(o.bbox||[0,0,0,0]),g=f[2]-f[0],p=f[3]-f[1],m=Math.hypot(g,p)
-for(const i of h.getKeys())l=l.then((()=>{const e=h.get(i),t=new O.OperatorList
-return r.getOperatorList({stream:e,task:a,resources:u,operatorList:t}).then((()=>{t.fnArray[0]===n.OPS.setCharWidthAndBounds&&this._removeType3ColorOperators(t,m),d[i]=t.getIR()
-for(const e of t.dependencies)c.add(e)})).catch((function(e){(0,n.warn)(`Type3 font resource "${i}" is not available.`)
+for(const i of h.getKeys())l=l.then(()=>{const e=h.get(i),t=new O.OperatorList
+return r.getOperatorList({stream:e,task:a,resources:u,operatorList:t}).then(()=>{t.fnArray[0]===n.OPS.setCharWidthAndBounds&&this._removeType3ColorOperators(t,m),d[i]=t.getIR()
+for(const e of t.dependencies)c.add(e)}).catch(function(e){(0,n.warn)(`Type3 font resource "${i}" is not available.`)
 const t=new O.OperatorList
-d[i]=t.getIR()}))}))
-return this.type3Loaded=l.then((()=>{o.charProcOperatorList=d,this._bbox&&(o.isCharBBox=!0,o.bbox=this._bbox)})),this.type3Loaded}_removeType3ColorOperators(e,t=NaN){const a=n.Util.normalizeRect(e.argsArray[0].slice(2)),r=a[2]-a[0],i=a[3]-a[1],s=Math.hypot(r,i)
+d[i]=t.getIR()})})
+return this.type3Loaded=l.then(()=>{o.charProcOperatorList=d,this._bbox&&(o.isCharBBox=!0,o.bbox=this._bbox)}),this.type3Loaded}_removeType3ColorOperators(e,t=NaN){const a=n.Util.normalizeRect(e.argsArray[0].slice(2)),r=a[2]-a[0],i=a[3]-a[1],s=Math.hypot(r,i)
 0===r||0===i?(e.fnArray.splice(0,1),e.argsArray.splice(0,1)):(0===t||Math.round(s/t)>=10)&&(this._bbox||(this._bbox=[1/0,1/0,-1/0,-1/0]),this._bbox[0]=Math.min(this._bbox[0],a[0]),this._bbox[1]=Math.min(this._bbox[1],a[1]),this._bbox[2]=Math.max(this._bbox[2],a[2]),this._bbox[3]=Math.max(this._bbox[3],a[3]))
 let o=0,c=e.length
 for(;o<c;){switch(e.fnArray[o]){case n.OPS.setCharWidthAndBounds:break
@@ -2064,12 +2065,12 @@ break
 case"begincidrange":x(e,t)}}catch(l){if(l instanceof c.MissingDataException)throw l;(0,n.warn)("Invalid cMap data: "+l)
 continue}return!i&&o&&(i=o),i?v(e,a,i):e}async function v(e,t,a){if(e.useCMap=await F(a,t),0===e.numCodespaceRanges){const t=e.useCMap.codespaceRanges
 for(let a=0;a<t.length;a++)e.codespaceRanges[a]=t[a].slice()
-e.numCodespaceRanges=e.useCMap.numCodespaceRanges}return e.useCMap.forEach((function(t,a){e.contains(t)||e.mapOne(t,e.useCMap.lookup(t))})),e}async function F(e,t){if("Identity-H"===e)return new f(!1,2)
+e.numCodespaceRanges=e.useCMap.numCodespaceRanges}return e.useCMap.forEach(function(t,a){e.contains(t)||e.mapOne(t,e.useCMap.lookup(t))}),e}async function F(e,t){if("Identity-H"===e)return new f(!1,2)
 if("Identity-V"===e)return new f(!0,2)
 if(!h.includes(e))throw new Error("Unknown CMap name: "+e)
 if(!t)throw new Error("Built-in CMap parameters are not provided.")
 const{cMapData:a,compressionType:r}=await t(e),i=new d(!0)
-if(r===n.CMapCompressionType.BINARY)return(new s.BinaryCMapReader).process(a,i,(e=>v(i,t,e)))
+if(r===n.CMapCompressionType.BINARY)return(new s.BinaryCMapReader).process(a,i,e=>v(i,t,e))
 if(r===n.CMapCompressionType.NONE){const e=new o.Lexer(new l.Stream(a))
 return C(i,e,t,null)}throw new Error(`Invalid CMap "compressionType" value: ${r}`)}t.IdentityCMap=f
 t.CMapFactory=class{static async create({encoding:e,fetchBuiltInCMap:t,useCMap:a}){if(e instanceof r.Name)return F(e.name,t)
@@ -2162,7 +2163,8 @@ if(e===r.EOF){l=0
 break}if(e instanceof r.Cmd){const a=t[e.cmd]
 if(!a){l=0
 break}if(a.variableArgs?u<=a.numArgs:u===a.numArgs)break
-u=0}else u++}if(2===l)break}else l=0;-1===o&&((0,n.warn)("findDefaultInlineStreamEnd: Reached the end of the stream without finding a valid EI marker"),c&&((0,n.warn)('... trying to recover by using the last "EI" occurrence.'),e.skip(-(e.pos-c))))
+u=0
+continue}u++}if(2===l)break}else l=0;-1===o&&((0,n.warn)("findDefaultInlineStreamEnd: Reached the end of the stream without finding a valid EI marker"),c&&((0,n.warn)('... trying to recover by using the last "EI" occurrence.'),e.skip(-(e.pos-c))))
 let h=4
 return e.skip(-h),o=e.peekByte(),e.skip(h),(0,i.isWhiteSpace)(o)||h--,e.pos-h-a}findDCTDecodeInlineStreamEnd(e){const t=e.pos
 let a,r,i=!1
@@ -2271,7 +2273,7 @@ switch(0|r){case-1:(0,n.warn)("Unterminated string"),t=!0
 break
 case 40:++e,a.push("(")
 break
-case 41:0==--e?(this.nextChar(),t=!0):a.push(")")
+case 41:0===--e?(this.nextChar(),t=!0):a.push(")")
 break
 case 92:switch(r=this.nextChar(),r){case-1:(0,n.warn)("Unterminated string"),t=!0
 break
@@ -2304,7 +2306,7 @@ const i=w(e)
 if(-1===i){if((0,n.warn)(`Lexer_getName: Illegal digit (${String.fromCharCode(e)}) in hexadecimal number.`),a.push("#",String.fromCharCode(t)),y[e])break
 a.push(String.fromCharCode(e))
 continue}a.push(String.fromCharCode(r<<4|i))}else a.push("#",String.fromCharCode(e))}else a.push(String.fromCharCode(e))
-return a.length>127&&(0,n.warn)(`Name token is longer than allowed by the spec: ${a.length}`),r.Name.get(a.join(""))}_hexStringWarn(e){5!=this._hexStringNumWarn++?this._hexStringNumWarn>5||(0,n.warn)(`getHexString - ignoring invalid character: ${e}`):(0,n.warn)("getHexString - ignoring additional invalid characters.")}getHexString(){const e=this.strBuf
+return a.length>127&&(0,n.warn)(`Name token is longer than allowed by the spec: ${a.length}`),r.Name.get(a.join(""))}_hexStringWarn(e){5!==this._hexStringNumWarn++?this._hexStringNumWarn>5||(0,n.warn)(`getHexString - ignoring invalid character: ${e}`):(0,n.warn)("getHexString - ignoring additional invalid characters.")}getHexString(){const e=this.strBuf
 e.length=0
 let t,a,r=this.currentChar,i=!0
 for(this._hexStringNumWarn=0;;){if(r<0){(0,n.warn)("Unterminated hex string")
@@ -2463,11 +2465,11 @@ if(t[0]===s)return this._eatBits(s),[!0,t[1],!0]}}return[!1,0,!1]}_getTwoDimCode
 if(this.eoblock){if(t=this._lookBits(7),e=i[t],e?.[0]>0)return this._eatBits(e[0]),e[1]}else{const e=this._findTableCode(1,7,i)
 if(e[0]&&e[2])return e[1]}return(0,n.info)("Bad two dim code"),r}_getWhiteCode(){let e,t=0
 if(this.eoblock){if(t=this._lookBits(12),t===r)return 1
-if(e=t>>5==0?s[t]:o[t>>3],e[0]>0)return this._eatBits(e[0]),e[1]}else{let e=this._findTableCode(1,9,o)
+if(e=t>>5?o[t>>3]:s[t],e[0]>0)return this._eatBits(e[0]),e[1]}else{let e=this._findTableCode(1,9,o)
 if(e[0])return e[1]
 if(e=this._findTableCode(11,12,s),e[0])return e[1]}return(0,n.info)("bad white code"),this._eatBits(1),1}_getBlackCode(){let e,t
 if(this.eoblock){if(e=this._lookBits(13),e===r)return 1
-if(t=e>>7==0?c[e]:e>>9==0&&e>>7!=0?l[(e>>1)-64]:h[e>>7],t[0]>0)return this._eatBits(t[0]),t[1]}else{let e=this._findTableCode(2,6,h)
+if(t=e>>7?!(e>>9)&&e>>7?l[(e>>1)-64]:h[e>>7]:c[e],t[0]>0)return this._eatBits(t[0]),t[1]}else{let e=this._findTableCode(2,6,h)
 if(e[0])return e[1]
 if(e=this._findTableCode(7,12,l,64),e[0])return e[1]
 if(e=this._findTableCode(10,13,c),e[0])return e[1]}return(0,n.info)("bad black code"),this._eatBits(1),1}_lookBits(e){let t
@@ -2547,70 +2549,69 @@ this.buffer=a,this.bufferLength=r,this.eof=!0}}t.Jbig2Stream=c},(e,t,a)=>{Object
 var n=a(2),r=a(3),i=a(25),s=a(21)
 class o extends n.BaseException{constructor(e){super(`JBIG2 error: ${e}`,"Jbig2Error")}}class c{getContexts(e){return e in this?this[e]:this[e]=new Int8Array(65536)}}class l{constructor(e,t,a){this.data=e,this.start=t,this.end=a}get decoder(){const e=new i.ArithmeticDecoder(this.data,this.start,this.end)
 return(0,n.shadow)(this,"decoder",e)}get contextCache(){const e=new c
-return(0,n.shadow)(this,"contextCache",e)}}const h=2**31-1,u=-(2**31)
-function d(e,t,a){const n=e.getContexts(t)
+return(0,n.shadow)(this,"contextCache",e)}}function h(e,t,a){const n=e.getContexts(t)
 let r=1
 function i(e){let t=0
 for(let i=0;i<e;i++){const e=a.readBit(n,r)
 r=r<256?r<<1|e:511&(r<<1|e)|256,t=t<<1|e}return t>>>0}const s=i(1),o=i(1)?i(1)?i(1)?i(1)?i(1)?i(32)+4436:i(12)+340:i(8)+84:i(6)+20:i(4)+4:i(2)
 let c
-return 0===s?c=o:o>0&&(c=-o),c>=u&&c<=h?c:null}function f(e,t,a){const n=e.getContexts("IAID")
+return 0===s?c=o:o>0&&(c=-o),c>=-2147483648&&c<=2147483647?c:null}function u(e,t,a){const n=e.getContexts("IAID")
 let r=1
-for(let i=0;i<a;i++){r=r<<1|t.readBit(n,r)}return a<31?r&(1<<a)-1:2147483647&r}const g=["SymbolDictionary",null,null,null,"IntermediateTextRegion",null,"ImmediateTextRegion","ImmediateLosslessTextRegion",null,null,null,null,null,null,null,null,"PatternDictionary",null,null,null,"IntermediateHalftoneRegion",null,"ImmediateHalftoneRegion","ImmediateLosslessHalftoneRegion",null,null,null,null,null,null,null,null,null,null,null,null,"IntermediateGenericRegion",null,"ImmediateGenericRegion","ImmediateLosslessGenericRegion","IntermediateGenericRefinementRegion",null,"ImmediateGenericRefinementRegion","ImmediateLosslessGenericRefinementRegion",null,null,null,null,"PageInformation","EndOfPage","EndOfStripe","EndOfFile","Profiles","Tables",null,null,null,null,null,null,null,null,"Extension"],p=[[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:2,y:-1},{x:-4,y:0},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}],[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:2,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:2,y:-1},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}],[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-2,y:0},{x:-1,y:0}],[{x:-3,y:-1},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-4,y:0},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}]],m=[{coding:[{x:0,y:-1},{x:1,y:-1},{x:-1,y:0}],reference:[{x:0,y:-1},{x:1,y:-1},{x:-1,y:0},{x:0,y:0},{x:1,y:0},{x:-1,y:1},{x:0,y:1},{x:1,y:1}]},{coding:[{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-1,y:0}],reference:[{x:0,y:-1},{x:-1,y:0},{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}]}],b=[39717,1941,229,405],y=[32,8]
-function w(e,t,a,n,r,i,s,o){if(e){return $(new R(o.data,o.start,o.end),t,a,!1)}if(0===n&&!i&&!r&&4===s.length&&3===s[0].x&&-1===s[0].y&&-3===s[1].x&&-1===s[1].y&&2===s[2].x&&-2===s[2].y&&-2===s[3].x&&-2===s[3].y)return function(e,t,a){const n=a.decoder,r=a.contextCache.getContexts("GB"),i=[]
+for(let i=0;i<a;i++){r=r<<1|t.readBit(n,r)}return a<31?r&(1<<a)-1:2147483647&r}const d=["SymbolDictionary",null,null,null,"IntermediateTextRegion",null,"ImmediateTextRegion","ImmediateLosslessTextRegion",null,null,null,null,null,null,null,null,"PatternDictionary",null,null,null,"IntermediateHalftoneRegion",null,"ImmediateHalftoneRegion","ImmediateLosslessHalftoneRegion",null,null,null,null,null,null,null,null,null,null,null,null,"IntermediateGenericRegion",null,"ImmediateGenericRegion","ImmediateLosslessGenericRegion","IntermediateGenericRefinementRegion",null,"ImmediateGenericRefinementRegion","ImmediateLosslessGenericRefinementRegion",null,null,null,null,"PageInformation","EndOfPage","EndOfStripe","EndOfFile","Profiles","Tables",null,null,null,null,null,null,null,null,"Extension"],f=[[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:2,y:-1},{x:-4,y:0},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}],[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:2,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:2,y:-1},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}],[{x:-1,y:-2},{x:0,y:-2},{x:1,y:-2},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-2,y:0},{x:-1,y:0}],[{x:-3,y:-1},{x:-2,y:-1},{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-4,y:0},{x:-3,y:0},{x:-2,y:0},{x:-1,y:0}]],g=[{coding:[{x:0,y:-1},{x:1,y:-1},{x:-1,y:0}],reference:[{x:0,y:-1},{x:1,y:-1},{x:-1,y:0},{x:0,y:0},{x:1,y:0},{x:-1,y:1},{x:0,y:1},{x:1,y:1}]},{coding:[{x:-1,y:-1},{x:0,y:-1},{x:1,y:-1},{x:-1,y:0}],reference:[{x:0,y:-1},{x:-1,y:0},{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}]}],p=[39717,1941,229,405],m=[32,8]
+function b(e,t,a,n,r,i,s,o){if(e){return E(new N(o.data,o.start,o.end),t,a,!1)}if(0===n&&!i&&!r&&4===s.length&&3===s[0].x&&-1===s[0].y&&-3===s[1].x&&-1===s[1].y&&2===s[2].x&&-2===s[2].y&&-2===s[3].x&&-2===s[3].y)return function(e,t,a){const n=a.decoder,r=a.contextCache.getContexts("GB"),i=[]
 let s,o,c,l,h,u,d
 for(o=0;o<t;o++)for(h=i[o]=new Uint8Array(e),u=o<1?h:i[o-1],d=o<2?h:i[o-2],s=d[0]<<13|d[1]<<12|d[2]<<11|u[0]<<7|u[1]<<6|u[2]<<5|u[3]<<4,c=0;c<e;c++)h[c]=l=n.readBit(r,s),s=(31735&s)<<1|(c+3<e?d[c+3]<<11:0)|(c+4<e?u[c+4]<<4:0)|l
 return i}(t,a,o)
-const c=!!i,l=p[n].concat(s)
-l.sort((function(e,t){return e.y-t.y||e.x-t.x}))
-const h=l.length,u=new Int8Array(h),d=new Int8Array(h),f=[]
-let g,m,y=0,w=0,x=0,S=0
-for(m=0;m<h;m++)u[m]=l[m].x,d[m]=l[m].y,w=Math.min(w,l[m].x),x=Math.max(x,l[m].x),S=Math.min(S,l[m].y),m<h-1&&l[m].y===l[m+1].y&&l[m].x===l[m+1].x-1?y|=1<<h-1-m:f.push(m)
-const A=f.length,k=new Int8Array(A),C=new Int8Array(A),v=new Uint16Array(A)
-for(g=0;g<A;g++)m=f[g],k[g]=l[m].x,C[g]=l[m].y,v[g]=1<<h-1-m
-const F=-w,O=-S,I=t-x,T=b[n]
+const c=!!i,l=f[n].concat(s)
+l.sort(function(e,t){return e.y-t.y||e.x-t.x})
+const h=l.length,u=new Int8Array(h),d=new Int8Array(h),g=[]
+let m,b,y=0,w=0,x=0,S=0
+for(b=0;b<h;b++)u[b]=l[b].x,d[b]=l[b].y,w=Math.min(w,l[b].x),x=Math.max(x,l[b].x),S=Math.min(S,l[b].y),b<h-1&&l[b].y===l[b+1].y&&l[b].x===l[b+1].x-1?y|=1<<h-1-b:g.push(b)
+const A=g.length,k=new Int8Array(A),C=new Int8Array(A),v=new Uint16Array(A)
+for(m=0;m<A;m++)b=g[m],k[m]=l[b].x,C[m]=l[b].y,v[m]=1<<h-1-b
+const F=-w,O=-S,I=t-x,T=p[n]
 let M=new Uint8Array(t)
-const P=[],N=o.decoder,D=o.contextCache.getContexts("GB")
-let E,B,L,_,j,U=0,X=0
-for(let p=0;p<a;p++){if(r){if(U^=N.readBit(D,T),U){P.push(M)
-continue}}for(M=new Uint8Array(M),P.push(M),E=0;E<t;E++){if(c&&i[p][E]){M[E]=0
-continue}if(E>=F&&E<I&&p>=O)for(X=X<<1&y,m=0;m<A;m++)B=p+C[m],L=E+k[m],_=P[B][L],_&&(_=v[m],X|=_)
-else for(X=0,j=h-1,m=0;m<h;m++,j--)L=E+u[m],L>=0&&L<t&&(B=p+d[m],B>=0&&(_=P[B][L],_&&(X|=_<<j)))
-const e=N.readBit(D,X)
-M[E]=e}}return P}function x(e,t,a,n,r,i,s,c,l){let h=m[a].coding
+const P=[],D=o.decoder,R=o.contextCache.getContexts("GB")
+let B,$,L,_,j,U=0,X=0
+for(let f=0;f<a;f++){if(r){if(U^=D.readBit(R,T),U){P.push(M)
+continue}}for(M=new Uint8Array(M),P.push(M),B=0;B<t;B++){if(c&&i[f][B]){M[B]=0
+continue}if(B>=F&&B<I&&f>=O)for(X=X<<1&y,b=0;b<A;b++)$=f+C[b],L=B+k[b],_=P[$][L],_&&(_=v[b],X|=_)
+else for(X=0,j=h-1,b=0;b<h;b++,j--)L=B+u[b],L>=0&&L<t&&($=f+d[b],$>=0&&(_=P[$][L],_&&(X|=_<<j)))
+const e=D.readBit(R,X)
+M[B]=e}}return P}function y(e,t,a,n,r,i,s,c,l){let h=g[a].coding
 0===a&&(h=h.concat([c[0]]))
 const u=h.length,d=new Int32Array(u),f=new Int32Array(u)
-let g
-for(g=0;g<u;g++)d[g]=h[g].x,f[g]=h[g].y
-let p=m[a].reference
-0===a&&(p=p.concat([c[1]]))
-const b=p.length,w=new Int32Array(b),x=new Int32Array(b)
-for(g=0;g<b;g++)w[g]=p[g].x,x[g]=p[g].y
-const S=n[0].length,A=n.length,k=y[a],C=[],v=l.decoder,F=l.contextCache.getContexts("GR")
+let p
+for(p=0;p<u;p++)d[p]=h[p].x,f[p]=h[p].y
+let b=g[a].reference
+0===a&&(b=b.concat([c[1]]))
+const y=b.length,w=new Int32Array(y),x=new Int32Array(y)
+for(p=0;p<y;p++)w[p]=b[p].x,x[p]=b[p].y
+const S=n[0].length,A=n.length,k=m[a],C=[],v=l.decoder,F=l.contextCache.getContexts("GR")
 let O=0
-for(let m=0;m<t;m++){if(s){if(O^=v.readBit(F,k),O)throw new o("prediction is not supported")}const t=new Uint8Array(e)
+for(let g=0;g<t;g++){if(s){if(O^=v.readBit(F,k),O)throw new o("prediction is not supported")}const t=new Uint8Array(e)
 C.push(t)
 for(let a=0;a<e;a++){let s,o,c=0
-for(g=0;g<u;g++)s=m+f[g],o=a+d[g],s<0||o<0||o>=e?c<<=1:c=c<<1|C[s][o]
-for(g=0;g<b;g++)s=m+x[g]-i,o=a+w[g]-r,s<0||s>=A||o<0||o>=S?c<<=1:c=c<<1|n[s][o]
+for(p=0;p<u;p++)s=g+f[p],o=a+d[p],s<0||o<0||o>=e?c<<=1:c=c<<1|C[s][o]
+for(p=0;p<y;p++)s=g+x[p]-i,o=a+w[p]-r,s<0||s>=A||o<0||o>=S?c<<=1:c=c<<1|n[s][o]
 const l=v.readBit(F,c)
-t[a]=l}}return C}function S(e,t,a,n,r,i,s,c,l,h,u,g,p,m,b,y,w,S,A){if(e&&t)throw new o("refinement with Huffman is not supported")
+t[a]=l}}return C}function w(e,t,a,n,r,i,s,c,l,d,f,g,p,m,b,w,x,S,A){if(e&&t)throw new o("refinement with Huffman is not supported")
 const k=[]
 let C,v
 for(C=0;C<n;C++){if(v=new Uint8Array(a),r)for(let e=0;e<a;e++)v[e]=r
-k.push(v)}const F=w.decoder,O=w.contextCache
-let I=e?-m.tableDeltaT.decode(A):-d(O,"IADT",F),T=0
-for(C=0;C<i;){I+=e?m.tableDeltaT.decode(A):d(O,"IADT",F)
-T+=e?m.tableFirstS.decode(A):d(O,"IAFS",F)
+k.push(v)}const F=x.decoder,O=x.contextCache
+let I=e?-m.tableDeltaT.decode(A):-h(O,"IADT",F),T=0
+for(C=0;C<i;){I+=e?m.tableDeltaT.decode(A):h(O,"IADT",F)
+T+=e?m.tableFirstS.decode(A):h(O,"IAFS",F)
 let n=T
 for(;;){let r=0
-s>1&&(r=e?A.readBits(S):d(O,"IAIT",F))
-const i=s*I+r,T=e?m.symbolIDTable.decode(A):f(O,F,l),M=t&&(e?A.readBit():d(O,"IARI",F))
+s>1&&(r=e?A.readBits(S):h(O,"IAIT",F))
+const i=s*I+r,T=e?m.symbolIDTable.decode(A):u(O,F,l),M=t&&(e?A.readBit():h(O,"IARI",F))
 let P=c[T],N=P[0].length,D=P.length
-if(M){const e=d(O,"IARDW",F),t=d(O,"IARDH",F)
-N+=e,D+=t,P=x(N,D,b,P,(e>>1)+d(O,"IARDX",F),(t>>1)+d(O,"IARDY",F),!1,y,w)}const R=i-(1&g?0:D-1),E=n-(2&g?N-1:0)
+if(M){const e=h(O,"IARDW",F),t=h(O,"IARDH",F)
+N+=e,D+=t,P=y(N,D,b,P,(e>>1)+h(O,"IARDX",F),(t>>1)+h(O,"IARDY",F),!1,w,x)}const R=i-(1&g?0:D-1),E=n-(2&g?N-1:0)
 let B,$,L
-if(h){for(B=0;B<D;B++){if(v=k[E+B],!v)continue
+if(d){for(B=0;B<D;B++){if(v=k[E+B],!v)continue
 L=P[B]
 const e=Math.min(a-R,N)
 switch(p){case 0:for($=0;$<e;$++)v[R+$]|=L[$]
@@ -2622,13 +2623,13 @@ break
 case 2:for(B=0;B<N;B++)v[E+B]^=L[B]
 break
 default:throw new o(`operator ${p} is not supported`)}n+=N-1}C++
-const _=e?m.tableDeltaS.decode(A):d(O,"IADS",F)
+const _=e?m.tableDeltaS.decode(A):h(O,"IADS",F)
 if(null===_)break
-n+=_+u}}return k}function A(e,t){const a={}
+n+=_+f}}return k}function x(e,t){const a={}
 a.number=(0,r.readUint32)(e,t)
 const n=e[t+4],i=63&n
-if(!g[i])throw new o("invalid segment type: "+i)
-a.type=i,a.typeName=g[i],a.deferredNonRetain=!!(128&n)
+if(!d[i])throw new o("invalid segment type: "+i)
+a.type=i,a.typeName=d[i],a.deferredNonRetain=!!(128&n)
 const s=!!(64&n),c=e[t+5]
 let l=c>>5&7
 const h=[31&c]
@@ -2637,24 +2638,24 @@ if(7===c){l=536870911&(0,r.readUint32)(e,u-1),u+=3
 let t=l+7>>3
 for(h[0]=e[u++];--t>0;)h.push(e[u++])}else if(5===c||6===c)throw new o("invalid referred-to flags")
 a.retainBits=h
-let d=4
-a.number<=256?d=1:a.number<=65536&&(d=2)
-const f=[]
+let f=4
+a.number<=256?f=1:a.number<=65536&&(f=2)
+const g=[]
 let p,m
 for(p=0;p<l;p++){let t
-t=1===d?e[u]:2===d?(0,r.readUint16)(e,u):(0,r.readUint32)(e,u),f.push(t),u+=d}if(a.referredTo=f,s?(a.pageAssociation=(0,r.readUint32)(e,u),u+=4):a.pageAssociation=e[u++],a.length=(0,r.readUint32)(e,u),u+=4,4294967295===a.length){if(38!==i)throw new o("invalid unknown segment length")
-{const t=C(e,u),n=!!(1&e[u+v]),r=6,i=new Uint8Array(r)
+t=1===f?e[u]:2===f?(0,r.readUint16)(e,u):(0,r.readUint32)(e,u),g.push(t),u+=f}if(a.referredTo=g,s?(a.pageAssociation=(0,r.readUint32)(e,u),u+=4):a.pageAssociation=e[u++],a.length=(0,r.readUint32)(e,u),u+=4,4294967295===a.length){if(38!==i)throw new o("invalid unknown segment length")
+{const t=A(e,u),n=!!(1&e[u+k]),r=6,i=new Uint8Array(r)
 for(n||(i[0]=255,i[1]=172),i[2]=t.height>>>24&255,i[3]=t.height>>16&255,i[4]=t.height>>8&255,i[5]=255&t.height,p=u,m=e.length;p<m;p++){let t=0
 for(;t<r&&i[t]===e[p+t];)t++
 if(t===r){a.length=p+r
-break}}if(4294967295===a.length)throw new o("segment end was not found")}}return a.headerEnd=u,a}function k(e,t,a,n){const r=[]
+break}}if(4294967295===a.length)throw new o("segment end was not found")}}return a.headerEnd=u,a}function S(e,t,a,n){const r=[]
 let i=a
-for(;i<n;){const a=A(t,i)
+for(;i<n;){const a=x(t,i)
 i=a.headerEnd
 const n={header:a,data:t}
 if(e.randomAccess||(n.start=i,i+=a.length,n.end=i),r.push(n),51===a.type)break}if(e.randomAccess)for(let s=0,o=r.length;s<o;s++)r[s].start=i,i+=r[s].header.length,r[s].end=i
-return r}function C(e,t){return{width:(0,r.readUint32)(e,t),height:(0,r.readUint32)(e,t+4),x:(0,r.readUint32)(e,t+8),y:(0,r.readUint32)(e,t+12),combinationOperator:7&e[t+16]}}const v=17
-function F(e,t){const a=e.header,n=e.data,i=e.end
+return r}function A(e,t){return{width:(0,r.readUint32)(e,t),height:(0,r.readUint32)(e,t+4),x:(0,r.readUint32)(e,t+8),y:(0,r.readUint32)(e,t+12),combinationOperator:7&e[t+16]}}const k=17
+function C(e,t){const a=e.header,n=e.data,i=e.end
 let s,c,l,h,u=e.start
 switch(a.type){case 0:const e={},t=(0,r.readUint16)(n,u)
 if(e.huffman=!!(1&t),e.refinement=!!(2&t),e.huffmanDHSelector=t>>2&3,e.huffmanDWSelector=t>>4&3,e.bitmapSizeSelector=t>>6&1,e.aggregationInstancesSelector=t>>7&1,e.bitmapCodingContextUsed=!!(256&t),e.bitmapCodingContextRetained=!!(512&t),e.template=t>>10&3,e.refinementTemplate=t>>12&1,u+=2,!e.huffman){for(h=0===e.template?4:1,c=[],l=0;l<h;l++)c.push({x:(0,r.readInt8)(n,u),y:(0,r.readInt8)(n,u+1)}),u+=2
@@ -2662,7 +2663,7 @@ e.at=c}if(e.refinement&&!e.refinementTemplate){for(c=[],l=0;l<2;l++)c.push({x:(0
 e.refinementAt=c}e.numberOfExportedSymbols=(0,r.readUint32)(n,u),u+=4,e.numberOfNewSymbols=(0,r.readUint32)(n,u),u+=4,s=[e,a.number,a.referredTo,n,u,i]
 break
 case 6:case 7:const d={}
-d.info=C(n,u),u+=v
+d.info=A(n,u),u+=k
 const f=(0,r.readUint16)(n,u)
 if(u+=2,d.huffman=!!(1&f),d.refinement=!!(2&f),d.logStripSize=f>>2&3,d.stripSize=1<<d.logStripSize,d.referenceCorner=f>>4&3,d.transposed=!!(64&f),d.combinationOperator=f>>7&3,d.defaultPixelValue=f>>9&1,d.dsOffset=f<<17>>27,d.refinementTemplate=f>>15&1,d.huffman){const e=(0,r.readUint16)(n,u)
 u+=2,d.huffmanFS=3&e,d.huffmanDS=e>>2&3,d.huffmanDT=e>>4&3,d.huffmanRefinementDW=e>>6&3,d.huffmanRefinementDH=e>>8&3,d.huffmanRefinementDX=e>>10&3,d.huffmanRefinementDY=e>>12&3,d.huffmanRefinementSizeSelector=!!(16384&e)}if(d.refinement&&!d.refinementTemplate){for(c=[],l=0;l<2;l++)c.push({x:(0,r.readInt8)(n,u),y:(0,r.readInt8)(n,u+1)}),u+=2
@@ -2672,12 +2673,12 @@ case 16:const g={},p=n[u++]
 g.mmr=!!(1&p),g.template=p>>1&3,g.patternWidth=n[u++],g.patternHeight=n[u++],g.maxPatternIndex=(0,r.readUint32)(n,u),u+=4,s=[g,a.number,n,u,i]
 break
 case 22:case 23:const m={}
-m.info=C(n,u),u+=v
+m.info=A(n,u),u+=k
 const b=n[u++]
 m.mmr=!!(1&b),m.template=b>>1&3,m.enableSkip=!!(8&b),m.combinationOperator=b>>4&7,m.defaultPixelValue=b>>7&1,m.gridWidth=(0,r.readUint32)(n,u),u+=4,m.gridHeight=(0,r.readUint32)(n,u),u+=4,m.gridOffsetX=4294967295&(0,r.readUint32)(n,u),u+=4,m.gridOffsetY=4294967295&(0,r.readUint32)(n,u),u+=4,m.gridVectorX=(0,r.readUint16)(n,u),u+=2,m.gridVectorY=(0,r.readUint16)(n,u),u+=2,s=[m,a.referredTo,n,u,i]
 break
 case 38:case 39:const y={}
-y.info=C(n,u),u+=v
+y.info=A(n,u),u+=k
 const w=n[u++]
 if(y.mmr=!!(1&w),y.template=w>>1&3,y.prediction=!!(8&w),!y.mmr){for(h=0===y.template?4:1,c=[],l=0;l<h;l++)c.push({x:(0,r.readInt8)(n,u),y:(0,r.readInt8)(n,u+1)}),u+=2
 y.at=c}s=[y,n,u,i]
@@ -2690,7 +2691,7 @@ case 49:case 50:case 51:case 62:break
 case 53:s=[a.number,n,u,i]
 break
 default:throw new o(`segment type ${a.typeName}(${a.type}) is not implemented`)}const d="on"+a.typeName
-d in t&&t[d].apply(t,s)}function O(e,t){for(let a=0,n=e.length;a<n;a++)F(e[a],t)}class I{onPageInformation(e){this.currentPageInfo=e
+d in t&&t[d].apply(t,s)}function v(e,t){for(let a=0,n=e.length;a<n;a++)C(e[a],t)}class F{onPageInformation(e){this.currentPageInfo=e
 const t=e.width+7>>3,a=new Uint8ClampedArray(t*e.height)
 e.defaultPixelValue&&a.fill(255),this.buffer=a}drawBitmap(e,t){const a=this.currentPageInfo,n=e.width,r=e.height,i=a.width+7>>3,s=a.combinationOperatorOverride?e.combinationOperator:a.combinationOperator,c=this.buffer,l=128>>(7&e.x)
 let h,u,d,f,g=e.y*i+(e.x>>3)
@@ -2698,62 +2699,62 @@ switch(s){case 0:for(h=0;h<r;h++){for(d=l,f=g,u=0;u<n;u++)t[h][u]&&(c[f]|=d),d>>
 g+=i}break
 case 2:for(h=0;h<r;h++){for(d=l,f=g,u=0;u<n;u++)t[h][u]&&(c[f]^=d),d>>=1,d||(d=128,f++)
 g+=i}break
-default:throw new o(`operator ${s} is not supported`)}}onImmediateGenericRegion(e,t,a,n){const r=e.info,i=new l(t,a,n),s=w(e.mmr,r.width,r.height,e.template,e.prediction,null,e.at,i)
-this.drawBitmap(r,s)}onImmediateLosslessGenericRegion(){this.onImmediateGenericRegion(...arguments)}onSymbolDictionary(e,t,a,n,i,s){let c,h
+default:throw new o(`operator ${s} is not supported`)}}onImmediateGenericRegion(e,t,a,n){const r=e.info,i=new l(t,a,n),s=b(e.mmr,r.width,r.height,e.template,e.prediction,null,e.at,i)
+this.drawBitmap(r,s)}onImmediateLosslessGenericRegion(){this.onImmediateGenericRegion(...arguments)}onSymbolDictionary(e,t,a,n,i,s){let c,d
 e.huffman&&(c=function(e,t,a){let n,r,i,s,c=0
-switch(e.huffmanDHSelector){case 0:case 1:n=D(e.huffmanDHSelector+4)
+switch(e.huffmanDHSelector){case 0:case 1:n=P(e.huffmanDHSelector+4)
 break
-case 3:n=E(c,t,a),c++
+case 3:n=D(c,t,a),c++
 break
-default:throw new o("invalid Huffman DH selector")}switch(e.huffmanDWSelector){case 0:case 1:r=D(e.huffmanDWSelector+2)
+default:throw new o("invalid Huffman DH selector")}switch(e.huffmanDWSelector){case 0:case 1:r=P(e.huffmanDWSelector+2)
 break
-case 3:r=E(c,t,a),c++
+case 3:r=D(c,t,a),c++
 break
-default:throw new o("invalid Huffman DW selector")}e.bitmapSizeSelector?(i=E(c,t,a),c++):i=D(1)
-s=e.aggregationInstancesSelector?E(c,t,a):D(1)
-return{tableDeltaHeight:n,tableDeltaWidth:r,tableBitmapSize:i,tableAggregateInstances:s}}(e,a,this.customTables),h=new R(n,i,s))
-let u=this.symbols
-u||(this.symbols=u={})
+default:throw new o("invalid Huffman DW selector")}e.bitmapSizeSelector?(i=D(c,t,a),c++):i=P(1)
+s=e.aggregationInstancesSelector?D(c,t,a):P(1)
+return{tableDeltaHeight:n,tableDeltaWidth:r,tableBitmapSize:i,tableAggregateInstances:s}}(e,a,this.customTables),d=new N(n,i,s))
+let f=this.symbols
+f||(this.symbols=f={})
 const g=[]
-for(const r of a){const e=u[r]
+for(const r of a){const e=f[r]
 e&&g.push(...e)}const p=new l(n,i,s)
-u[t]=function(e,t,a,n,i,s,c,l,h,u,g,p){if(e&&t)throw new o("symbol refinement with Huffman is not supported")
+f[t]=function(e,t,a,n,i,s,c,l,d,f,g,p){if(e&&t)throw new o("symbol refinement with Huffman is not supported")
 const m=[]
-let b=0,y=(0,r.log2)(a.length+n)
+let x=0,S=(0,r.log2)(a.length+n)
 const A=g.decoder,k=g.contextCache
 let C,v
-for(e&&(C=D(1),v=[],y=Math.max(y,1));m.length<n;){b+=e?s.tableDeltaHeight.decode(p):d(k,"IADH",A)
+for(e&&(C=P(1),v=[],S=Math.max(S,1));m.length<n;){x+=e?s.tableDeltaHeight.decode(p):h(k,"IADH",A)
 let n=0,r=0
 const i=e?v.length:0
-for(;;){const i=e?s.tableDeltaWidth.decode(p):d(k,"IADW",A)
+for(;;){const i=e?s.tableDeltaWidth.decode(p):h(k,"IADW",A)
 if(null===i)break
 let o
-if(n+=i,r+=n,t){const r=d(k,"IAAI",A)
-if(r>1)o=S(e,t,n,b,0,r,1,a.concat(m),y,0,0,1,0,s,h,u,g,0,p)
-else{const e=f(k,A,y),t=d(k,"IARDX",A),r=d(k,"IARDY",A)
-o=x(n,b,h,e<a.length?a[e]:m[e-a.length],t,r,!1,u,g)}m.push(o)}else e?v.push(n):(o=w(!1,n,b,c,!1,null,l,g),m.push(o))}if(e&&!t){const e=s.tableBitmapSize.decode(p)
+if(n+=i,r+=n,t){const r=h(k,"IAAI",A)
+if(r>1)o=w(e,t,n,x,0,r,1,a.concat(m),S,0,0,1,0,s,d,f,g,0,p)
+else{const e=u(k,A,S),t=h(k,"IARDX",A),r=h(k,"IARDY",A)
+o=y(n,x,d,e<a.length?a[e]:m[e-a.length],t,r,!1,f,g)}m.push(o)}else e?v.push(n):(o=b(!1,n,x,c,!1,null,l,g),m.push(o))}if(e&&!t){const e=s.tableBitmapSize.decode(p)
 let t
-if(p.byteAlign(),0===e)t=B(p,r,b)
+if(p.byteAlign(),0===e)t=R(p,r,x)
 else{const a=p.end,n=p.position+e
-p.end=n,t=$(p,r,b,!1),p.end=a,p.position=n}const a=v.length
+p.end=n,t=E(p,r,x,!1),p.end=a,p.position=n}const a=v.length
 if(i===a-1)m.push(t)
 else{let e,n,r,s,o,c=0
-for(e=i;e<a;e++){for(s=v[e],r=c+s,o=[],n=0;n<b;n++)o.push(t[n].subarray(c,r))
+for(e=i;e<a;e++){for(s=v[e],r=c+s,o=[],n=0;n<x;n++)o.push(t[n].subarray(c,r))
 m.push(o),c=r}}}}const F=[],O=[]
 let I,T,M=!1
-const P=a.length+n
-for(;O.length<P;){let t=e?C.decode(p):d(k,"IAEX",A)
+const N=a.length+n
+for(;O.length<N;){let t=e?C.decode(p):h(k,"IAEX",A)
 for(;t--;)O.push(M)
 M=!M}for(I=0,T=a.length;I<T;I++)O[I]&&F.push(a[I])
 for(let r=0;r<n;I++,r++)O[I]&&F.push(m[r])
-return F}(e.huffman,e.refinement,g,e.numberOfNewSymbols,e.numberOfExportedSymbols,c,e.template,e.at,e.refinementTemplate,e.refinementAt,p,h)}onImmediateTextRegion(e,t,a,n,i){const s=e.info
+return F}(e.huffman,e.refinement,g,e.numberOfNewSymbols,e.numberOfExportedSymbols,c,e.template,e.at,e.refinementTemplate,e.refinementAt,p,d)}onImmediateTextRegion(e,t,a,n,i){const s=e.info
 let c,h
 const u=this.symbols,d=[]
 for(const r of t){const e=u[r]
 e&&d.push(...e)}const f=(0,r.log2)(d.length)
-e.huffman&&(h=new R(a,n,i),c=function(e,t,a,n,r){const i=[]
+e.huffman&&(h=new N(a,n,i),c=function(e,t,a,n,r){const i=[]
 for(let o=0;o<=34;o++){const e=r.readBits(4)
-i.push(new T([o,e,0,0]))}const s=new P(i,!1)
+i.push(new O([o,e,0,0]))}const s=new T(i,!1)
 i.length=0
 for(let f=0;f<n;){const e=s.decode(r)
 if(e>=32){let t,a,n
@@ -2764,59 +2765,59 @@ case 33:a=r.readBits(3)+3,t=0
 break
 case 34:a=r.readBits(7)+11,t=0
 break
-default:throw new o("invalid code length in symbol ID table")}for(n=0;n<a;n++)i.push(new T([f,t,0,0])),f++}else i.push(new T([f,e,0,0])),f++}r.byteAlign()
-const c=new P(i,!1)
+default:throw new o("invalid code length in symbol ID table")}for(n=0;n<a;n++)i.push(new O([f,t,0,0])),f++}else i.push(new O([f,e,0,0])),f++}r.byteAlign()
+const c=new T(i,!1)
 let l,h,u,d=0
-switch(e.huffmanFS){case 0:case 1:l=D(e.huffmanFS+6)
+switch(e.huffmanFS){case 0:case 1:l=P(e.huffmanFS+6)
 break
-case 3:l=E(d,t,a),d++
+case 3:l=D(d,t,a),d++
 break
-default:throw new o("invalid Huffman FS selector")}switch(e.huffmanDS){case 0:case 1:case 2:h=D(e.huffmanDS+8)
+default:throw new o("invalid Huffman FS selector")}switch(e.huffmanDS){case 0:case 1:case 2:h=P(e.huffmanDS+8)
 break
-case 3:h=E(d,t,a),d++
+case 3:h=D(d,t,a),d++
 break
-default:throw new o("invalid Huffman DS selector")}switch(e.huffmanDT){case 0:case 1:case 2:u=D(e.huffmanDT+11)
+default:throw new o("invalid Huffman DS selector")}switch(e.huffmanDT){case 0:case 1:case 2:u=P(e.huffmanDT+11)
 break
-case 3:u=E(d,t,a),d++
+case 3:u=D(d,t,a),d++
 break
 default:throw new o("invalid Huffman DT selector")}if(e.refinement)throw new o("refinement with Huffman is not supported")
 return{symbolIDTable:c,tableFirstS:l,tableDeltaS:h,tableDeltaT:u}}(e,t,this.customTables,d.length,h))
-const g=new l(a,n,i),p=S(e.huffman,e.refinement,s.width,s.height,e.defaultPixelValue,e.numberOfSymbolInstances,e.stripSize,d,f,e.transposed,e.dsOffset,e.referenceCorner,e.combinationOperator,c,e.refinementTemplate,e.refinementAt,g,e.logStripSize,h)
+const g=new l(a,n,i),p=w(e.huffman,e.refinement,s.width,s.height,e.defaultPixelValue,e.numberOfSymbolInstances,e.stripSize,d,f,e.transposed,e.dsOffset,e.referenceCorner,e.combinationOperator,c,e.refinementTemplate,e.refinementAt,g,e.logStripSize,h)
 this.drawBitmap(s,p)}onImmediateLosslessTextRegion(){this.onImmediateTextRegion(...arguments)}onPatternDictionary(e,t,a,n,r){let i=this.patterns
 i||(this.patterns=i={})
 const s=new l(a,n,r)
 i[t]=function(e,t,a,n,r,i){const s=[]
 e||(s.push({x:-t,y:0}),0===r&&s.push({x:-3,y:-1},{x:2,y:-2},{x:-2,y:-2}))
-const o=w(e,(n+1)*t,a,r,!1,null,s,i),c=[]
+const o=b(e,(n+1)*t,a,r,!1,null,s,i),c=[]
 for(let l=0;l<=n;l++){const e=[],n=t*l,r=n+t
 for(let t=0;t<a;t++)e.push(o[t].subarray(n,r))
 c.push(e)}return c}(e.mmr,e.patternWidth,e.patternHeight,e.maxPatternIndex,e.template,s)}onImmediateHalftoneRegion(e,t,a,n,i){const s=this.patterns[t[0]],c=e.info,h=new l(a,n,i),u=function(e,t,a,n,i,s,c,l,h,u,d,f,g,p,m){if(c)throw new o("skip is not supported")
 if(0!==l)throw new o(`operator "${l}" is not supported in halftone region`)
-const b=[]
-let y,x,S
-for(y=0;y<i;y++){if(S=new Uint8Array(n),s)for(x=0;x<n;x++)S[x]=s
-b.push(S)}const A=t.length,k=t[0],C=k[0].length,v=k.length,F=(0,r.log2)(A),O=[]
+const y=[]
+let w,x,S
+for(w=0;w<i;w++){if(S=new Uint8Array(n),s)for(x=0;x<n;x++)S[x]=s
+y.push(S)}const A=t.length,k=t[0],C=k[0].length,v=k.length,F=(0,r.log2)(A),O=[]
 e||(O.push({x:a<=1?3:2,y:-1}),0===a&&O.push({x:-3,y:-1},{x:2,y:-2},{x:-2,y:-2}))
 const I=[]
-let T,M,P,N,D,E,B,L,_,j,U
-for(e&&(T=new R(m.data,m.start,m.end)),y=F-1;y>=0;y--)M=e?$(T,h,u,!0):w(!1,h,u,a,!1,null,O,m),I[y]=M
-for(P=0;P<u;P++)for(N=0;N<h;N++){for(D=0,E=0,x=F-1;x>=0;x--)D^=I[x][P][N],E|=D<<x
-if(B=t[E],L=d+P*p+N*g>>8,_=f+P*g-N*p>>8,L>=0&&L+C<=n&&_>=0&&_+v<=i)for(y=0;y<v;y++)for(U=b[_+y],j=B[y],x=0;x<C;x++)U[L+x]|=j[x]
+let T,M,P,D,R,B,$,L,_,j,U
+for(e&&(T=new N(m.data,m.start,m.end)),w=F-1;w>=0;w--)M=e?E(T,h,u,!0):b(!1,h,u,a,!1,null,O,m),I[w]=M
+for(P=0;P<u;P++)for(D=0;D<h;D++){for(R=0,B=0,x=F-1;x>=0;x--)R^=I[x][P][D],B|=R<<x
+if($=t[B],L=d+P*p+D*g>>8,_=f+P*g-D*p>>8,L>=0&&L+C<=n&&_>=0&&_+v<=i)for(w=0;w<v;w++)for(U=y[_+w],j=$[w],x=0;x<C;x++)U[L+x]|=j[x]
 else{let e,t
-for(y=0;y<v;y++)if(t=_+y,!(t<0||t>=i))for(U=b[t],j=B[y],x=0;x<C;x++)e=L+x,e>=0&&e<n&&(U[e]|=j[x])}}return b}(e.mmr,s,e.template,c.width,c.height,e.defaultPixelValue,e.enableSkip,e.combinationOperator,e.gridWidth,e.gridHeight,e.gridOffsetX,e.gridOffsetY,e.gridVectorX,e.gridVectorY,h)
+for(w=0;w<v;w++)if(t=_+w,!(t<0||t>=i))for(U=y[t],j=$[w],x=0;x<C;x++)e=L+x,e>=0&&e<n&&(U[e]|=j[x])}}return y}(e.mmr,s,e.template,c.width,c.height,e.defaultPixelValue,e.enableSkip,e.combinationOperator,e.gridWidth,e.gridHeight,e.gridOffsetX,e.gridOffsetY,e.gridVectorX,e.gridVectorY,h)
 this.drawBitmap(c,u)}onImmediateLosslessHalftoneRegion(){this.onImmediateHalftoneRegion(...arguments)}onTables(e,t,a,n){let i=this.customTables
-i||(this.customTables=i={}),i[e]=function(e,t,a){const n=e[t],i=4294967295&(0,r.readUint32)(e,t+1),s=4294967295&(0,r.readUint32)(e,t+5),o=new R(e,t+9,a),c=1+(n>>1&7),l=1+(n>>4&7),h=[]
+i||(this.customTables=i={}),i[e]=function(e,t,a){const n=e[t],i=4294967295&(0,r.readUint32)(e,t+1),s=4294967295&(0,r.readUint32)(e,t+5),o=new N(e,t+9,a),c=1+(n>>1&7),l=1+(n>>4&7),h=[]
 let u,d,f=i
-do{u=o.readBits(c),d=o.readBits(l),h.push(new T([f,u,d,0])),f+=1<<d}while(f<s)
-u=o.readBits(c),h.push(new T([i-1,u,32,0,"lower"])),u=o.readBits(c),h.push(new T([s,u,32,0])),1&n&&(u=o.readBits(c),h.push(new T([u,0])))
-return new P(h,!1)}(t,a,n)}}class T{constructor(e){2===e.length?(this.isOOB=!0,this.rangeLow=0,this.prefixLength=e[0],this.rangeLength=0,this.prefixCode=e[1],this.isLowerRange=!1):(this.isOOB=!1,this.rangeLow=e[0],this.prefixLength=e[1],this.rangeLength=e[2],this.prefixCode=e[3],this.isLowerRange="lower"===e[4])}}class M{constructor(e){this.children=[],e?(this.isLeaf=!0,this.rangeLength=e.rangeLength,this.rangeLow=e.rangeLow,this.isLowerRange=e.isLowerRange,this.isOOB=e.isOOB):this.isLeaf=!1}buildTree(e,t){const a=e.prefixCode>>t&1
-if(t<=0)this.children[a]=new M(e)
+do{u=o.readBits(c),d=o.readBits(l),h.push(new O([f,u,d,0])),f+=1<<d}while(f<s)
+u=o.readBits(c),h.push(new O([i-1,u,32,0,"lower"])),u=o.readBits(c),h.push(new O([s,u,32,0])),1&n&&(u=o.readBits(c),h.push(new O([u,0])))
+return new T(h,!1)}(t,a,n)}}class O{constructor(e){2===e.length?(this.isOOB=!0,this.rangeLow=0,this.prefixLength=e[0],this.rangeLength=0,this.prefixCode=e[1],this.isLowerRange=!1):(this.isOOB=!1,this.rangeLow=e[0],this.prefixLength=e[1],this.rangeLength=e[2],this.prefixCode=e[3],this.isLowerRange="lower"===e[4])}}class I{constructor(e){this.children=[],e?(this.isLeaf=!0,this.rangeLength=e.rangeLength,this.rangeLow=e.rangeLow,this.isLowerRange=e.isLowerRange,this.isOOB=e.isOOB):this.isLeaf=!1}buildTree(e,t){const a=e.prefixCode>>t&1
+if(t<=0)this.children[a]=new I(e)
 else{let n=this.children[a]
-n||(this.children[a]=n=new M(null)),n.buildTree(e,t-1)}}decodeNode(e){if(this.isLeaf){if(this.isOOB)return null
+n||(this.children[a]=n=new I(null)),n.buildTree(e,t-1)}}decodeNode(e){if(this.isLeaf){if(this.isOOB)return null
 const t=e.readBits(this.rangeLength)
 return this.rangeLow+(this.isLowerRange?-t:t)}const t=this.children[e.readBit()]
 if(!t)throw new o("invalid Huffman data")
-return t.decodeNode(e)}}class P{constructor(e,t){t||this.assignPrefixCodes(e),this.rootNode=new M(null)
+return t.decodeNode(e)}}class T{constructor(e,t){t||this.assignPrefixCodes(e),this.rootNode=new I(null)
 for(let a=0,n=e.length;a<n;a++){const t=e[a]
 t.prefixLength>0&&this.rootNode.buildTree(t,t.prefixLength-1)}}decode(e){return this.rootNode.decodeNode(e)}assignPrefixCodes(e){const t=e.length
 let a=0
@@ -2825,8 +2826,8 @@ const n=new Uint32Array(a+1)
 for(let l=0;l<t;l++)n[e[l].prefixLength]++
 let r,i,s,o=1,c=0
 for(n[0]=0;o<=a;){for(c=c+n[o-1]<<1,r=c,i=0;i<t;)s=e[i],s.prefixLength===o&&(s.prefixCode=r,r++),i++
-o++}}}const N={}
-function D(e){let t,a=N[e]
+o++}}}const M={}
+function P(e){let t,a=M[e]
 if(a)return a
 switch(e){case 1:t=[[0,1,4,0],[16,2,8,2],[272,3,16,6],[65808,3,32,7]]
 break
@@ -2858,27 +2859,27 @@ case 14:t=[[-2,3,0,4],[-1,3,0,5],[0,1,0,0],[1,3,0,6],[2,3,0,7]]
 break
 case 15:t=[[-24,7,4,124],[-8,6,2,60],[-4,5,1,28],[-2,4,0,12],[-1,3,0,4],[0,1,0,0],[1,3,0,5],[2,4,0,13],[3,5,1,29],[5,6,2,61],[9,7,4,125],[-25,7,32,126,"lower"],[25,7,32,127]]
 break
-default:throw new o(`standard table B.${e} does not exist`)}for(let n=0,r=t.length;n<r;n++)t[n]=new T(t[n])
-return a=new P(t,!0),N[e]=a,a}class R{constructor(e,t,a){this.data=e,this.start=t,this.end=a,this.position=t,this.shift=-1,this.currentByte=0}readBit(){if(this.shift<0){if(this.position>=this.end)throw new o("end of data while reading bit")
+default:throw new o(`standard table B.${e} does not exist`)}for(let n=0,r=t.length;n<r;n++)t[n]=new O(t[n])
+return a=new T(t,!0),M[e]=a,a}class N{constructor(e,t,a){this.data=e,this.start=t,this.end=a,this.position=t,this.shift=-1,this.currentByte=0}readBit(){if(this.shift<0){if(this.position>=this.end)throw new o("end of data while reading bit")
 this.currentByte=this.data[this.position++],this.shift=7}const e=this.currentByte>>this.shift&1
 return this.shift--,e}readBits(e){let t,a=0
 for(t=e-1;t>=0;t--)a|=this.readBit()<<t
-return a}byteAlign(){this.shift=-1}next(){return this.position>=this.end?-1:this.data[this.position++]}}function E(e,t,a){let n=0
+return a}byteAlign(){this.shift=-1}next(){return this.position>=this.end?-1:this.data[this.position++]}}function D(e,t,a){let n=0
 for(let r=0,i=t.length;r<i;r++){const i=a[t[r]]
 if(i){if(e===n)return i
-n++}}throw new o("can't find custom Huffman table")}function B(e,t,a){const n=[]
+n++}}throw new o("can't find custom Huffman table")}function R(e,t,a){const n=[]
 for(let r=0;r<a;r++){const a=new Uint8Array(t)
 n.push(a)
 for(let n=0;n<t;n++)a[n]=e.readBit()
-e.byteAlign()}return n}function $(e,t,a,n){const r={K:-1,Columns:t,Rows:a,BlackIs1:!0,EndOfBlock:n},i=new s.CCITTFaxDecoder(e,r),o=[]
+e.byteAlign()}return n}function E(e,t,a,n){const r={K:-1,Columns:t,Rows:a,BlackIs1:!0,EndOfBlock:n},i=new s.CCITTFaxDecoder(e,r),o=[]
 let c,l=!1
 for(let s=0;s<a;s++){const e=new Uint8Array(t)
 o.push(e)
 let a=-1
 for(let n=0;n<t;n++)a<0&&(c=i.readNextChar(),-1===c&&(c=0,l=!0),a=7),e[n]=c>>a&1,a--}if(n&&!l){const e=5
-for(let t=0;t<e&&-1!==i.readNextChar();t++);}return o}t.Jbig2Image=class{parseChunks(e){return function(e){const t=new I
+for(let t=0;t<e&&-1!==i.readNextChar();t++);}return o}t.Jbig2Image=class{parseChunks(e){return function(e){const t=new F
 for(let a=0,n=e.length;a<n;a++){const n=e[a]
-O(k({},n.data,n.start,n.end),t)}return t.buffer}(e)}parse(e){throw new Error("Not implemented: Jbig2Image.parse")}}},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.ArithmeticDecoder=void 0
+v(S({},n.data,n.start,n.end),t)}return t.buffer}(e)}parse(e){throw new Error("Not implemented: Jbig2Image.parse")}}},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.ArithmeticDecoder=void 0
 const a=[{qe:22017,nmps:1,nlps:1,switchFlag:1},{qe:13313,nmps:2,nlps:6,switchFlag:0},{qe:6145,nmps:3,nlps:9,switchFlag:0},{qe:2753,nmps:4,nlps:12,switchFlag:0},{qe:1313,nmps:5,nlps:29,switchFlag:0},{qe:545,nmps:38,nlps:33,switchFlag:0},{qe:22017,nmps:7,nlps:6,switchFlag:1},{qe:21505,nmps:8,nlps:14,switchFlag:0},{qe:18433,nmps:9,nlps:14,switchFlag:0},{qe:14337,nmps:10,nlps:14,switchFlag:0},{qe:12289,nmps:11,nlps:17,switchFlag:0},{qe:9217,nmps:12,nlps:18,switchFlag:0},{qe:7169,nmps:13,nlps:20,switchFlag:0},{qe:5633,nmps:29,nlps:21,switchFlag:0},{qe:22017,nmps:15,nlps:14,switchFlag:1},{qe:21505,nmps:16,nlps:14,switchFlag:0},{qe:20737,nmps:17,nlps:15,switchFlag:0},{qe:18433,nmps:18,nlps:16,switchFlag:0},{qe:14337,nmps:19,nlps:17,switchFlag:0},{qe:13313,nmps:20,nlps:18,switchFlag:0},{qe:12289,nmps:21,nlps:19,switchFlag:0},{qe:10241,nmps:22,nlps:19,switchFlag:0},{qe:9217,nmps:23,nlps:20,switchFlag:0},{qe:8705,nmps:24,nlps:21,switchFlag:0},{qe:7169,nmps:25,nlps:22,switchFlag:0},{qe:6145,nmps:26,nlps:23,switchFlag:0},{qe:5633,nmps:27,nlps:24,switchFlag:0},{qe:5121,nmps:28,nlps:25,switchFlag:0},{qe:4609,nmps:29,nlps:26,switchFlag:0},{qe:4353,nmps:30,nlps:27,switchFlag:0},{qe:2753,nmps:31,nlps:28,switchFlag:0},{qe:2497,nmps:32,nlps:29,switchFlag:0},{qe:2209,nmps:33,nlps:30,switchFlag:0},{qe:1313,nmps:34,nlps:31,switchFlag:0},{qe:1089,nmps:35,nlps:32,switchFlag:0},{qe:673,nmps:36,nlps:33,switchFlag:0},{qe:545,nmps:37,nlps:34,switchFlag:0},{qe:321,nmps:38,nlps:35,switchFlag:0},{qe:273,nmps:39,nlps:36,switchFlag:0},{qe:133,nmps:40,nlps:37,switchFlag:0},{qe:73,nmps:41,nlps:38,switchFlag:0},{qe:37,nmps:42,nlps:39,switchFlag:0},{qe:21,nmps:43,nlps:40,switchFlag:0},{qe:9,nmps:44,nlps:41,switchFlag:0},{qe:5,nmps:45,nlps:42,switchFlag:0},{qe:1,nmps:45,nlps:43,switchFlag:0},{qe:22017,nmps:46,nlps:46,switchFlag:0}]
 t.ArithmeticDecoder=class{constructor(e,t,a){this.data=e,this.bp=t,this.dataEnd=a,this.chigh=e[t],this.clow=0,this.byteIn(),this.chigh=this.chigh<<7&65535|this.clow>>9&127,this.clow=this.clow<<7&65535,this.ct-=7,this.a=32768}byteIn(){const e=this.data
 let t=this.bp
@@ -2886,8 +2887,8 @@ let t=this.bp
 const i=a[n],s=i.qe
 let o,c=this.a-s
 if(this.chigh<s)c<s?(c=s,o=r,n=i.nmps):(c=s,o=1^r,1===i.switchFlag&&(r=o),n=i.nlps)
-else{if(this.chigh-=s,0!=(32768&c))return this.a=c,r
-c<s?(o=1^r,1===i.switchFlag&&(r=o),n=i.nlps):(o=r,n=i.nmps)}do{0===this.ct&&this.byteIn(),c<<=1,this.chigh=this.chigh<<1&65535|this.clow>>15&1,this.clow=this.clow<<1&65535,this.ct--}while(0==(32768&c))
+else{if(this.chigh-=s,32768&c)return this.a=c,r
+c<s?(o=1^r,1===i.switchFlag&&(r=o),n=i.nlps):(o=r,n=i.nmps)}do{0===this.ct&&this.byteIn(),c<<=1,this.chigh=this.chigh<<1&65535|this.clow>>15&1,this.clow=this.clow<<1&65535,this.ct--}while(!(32768&c))
 return this.a=c,e[t]=n<<1|r,o}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.JpegStream=void 0
 var n=a(18),r=a(4),i=a(27),s=a(2)
 class o extends n.DecodeStream{constructor(e,t,a){let n
@@ -2975,9 +2976,9 @@ if(j.invalid){const e=a>0?"unexpected":"excessive";(0,n.warn)(`decodeScan - ${e}
 t+=2}return t-y}function S(e,t,a){const n=e.quantizationTable,r=e.blockData
 let i,o,c,l,y,w,x,S,A,k,C,v,F,O,I,T,M
 if(!n)throw new s("missing required Quantization Table.")
-for(let s=0;s<64;s+=8)if(A=r[t+s],k=r[t+s+1],C=r[t+s+2],v=r[t+s+3],F=r[t+s+4],O=r[t+s+5],I=r[t+s+6],T=r[t+s+7],A*=n[s],0!=(k|C|v|F|O|I|T)){k*=n[s+1],C*=n[s+2],v*=n[s+3],F*=n[s+4],O*=n[s+5],I*=n[s+6],T*=n[s+7],i=m*A+128>>8,o=m*F+128>>8,c=C,l=I,y=b*(k-T)+128>>8,S=b*(k+T)+128>>8,w=v<<4,x=O<<4,i=i+o+1>>1,o=i-o,M=c*p+l*g+128>>8,c=c*g-l*p+128>>8,l=M,y=y+x+1>>1,x=y-x,S=S+w+1>>1,w=S-w,i=i+l+1>>1,l=i-l,o=o+c+1>>1,c=o-c,M=y*f+S*d+2048>>12,y=y*d-S*f+2048>>12
+for(let s=0;s<64;s+=8)if(A=r[t+s],k=r[t+s+1],C=r[t+s+2],v=r[t+s+3],F=r[t+s+4],O=r[t+s+5],I=r[t+s+6],T=r[t+s+7],A*=n[s],0!==(k|C|v|F|O|I|T)){k*=n[s+1],C*=n[s+2],v*=n[s+3],F*=n[s+4],O*=n[s+5],I*=n[s+6],T*=n[s+7],i=m*A+128>>8,o=m*F+128>>8,c=C,l=I,y=b*(k-T)+128>>8,S=b*(k+T)+128>>8,w=v<<4,x=O<<4,i=i+o+1>>1,o=i-o,M=c*p+l*g+128>>8,c=c*g-l*p+128>>8,l=M,y=y+x+1>>1,x=y-x,S=S+w+1>>1,w=S-w,i=i+l+1>>1,l=i-l,o=o+c+1>>1,c=o-c,M=y*f+S*d+2048>>12,y=y*d-S*f+2048>>12
 S=M,M=w*u+x*h+2048>>12,w=w*h-x*u+2048>>12,x=M,a[s]=i+S,a[s+7]=i-S,a[s+1]=o+x,a[s+6]=o-x,a[s+2]=c+w,a[s+5]=c-w,a[s+3]=l+y,a[s+4]=l-y}else M=m*A+512>>10,a[s]=M,a[s+1]=M,a[s+2]=M,a[s+3]=M,a[s+4]=M,a[s+5]=M,a[s+6]=M,a[s+7]=M
-for(let s=0;s<8;++s)if(A=a[s],k=a[s+8],C=a[s+16],v=a[s+24],F=a[s+32],O=a[s+40],I=a[s+48],T=a[s+56],0!=(k|C|v|F|O|I|T)){i=m*A+2048>>12,o=m*F+2048>>12,c=C,l=I,y=b*(k-T)+2048>>12,S=b*(k+T)+2048>>12,w=v,x=O,i=4112+(i+o+1>>1),o=i-o,M=c*p+l*g+2048>>12,c=c*g-l*p+2048>>12,l=M,y=y+x+1>>1,x=y-x,S=S+w+1>>1,w=S-w,i=i+l+1>>1,l=i-l,o=o+c+1>>1,c=o-c,M=y*f+S*d+2048>>12,y=y*d-S*f+2048>>12,S=M,M=w*u+x*h+2048>>12,w=w*h-x*u+2048>>12,x=M,A=i+S,T=i-S,k=o+x
+for(let s=0;s<8;++s)if(A=a[s],k=a[s+8],C=a[s+16],v=a[s+24],F=a[s+32],O=a[s+40],I=a[s+48],T=a[s+56],0!==(k|C|v|F|O|I|T)){i=m*A+2048>>12,o=m*F+2048>>12,c=C,l=I,y=b*(k-T)+2048>>12,S=b*(k+T)+2048>>12,w=v,x=O,i=4112+(i+o+1>>1),o=i-o,M=c*p+l*g+2048>>12,c=c*g-l*p+2048>>12,l=M,y=y+x+1>>1,x=y-x,S=S+w+1>>1,w=S-w,i=i+l+1>>1,l=i-l,o=o+c+1>>1,c=o-c,M=y*f+S*d+2048>>12,y=y*d-S*f+2048>>12,S=M,M=w*u+x*h+2048>>12,w=w*h-x*u+2048>>12,x=M,A=i+S,T=i-S,k=o+x
 I=o-x,C=c+w,O=c-w,v=l+y,F=l-y,A<16?A=0:A>=4080?A=255:A>>=4,k<16?k=0:k>=4080?k=255:k>>=4,C<16?C=0:C>=4080?C=255:C>>=4,v<16?v=0:v>=4080?v=255:v>>=4,F<16?F=0:F>=4080?F=255:F>>=4,O<16?O=0:O>=4080?O=255:O>>=4,I<16?I=0:I>=4080?I=255:I>>=4,T<16?T=0:T>=4080?T=255:T>>=4,r[t+s]=A,r[t+s+8]=k,r[t+s+16]=C,r[t+s+24]=v,r[t+s+32]=F,r[t+s+40]=O,r[t+s+48]=I,r[t+s+56]=T}else M=m*A+8192>>14,M=M<-2040?0:M>=2024?255:M+2056>>4,r[t+s]=M,r[t+s+8]=M,r[t+s+16]=M,r[t+s+24]=M,r[t+s+32]=M,r[t+s+40]=M,r[t+s+48]=M,r[t+s+56]=M}function A(e,t){const a=t.blocksPerLine,n=t.blocksPerColumn,r=new Int16Array(64)
 for(let i=0;i<n;i++)for(let e=0;e<a;e++){S(t,w(t,i,e),r)}return t.blockData}function k(e,t,a=t){const n=e.length-1
 let r=a<t?a:t
@@ -3008,9 +3009,9 @@ d+=2
 const T=I+d-2
 let M
 for(;d<T;){const t=e[d++],a=new Uint16Array(64)
-if(t>>4==0)for(v=0;v<64;v++)M=l[v],a[M]=e[d++]
-else{if(t>>4!=1)throw new s("DQT - invalid table spec")
-for(v=0;v<64;v++)M=l[v],a[M]=(0,i.readUint16)(e,d),d+=2}m[15&t]=a}break
+if(t>>4){if(t>>4!=1)throw new s("DQT - invalid table spec")
+for(v=0;v<64;v++)M=l[v],a[M]=(0,i.readUint16)(e,d),d+=2}else for(v=0;v<64;v++)M=l[v],a[M]=e[d++]
+m[15&t]=a}break
 case 65472:case 65473:case 65474:if(h)throw new s("Only single frame JPEGs supported")
 d+=2,h={},h.extended=65473===S,h.progressive=65474===S,h.precision=e[d++]
 const P=(0,i.readUint16)(e,d)
@@ -3028,10 +3029,10 @@ let n=0
 for(v=0;v<16;v++,d++)n+=a[v]=e[d]
 const r=new Uint8Array(n)
 for(v=0;v<n;v++,d++)r[v]=e[d]
-A+=17+n,(t>>4==0?w:b)[15&t]=y(a,r)}break
+A+=17+n,(t>>4?b:w)[15&t]=y(a,r)}break
 case 65501:d+=2,u=(0,i.readUint16)(e,d),d+=2
 break
-case 65498:const B=1==++p&&!t
+case 65498:const B=1===++p&&!t
 d+=2
 const $=e[d++],L=[]
 for(A=0;A<$;A++){const t=e[d++],a=h.componentIds[t],n=h.components[a]
@@ -3162,7 +3163,7 @@ this.nextPacket=function(){for(;h<i;++h){const e=n.components[h],t=o.components[
 for(;d<t.maxNumHigh;d++){for(;u<t.maxNumWide;u++){for(;l<=a;l++){const a=e.resolutions[l],n=t.resolutions[l],i=w(u,d,n,t,a)
 if(null!==i){for(;c<r;){const e=f(a,i,c)
 return c++,e}c=0}}l=0}u=0}d=0}throw new s("Out of packets")}}function w(e,t,a,n,r){const i=e*n.minWidth,s=t*n.minHeight
-if(i%a.width!=0||s%a.height!=0)return null
+if(i%a.width!==0||s%a.height!==0)return null
 const o=s/a.width*r.precinctParameters.numprecinctswide
 return i/a.height+o}function x(e){const t=e.components.length
 let a=Number.MAX_VALUE,n=Number.MAX_VALUE,r=0,i=0
@@ -3405,9 +3406,9 @@ h=t>0&&0!==i[a-1],t+1<n&&0!==i[a+1]?(l=s[a+1],h?(c=s[a-1],o=1-l-c):o=1-l-l):h?(c
 const f=3*o
 return h=e>0&&0!==i[a-n],e+1<r&&0!==i[a+n]?(l=s[a+n],h?(c=s[a-n],o=1-l-c+f):o=1-l-l+f):h?(c=s[a-n],o=1-c-c+f):o=f,o>=0?(u=9+o,d=this.decoder.readBit(this.contexts,u)):(u=9-o,d=1^this.decoder.readBit(this.contexts,u)),d}runMagnitudeRefinementPass(){const e=this.decoder,t=this.width,a=this.height,n=this.coefficentsMagnitude,r=this.neighborsSignificance,i=this.contexts,s=this.bitsDecoded,o=this.processingFlags,c=t*a,l=4*t
 for(let h,u=0;u<c;u=h){h=Math.min(c,u+l)
-for(let a=0;a<t;a++)for(let c=u+a;c<h;c+=t){if(!n[c]||0!=(1&o[c]))continue
+for(let a=0;a<t;a++)for(let c=u+a;c<h;c+=t){if(!n[c]||1&o[c])continue
 let t=16
-if(0!=(2&o[c])){o[c]^=2
+if(2&o[c]){o[c]^=2
 t=0===(127&r[c])?15:14}const a=e.readBit(i,t)
 n[c]=n[c]<<1|a,s[c]++,o[c]|=1}}}runCleanupPass(){const e=this.decoder,t=this.width,a=this.height,n=this.neighborsSignificance,r=this.coefficentsMagnitude,i=this.coefficentsSign,s=this.contexts,o=this.contextLabelTable,c=this.bitsDecoded,l=this.processingFlags,h=t,u=2*t,d=3*t
 let f
@@ -3418,7 +3419,7 @@ let y,w=0,x=b,S=g
 if(m&&0===l[b]&&0===l[b+h]&&0===l[b+u]&&0===l[b+d]&&0===n[b]&&0===n[b+h]&&0===n[b+u]&&0===n[b+d]){if(!e.readBit(s,I.RUNLENGTH_CONTEXT)){c[b]++,c[b+h]++,c[b+u]++,c[b+d]++
 continue}w=e.readBit(s,I.UNIFORM_CONTEXT)<<1|e.readBit(s,I.UNIFORM_CONTEXT),0!==w&&(S=g+w,x+=w*t),y=this.decodeSignBit(S,a,x),i[x]=y,r[x]=1,this.setNeighborsSignificance(S,a,x),l[x]|=2,x=b
 for(let e=g;e<=S;e++,x+=t)c[x]++
-w++}for(S=g+w;S<f;S++,x+=t){if(r[x]||0!=(1&l[x]))continue
+w++}for(S=g+w;S<f;S++,x+=t){if(r[x]||1&l[x])continue
 const t=o[n[x]]
 1===e.readBit(s,t)&&(y=this.decodeSignBit(S,a,x),i[x]=y,r[x]=1,this.setNeighborsSignificance(S,a,x),l[x]|=2),c[x]++}}}}checkSegmentationSymbol(){const e=this.decoder,t=this.contexts
 if(10!==(e.readBit(t,I.UNIFORM_CONTEXT)<<3|e.readBit(t,I.UNIFORM_CONTEXT)<<2|e.readBit(t,I.UNIFORM_CONTEXT)<<1|e.readBit(t,I.UNIFORM_CONTEXT)))throw new s("Invalid segmentation symbol")}}class T{constructor(){this.constructor===T&&(0,n.unreachable)("Cannot initialize Transform.")}calculate(e,t,a){let n=e[0]
@@ -3431,18 +3432,18 @@ let h,u,d,f,g,p
 for(d=0,h=0;h<i;h++)for(f=2*h*o,u=0;u<r;u++,d++,f+=2)l[f]=s[d]
 s=e.items=null
 const m=new Float32Array(o+8)
-if(1===o){if(0!=(1&a))for(p=0,d=0;p<c;p++,d+=o)l[d]*=.5}else for(p=0,d=0;p<c;p++,d+=o)m.set(l.subarray(d,d+o),4),this.extend(m,4,o),this.filter(m,4,o),l.set(m.subarray(4,4+o),d)
+if(1===o){if(1&a)for(p=0,d=0;p<c;p++,d+=o)l[d]*=.5}else for(p=0,d=0;p<c;p++,d+=o)m.set(l.subarray(d,d+o),4),this.extend(m,4,o),this.filter(m,4,o),l.set(m.subarray(4,4+o),d)
 let b=16
 const y=[]
 for(h=0;h<b;h++)y.push(new Float32Array(c+8))
 let w,x=0
-if(e=4+c,1===c){if(0!=(1&n))for(g=0;g<o;g++)l[g]*=.5}else for(g=0;g<o;g++){if(0===x){for(b=Math.min(o-g,b),d=g,f=4;f<e;d+=o,f++)for(w=0;w<b;w++)y[w][f]=l[d+w]
+if(e=4+c,1===c){if(1&n)for(g=0;g<o;g++)l[g]*=.5}else for(g=0;g<o;g++){if(0===x){for(b=Math.min(o-g,b),d=g,f=4;f<e;d+=o,f++)for(w=0;w<b;w++)y[w][f]=l[d+w]
 x=b}x--
 const t=y[x]
 if(this.extend(t,4,c),this.filter(t,4,c),0===x)for(d=g-b+1,f=4;f<e;d+=o,f++)for(w=0;w<b;w++)l[d+w]=y[w][f]}return{width:o,height:c,items:l}}}class M extends T{filter(e,t,a){const n=a>>1
 let r,i,s,o
-const c=-1.586134342059924,l=-.052980118572961,h=.882911075530934,u=.443506852043971,d=1.230174104914001
-for(r=(t|=0)-3,i=n+4;i--;r+=2)e[r]*=.8128930661159609
+const c=-1.586134342059924,l=-.052980118572961,h=.882911075530934,u=.443506852043971,d=1.230174104914001,f=1/d
+for(r=(t|=0)-3,i=n+4;i--;r+=2)e[r]*=f
 for(r=t-2,s=u*e[r-1],i=n+3;i--&&(o=u*e[r+1],e[r]=d*e[r]-s-o,i--);r+=2)r+=2,s=u*e[r+1],e[r]=d*e[r]-s-o
 for(r=t-1,s=h*e[r-1],i=n+2;i--&&(o=h*e[r+1],e[r]-=s+o,i--);r+=2)r+=2,s=h*e[r+1],e[r]-=s+o
 for(r=t,s=l*e[r-1],i=n+1;i--&&(o=l*e[r+1],e[r]-=s+o,i--);r+=2)r+=2,s=l*e[r+1],e[r]-=s+o
@@ -3554,6 +3555,7 @@ if(a)throw new n.FormatError(r)
 return(0,n.warn)(r),t}function _(e,t,a,r){const i=Object.create(null),s=new Map,o=[],c=new Set
 let l=0
 let h=x[l][0],u=x[l][1]
+const d=e=>x[0][0]<=e&&e<=x[0][1]||x[1][0]<=e&&e<=x[1][1]
 for(let f in e){f|=0
 let g=e[f]
 if(!t(g))continue
@@ -3561,11 +3563,10 @@ if(h>u){if(l++,l>=x.length){(0,n.warn)("Ran out of space in font private use are
 break}h=x[l][0],u=x[l][1]}const p=h++
 0===g&&(g=a)
 let m=r.get(f)
-"string"==typeof m&&(m=m.codePointAt(0)),!m||(d=m,x[0][0]<=d&&d<=x[0][1]||x[1][0]<=d&&d<=x[1][1])||c.has(g)||(s.set(m,g),c.add(g)),i[p]=g,o[f]=p}var d
-return{toFontChar:o,charCodeToGlyphId:i,toUnicodeExtraMap:s,nextAvailableFontCharCode:h}}function j(e,t,a){const r=function(e,t,a){const n=[]
+"string"==typeof m&&(m=m.codePointAt(0)),!m||d(m)||c.has(g)||(s.set(m,g),c.add(g)),i[p]=g,o[f]=p}return{toFontChar:o,charCodeToGlyphId:i,toUnicodeExtraMap:s,nextAvailableFontCharCode:h}}function j(e,t,a){const r=function(e,t,a){const n=[]
 for(const s in e)e[s]>=a||n.push({fontCharCode:0|s,glyphId:e[s]})
 if(t)for(const[s,o]of t)o>=a||n.push({fontCharCode:s,glyphId:o})
-0===n.length&&n.push({fontCharCode:0,glyphId:0}),n.sort((function(e,t){return e.fontCharCode-t.fontCharCode}))
+0===n.length&&n.push({fontCharCode:0,glyphId:0}),n.sort(function(e,t){return e.fontCharCode-t.fontCharCode})
 const r=[],i=n.length
 for(let s=0;s<i;){const e=n[s].fontCharCode,t=[n[s].glyphId];++s
 let a=e
@@ -3639,12 +3640,12 @@ p&&(isNaN(this.ascent)&&(this.ascent=p.ascent/S),isNaN(this.descent)&&(this.desc
 const m=/Narrow/g.test(t)
 if(this.remeasure=(!d||m)&&Object.keys(this.widths).length>0,(d||g)&&"CIDFontType2"===a&&this.cidEncoding.startsWith("Identity-")){const a=e.cidToGidMap,n=[]
 if(R(n,(0,l.getGlyphMapForStandardFonts)()),/Arial-?Black/i.test(t)?R(n,(0,l.getSupplementalGlyphMapForArialBlack)()):/Calibri/i.test(t)&&R(n,(0,l.getSupplementalGlyphMapForCalibri)()),a){for(const e in n){const t=n[e]
-void 0!==a[t]&&(n[+e]=a[t])}a.length!==this.toUnicode.length&&e.hasIncludedToUnicodeMap&&this.toUnicode instanceof h.IdentityToUnicodeMap&&this.toUnicode.forEach((function(e,t){const r=n[e]
-void 0===a[r]&&(n[+e]=t)}))}this.toUnicode instanceof h.IdentityToUnicodeMap||this.toUnicode.forEach((function(e,t){n[+e]=t})),this.toFontChar=n,this.toUnicode=new h.ToUnicodeMap(n)}else if(/Symbol/i.test(n))this.toFontChar=E(c.SymbolSetEncoding,(0,o.getGlyphsUnicode)(),this.differences)
+void 0!==a[t]&&(n[+e]=a[t])}a.length!==this.toUnicode.length&&e.hasIncludedToUnicodeMap&&this.toUnicode instanceof h.IdentityToUnicodeMap&&this.toUnicode.forEach(function(e,t){const r=n[e]
+void 0===a[r]&&(n[+e]=t)})}this.toUnicode instanceof h.IdentityToUnicodeMap||this.toUnicode.forEach(function(e,t){n[+e]=t}),this.toFontChar=n,this.toUnicode=new h.ToUnicodeMap(n)}else if(/Symbol/i.test(n))this.toFontChar=E(c.SymbolSetEncoding,(0,o.getGlyphsUnicode)(),this.differences)
 else if(/Dingbats/i.test(n))this.toFontChar=E(c.ZapfDingbatsEncoding,(0,o.getDingbatsGlyphsUnicode)(),this.differences)
 else if(d){const e=E(this.defaultEncoding,(0,o.getGlyphsUnicode)(),this.differences)
-"CIDFontType2"!==a||this.cidEncoding.startsWith("Identity-")||this.toUnicode instanceof h.IdentityToUnicodeMap||this.toUnicode.forEach((function(t,a){e[+t]=a})),this.toFontChar=e}else{const e=(0,o.getGlyphsUnicode)(),a=[]
-this.toUnicode.forEach(((t,n)=>{if(!this.composite){const a=this.differences[t]||this.defaultEncoding[t],r=(0,s.getUnicodeForGlyph)(a,e);-1!==r&&(n=r)}a[+t]=n})),this.composite&&this.toUnicode instanceof h.IdentityToUnicodeMap&&/Tahoma|Verdana/i.test(t)&&R(a,(0,l.getGlyphMapForStandardFonts)()),this.toFontChar=a}v(e),this.loadedName=n.split("-")[0]}checkAndRepair(e,t,a){const s=["OS/2","cmap","head","hhea","hmtx","maxp","name","post","loca","glyf","fpgm","prep","cvt ","CFF "]
+"CIDFontType2"!==a||this.cidEncoding.startsWith("Identity-")||this.toUnicode instanceof h.IdentityToUnicodeMap||this.toUnicode.forEach(function(t,a){e[+t]=a}),this.toFontChar=e}else{const e=(0,o.getGlyphsUnicode)(),a=[]
+this.toUnicode.forEach((t,n)=>{if(!this.composite){const a=this.differences[t]||this.defaultEncoding[t],r=(0,s.getUnicodeForGlyph)(a,e);-1!==r&&(n=r)}a[+t]=n}),this.composite&&this.toUnicode instanceof h.IdentityToUnicodeMap&&/Tahoma|Verdana/i.test(t)&&R(a,(0,l.getGlyphMapForStandardFonts)()),this.toFontChar=a}v(e),this.loadedName=n.split("-")[0]}checkAndRepair(e,t,a){const s=["OS/2","cmap","head","hhea","hmtx","maxp","name","post","loca","glyf","fpgm","prep","cvt ","CFF "]
 function l(e,t){const a=Object.create(null)
 a["OS/2"]=null,a.cmap=null,a.head=null,a.hhea=null,a.hmtx=null,a.maxp=null,a.name=null,a.post=null
 for(let n=0;n<t;n++){const t=d(e)
@@ -3788,8 +3789,8 @@ const f=t.data,g=f.length,p=new Uint8Array(g)
 let m,y
 const w=[]
 for(m=0,y=0;m<a+1;m++,y+=o){let e=c(d,y)
-e>g&&(e=g),w.push({index:m,offset:e,endOffset:0})}for(w.sort(((e,t)=>e.offset-t.offset)),m=0;m<a;m++)w[m].endOffset=w[m+1].offset
-for(w.sort(((e,t)=>e.index-t.index)),m=0;m<a;m++){const{offset:e,endOffset:t}=w[m]
+e>g&&(e=g),w.push({index:m,offset:e,endOffset:0})}for(w.sort((e,t)=>e.offset-t.offset),m=0;m<a;m++)w[m].endOffset=w[m+1].offset
+for(w.sort((e,t)=>e.index-t.index),m=0;m<a;m++){const{offset:e,endOffset:t}=w[m]
 if(0!==e||0!==t)break
 const a=w[m+1].offset
 if(0!==a){w[m].endOffset=a
@@ -3827,9 +3828,9 @@ case 196608:break
 default:(0,n.warn)("Unknown/unsupported post table version "+c),u=!1,a.defaultEncoding&&(l=a.defaultEncoding)}a.glyphNames=l}(k.post,a,D),k.post={tag:"post",data:X(a)}
 const K=[]
 function Y(e){return!W[e]}if(a.composite){const e=a.cidToGidMap||[],t=0===e.length
-a.cMap.forEach((function(a,r){if("string"==typeof r&&(r=L(a,r,!0)),r>65535)throw new n.FormatError("Max size of CID is 65,535")
+a.cMap.forEach(function(a,r){if("string"==typeof r&&(r=L(a,r,!0)),r>65535)throw new n.FormatError("Max size of CID is 65,535")
 let i=-1
-t?i=r:void 0!==e[r]&&(i=e[r]),i>=0&&i<D&&Y(i)&&(K[a]=i)}))}else{const e=function(e,t,a,r){if(!e)return(0,n.warn)("No cmap table available."),{platformId:-1,encodingId:-1,mappings:[],hasShortCmap:!1}
+t?i=r:void 0!==e[r]&&(i=e[r]),i>=0&&i<D&&Y(i)&&(K[a]=i)})}else{const e=function(e,t,a,r){if(!e)return(0,n.warn)("No cmap table available."),{platformId:-1,encodingId:-1,mappings:[],hasShortCmap:!1}
 let i,s=(t.start||0)+e.offset
 t.pos=s,t.skip(2)
 const o=t.getUint16()
@@ -3881,7 +3882,7 @@ d.push({charCode:a,glyphId:g})}}else{if(12!==h)return(0,n.warn)("cmap table has 
 const e=t.getInt32()>>>0
 for(f=0;f<e;f++){const e=t.getInt32()>>>0,a=t.getInt32()>>>0
 let n=t.getInt32()>>>0
-for(let t=e;t<=a;t++)d.push({charCode:t,glyphId:n++})}}}d.sort((function(e,t){return e.charCode-t.charCode}))
+for(let t=e;t<=a;t++)d.push({charCode:t,glyphId:n++})}}}d.sort(function(e,t){return e.charCode-t.charCode})
 for(let n=1;n<d.length;n++)d[n-1].charCode===d[n].charCode&&(d.splice(n,1),n--)
 return{platformId:c.platformId,encodingId:c.encodingId,mappings:d,hasShortCmap:u}}(k.cmap,t,this.isSymbolicFont,a.hasEncoding),r=e.platformId,s=e.encodingId,l=e.mappings
 let u=[],d=!1
@@ -4284,7 +4285,7 @@ const a=(0,i.getUnicodeForGlyph)(e,t)
 if(-1!==a)for(const n in t)if(t[n]===a)return n
 return(0,s.info)("Unable to recover a standard glyph name for: "+e),e}t.MacStandardGlyphOrdering=[".notdef",".null","nonmarkingreturn","space","exclam","quotedbl","numbersign","dollar","percent","ampersand","quotesingle","parenleft","parenright","asterisk","plus","comma","hyphen","period","slash","zero","one","two","three","four","five","six","seven","eight","nine","colon","semicolon","less","equal","greater","question","at","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","bracketleft","backslash","bracketright","asciicircum","underscore","grave","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","braceleft","bar","braceright","asciitilde","Adieresis","Aring","Ccedilla","Eacute","Ntilde","Odieresis","Udieresis","aacute","agrave","acircumflex","adieresis","atilde","aring","ccedilla","eacute","egrave","ecircumflex","edieresis","iacute","igrave","icircumflex","idieresis","ntilde","oacute","ograve","ocircumflex","odieresis","otilde","uacute","ugrave","ucircumflex","udieresis","dagger","degree","cent","sterling","section","bullet","paragraph","germandbls","registered","copyright","trademark","acute","dieresis","notequal","AE","Oslash","infinity","plusminus","lessequal","greaterequal","yen","mu","partialdiff","summation","product","pi","integral","ordfeminine","ordmasculine","Omega","ae","oslash","questiondown","exclamdown","logicalnot","radical","florin","approxequal","Delta","guillemotleft","guillemotright","ellipsis","nonbreakingspace","Agrave","Atilde","Otilde","OE","oe","endash","emdash","quotedblleft","quotedblright","quoteleft","quoteright","divide","lozenge","ydieresis","Ydieresis","fraction","currency","guilsinglleft","guilsinglright","fi","fl","daggerdbl","periodcentered","quotesinglbase","quotedblbase","perthousand","Acircumflex","Ecircumflex","Aacute","Edieresis","Egrave","Iacute","Icircumflex","Idieresis","Igrave","Oacute","Ocircumflex","apple","Ograve","Uacute","Ucircumflex","Ugrave","dotlessi","circumflex","tilde","macron","breve","dotaccent","ring","cedilla","hungarumlaut","ogonek","caron","Lslash","lslash","Scaron","scaron","Zcaron","zcaron","brokenbar","Eth","eth","Yacute","yacute","Thorn","thorn","minus","multiply","onesuperior","twosuperior","threesuperior","onehalf","onequarter","threequarters","franc","Gbreve","gbreve","Idotaccent","Scedilla","scedilla","Cacute","cacute","Ccaron","ccaron","dcroat"]},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.getGlyphsUnicode=t.getDingbatsGlyphsUnicode=void 0
 var n=a(3)
-const r=(0,n.getLookupTableFactory)((function(e){e.A=65,e.AE=198,e.AEacute=508,e.AEmacron=482,e.AEsmall=63462,e.Aacute=193,e.Aacutesmall=63457,e.Abreve=258,e.Abreveacute=7854,e.Abrevecyrillic=1232,e.Abrevedotbelow=7862,e.Abrevegrave=7856,e.Abrevehookabove=7858,e.Abrevetilde=7860,e.Acaron=461,e.Acircle=9398,e.Acircumflex=194,e.Acircumflexacute=7844,e.Acircumflexdotbelow=7852,e.Acircumflexgrave=7846,e.Acircumflexhookabove=7848,e.Acircumflexsmall=63458,e.Acircumflextilde=7850,e.Acute=63177,e.Acutesmall=63412,e.Acyrillic=1040,e.Adblgrave=512,e.Adieresis=196,e.Adieresiscyrillic=1234,e.Adieresismacron=478
+const r=(0,n.getLookupTableFactory)(function(e){e.A=65,e.AE=198,e.AEacute=508,e.AEmacron=482,e.AEsmall=63462,e.Aacute=193,e.Aacutesmall=63457,e.Abreve=258,e.Abreveacute=7854,e.Abrevecyrillic=1232,e.Abrevedotbelow=7862,e.Abrevegrave=7856,e.Abrevehookabove=7858,e.Abrevetilde=7860,e.Acaron=461,e.Acircle=9398,e.Acircumflex=194,e.Acircumflexacute=7844,e.Acircumflexdotbelow=7852,e.Acircumflexgrave=7846,e.Acircumflexhookabove=7848,e.Acircumflexsmall=63458,e.Acircumflextilde=7850,e.Acute=63177,e.Acutesmall=63412,e.Acyrillic=1040,e.Adblgrave=512,e.Adieresis=196,e.Adieresiscyrillic=1234,e.Adieresismacron=478
 e.Adieresissmall=63460,e.Adotbelow=7840,e.Adotmacron=480,e.Agrave=192,e.Agravesmall=63456,e.Ahookabove=7842,e.Aiecyrillic=1236,e.Ainvertedbreve=514,e.Alpha=913,e.Alphatonos=902,e.Amacron=256,e.Amonospace=65313,e.Aogonek=260,e.Aring=197,e.Aringacute=506,e.Aringbelow=7680,e.Aringsmall=63461,e.Asmall=63329,e.Atilde=195,e.Atildesmall=63459,e.Aybarmenian=1329,e.B=66,e.Bcircle=9399,e.Bdotaccent=7682,e.Bdotbelow=7684,e.Becyrillic=1041,e.Benarmenian=1330,e.Beta=914,e.Bhook=385,e.Blinebelow=7686
 e.Bmonospace=65314,e.Brevesmall=63220,e.Bsmall=63330,e.Btopbar=386,e.C=67,e.Caarmenian=1342,e.Cacute=262,e.Caron=63178,e.Caronsmall=63221,e.Ccaron=268,e.Ccedilla=199,e.Ccedillaacute=7688,e.Ccedillasmall=63463,e.Ccircle=9400,e.Ccircumflex=264,e.Cdot=266,e.Cdotaccent=266,e.Cedillasmall=63416,e.Chaarmenian=1353,e.Cheabkhasiancyrillic=1212,e.Checyrillic=1063,e.Chedescenderabkhasiancyrillic=1214,e.Chedescendercyrillic=1206,e.Chedieresiscyrillic=1268,e.Cheharmenian=1347,e.Chekhakassiancyrillic=1227,e.Cheverticalstrokecyrillic=1208,e.Chi=935,e.Chook=391,e.Circumflexsmall=63222
 e.Cmonospace=65315,e.Coarmenian=1361,e.Csmall=63331,e.D=68,e.DZ=497,e.DZcaron=452,e.Daarmenian=1332,e.Dafrican=393,e.Dcaron=270,e.Dcedilla=7696,e.Dcircle=9401,e.Dcircumflexbelow=7698,e.Dcroat=272,e.Ddotaccent=7690,e.Ddotbelow=7692,e.Decyrillic=1044,e.Deicoptic=1006,e.Delta=8710,e.Deltagreek=916,e.Dhook=394,e.Dieresis=63179,e.DieresisAcute=63180,e.DieresisGrave=63181,e.Dieresissmall=63400,e.Digammagreek=988,e.Djecyrillic=1026,e.Dlinebelow=7694,e.Dmonospace=65316,e.Dotaccentsmall=63223,e.Dslash=272
@@ -4428,15 +4429,15 @@ e.zikatakana=12472,e.zinorhebrew=1454,e.zlinebelow=7829,e.zmonospace=65370,e.zoh
 e.backslashbig=8726,e.backslashBig=8726,e.backslashBigg=8726,e.backslashbigg=8726,e.bardbl=8214,e.bracehtipdownleft=65079,e.bracehtipdownright=65079,e.bracehtipupleft=65080,e.bracehtipupright=65080,e.braceleftBig=123,e.braceleftbig=123,e.braceleftbigg=123,e.braceleftBigg=123,e.bracerightBig=125,e.bracerightbig=125,e.bracerightbigg=125,e.bracerightBigg=125,e.bracketleftbig=91,e.bracketleftBig=91,e.bracketleftbigg=91,e.bracketleftBigg=91,e.bracketrightBig=93,e.bracketrightbig=93,e.bracketrightbigg=93,e.bracketrightBigg=93,e.ceilingleftbig=8968,e.ceilingleftBig=8968,e.ceilingleftBigg=8968,e.ceilingleftbigg=8968,e.ceilingrightbig=8969
 e.ceilingrightBig=8969,e.ceilingrightbigg=8969,e.ceilingrightBigg=8969,e.circledotdisplay=8857,e.circledottext=8857,e.circlemultiplydisplay=8855,e.circlemultiplytext=8855,e.circleplusdisplay=8853,e.circleplustext=8853,e.contintegraldisplay=8750,e.contintegraltext=8750,e.coproductdisplay=8720,e.coproducttext=8720,e.floorleftBig=8970,e.floorleftbig=8970,e.floorleftbigg=8970,e.floorleftBigg=8970,e.floorrightbig=8971,e.floorrightBig=8971,e.floorrightBigg=8971,e.floorrightbigg=8971,e.hatwide=770,e.hatwider=770,e.hatwidest=770,e.intercal=7488,e.integraldisplay=8747,e.integraltext=8747,e.intersectiondisplay=8898,e.intersectiontext=8898,e.logicalanddisplay=8743
 e.logicalandtext=8743,e.logicalordisplay=8744,e.logicalortext=8744,e.parenleftBig=40,e.parenleftbig=40,e.parenleftBigg=40,e.parenleftbigg=40,e.parenrightBig=41,e.parenrightbig=41,e.parenrightBigg=41,e.parenrightbigg=41,e.prime=8242,e.productdisplay=8719,e.producttext=8719,e.radicalbig=8730,e.radicalBig=8730,e.radicalBigg=8730,e.radicalbigg=8730,e.radicalbt=8730,e.radicaltp=8730,e.radicalvertex=8730,e.slashbig=47,e.slashBig=47,e.slashBigg=47,e.slashbigg=47,e.summationdisplay=8721,e.summationtext=8721,e.tildewide=732,e.tildewider=732,e.tildewidest=732
-e.uniondisplay=8899,e.unionmultidisplay=8846,e.unionmultitext=8846,e.unionsqdisplay=8852,e.unionsqtext=8852,e.uniontext=8899,e.vextenddouble=8741,e.vextendsingle=8739}))
+e.uniondisplay=8899,e.unionmultidisplay=8846,e.unionmultitext=8846,e.unionsqdisplay=8852,e.unionsqtext=8852,e.uniontext=8899,e.vextenddouble=8741,e.vextendsingle=8739})
 t.getGlyphsUnicode=r
-const i=(0,n.getLookupTableFactory)((function(e){e.space=32,e.a1=9985,e.a2=9986,e.a202=9987,e.a3=9988,e.a4=9742,e.a5=9990,e.a119=9991,e.a118=9992,e.a117=9993,e.a11=9755,e.a12=9758,e.a13=9996,e.a14=9997,e.a15=9998,e.a16=9999,e.a105=1e4,e.a17=10001,e.a18=10002,e.a19=10003,e.a20=10004,e.a21=10005,e.a22=10006,e.a23=10007,e.a24=10008,e.a25=10009,e.a26=10010,e.a27=10011,e.a28=10012,e.a6=10013
+const i=(0,n.getLookupTableFactory)(function(e){e.space=32,e.a1=9985,e.a2=9986,e.a202=9987,e.a3=9988,e.a4=9742,e.a5=9990,e.a119=9991,e.a118=9992,e.a117=9993,e.a11=9755,e.a12=9758,e.a13=9996,e.a14=9997,e.a15=9998,e.a16=9999,e.a105=1e4,e.a17=10001,e.a18=10002,e.a19=10003,e.a20=10004,e.a21=10005,e.a22=10006,e.a23=10007,e.a24=10008,e.a25=10009,e.a26=10010,e.a27=10011,e.a28=10012,e.a6=10013
 e.a7=10014,e.a8=10015,e.a9=10016,e.a10=10017,e.a29=10018,e.a30=10019,e.a31=10020,e.a32=10021,e.a33=10022,e.a34=10023,e.a35=9733,e.a36=10025,e.a37=10026,e.a38=10027,e.a39=10028,e.a40=10029,e.a41=10030,e.a42=10031,e.a43=10032,e.a44=10033,e.a45=10034,e.a46=10035,e.a47=10036,e.a48=10037,e.a49=10038,e.a50=10039,e.a51=10040,e.a52=10041,e.a53=10042,e.a54=10043
 e.a55=10044,e.a56=10045,e.a57=10046,e.a58=10047,e.a59=10048,e.a60=10049,e.a61=10050,e.a62=10051,e.a63=10052,e.a64=10053,e.a65=10054,e.a66=10055,e.a67=10056,e.a68=10057,e.a69=10058,e.a70=10059,e.a71=9679,e.a72=10061,e.a73=9632,e.a74=10063,e.a203=10064,e.a75=10065,e.a204=10066,e.a76=9650,e.a77=9660,e.a78=9670,e.a79=10070,e.a81=9687,e.a82=10072,e.a83=10073
 e.a84=10074,e.a97=10075,e.a98=10076,e.a99=10077,e.a100=10078,e.a101=10081,e.a102=10082,e.a103=10083,e.a104=10084,e.a106=10085,e.a107=10086,e.a108=10087,e.a112=9827,e.a111=9830,e.a110=9829,e.a109=9824,e.a120=9312,e.a121=9313,e.a122=9314,e.a123=9315,e.a124=9316,e.a125=9317,e.a126=9318,e.a127=9319,e.a128=9320,e.a129=9321,e.a130=10102,e.a131=10103,e.a132=10104,e.a133=10105
 e.a134=10106,e.a135=10107,e.a136=10108,e.a137=10109,e.a138=10110,e.a139=10111,e.a140=10112,e.a141=10113,e.a142=10114,e.a143=10115,e.a144=10116,e.a145=10117,e.a146=10118,e.a147=10119,e.a148=10120,e.a149=10121,e.a150=10122,e.a151=10123,e.a152=10124,e.a153=10125,e.a154=10126,e.a155=10127,e.a156=10128,e.a157=10129,e.a158=10130,e.a159=10131,e.a160=10132,e.a161=8594,e.a163=8596,e.a164=8597
 e.a196=10136,e.a165=10137,e.a192=10138,e.a166=10139,e.a167=10140,e.a168=10141,e.a169=10142,e.a170=10143,e.a171=10144,e.a172=10145,e.a173=10146,e.a162=10147,e.a174=10148,e.a175=10149,e.a176=10150,e.a177=10151,e.a178=10152,e.a179=10153,e.a193=10154,e.a180=10155,e.a199=10156,e.a181=10157,e.a200=10158,e.a182=10159,e.a201=10161,e.a183=10162,e.a184=10163,e.a197=10164,e.a185=10165,e.a194=10166
-e.a198=10167,e.a186=10168,e.a195=10169,e.a187=10170,e.a188=10171,e.a189=10172,e.a190=10173,e.a191=10174,e.a89=10088,e.a90=10089,e.a93=10090,e.a94=10091,e.a91=10092,e.a92=10093,e.a205=10094,e.a85=10095,e.a206=10096,e.a86=10097,e.a87=10098,e.a88=10099,e.a95=10100,e.a96=10101,e[".notdef"]=0}))
+e.a198=10167,e.a186=10168,e.a195=10169,e.a187=10170,e.a188=10171,e.a189=10172,e.a190=10173,e.a191=10174,e.a89=10088,e.a90=10089,e.a93=10090,e.a94=10091,e.a91=10092,e.a92=10093,e.a205=10094,e.a85=10095,e.a206=10096,e.a86=10097,e.a87=10098,e.a88=10099,e.a95=10100,e.a96=10101,e[".notdef"]=0})
 t.getDingbatsGlyphsUnicode=i},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.clearUnicodeCaches=function(){s.clear()},t.getCharUnicodeCategory=function(e){const t=s.get(e)
 if(t)return t
 const a=e.match(i),n={isWhitespace:!!a?.[1],isZeroWidthDiacritic:!!a?.[2],isInvisibleFormatMark:!!a?.[3]}
@@ -4453,30 +4454,30 @@ for(let n=0,r=t.length;n<r;n+=2)if(e>=t[n]&&e<=t[n+1])return a}return-1},t.mapSp
 if(e>=62976&&e<=63743)return n()[e]||e
 if(173===e)return 45
 return e}
-const n=(0,a(3).getLookupTableFactory)((function(e){e[63721]=169,e[63193]=169,e[63720]=174,e[63194]=174,e[63722]=8482,e[63195]=8482,e[63729]=9127,e[63730]=9128,e[63731]=9129,e[63740]=9131,e[63741]=9132,e[63742]=9133,e[63726]=9121,e[63727]=9122,e[63728]=9123,e[63737]=9124,e[63738]=9125,e[63739]=9126,e[63723]=9115,e[63724]=9116,e[63725]=9117,e[63734]=9118,e[63735]=9119,e[63736]=9120}))
+const n=(0,a(3).getLookupTableFactory)(function(e){e[63721]=169,e[63193]=169,e[63720]=174,e[63194]=174,e[63722]=8482,e[63195]=8482,e[63729]=9127,e[63730]=9128,e[63731]=9129,e[63740]=9131,e[63741]=9132,e[63742]=9133,e[63726]=9121,e[63727]=9122,e[63728]=9123,e[63737]=9124,e[63738]=9125,e[63739]=9126,e[63723]=9115,e[63724]=9116,e[63725]=9117,e[63734]=9118,e[63735]=9119,e[63736]=9120})
 const r=[[0,127],[128,255],[256,383],[384,591],[592,687,7424,7551,7552,7615],[688,767,42752,42783],[768,879,7616,7679],[880,1023],[11392,11519],[1024,1279,1280,1327,11744,11775,42560,42655],[1328,1423],[1424,1535],[42240,42559],[1536,1791,1872,1919],[1984,2047],[2304,2431],[2432,2559],[2560,2687],[2688,2815],[2816,2943],[2944,3071],[3072,3199],[3200,3327],[3328,3455],[3584,3711],[3712,3839],[4256,4351,11520,11567],[6912,7039],[4352,4607],[7680,7935,11360,11391,42784,43007],[7936,8191],[8192,8303,11776,11903],[8304,8351],[8352,8399],[8400,8447],[8448,8527],[8528,8591],[8592,8703,10224,10239,10496,10623,11008,11263],[8704,8959,10752,11007,10176,10223,10624,10751],[8960,9215],[9216,9279],[9280,9311],[9312,9471],[9472,9599],[9600,9631],[9632,9727],[9728,9983],[9984,10175],[12288,12351],[12352,12447],[12448,12543,12784,12799],[12544,12591,12704,12735],[12592,12687],[43072,43135],[12800,13055],[13056,13311],[44032,55215],[55296,57343],[67840,67871],[19968,40959,11904,12031,12032,12255,12272,12287,13312,19903,131072,173791,12688,12703],[57344,63743],[12736,12783,63744,64255,194560,195103],[64256,64335],[64336,65023],[65056,65071],[65040,65055],[65104,65135],[65136,65279],[65280,65519],[65520,65535],[3840,4095],[1792,1871],[1920,1983],[3456,3583],[4096,4255],[4608,4991,4992,5023,11648,11743],[5024,5119],[5120,5759],[5760,5791],[5792,5887],[6016,6143],[6144,6319],[10240,10495],[40960,42127],[5888,5919,5920,5951,5952,5983,5984,6015],[66304,66351],[66352,66383],[66560,66639],[118784,119039,119040,119295,119296,119375],[119808,120831],[1044480,1048573],[65024,65039,917760,917999],[917504,917631],[6400,6479],[6480,6527],[6528,6623],[6656,6687],[11264,11359],[11568,11647],[19904,19967],[43008,43055],[65536,65663,65664,65791,65792,65855],[65856,65935],[66432,66463],[66464,66527],[66640,66687],[66688,66735],[67584,67647],[68096,68191],[119552,119647],[73728,74751,74752,74879],[119648,119679],[7040,7103],[7168,7247],[7248,7295],[43136,43231],[43264,43311],[43312,43359],[43520,43615],[65936,65999],[66e3,66047],[66208,66271,66176,66207,67872,67903],[127024,127135,126976,127023]]
 const i=new RegExp("^(\\s)|(\\p{Mn})|(\\p{Cf})$","u"),s=new Map},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.getSerifFonts=t.getNonStdFontMap=t.getGlyphMapForStandardFonts=t.getFontNameToFileMap=void 0,t.getStandardFontName=function(e){const t=(0,r.normalizeFontName)(e)
 return i()[t]},t.getSymbolsFonts=t.getSupplementalGlyphMapForCalibri=t.getSupplementalGlyphMapForArialBlack=t.getStdFontMap=void 0,t.isKnownFontName=function(e){const t=(0,r.normalizeFontName)(e)
 return!!(i()[t]||o()[t]||c()[t]||l()[t])}
 var n=a(3),r=a(38)
-const i=(0,n.getLookupTableFactory)((function(e){e["Times-Roman"]="Times-Roman",e.Helvetica="Helvetica",e.Courier="Courier",e.Symbol="Symbol",e["Times-Bold"]="Times-Bold",e["Helvetica-Bold"]="Helvetica-Bold",e["Courier-Bold"]="Courier-Bold",e.ZapfDingbats="ZapfDingbats",e["Times-Italic"]="Times-Italic",e["Helvetica-Oblique"]="Helvetica-Oblique",e["Courier-Oblique"]="Courier-Oblique",e["Times-BoldItalic"]="Times-BoldItalic",e["Helvetica-BoldOblique"]="Helvetica-BoldOblique",e["Courier-BoldOblique"]="Courier-BoldOblique",e.ArialNarrow="Helvetica",e["ArialNarrow-Bold"]="Helvetica-Bold",e["ArialNarrow-BoldItalic"]="Helvetica-BoldOblique",e["ArialNarrow-Italic"]="Helvetica-Oblique",e.ArialBlack="Helvetica",e["ArialBlack-Bold"]="Helvetica-Bold",e["ArialBlack-BoldItalic"]="Helvetica-BoldOblique",e["ArialBlack-Italic"]="Helvetica-Oblique",e["Arial-Black"]="Helvetica",e["Arial-Black-Bold"]="Helvetica-Bold",e["Arial-Black-BoldItalic"]="Helvetica-BoldOblique",e["Arial-Black-Italic"]="Helvetica-Oblique",e.Arial="Helvetica",e["Arial-Bold"]="Helvetica-Bold",e["Arial-BoldItalic"]="Helvetica-BoldOblique",e["Arial-Italic"]="Helvetica-Oblique"
+const i=(0,n.getLookupTableFactory)(function(e){e["Times-Roman"]="Times-Roman",e.Helvetica="Helvetica",e.Courier="Courier",e.Symbol="Symbol",e["Times-Bold"]="Times-Bold",e["Helvetica-Bold"]="Helvetica-Bold",e["Courier-Bold"]="Courier-Bold",e.ZapfDingbats="ZapfDingbats",e["Times-Italic"]="Times-Italic",e["Helvetica-Oblique"]="Helvetica-Oblique",e["Courier-Oblique"]="Courier-Oblique",e["Times-BoldItalic"]="Times-BoldItalic",e["Helvetica-BoldOblique"]="Helvetica-BoldOblique",e["Courier-BoldOblique"]="Courier-BoldOblique",e.ArialNarrow="Helvetica",e["ArialNarrow-Bold"]="Helvetica-Bold",e["ArialNarrow-BoldItalic"]="Helvetica-BoldOblique",e["ArialNarrow-Italic"]="Helvetica-Oblique",e.ArialBlack="Helvetica",e["ArialBlack-Bold"]="Helvetica-Bold",e["ArialBlack-BoldItalic"]="Helvetica-BoldOblique",e["ArialBlack-Italic"]="Helvetica-Oblique",e["Arial-Black"]="Helvetica",e["Arial-Black-Bold"]="Helvetica-Bold",e["Arial-Black-BoldItalic"]="Helvetica-BoldOblique",e["Arial-Black-Italic"]="Helvetica-Oblique",e.Arial="Helvetica",e["Arial-Bold"]="Helvetica-Bold",e["Arial-BoldItalic"]="Helvetica-BoldOblique",e["Arial-Italic"]="Helvetica-Oblique"
 e.ArialMT="Helvetica",e["Arial-BoldItalicMT"]="Helvetica-BoldOblique",e["Arial-BoldMT"]="Helvetica-Bold",e["Arial-ItalicMT"]="Helvetica-Oblique",e["Arial-BoldItalicMT-BoldItalic"]="Helvetica-BoldOblique",e["Arial-BoldMT-Bold"]="Helvetica-Bold",e["Arial-ItalicMT-Italic"]="Helvetica-Oblique",e.ArialUnicodeMS="Helvetica",e["ArialUnicodeMS-Bold"]="Helvetica-Bold",e["ArialUnicodeMS-BoldItalic"]="Helvetica-BoldOblique",e["ArialUnicodeMS-Italic"]="Helvetica-Oblique",e["Courier-BoldItalic"]="Courier-BoldOblique",e["Courier-Italic"]="Courier-Oblique",e.CourierNew="Courier",e["CourierNew-Bold"]="Courier-Bold",e["CourierNew-BoldItalic"]="Courier-BoldOblique",e["CourierNew-Italic"]="Courier-Oblique",e["CourierNewPS-BoldItalicMT"]="Courier-BoldOblique",e["CourierNewPS-BoldMT"]="Courier-Bold",e["CourierNewPS-ItalicMT"]="Courier-Oblique",e.CourierNewPSMT="Courier",e["Helvetica-BoldItalic"]="Helvetica-BoldOblique",e["Helvetica-Italic"]="Helvetica-Oblique",e["Symbol-Bold"]="Symbol",e["Symbol-BoldItalic"]="Symbol",e["Symbol-Italic"]="Symbol",e.TimesNewRoman="Times-Roman",e["TimesNewRoman-Bold"]="Times-Bold",e["TimesNewRoman-BoldItalic"]="Times-BoldItalic",e["TimesNewRoman-Italic"]="Times-Italic"
-e.TimesNewRomanPS="Times-Roman",e["TimesNewRomanPS-Bold"]="Times-Bold",e["TimesNewRomanPS-BoldItalic"]="Times-BoldItalic",e["TimesNewRomanPS-BoldItalicMT"]="Times-BoldItalic",e["TimesNewRomanPS-BoldMT"]="Times-Bold",e["TimesNewRomanPS-Italic"]="Times-Italic",e["TimesNewRomanPS-ItalicMT"]="Times-Italic",e.TimesNewRomanPSMT="Times-Roman",e["TimesNewRomanPSMT-Bold"]="Times-Bold",e["TimesNewRomanPSMT-BoldItalic"]="Times-BoldItalic",e["TimesNewRomanPSMT-Italic"]="Times-Italic"}))
+e.TimesNewRomanPS="Times-Roman",e["TimesNewRomanPS-Bold"]="Times-Bold",e["TimesNewRomanPS-BoldItalic"]="Times-BoldItalic",e["TimesNewRomanPS-BoldItalicMT"]="Times-BoldItalic",e["TimesNewRomanPS-BoldMT"]="Times-Bold",e["TimesNewRomanPS-Italic"]="Times-Italic",e["TimesNewRomanPS-ItalicMT"]="Times-Italic",e.TimesNewRomanPSMT="Times-Roman",e["TimesNewRomanPSMT-Bold"]="Times-Bold",e["TimesNewRomanPSMT-BoldItalic"]="Times-BoldItalic",e["TimesNewRomanPSMT-Italic"]="Times-Italic"})
 t.getStdFontMap=i
-const s=(0,n.getLookupTableFactory)((function(e){e.Courier="FoxitFixed.pfb",e["Courier-Bold"]="FoxitFixedBold.pfb",e["Courier-BoldOblique"]="FoxitFixedBoldItalic.pfb",e["Courier-Oblique"]="FoxitFixedItalic.pfb",e.Helvetica="LiberationSans-Regular.ttf",e["Helvetica-Bold"]="LiberationSans-Bold.ttf",e["Helvetica-BoldOblique"]="LiberationSans-BoldItalic.ttf",e["Helvetica-Oblique"]="LiberationSans-Italic.ttf",e["Times-Roman"]="FoxitSerif.pfb",e["Times-Bold"]="FoxitSerifBold.pfb",e["Times-BoldItalic"]="FoxitSerifBoldItalic.pfb",e["Times-Italic"]="FoxitSerifItalic.pfb",e.Symbol="FoxitSymbol.pfb",e.ZapfDingbats="FoxitDingbats.pfb",e["LiberationSans-Regular"]="LiberationSans-Regular.ttf",e["LiberationSans-Bold"]="LiberationSans-Bold.ttf",e["LiberationSans-Italic"]="LiberationSans-Italic.ttf",e["LiberationSans-BoldItalic"]="LiberationSans-BoldItalic.ttf"}))
+const s=(0,n.getLookupTableFactory)(function(e){e.Courier="FoxitFixed.pfb",e["Courier-Bold"]="FoxitFixedBold.pfb",e["Courier-BoldOblique"]="FoxitFixedBoldItalic.pfb",e["Courier-Oblique"]="FoxitFixedItalic.pfb",e.Helvetica="LiberationSans-Regular.ttf",e["Helvetica-Bold"]="LiberationSans-Bold.ttf",e["Helvetica-BoldOblique"]="LiberationSans-BoldItalic.ttf",e["Helvetica-Oblique"]="LiberationSans-Italic.ttf",e["Times-Roman"]="FoxitSerif.pfb",e["Times-Bold"]="FoxitSerifBold.pfb",e["Times-BoldItalic"]="FoxitSerifBoldItalic.pfb",e["Times-Italic"]="FoxitSerifItalic.pfb",e.Symbol="FoxitSymbol.pfb",e.ZapfDingbats="FoxitDingbats.pfb",e["LiberationSans-Regular"]="LiberationSans-Regular.ttf",e["LiberationSans-Bold"]="LiberationSans-Bold.ttf",e["LiberationSans-Italic"]="LiberationSans-Italic.ttf",e["LiberationSans-BoldItalic"]="LiberationSans-BoldItalic.ttf"})
 t.getFontNameToFileMap=s
-const o=(0,n.getLookupTableFactory)((function(e){e.Calibri="Helvetica",e["Calibri-Bold"]="Helvetica-Bold",e["Calibri-BoldItalic"]="Helvetica-BoldOblique",e["Calibri-Italic"]="Helvetica-Oblique",e.CenturyGothic="Helvetica",e["CenturyGothic-Bold"]="Helvetica-Bold",e["CenturyGothic-BoldItalic"]="Helvetica-BoldOblique",e["CenturyGothic-Italic"]="Helvetica-Oblique",e.ComicSansMS="Comic Sans MS",e["ComicSansMS-Bold"]="Comic Sans MS-Bold",e["ComicSansMS-BoldItalic"]="Comic Sans MS-BoldItalic",e["ComicSansMS-Italic"]="Comic Sans MS-Italic",e.Impact="Helvetica",e["ItcSymbol-Bold"]="Helvetica-Bold",e["ItcSymbol-BoldItalic"]="Helvetica-BoldOblique",e["ItcSymbol-Book"]="Helvetica",e["ItcSymbol-BookItalic"]="Helvetica-Oblique",e["ItcSymbol-Medium"]="Helvetica",e["ItcSymbol-MediumItalic"]="Helvetica-Oblique",e.LucidaConsole="Courier",e["LucidaConsole-Bold"]="Courier-Bold",e["LucidaConsole-BoldItalic"]="Courier-BoldOblique",e["LucidaConsole-Italic"]="Courier-Oblique",e["LucidaSans-Demi"]="Helvetica-Bold",e["MS-Gothic"]="MS Gothic",e["MS-Gothic-Bold"]="MS Gothic-Bold",e["MS-Gothic-BoldItalic"]="MS Gothic-BoldItalic",e["MS-Gothic-Italic"]="MS Gothic-Italic",e["MS-Mincho"]="MS Mincho",e["MS-Mincho-Bold"]="MS Mincho-Bold"
-e["MS-Mincho-BoldItalic"]="MS Mincho-BoldItalic",e["MS-Mincho-Italic"]="MS Mincho-Italic",e["MS-PGothic"]="MS PGothic",e["MS-PGothic-Bold"]="MS PGothic-Bold",e["MS-PGothic-BoldItalic"]="MS PGothic-BoldItalic",e["MS-PGothic-Italic"]="MS PGothic-Italic",e["MS-PMincho"]="MS PMincho",e["MS-PMincho-Bold"]="MS PMincho-Bold",e["MS-PMincho-BoldItalic"]="MS PMincho-BoldItalic",e["MS-PMincho-Italic"]="MS PMincho-Italic",e.NuptialScript="Times-Italic",e.SegoeUISymbol="Helvetica"}))
+const o=(0,n.getLookupTableFactory)(function(e){e.Calibri="Helvetica",e["Calibri-Bold"]="Helvetica-Bold",e["Calibri-BoldItalic"]="Helvetica-BoldOblique",e["Calibri-Italic"]="Helvetica-Oblique",e.CenturyGothic="Helvetica",e["CenturyGothic-Bold"]="Helvetica-Bold",e["CenturyGothic-BoldItalic"]="Helvetica-BoldOblique",e["CenturyGothic-Italic"]="Helvetica-Oblique",e.ComicSansMS="Comic Sans MS",e["ComicSansMS-Bold"]="Comic Sans MS-Bold",e["ComicSansMS-BoldItalic"]="Comic Sans MS-BoldItalic",e["ComicSansMS-Italic"]="Comic Sans MS-Italic",e.Impact="Helvetica",e["ItcSymbol-Bold"]="Helvetica-Bold",e["ItcSymbol-BoldItalic"]="Helvetica-BoldOblique",e["ItcSymbol-Book"]="Helvetica",e["ItcSymbol-BookItalic"]="Helvetica-Oblique",e["ItcSymbol-Medium"]="Helvetica",e["ItcSymbol-MediumItalic"]="Helvetica-Oblique",e.LucidaConsole="Courier",e["LucidaConsole-Bold"]="Courier-Bold",e["LucidaConsole-BoldItalic"]="Courier-BoldOblique",e["LucidaConsole-Italic"]="Courier-Oblique",e["LucidaSans-Demi"]="Helvetica-Bold",e["MS-Gothic"]="MS Gothic",e["MS-Gothic-Bold"]="MS Gothic-Bold",e["MS-Gothic-BoldItalic"]="MS Gothic-BoldItalic",e["MS-Gothic-Italic"]="MS Gothic-Italic",e["MS-Mincho"]="MS Mincho",e["MS-Mincho-Bold"]="MS Mincho-Bold"
+e["MS-Mincho-BoldItalic"]="MS Mincho-BoldItalic",e["MS-Mincho-Italic"]="MS Mincho-Italic",e["MS-PGothic"]="MS PGothic",e["MS-PGothic-Bold"]="MS PGothic-Bold",e["MS-PGothic-BoldItalic"]="MS PGothic-BoldItalic",e["MS-PGothic-Italic"]="MS PGothic-Italic",e["MS-PMincho"]="MS PMincho",e["MS-PMincho-Bold"]="MS PMincho-Bold",e["MS-PMincho-BoldItalic"]="MS PMincho-BoldItalic",e["MS-PMincho-Italic"]="MS PMincho-Italic",e.NuptialScript="Times-Italic",e.SegoeUISymbol="Helvetica"})
 t.getNonStdFontMap=o
-const c=(0,n.getLookupTableFactory)((function(e){e["Adobe Jenson"]=!0,e["Adobe Text"]=!0,e.Albertus=!0,e.Aldus=!0,e.Alexandria=!0,e.Algerian=!0,e["American Typewriter"]=!0,e.Antiqua=!0,e.Apex=!0,e.Arno=!0,e.Aster=!0,e.Aurora=!0,e.Baskerville=!0,e.Bell=!0,e.Bembo=!0,e["Bembo Schoolbook"]=!0,e.Benguiat=!0,e["Berkeley Old Style"]=!0,e["Bernhard Modern"]=!0,e["Berthold City"]=!0,e.Bodoni=!0,e["Bauer Bodoni"]=!0,e["Book Antiqua"]=!0,e.Bookman=!0,e["Bordeaux Roman"]=!0,e["Californian FB"]=!0,e.Calisto=!0,e.Calvert=!0,e.Capitals=!0,e.Cambria=!0
+const c=(0,n.getLookupTableFactory)(function(e){e["Adobe Jenson"]=!0,e["Adobe Text"]=!0,e.Albertus=!0,e.Aldus=!0,e.Alexandria=!0,e.Algerian=!0,e["American Typewriter"]=!0,e.Antiqua=!0,e.Apex=!0,e.Arno=!0,e.Aster=!0,e.Aurora=!0,e.Baskerville=!0,e.Bell=!0,e.Bembo=!0,e["Bembo Schoolbook"]=!0,e.Benguiat=!0,e["Berkeley Old Style"]=!0,e["Bernhard Modern"]=!0,e["Berthold City"]=!0,e.Bodoni=!0,e["Bauer Bodoni"]=!0,e["Book Antiqua"]=!0,e.Bookman=!0,e["Bordeaux Roman"]=!0,e["Californian FB"]=!0,e.Calisto=!0,e.Calvert=!0,e.Capitals=!0,e.Cambria=!0
 e.Cartier=!0,e.Caslon=!0,e.Catull=!0,e.Centaur=!0,e["Century Old Style"]=!0,e["Century Schoolbook"]=!0,e.Chaparral=!0,e["Charis SIL"]=!0,e.Cheltenham=!0,e["Cholla Slab"]=!0,e.Clarendon=!0,e.Clearface=!0,e.Cochin=!0,e.Colonna=!0,e["Computer Modern"]=!0,e["Concrete Roman"]=!0,e.Constantia=!0,e["Cooper Black"]=!0,e.Corona=!0,e.Ecotype=!0,e.Egyptienne=!0,e.Elephant=!0,e.Excelsior=!0,e.Fairfield=!0,e["FF Scala"]=!0,e.Folkard=!0,e.Footlight=!0,e.FreeSerif=!0,e["Friz Quadrata"]=!0,e.Garamond=!0
 e.Gentium=!0,e.Georgia=!0,e.Gloucester=!0,e["Goudy Old Style"]=!0,e["Goudy Schoolbook"]=!0,e["Goudy Pro Font"]=!0,e.Granjon=!0,e["Guardian Egyptian"]=!0,e.Heather=!0,e.Hercules=!0,e["High Tower Text"]=!0,e.Hiroshige=!0,e["Hoefler Text"]=!0,e["Humana Serif"]=!0,e.Imprint=!0,e["Ionic No. 5"]=!0,e.Janson=!0,e.Joanna=!0,e.Korinna=!0,e.Lexicon=!0,e.LiberationSerif=!0,e["Liberation Serif"]=!0,e["Linux Libertine"]=!0,e.Literaturnaya=!0,e.Lucida=!0,e["Lucida Bright"]=!0,e.Melior=!0,e.Memphis=!0,e.Miller=!0,e.Minion=!0
 e.Modern=!0,e["Mona Lisa"]=!0,e["Mrs Eaves"]=!0,e["MS Serif"]=!0,e["Museo Slab"]=!0,e["New York"]=!0,e["Nimbus Roman"]=!0,e["NPS Rawlinson Roadway"]=!0,e.NuptialScript=!0,e.Palatino=!0,e.Perpetua=!0,e.Plantin=!0,e["Plantin Schoolbook"]=!0,e.Playbill=!0,e["Poor Richard"]=!0,e["Rawlinson Roadway"]=!0,e.Renault=!0,e.Requiem=!0,e.Rockwell=!0,e.Roman=!0,e["Rotis Serif"]=!0,e.Sabon=!0,e.Scala=!0,e.Seagull=!0,e.Sistina=!0,e.Souvenir=!0,e.STIX=!0,e["Stone Informal"]=!0,e["Stone Serif"]=!0,e.Sylfaen=!0
-e.Times=!0,e.Trajan=!0,e["Trinité"]=!0,e["Trump Mediaeval"]=!0,e.Utopia=!0,e["Vale Type"]=!0,e["Bitstream Vera"]=!0,e["Vera Serif"]=!0,e.Versailles=!0,e.Wanted=!0,e.Weiss=!0,e["Wide Latin"]=!0,e.Windsor=!0,e.XITS=!0}))
+e.Times=!0,e.Trajan=!0,e["Trinité"]=!0,e["Trump Mediaeval"]=!0,e.Utopia=!0,e["Vale Type"]=!0,e["Bitstream Vera"]=!0,e["Vera Serif"]=!0,e.Versailles=!0,e.Wanted=!0,e.Weiss=!0,e["Wide Latin"]=!0,e.Windsor=!0,e.XITS=!0})
 t.getSerifFonts=c
-const l=(0,n.getLookupTableFactory)((function(e){e.Dingbats=!0,e.Symbol=!0,e.ZapfDingbats=!0,e.Wingdings=!0,e["Wingdings-Bold"]=!0,e["Wingdings-Regular"]=!0}))
+const l=(0,n.getLookupTableFactory)(function(e){e.Dingbats=!0,e.Symbol=!0,e.ZapfDingbats=!0,e.Wingdings=!0,e["Wingdings-Bold"]=!0,e["Wingdings-Regular"]=!0})
 t.getSymbolsFonts=l
-const h=(0,n.getLookupTableFactory)((function(e){e[2]=10,e[3]=32,e[4]=33,e[5]=34,e[6]=35,e[7]=36,e[8]=37,e[9]=38,e[10]=39,e[11]=40,e[12]=41,e[13]=42,e[14]=43,e[15]=44,e[16]=45,e[17]=46,e[18]=47,e[19]=48,e[20]=49,e[21]=50,e[22]=51,e[23]=52,e[24]=53,e[25]=54,e[26]=55,e[27]=56,e[28]=57,e[29]=58,e[30]=894,e[31]=60
+const h=(0,n.getLookupTableFactory)(function(e){e[2]=10,e[3]=32,e[4]=33,e[5]=34,e[6]=35,e[7]=36,e[8]=37,e[9]=38,e[10]=39,e[11]=40,e[12]=41,e[13]=42,e[14]=43,e[15]=44,e[16]=45,e[17]=46,e[18]=47,e[19]=48,e[20]=49,e[21]=50,e[22]=51,e[23]=52,e[24]=53,e[25]=54,e[26]=55,e[27]=56,e[28]=57,e[29]=58,e[30]=894,e[31]=60
 e[32]=61,e[33]=62,e[34]=63,e[35]=64,e[36]=65,e[37]=66,e[38]=67,e[39]=68,e[40]=69,e[41]=70,e[42]=71,e[43]=72,e[44]=73,e[45]=74,e[46]=75,e[47]=76,e[48]=77,e[49]=78,e[50]=79,e[51]=80,e[52]=81,e[53]=82,e[54]=83,e[55]=84,e[56]=85,e[57]=86,e[58]=87,e[59]=88,e[60]=89,e[61]=90
 e[62]=91,e[63]=92,e[64]=93,e[65]=94,e[66]=95,e[67]=96,e[68]=97,e[69]=98,e[70]=99,e[71]=100,e[72]=101,e[73]=102,e[74]=103,e[75]=104,e[76]=105,e[77]=106,e[78]=107,e[79]=108,e[80]=109,e[81]=110,e[82]=111,e[83]=112,e[84]=113,e[85]=114,e[86]=115,e[87]=116,e[88]=117,e[89]=118,e[90]=119,e[91]=120
 e[92]=121,e[93]=122,e[94]=123,e[95]=124,e[96]=125,e[97]=126,e[98]=196,e[99]=197,e[100]=199,e[101]=201,e[102]=209,e[103]=214,e[104]=220,e[105]=225,e[106]=224,e[107]=226,e[108]=228,e[109]=227,e[110]=229,e[111]=231,e[112]=233,e[113]=232,e[114]=234,e[115]=235,e[116]=237,e[117]=236,e[118]=238,e[119]=239,e[120]=241,e[121]=243
@@ -4490,14 +4491,14 @@ e[2866]=862,e[2906]=7460,e[2908]=7462,e[2909]=7463,e[2910]=7464,e[2912]=7466,e[2
 e[2946]=7500,e[2948]=7502,e[2950]=7504,e[2951]=7505,e[2952]=7506,e[2954]=7508,e[2955]=7509,e[2956]=7510,e[2958]=7512,e[2959]=7513,e[2960]=7514,e[2962]=7516,e[2963]=7517,e[2964]=7518,e[2966]=7520,e[2967]=7521,e[2968]=7522,e[2970]=7524,e[2971]=7525,e[2972]=7526,e[2974]=7528,e[2975]=7529,e[2976]=7530,e[2978]=1537,e[2979]=1538,e[2980]=1539,e[2982]=1549,e[2983]=1551,e[2984]=1552,e[2986]=1554
 e[2987]=1555,e[2988]=1556,e[2990]=1623,e[2991]=1624,e[2995]=1775,e[2999]=1791,e[3002]=64290,e[3003]=64291,e[3004]=64292,e[3006]=64294,e[3007]=64295,e[3008]=64296,e[3011]=1900,e[3014]=8223,e[3015]=8244,e[3017]=7532,e[3018]=7533,e[3019]=7534,e[3075]=7590,e[3076]=7591,e[3079]=7594,e[3080]=7595,e[3083]=7598,e[3084]=7599,e[3087]=7602,e[3088]=7603,e[3091]=7606,e[3092]=7607,e[3095]=7610,e[3096]=7611
 e[3099]=7614,e[3100]=7615,e[3103]=7618,e[3104]=7619,e[3107]=8337,e[3108]=8338,e[3116]=1884,e[3119]=1885,e[3120]=1885,e[3123]=1886,e[3124]=1886,e[3127]=1887,e[3128]=1887,e[3131]=1888,e[3132]=1888,e[3135]=1889,e[3136]=1889,e[3139]=1890,e[3140]=1890,e[3143]=1891,e[3144]=1891,e[3147]=1892,e[3148]=1892,e[3153]=580,e[3154]=581,e[3157]=584,e[3158]=585,e[3161]=588,e[3162]=589,e[3165]=891
-e[3166]=892,e[3169]=1274,e[3170]=1275,e[3173]=1278,e[3174]=1279,e[3181]=7622,e[3182]=7623,e[3282]=11799,e[3316]=578,e[3379]=42785,e[3393]=1159,e[3416]=8377}))
+e[3166]=892,e[3169]=1274,e[3170]=1275,e[3173]=1278,e[3174]=1279,e[3181]=7622,e[3182]=7623,e[3282]=11799,e[3316]=578,e[3379]=42785,e[3393]=1159,e[3416]=8377})
 t.getGlyphMapForStandardFonts=h
-const u=(0,n.getLookupTableFactory)((function(e){e[227]=322,e[264]=261,e[291]=346}))
+const u=(0,n.getLookupTableFactory)(function(e){e[227]=322,e[264]=261,e[291]=346})
 t.getSupplementalGlyphMapForArialBlack=u
-const d=(0,n.getLookupTableFactory)((function(e){e[1]=32,e[4]=65,e[5]=192,e[6]=193,e[9]=196,e[17]=66,e[18]=67,e[21]=268,e[24]=68,e[28]=69,e[29]=200,e[30]=201,e[32]=282,e[38]=70,e[39]=71,e[44]=72,e[47]=73,e[48]=204,e[49]=205,e[58]=74,e[60]=75,e[62]=76,e[68]=77,e[69]=78,e[75]=79,e[76]=210,e[80]=214,e[87]=80,e[89]=81,e[90]=82
+const d=(0,n.getLookupTableFactory)(function(e){e[1]=32,e[4]=65,e[5]=192,e[6]=193,e[9]=196,e[17]=66,e[18]=67,e[21]=268,e[24]=68,e[28]=69,e[29]=200,e[30]=201,e[32]=282,e[38]=70,e[39]=71,e[44]=72,e[47]=73,e[48]=204,e[49]=205,e[58]=74,e[60]=75,e[62]=76,e[68]=77,e[69]=78,e[75]=79,e[76]=210,e[80]=214,e[87]=80,e[89]=81,e[90]=82
 e[92]=344,e[94]=83,e[97]=352,e[100]=84,e[104]=85,e[109]=220,e[115]=86,e[116]=87,e[121]=88,e[122]=89,e[124]=221,e[127]=90,e[129]=381,e[258]=97,e[259]=224,e[260]=225,e[263]=228,e[268]=261,e[271]=98,e[272]=99,e[273]=263,e[275]=269,e[282]=100,e[286]=101,e[287]=232,e[288]=233,e[290]=283,e[295]=281,e[296]=102,e[336]=103
 e[346]=104,e[349]=105,e[350]=236,e[351]=237,e[361]=106,e[364]=107,e[367]=108,e[371]=322,e[373]=109,e[374]=110,e[381]=111,e[382]=242,e[383]=243,e[386]=246,e[393]=112,e[395]=113,e[396]=114,e[398]=345,e[400]=115,e[401]=347,e[403]=353,e[410]=116,e[437]=117,e[442]=252,e[448]=118,e[449]=119,e[454]=120,e[455]=121,e[457]=253,e[460]=122
-e[462]=382,e[463]=380,e[853]=44,e[855]=58,e[856]=46,e[876]=47,e[878]=45,e[882]=45,e[894]=40,e[895]=41,e[896]=91,e[897]=93,e[923]=64,e[1004]=48,e[1005]=49,e[1006]=50,e[1007]=51,e[1008]=52,e[1009]=53,e[1010]=54,e[1011]=55,e[1012]=56,e[1013]=57,e[1081]=37,e[1085]=43,e[1086]=45}))
+e[462]=382,e[463]=380,e[853]=44,e[855]=58,e[856]=46,e[876]=47,e[878]=45,e[882]=45,e[894]=40,e[895]=41,e[896]=91,e[897]=93,e[923]=64,e[1004]=48,e[1005]=49,e[1006]=50,e[1007]=51,e[1008]=52,e[1009]=53,e[1010]=54,e[1011]=55,e[1012]=56,e[1013]=57,e[1081]=37,e[1085]=43,e[1086]=45})
 t.getSupplementalGlyphMapForCalibri=d},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.ToUnicodeMap=t.IdentityToUnicodeMap=void 0
 var n=a(2)
 t.ToUnicodeMap=class{constructor(e=[]){this._map=e}get length(){return this._map.length}forEach(e){for(const t in this._map)e(t,this._map[t].charCodeAt(0))}has(e){return void 0!==this._map[e]}get(e){return this._map[e]}charCodeOf(e){const t=this._map
@@ -4664,7 +4665,7 @@ let s=r(t,0)
 for(let o=n;o<t.length;o+=n){const a=r(t,o)
 i.push(e.subarray(s,a)),s=a}return i}(i,s,h),r,t)}return new A(o,r,e.fontMatrix,e.glyphNameMap)}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.getMetrics=t.getFontBasicMetrics=void 0
 var n=a(3)
-const r=(0,n.getLookupTableFactory)((function(e){e.Courier=600,e["Courier-Bold"]=600,e["Courier-BoldOblique"]=600,e["Courier-Oblique"]=600,e.Helvetica=(0,n.getLookupTableFactory)((function(e){e.space=278,e.exclam=278,e.quotedbl=355,e.numbersign=556,e.dollar=556,e.percent=889,e.ampersand=667,e.quoteright=222,e.parenleft=333,e.parenright=333,e.asterisk=389,e.plus=584,e.comma=278,e.hyphen=333,e.period=278,e.slash=278,e.zero=556,e.one=556,e.two=556,e.three=556,e.four=556,e.five=556,e.six=556,e.seven=556,e.eight=556,e.nine=556,e.colon=278,e.semicolon=278,e.less=584,e.equal=584
+const r=(0,n.getLookupTableFactory)(function(e){e.Courier=600,e["Courier-Bold"]=600,e["Courier-BoldOblique"]=600,e["Courier-Oblique"]=600,e.Helvetica=(0,n.getLookupTableFactory)(function(e){e.space=278,e.exclam=278,e.quotedbl=355,e.numbersign=556,e.dollar=556,e.percent=889,e.ampersand=667,e.quoteright=222,e.parenleft=333,e.parenright=333,e.asterisk=389,e.plus=584,e.comma=278,e.hyphen=333,e.period=278,e.slash=278,e.zero=556,e.one=556,e.two=556,e.three=556,e.four=556,e.five=556,e.six=556,e.seven=556,e.eight=556,e.nine=556,e.colon=278,e.semicolon=278,e.less=584,e.equal=584
 e.greater=584,e.question=556,e.at=1015,e.A=667,e.B=667,e.C=722,e.D=722,e.E=667,e.F=611,e.G=778,e.H=722,e.I=278,e.J=500,e.K=667,e.L=556,e.M=833,e.N=722,e.O=778,e.P=667,e.Q=778,e.R=722,e.S=667,e.T=611,e.U=722,e.V=667,e.W=944,e.X=667,e.Y=667,e.Z=611,e.bracketleft=278
 e.backslash=278,e.bracketright=278,e.asciicircum=469,e.underscore=556,e.quoteleft=222,e.a=556,e.b=556,e.c=500,e.d=556,e.e=556,e.f=278,e.g=556,e.h=556,e.i=222,e.j=222,e.k=500,e.l=222,e.m=833,e.n=556,e.o=556,e.p=556,e.q=556,e.r=333,e.s=500,e.t=278,e.u=556,e.v=500,e.w=722,e.x=500,e.y=500
 e.z=500,e.braceleft=334,e.bar=260,e.braceright=334,e.asciitilde=584,e.exclamdown=333,e.cent=556,e.sterling=556,e.fraction=167,e.yen=556,e.florin=556,e.section=556,e.currency=556,e.quotesingle=191,e.quotedblleft=333,e.guillemotleft=556,e.guilsinglleft=333,e.guilsinglright=333,e.fi=500,e.fl=500,e.endash=556,e.dagger=556,e.daggerdbl=556,e.periodcentered=278,e.paragraph=537,e.bullet=350,e.quotesinglbase=222,e.quotedblbase=333,e.quotedblright=333,e.guillemotright=556
@@ -4674,7 +4675,7 @@ e.atilde=556,e.Edotaccent=667,e.scaron=500,e.scedilla=500,e.iacute=278,e.lozenge
 e.Nacute=722,e.icircumflex=278,e.Ecircumflex=667,e.adieresis=556,e.edieresis=556,e.cacute=500,e.nacute=556,e.umacron=556,e.Ncaron=722,e.Iacute=278,e.plusminus=584,e.brokenbar=260,e.registered=737,e.Gbreve=778,e.Idotaccent=278,e.summation=600,e.Egrave=667,e.racute=333,e.omacron=556,e.Zacute=611,e.Zcaron=611,e.greaterequal=549,e.Eth=722,e.Ccedilla=722,e.lcommaaccent=222,e.tcaron=317,e.eogonek=556,e.Uogonek=722,e.Aacute=667,e.Adieresis=667
 e.egrave=556,e.zacute=500,e.iogonek=222,e.Oacute=778,e.oacute=556,e.amacron=556,e.sacute=500,e.idieresis=278,e.Ocircumflex=778,e.Ugrave=722,e.Delta=612,e.thorn=556,e.twosuperior=333,e.Odieresis=778,e.mu=556,e.igrave=278,e.ohungarumlaut=556,e.Eogonek=667,e.dcroat=556,e.threequarters=834,e.Scedilla=667,e.lcaron=299,e.Kcommaaccent=667,e.Lacute=556,e.trademark=1e3,e.edotaccent=556,e.Igrave=278,e.Imacron=278,e.Lcaron=556,e.onehalf=834
 e.lessequal=549,e.ocircumflex=556,e.ntilde=556,e.Uhungarumlaut=722,e.Eacute=667,e.emacron=556,e.gbreve=556,e.onequarter=834,e.Scaron=667,e.Scommaaccent=667,e.Ohungarumlaut=778,e.degree=400,e.ograve=556,e.Ccaron=722,e.ugrave=556,e.radical=453,e.Dcaron=722,e.rcommaaccent=333,e.Ntilde=722,e.otilde=556,e.Rcommaaccent=722,e.Lcommaaccent=556,e.Atilde=667,e.Aogonek=667,e.Aring=667,e.Otilde=778,e.zdotaccent=500,e.Ecaron=667,e.Iogonek=278,e.kcommaaccent=500
-e.minus=584,e.Icircumflex=278,e.ncaron=556,e.tcommaaccent=278,e.logicalnot=584,e.odieresis=556,e.udieresis=556,e.notequal=549,e.gcommaaccent=556,e.eth=556,e.zcaron=500,e.ncommaaccent=556,e.onesuperior=333,e.imacron=278,e.Euro=556})),e["Helvetica-Bold"]=(0,n.getLookupTableFactory)((function(e){e.space=278,e.exclam=333,e.quotedbl=474,e.numbersign=556,e.dollar=556,e.percent=889,e.ampersand=722,e.quoteright=278,e.parenleft=333,e.parenright=333,e.asterisk=389,e.plus=584,e.comma=278,e.hyphen=333,e.period=278,e.slash=278,e.zero=556,e.one=556,e.two=556,e.three=556,e.four=556,e.five=556,e.six=556,e.seven=556,e.eight=556,e.nine=556,e.colon=333,e.semicolon=333,e.less=584,e.equal=584
+e.minus=584,e.Icircumflex=278,e.ncaron=556,e.tcommaaccent=278,e.logicalnot=584,e.odieresis=556,e.udieresis=556,e.notequal=549,e.gcommaaccent=556,e.eth=556,e.zcaron=500,e.ncommaaccent=556,e.onesuperior=333,e.imacron=278,e.Euro=556}),e["Helvetica-Bold"]=(0,n.getLookupTableFactory)(function(e){e.space=278,e.exclam=333,e.quotedbl=474,e.numbersign=556,e.dollar=556,e.percent=889,e.ampersand=722,e.quoteright=278,e.parenleft=333,e.parenright=333,e.asterisk=389,e.plus=584,e.comma=278,e.hyphen=333,e.period=278,e.slash=278,e.zero=556,e.one=556,e.two=556,e.three=556,e.four=556,e.five=556,e.six=556,e.seven=556,e.eight=556,e.nine=556,e.colon=333,e.semicolon=333,e.less=584,e.equal=584
 e.greater=584,e.question=611,e.at=975,e.A=722,e.B=722,e.C=722,e.D=722,e.E=667,e.F=611,e.G=778,e.H=722,e.I=278,e.J=556,e.K=722,e.L=611,e.M=833,e.N=722,e.O=778,e.P=667,e.Q=778,e.R=722,e.S=667,e.T=611,e.U=722,e.V=667,e.W=944,e.X=667,e.Y=667,e.Z=611,e.bracketleft=333
 e.backslash=278,e.bracketright=333,e.asciicircum=584,e.underscore=556,e.quoteleft=278,e.a=556,e.b=611,e.c=556,e.d=611,e.e=556,e.f=333,e.g=611,e.h=611,e.i=278,e.j=278,e.k=556,e.l=278,e.m=889,e.n=611,e.o=611,e.p=611,e.q=611,e.r=389,e.s=556,e.t=333,e.u=611,e.v=556,e.w=778,e.x=556,e.y=556
 e.z=500,e.braceleft=389,e.bar=280,e.braceright=389,e.asciitilde=584,e.exclamdown=333,e.cent=556,e.sterling=556,e.fraction=167,e.yen=556,e.florin=556,e.section=556,e.currency=556,e.quotesingle=238,e.quotedblleft=500,e.guillemotleft=556,e.guilsinglleft=333,e.guilsinglright=333,e.fi=611,e.fl=611,e.endash=556,e.dagger=556,e.daggerdbl=556,e.periodcentered=278,e.paragraph=556,e.bullet=350,e.quotesinglbase=278,e.quotedblbase=500,e.quotedblright=500,e.guillemotright=556
@@ -4684,7 +4685,7 @@ e.atilde=556,e.Edotaccent=667,e.scaron=556,e.scedilla=556,e.iacute=278,e.lozenge
 e.Nacute=722,e.icircumflex=278,e.Ecircumflex=667,e.adieresis=556,e.edieresis=556,e.cacute=556,e.nacute=611,e.umacron=611,e.Ncaron=722,e.Iacute=278,e.plusminus=584,e.brokenbar=280,e.registered=737,e.Gbreve=778,e.Idotaccent=278,e.summation=600,e.Egrave=667,e.racute=389,e.omacron=611,e.Zacute=611,e.Zcaron=611,e.greaterequal=549,e.Eth=722,e.Ccedilla=722,e.lcommaaccent=278,e.tcaron=389,e.eogonek=556,e.Uogonek=722,e.Aacute=722,e.Adieresis=722
 e.egrave=556,e.zacute=500,e.iogonek=278,e.Oacute=778,e.oacute=611,e.amacron=556,e.sacute=556,e.idieresis=278,e.Ocircumflex=778,e.Ugrave=722,e.Delta=612,e.thorn=611,e.twosuperior=333,e.Odieresis=778,e.mu=611,e.igrave=278,e.ohungarumlaut=611,e.Eogonek=667,e.dcroat=611,e.threequarters=834,e.Scedilla=667,e.lcaron=400,e.Kcommaaccent=722,e.Lacute=611,e.trademark=1e3,e.edotaccent=556,e.Igrave=278,e.Imacron=278,e.Lcaron=611,e.onehalf=834
 e.lessequal=549,e.ocircumflex=611,e.ntilde=611,e.Uhungarumlaut=722,e.Eacute=667,e.emacron=556,e.gbreve=611,e.onequarter=834,e.Scaron=667,e.Scommaaccent=667,e.Ohungarumlaut=778,e.degree=400,e.ograve=611,e.Ccaron=722,e.ugrave=611,e.radical=549,e.Dcaron=722,e.rcommaaccent=389,e.Ntilde=722,e.otilde=611,e.Rcommaaccent=722,e.Lcommaaccent=611,e.Atilde=722,e.Aogonek=722,e.Aring=722,e.Otilde=778,e.zdotaccent=500,e.Ecaron=667,e.Iogonek=278,e.kcommaaccent=556
-e.minus=584,e.Icircumflex=278,e.ncaron=611,e.tcommaaccent=333,e.logicalnot=584,e.odieresis=611,e.udieresis=611,e.notequal=549,e.gcommaaccent=611,e.eth=611,e.zcaron=500,e.ncommaaccent=611,e.onesuperior=333,e.imacron=278,e.Euro=556})),e["Helvetica-BoldOblique"]=(0,n.getLookupTableFactory)((function(e){e.space=278,e.exclam=333,e.quotedbl=474,e.numbersign=556,e.dollar=556,e.percent=889,e.ampersand=722,e.quoteright=278,e.parenleft=333,e.parenright=333,e.asterisk=389,e.plus=584,e.comma=278,e.hyphen=333,e.period=278,e.slash=278,e.zero=556,e.one=556,e.two=556,e.three=556,e.four=556,e.five=556,e.six=556,e.seven=556,e.eight=556,e.nine=556,e.colon=333,e.semicolon=333,e.less=584,e.equal=584
+e.minus=584,e.Icircumflex=278,e.ncaron=611,e.tcommaaccent=333,e.logicalnot=584,e.odieresis=611,e.udieresis=611,e.notequal=549,e.gcommaaccent=611,e.eth=611,e.zcaron=500,e.ncommaaccent=611,e.onesuperior=333,e.imacron=278,e.Euro=556}),e["Helvetica-BoldOblique"]=(0,n.getLookupTableFactory)(function(e){e.space=278,e.exclam=333,e.quotedbl=474,e.numbersign=556,e.dollar=556,e.percent=889,e.ampersand=722,e.quoteright=278,e.parenleft=333,e.parenright=333,e.asterisk=389,e.plus=584,e.comma=278,e.hyphen=333,e.period=278,e.slash=278,e.zero=556,e.one=556,e.two=556,e.three=556,e.four=556,e.five=556,e.six=556,e.seven=556,e.eight=556,e.nine=556,e.colon=333,e.semicolon=333,e.less=584,e.equal=584
 e.greater=584,e.question=611,e.at=975,e.A=722,e.B=722,e.C=722,e.D=722,e.E=667,e.F=611,e.G=778,e.H=722,e.I=278,e.J=556,e.K=722,e.L=611,e.M=833,e.N=722,e.O=778,e.P=667,e.Q=778,e.R=722,e.S=667,e.T=611,e.U=722,e.V=667,e.W=944,e.X=667,e.Y=667,e.Z=611,e.bracketleft=333
 e.backslash=278,e.bracketright=333,e.asciicircum=584,e.underscore=556,e.quoteleft=278,e.a=556,e.b=611,e.c=556,e.d=611,e.e=556,e.f=333,e.g=611,e.h=611,e.i=278,e.j=278,e.k=556,e.l=278,e.m=889,e.n=611,e.o=611,e.p=611,e.q=611,e.r=389,e.s=556,e.t=333,e.u=611,e.v=556,e.w=778,e.x=556,e.y=556
 e.z=500,e.braceleft=389,e.bar=280,e.braceright=389,e.asciitilde=584,e.exclamdown=333,e.cent=556,e.sterling=556,e.fraction=167,e.yen=556,e.florin=556,e.section=556,e.currency=556,e.quotesingle=238,e.quotedblleft=500,e.guillemotleft=556,e.guilsinglleft=333,e.guilsinglright=333,e.fi=611,e.fl=611,e.endash=556,e.dagger=556,e.daggerdbl=556,e.periodcentered=278,e.paragraph=556,e.bullet=350,e.quotesinglbase=278,e.quotedblbase=500,e.quotedblright=500,e.guillemotright=556
@@ -4694,7 +4695,7 @@ e.atilde=556,e.Edotaccent=667,e.scaron=556,e.scedilla=556,e.iacute=278,e.lozenge
 e.Nacute=722,e.icircumflex=278,e.Ecircumflex=667,e.adieresis=556,e.edieresis=556,e.cacute=556,e.nacute=611,e.umacron=611,e.Ncaron=722,e.Iacute=278,e.plusminus=584,e.brokenbar=280,e.registered=737,e.Gbreve=778,e.Idotaccent=278,e.summation=600,e.Egrave=667,e.racute=389,e.omacron=611,e.Zacute=611,e.Zcaron=611,e.greaterequal=549,e.Eth=722,e.Ccedilla=722,e.lcommaaccent=278,e.tcaron=389,e.eogonek=556,e.Uogonek=722,e.Aacute=722,e.Adieresis=722
 e.egrave=556,e.zacute=500,e.iogonek=278,e.Oacute=778,e.oacute=611,e.amacron=556,e.sacute=556,e.idieresis=278,e.Ocircumflex=778,e.Ugrave=722,e.Delta=612,e.thorn=611,e.twosuperior=333,e.Odieresis=778,e.mu=611,e.igrave=278,e.ohungarumlaut=611,e.Eogonek=667,e.dcroat=611,e.threequarters=834,e.Scedilla=667,e.lcaron=400,e.Kcommaaccent=722,e.Lacute=611,e.trademark=1e3,e.edotaccent=556,e.Igrave=278,e.Imacron=278,e.Lcaron=611,e.onehalf=834
 e.lessequal=549,e.ocircumflex=611,e.ntilde=611,e.Uhungarumlaut=722,e.Eacute=667,e.emacron=556,e.gbreve=611,e.onequarter=834,e.Scaron=667,e.Scommaaccent=667,e.Ohungarumlaut=778,e.degree=400,e.ograve=611,e.Ccaron=722,e.ugrave=611,e.radical=549,e.Dcaron=722,e.rcommaaccent=389,e.Ntilde=722,e.otilde=611,e.Rcommaaccent=722,e.Lcommaaccent=611,e.Atilde=722,e.Aogonek=722,e.Aring=722,e.Otilde=778,e.zdotaccent=500,e.Ecaron=667,e.Iogonek=278,e.kcommaaccent=556
-e.minus=584,e.Icircumflex=278,e.ncaron=611,e.tcommaaccent=333,e.logicalnot=584,e.odieresis=611,e.udieresis=611,e.notequal=549,e.gcommaaccent=611,e.eth=611,e.zcaron=500,e.ncommaaccent=611,e.onesuperior=333,e.imacron=278,e.Euro=556})),e["Helvetica-Oblique"]=(0,n.getLookupTableFactory)((function(e){e.space=278,e.exclam=278,e.quotedbl=355,e.numbersign=556,e.dollar=556,e.percent=889,e.ampersand=667,e.quoteright=222,e.parenleft=333,e.parenright=333,e.asterisk=389,e.plus=584,e.comma=278,e.hyphen=333,e.period=278,e.slash=278,e.zero=556,e.one=556,e.two=556,e.three=556,e.four=556,e.five=556,e.six=556,e.seven=556,e.eight=556,e.nine=556,e.colon=278,e.semicolon=278,e.less=584,e.equal=584
+e.minus=584,e.Icircumflex=278,e.ncaron=611,e.tcommaaccent=333,e.logicalnot=584,e.odieresis=611,e.udieresis=611,e.notequal=549,e.gcommaaccent=611,e.eth=611,e.zcaron=500,e.ncommaaccent=611,e.onesuperior=333,e.imacron=278,e.Euro=556}),e["Helvetica-Oblique"]=(0,n.getLookupTableFactory)(function(e){e.space=278,e.exclam=278,e.quotedbl=355,e.numbersign=556,e.dollar=556,e.percent=889,e.ampersand=667,e.quoteright=222,e.parenleft=333,e.parenright=333,e.asterisk=389,e.plus=584,e.comma=278,e.hyphen=333,e.period=278,e.slash=278,e.zero=556,e.one=556,e.two=556,e.three=556,e.four=556,e.five=556,e.six=556,e.seven=556,e.eight=556,e.nine=556,e.colon=278,e.semicolon=278,e.less=584,e.equal=584
 e.greater=584,e.question=556,e.at=1015,e.A=667,e.B=667,e.C=722,e.D=722,e.E=667,e.F=611,e.G=778,e.H=722,e.I=278,e.J=500,e.K=667,e.L=556,e.M=833,e.N=722,e.O=778,e.P=667,e.Q=778,e.R=722,e.S=667,e.T=611,e.U=722,e.V=667,e.W=944,e.X=667,e.Y=667,e.Z=611,e.bracketleft=278
 e.backslash=278,e.bracketright=278,e.asciicircum=469,e.underscore=556,e.quoteleft=222,e.a=556,e.b=556,e.c=500,e.d=556,e.e=556,e.f=278,e.g=556,e.h=556,e.i=222,e.j=222,e.k=500,e.l=222,e.m=833,e.n=556,e.o=556,e.p=556,e.q=556,e.r=333,e.s=500,e.t=278,e.u=556,e.v=500,e.w=722,e.x=500,e.y=500
 e.z=500,e.braceleft=334,e.bar=260,e.braceright=334,e.asciitilde=584,e.exclamdown=333,e.cent=556,e.sterling=556,e.fraction=167,e.yen=556,e.florin=556,e.section=556,e.currency=556,e.quotesingle=191,e.quotedblleft=333,e.guillemotleft=556,e.guilsinglleft=333,e.guilsinglright=333,e.fi=500,e.fl=500,e.endash=556,e.dagger=556,e.daggerdbl=556,e.periodcentered=278,e.paragraph=537,e.bullet=350,e.quotesinglbase=222,e.quotedblbase=333,e.quotedblright=333,e.guillemotright=556
@@ -4704,13 +4705,13 @@ e.atilde=556,e.Edotaccent=667,e.scaron=500,e.scedilla=500,e.iacute=278,e.lozenge
 e.Nacute=722,e.icircumflex=278,e.Ecircumflex=667,e.adieresis=556,e.edieresis=556,e.cacute=500,e.nacute=556,e.umacron=556,e.Ncaron=722,e.Iacute=278,e.plusminus=584,e.brokenbar=260,e.registered=737,e.Gbreve=778,e.Idotaccent=278,e.summation=600,e.Egrave=667,e.racute=333,e.omacron=556,e.Zacute=611,e.Zcaron=611,e.greaterequal=549,e.Eth=722,e.Ccedilla=722,e.lcommaaccent=222,e.tcaron=317,e.eogonek=556,e.Uogonek=722,e.Aacute=667,e.Adieresis=667
 e.egrave=556,e.zacute=500,e.iogonek=222,e.Oacute=778,e.oacute=556,e.amacron=556,e.sacute=500,e.idieresis=278,e.Ocircumflex=778,e.Ugrave=722,e.Delta=612,e.thorn=556,e.twosuperior=333,e.Odieresis=778,e.mu=556,e.igrave=278,e.ohungarumlaut=556,e.Eogonek=667,e.dcroat=556,e.threequarters=834,e.Scedilla=667,e.lcaron=299,e.Kcommaaccent=667,e.Lacute=556,e.trademark=1e3,e.edotaccent=556,e.Igrave=278,e.Imacron=278,e.Lcaron=556,e.onehalf=834
 e.lessequal=549,e.ocircumflex=556,e.ntilde=556,e.Uhungarumlaut=722,e.Eacute=667,e.emacron=556,e.gbreve=556,e.onequarter=834,e.Scaron=667,e.Scommaaccent=667,e.Ohungarumlaut=778,e.degree=400,e.ograve=556,e.Ccaron=722,e.ugrave=556,e.radical=453,e.Dcaron=722,e.rcommaaccent=333,e.Ntilde=722,e.otilde=556,e.Rcommaaccent=722,e.Lcommaaccent=556,e.Atilde=667,e.Aogonek=667,e.Aring=667,e.Otilde=778,e.zdotaccent=500,e.Ecaron=667,e.Iogonek=278,e.kcommaaccent=500
-e.minus=584,e.Icircumflex=278,e.ncaron=556,e.tcommaaccent=278,e.logicalnot=584,e.odieresis=556,e.udieresis=556,e.notequal=549,e.gcommaaccent=556,e.eth=556,e.zcaron=500,e.ncommaaccent=556,e.onesuperior=333,e.imacron=278,e.Euro=556})),e.Symbol=(0,n.getLookupTableFactory)((function(e){e.space=250,e.exclam=333,e.universal=713,e.numbersign=500,e.existential=549,e.percent=833,e.ampersand=778,e.suchthat=439,e.parenleft=333,e.parenright=333,e.asteriskmath=500,e.plus=549,e.comma=250,e.minus=549,e.period=250,e.slash=278,e.zero=500,e.one=500,e.two=500,e.three=500,e.four=500,e.five=500,e.six=500,e.seven=500,e.eight=500,e.nine=500,e.colon=278,e.semicolon=278,e.less=549,e.equal=549
+e.minus=584,e.Icircumflex=278,e.ncaron=556,e.tcommaaccent=278,e.logicalnot=584,e.odieresis=556,e.udieresis=556,e.notequal=549,e.gcommaaccent=556,e.eth=556,e.zcaron=500,e.ncommaaccent=556,e.onesuperior=333,e.imacron=278,e.Euro=556}),e.Symbol=(0,n.getLookupTableFactory)(function(e){e.space=250,e.exclam=333,e.universal=713,e.numbersign=500,e.existential=549,e.percent=833,e.ampersand=778,e.suchthat=439,e.parenleft=333,e.parenright=333,e.asteriskmath=500,e.plus=549,e.comma=250,e.minus=549,e.period=250,e.slash=278,e.zero=500,e.one=500,e.two=500,e.three=500,e.four=500,e.five=500,e.six=500,e.seven=500,e.eight=500,e.nine=500,e.colon=278,e.semicolon=278,e.less=549,e.equal=549
 e.greater=549,e.question=444,e.congruent=549,e.Alpha=722,e.Beta=667,e.Chi=722,e.Delta=612,e.Epsilon=611,e.Phi=763,e.Gamma=603,e.Eta=722,e.Iota=333,e.theta1=631,e.Kappa=722,e.Lambda=686,e.Mu=889,e.Nu=722,e.Omicron=722,e.Pi=768,e.Theta=741,e.Rho=556,e.Sigma=592,e.Tau=611,e.Upsilon=690,e.sigma1=439,e.Omega=768,e.Xi=645,e.Psi=795,e.Zeta=611,e.bracketleft=333
 e.therefore=863,e.bracketright=333,e.perpendicular=658,e.underscore=500,e.radicalex=500,e.alpha=631,e.beta=549,e.chi=549,e.delta=494,e.epsilon=439,e.phi=521,e.gamma=411,e.eta=603,e.iota=329,e.phi1=603,e.kappa=549,e.lambda=549,e.mu=576,e.nu=521,e.omicron=549,e.pi=549,e.theta=521,e.rho=549,e.sigma=603,e.tau=439,e.upsilon=576,e.omega1=713,e.omega=686,e.xi=493,e.psi=686
 e.zeta=494,e.braceleft=480,e.bar=200,e.braceright=480,e.similar=549,e.Euro=750,e.Upsilon1=620,e.minute=247,e.lessequal=549,e.fraction=167,e.infinity=713,e.florin=500,e.club=753,e.diamond=753,e.heart=753,e.spade=753,e.arrowboth=1042,e.arrowleft=987,e.arrowup=603,e.arrowright=987,e.arrowdown=603,e.degree=400,e.plusminus=549,e.second=411,e.greaterequal=549,e.multiply=549,e.proportional=713,e.partialdiff=494,e.bullet=460,e.divide=549
 e.notequal=549,e.equivalence=549,e.approxequal=549,e.ellipsis=1e3,e.arrowvertex=603,e.arrowhorizex=1e3,e.carriagereturn=658,e.aleph=823,e.Ifraktur=686,e.Rfraktur=795,e.weierstrass=987,e.circlemultiply=768,e.circleplus=768,e.emptyset=823,e.intersection=768,e.union=768,e.propersuperset=713,e.reflexsuperset=713,e.notsubset=713,e.propersubset=713,e.reflexsubset=713,e.element=713,e.notelement=713,e.angle=768,e.gradient=713,e.registerserif=790,e.copyrightserif=790,e.trademarkserif=890,e.product=823,e.radical=549
 e.dotmath=250,e.logicalnot=713,e.logicaland=603,e.logicalor=603,e.arrowdblboth=1042,e.arrowdblleft=987,e.arrowdblup=603,e.arrowdblright=987,e.arrowdbldown=603,e.lozenge=494,e.angleleft=329,e.registersans=790,e.copyrightsans=790,e.trademarksans=786,e.summation=713,e.parenlefttp=384,e.parenleftex=384,e.parenleftbt=384,e.bracketlefttp=384,e.bracketleftex=384,e.bracketleftbt=384,e.bracelefttp=494,e.braceleftmid=494,e.braceleftbt=494,e.braceex=494,e.angleright=329,e.integral=274,e.integraltp=686,e.integralex=686,e.integralbt=686
-e.parenrighttp=384,e.parenrightex=384,e.parenrightbt=384,e.bracketrighttp=384,e.bracketrightex=384,e.bracketrightbt=384,e.bracerighttp=494,e.bracerightmid=494,e.bracerightbt=494,e.apple=790})),e["Times-Roman"]=(0,n.getLookupTableFactory)((function(e){e.space=250,e.exclam=333,e.quotedbl=408,e.numbersign=500,e.dollar=500,e.percent=833,e.ampersand=778,e.quoteright=333,e.parenleft=333,e.parenright=333,e.asterisk=500,e.plus=564,e.comma=250,e.hyphen=333,e.period=250,e.slash=278,e.zero=500,e.one=500,e.two=500,e.three=500,e.four=500,e.five=500,e.six=500,e.seven=500,e.eight=500,e.nine=500,e.colon=278,e.semicolon=278,e.less=564,e.equal=564
+e.parenrighttp=384,e.parenrightex=384,e.parenrightbt=384,e.bracketrighttp=384,e.bracketrightex=384,e.bracketrightbt=384,e.bracerighttp=494,e.bracerightmid=494,e.bracerightbt=494,e.apple=790}),e["Times-Roman"]=(0,n.getLookupTableFactory)(function(e){e.space=250,e.exclam=333,e.quotedbl=408,e.numbersign=500,e.dollar=500,e.percent=833,e.ampersand=778,e.quoteright=333,e.parenleft=333,e.parenright=333,e.asterisk=500,e.plus=564,e.comma=250,e.hyphen=333,e.period=250,e.slash=278,e.zero=500,e.one=500,e.two=500,e.three=500,e.four=500,e.five=500,e.six=500,e.seven=500,e.eight=500,e.nine=500,e.colon=278,e.semicolon=278,e.less=564,e.equal=564
 e.greater=564,e.question=444,e.at=921,e.A=722,e.B=667,e.C=667,e.D=722,e.E=611,e.F=556,e.G=722,e.H=722,e.I=333,e.J=389,e.K=722,e.L=611,e.M=889,e.N=722,e.O=722,e.P=556,e.Q=722,e.R=667,e.S=556,e.T=611,e.U=722,e.V=722,e.W=944,e.X=722,e.Y=722,e.Z=611,e.bracketleft=333
 e.backslash=278,e.bracketright=333,e.asciicircum=469,e.underscore=500,e.quoteleft=333,e.a=444,e.b=500,e.c=444,e.d=500,e.e=444,e.f=333,e.g=500,e.h=500,e.i=278,e.j=278,e.k=500,e.l=278,e.m=778,e.n=500,e.o=500,e.p=500,e.q=500,e.r=333,e.s=389,e.t=278,e.u=500,e.v=500,e.w=722,e.x=500,e.y=500
 e.z=444,e.braceleft=480,e.bar=200,e.braceright=480,e.asciitilde=541,e.exclamdown=333,e.cent=500,e.sterling=500,e.fraction=167,e.yen=500,e.florin=500,e.section=500,e.currency=500,e.quotesingle=180,e.quotedblleft=444,e.guillemotleft=500,e.guilsinglleft=333,e.guilsinglright=333,e.fi=556,e.fl=556,e.endash=500,e.dagger=500,e.daggerdbl=500,e.periodcentered=250,e.paragraph=453,e.bullet=350,e.quotesinglbase=333,e.quotedblbase=444,e.quotedblright=444,e.guillemotright=500
@@ -4720,7 +4721,7 @@ e.atilde=444,e.Edotaccent=611,e.scaron=389,e.scedilla=389,e.iacute=278,e.lozenge
 e.Nacute=722,e.icircumflex=278,e.Ecircumflex=611,e.adieresis=444,e.edieresis=444,e.cacute=444,e.nacute=500,e.umacron=500,e.Ncaron=722,e.Iacute=333,e.plusminus=564,e.brokenbar=200,e.registered=760,e.Gbreve=722,e.Idotaccent=333,e.summation=600,e.Egrave=611,e.racute=333,e.omacron=500,e.Zacute=611,e.Zcaron=611,e.greaterequal=549,e.Eth=722,e.Ccedilla=667,e.lcommaaccent=278,e.tcaron=326,e.eogonek=444,e.Uogonek=722,e.Aacute=722,e.Adieresis=722
 e.egrave=444,e.zacute=444,e.iogonek=278,e.Oacute=722,e.oacute=500,e.amacron=444,e.sacute=389,e.idieresis=278,e.Ocircumflex=722,e.Ugrave=722,e.Delta=612,e.thorn=500,e.twosuperior=300,e.Odieresis=722,e.mu=500,e.igrave=278,e.ohungarumlaut=500,e.Eogonek=611,e.dcroat=500,e.threequarters=750,e.Scedilla=556,e.lcaron=344,e.Kcommaaccent=722,e.Lacute=611,e.trademark=980,e.edotaccent=444,e.Igrave=333,e.Imacron=333,e.Lcaron=611,e.onehalf=750
 e.lessequal=549,e.ocircumflex=500,e.ntilde=500,e.Uhungarumlaut=722,e.Eacute=611,e.emacron=444,e.gbreve=500,e.onequarter=750,e.Scaron=556,e.Scommaaccent=556,e.Ohungarumlaut=722,e.degree=400,e.ograve=500,e.Ccaron=667,e.ugrave=500,e.radical=453,e.Dcaron=722,e.rcommaaccent=333,e.Ntilde=722,e.otilde=500,e.Rcommaaccent=667,e.Lcommaaccent=611,e.Atilde=722,e.Aogonek=722,e.Aring=722,e.Otilde=722,e.zdotaccent=444,e.Ecaron=611,e.Iogonek=333,e.kcommaaccent=500
-e.minus=564,e.Icircumflex=333,e.ncaron=500,e.tcommaaccent=278,e.logicalnot=564,e.odieresis=500,e.udieresis=500,e.notequal=549,e.gcommaaccent=500,e.eth=500,e.zcaron=444,e.ncommaaccent=500,e.onesuperior=300,e.imacron=278,e.Euro=500})),e["Times-Bold"]=(0,n.getLookupTableFactory)((function(e){e.space=250,e.exclam=333,e.quotedbl=555,e.numbersign=500,e.dollar=500,e.percent=1e3,e.ampersand=833,e.quoteright=333,e.parenleft=333,e.parenright=333,e.asterisk=500,e.plus=570,e.comma=250,e.hyphen=333,e.period=250,e.slash=278,e.zero=500,e.one=500,e.two=500,e.three=500,e.four=500,e.five=500,e.six=500,e.seven=500,e.eight=500,e.nine=500,e.colon=333,e.semicolon=333,e.less=570,e.equal=570
+e.minus=564,e.Icircumflex=333,e.ncaron=500,e.tcommaaccent=278,e.logicalnot=564,e.odieresis=500,e.udieresis=500,e.notequal=549,e.gcommaaccent=500,e.eth=500,e.zcaron=444,e.ncommaaccent=500,e.onesuperior=300,e.imacron=278,e.Euro=500}),e["Times-Bold"]=(0,n.getLookupTableFactory)(function(e){e.space=250,e.exclam=333,e.quotedbl=555,e.numbersign=500,e.dollar=500,e.percent=1e3,e.ampersand=833,e.quoteright=333,e.parenleft=333,e.parenright=333,e.asterisk=500,e.plus=570,e.comma=250,e.hyphen=333,e.period=250,e.slash=278,e.zero=500,e.one=500,e.two=500,e.three=500,e.four=500,e.five=500,e.six=500,e.seven=500,e.eight=500,e.nine=500,e.colon=333,e.semicolon=333,e.less=570,e.equal=570
 e.greater=570,e.question=500,e.at=930,e.A=722,e.B=667,e.C=722,e.D=722,e.E=667,e.F=611,e.G=778,e.H=778,e.I=389,e.J=500,e.K=778,e.L=667,e.M=944,e.N=722,e.O=778,e.P=611,e.Q=778,e.R=722,e.S=556,e.T=667,e.U=722,e.V=722,e.W=1e3,e.X=722,e.Y=722,e.Z=667,e.bracketleft=333
 e.backslash=278,e.bracketright=333,e.asciicircum=581,e.underscore=500,e.quoteleft=333,e.a=500,e.b=556,e.c=444,e.d=556,e.e=444,e.f=333,e.g=500,e.h=556,e.i=278,e.j=333,e.k=556,e.l=278,e.m=833,e.n=556,e.o=500,e.p=556,e.q=556,e.r=444,e.s=389,e.t=333,e.u=556,e.v=500,e.w=722,e.x=500,e.y=500
 e.z=444,e.braceleft=394,e.bar=220,e.braceright=394,e.asciitilde=520,e.exclamdown=333,e.cent=500,e.sterling=500,e.fraction=167,e.yen=500,e.florin=500,e.section=500,e.currency=500,e.quotesingle=278,e.quotedblleft=500,e.guillemotleft=500,e.guilsinglleft=333,e.guilsinglright=333,e.fi=556,e.fl=556,e.endash=500,e.dagger=500,e.daggerdbl=500,e.periodcentered=250,e.paragraph=540,e.bullet=350,e.quotesinglbase=333,e.quotedblbase=500,e.quotedblright=500,e.guillemotright=500
@@ -4730,7 +4731,7 @@ e.atilde=500,e.Edotaccent=667,e.scaron=389,e.scedilla=389,e.iacute=278,e.lozenge
 e.Nacute=722,e.icircumflex=278,e.Ecircumflex=667,e.adieresis=500,e.edieresis=444,e.cacute=444,e.nacute=556,e.umacron=556,e.Ncaron=722,e.Iacute=389,e.plusminus=570,e.brokenbar=220,e.registered=747,e.Gbreve=778,e.Idotaccent=389,e.summation=600,e.Egrave=667,e.racute=444,e.omacron=500,e.Zacute=667,e.Zcaron=667,e.greaterequal=549,e.Eth=722,e.Ccedilla=722,e.lcommaaccent=278,e.tcaron=416,e.eogonek=444,e.Uogonek=722,e.Aacute=722,e.Adieresis=722
 e.egrave=444,e.zacute=444,e.iogonek=278,e.Oacute=778,e.oacute=500,e.amacron=500,e.sacute=389,e.idieresis=278,e.Ocircumflex=778,e.Ugrave=722,e.Delta=612,e.thorn=556,e.twosuperior=300,e.Odieresis=778,e.mu=556,e.igrave=278,e.ohungarumlaut=500,e.Eogonek=667,e.dcroat=556,e.threequarters=750,e.Scedilla=556,e.lcaron=394,e.Kcommaaccent=778,e.Lacute=667,e.trademark=1e3,e.edotaccent=444,e.Igrave=389,e.Imacron=389,e.Lcaron=667,e.onehalf=750
 e.lessequal=549,e.ocircumflex=500,e.ntilde=556,e.Uhungarumlaut=722,e.Eacute=667,e.emacron=444,e.gbreve=500,e.onequarter=750,e.Scaron=556,e.Scommaaccent=556,e.Ohungarumlaut=778,e.degree=400,e.ograve=500,e.Ccaron=722,e.ugrave=556,e.radical=549,e.Dcaron=722,e.rcommaaccent=444,e.Ntilde=722,e.otilde=500,e.Rcommaaccent=722,e.Lcommaaccent=667,e.Atilde=722,e.Aogonek=722,e.Aring=722,e.Otilde=778,e.zdotaccent=444,e.Ecaron=667,e.Iogonek=389,e.kcommaaccent=556
-e.minus=570,e.Icircumflex=389,e.ncaron=556,e.tcommaaccent=333,e.logicalnot=570,e.odieresis=500,e.udieresis=556,e.notequal=549,e.gcommaaccent=500,e.eth=500,e.zcaron=444,e.ncommaaccent=556,e.onesuperior=300,e.imacron=278,e.Euro=500})),e["Times-BoldItalic"]=(0,n.getLookupTableFactory)((function(e){e.space=250,e.exclam=389,e.quotedbl=555,e.numbersign=500,e.dollar=500,e.percent=833,e.ampersand=778,e.quoteright=333,e.parenleft=333,e.parenright=333,e.asterisk=500,e.plus=570,e.comma=250,e.hyphen=333,e.period=250,e.slash=278,e.zero=500,e.one=500,e.two=500,e.three=500,e.four=500,e.five=500,e.six=500,e.seven=500,e.eight=500,e.nine=500,e.colon=333,e.semicolon=333,e.less=570,e.equal=570
+e.minus=570,e.Icircumflex=389,e.ncaron=556,e.tcommaaccent=333,e.logicalnot=570,e.odieresis=500,e.udieresis=556,e.notequal=549,e.gcommaaccent=500,e.eth=500,e.zcaron=444,e.ncommaaccent=556,e.onesuperior=300,e.imacron=278,e.Euro=500}),e["Times-BoldItalic"]=(0,n.getLookupTableFactory)(function(e){e.space=250,e.exclam=389,e.quotedbl=555,e.numbersign=500,e.dollar=500,e.percent=833,e.ampersand=778,e.quoteright=333,e.parenleft=333,e.parenright=333,e.asterisk=500,e.plus=570,e.comma=250,e.hyphen=333,e.period=250,e.slash=278,e.zero=500,e.one=500,e.two=500,e.three=500,e.four=500,e.five=500,e.six=500,e.seven=500,e.eight=500,e.nine=500,e.colon=333,e.semicolon=333,e.less=570,e.equal=570
 e.greater=570,e.question=500,e.at=832,e.A=667,e.B=667,e.C=667,e.D=722,e.E=667,e.F=667,e.G=722,e.H=778,e.I=389,e.J=500,e.K=667,e.L=611,e.M=889,e.N=722,e.O=722,e.P=611,e.Q=722,e.R=667,e.S=556,e.T=611,e.U=722,e.V=667,e.W=889,e.X=667,e.Y=611,e.Z=611,e.bracketleft=333
 e.backslash=278,e.bracketright=333,e.asciicircum=570,e.underscore=500,e.quoteleft=333,e.a=500,e.b=500,e.c=444,e.d=500,e.e=444,e.f=333,e.g=500,e.h=556,e.i=278,e.j=278,e.k=500,e.l=278,e.m=778,e.n=556,e.o=500,e.p=500,e.q=500,e.r=389,e.s=389,e.t=278,e.u=556,e.v=444,e.w=667,e.x=500,e.y=444
 e.z=389,e.braceleft=348,e.bar=220,e.braceright=348,e.asciitilde=570,e.exclamdown=389,e.cent=500,e.sterling=500,e.fraction=167,e.yen=500,e.florin=500,e.section=500,e.currency=500,e.quotesingle=278,e.quotedblleft=500,e.guillemotleft=500,e.guilsinglleft=333,e.guilsinglright=333,e.fi=556,e.fl=556,e.endash=500,e.dagger=500,e.daggerdbl=500,e.periodcentered=250,e.paragraph=500,e.bullet=350,e.quotesinglbase=333,e.quotedblbase=500,e.quotedblright=500,e.guillemotright=500
@@ -4740,7 +4741,7 @@ e.atilde=500,e.Edotaccent=667,e.scaron=389,e.scedilla=389,e.iacute=278,e.lozenge
 e.Nacute=722,e.icircumflex=278,e.Ecircumflex=667,e.adieresis=500,e.edieresis=444,e.cacute=444,e.nacute=556,e.umacron=556,e.Ncaron=722,e.Iacute=389,e.plusminus=570,e.brokenbar=220,e.registered=747,e.Gbreve=722,e.Idotaccent=389,e.summation=600,e.Egrave=667,e.racute=389,e.omacron=500,e.Zacute=611,e.Zcaron=611,e.greaterequal=549,e.Eth=722,e.Ccedilla=667,e.lcommaaccent=278,e.tcaron=366,e.eogonek=444,e.Uogonek=722,e.Aacute=667,e.Adieresis=667
 e.egrave=444,e.zacute=389,e.iogonek=278,e.Oacute=722,e.oacute=500,e.amacron=500,e.sacute=389,e.idieresis=278,e.Ocircumflex=722,e.Ugrave=722,e.Delta=612,e.thorn=500,e.twosuperior=300,e.Odieresis=722,e.mu=576,e.igrave=278,e.ohungarumlaut=500,e.Eogonek=667,e.dcroat=500,e.threequarters=750,e.Scedilla=556,e.lcaron=382,e.Kcommaaccent=667,e.Lacute=611,e.trademark=1e3,e.edotaccent=444,e.Igrave=389,e.Imacron=389,e.Lcaron=611,e.onehalf=750
 e.lessequal=549,e.ocircumflex=500,e.ntilde=556,e.Uhungarumlaut=722,e.Eacute=667,e.emacron=444,e.gbreve=500,e.onequarter=750,e.Scaron=556,e.Scommaaccent=556,e.Ohungarumlaut=722,e.degree=400,e.ograve=500,e.Ccaron=667,e.ugrave=556,e.radical=549,e.Dcaron=722,e.rcommaaccent=389,e.Ntilde=722,e.otilde=500,e.Rcommaaccent=667,e.Lcommaaccent=611,e.Atilde=667,e.Aogonek=667,e.Aring=667,e.Otilde=722,e.zdotaccent=389,e.Ecaron=667,e.Iogonek=389,e.kcommaaccent=500
-e.minus=606,e.Icircumflex=389,e.ncaron=556,e.tcommaaccent=278,e.logicalnot=606,e.odieresis=500,e.udieresis=556,e.notequal=549,e.gcommaaccent=500,e.eth=500,e.zcaron=389,e.ncommaaccent=556,e.onesuperior=300,e.imacron=278,e.Euro=500})),e["Times-Italic"]=(0,n.getLookupTableFactory)((function(e){e.space=250,e.exclam=333,e.quotedbl=420,e.numbersign=500,e.dollar=500,e.percent=833,e.ampersand=778,e.quoteright=333,e.parenleft=333,e.parenright=333,e.asterisk=500,e.plus=675,e.comma=250,e.hyphen=333,e.period=250,e.slash=278,e.zero=500,e.one=500,e.two=500,e.three=500,e.four=500,e.five=500,e.six=500,e.seven=500,e.eight=500,e.nine=500,e.colon=333,e.semicolon=333,e.less=675,e.equal=675
+e.minus=606,e.Icircumflex=389,e.ncaron=556,e.tcommaaccent=278,e.logicalnot=606,e.odieresis=500,e.udieresis=556,e.notequal=549,e.gcommaaccent=500,e.eth=500,e.zcaron=389,e.ncommaaccent=556,e.onesuperior=300,e.imacron=278,e.Euro=500}),e["Times-Italic"]=(0,n.getLookupTableFactory)(function(e){e.space=250,e.exclam=333,e.quotedbl=420,e.numbersign=500,e.dollar=500,e.percent=833,e.ampersand=778,e.quoteright=333,e.parenleft=333,e.parenright=333,e.asterisk=500,e.plus=675,e.comma=250,e.hyphen=333,e.period=250,e.slash=278,e.zero=500,e.one=500,e.two=500,e.three=500,e.four=500,e.five=500,e.six=500,e.seven=500,e.eight=500,e.nine=500,e.colon=333,e.semicolon=333,e.less=675,e.equal=675
 e.greater=675,e.question=500,e.at=920,e.A=611,e.B=611,e.C=667,e.D=722,e.E=611,e.F=611,e.G=722,e.H=722,e.I=333,e.J=444,e.K=667,e.L=556,e.M=833,e.N=667,e.O=722,e.P=611,e.Q=722,e.R=611,e.S=500,e.T=556,e.U=722,e.V=611,e.W=833,e.X=611,e.Y=556,e.Z=556,e.bracketleft=389
 e.backslash=278,e.bracketright=389,e.asciicircum=422,e.underscore=500,e.quoteleft=333,e.a=500,e.b=500,e.c=444,e.d=500,e.e=444,e.f=278,e.g=500,e.h=500,e.i=278,e.j=278,e.k=444,e.l=278,e.m=722,e.n=500,e.o=500,e.p=500,e.q=500,e.r=389,e.s=389,e.t=278,e.u=500,e.v=444,e.w=667,e.x=444,e.y=444
 e.z=389,e.braceleft=400,e.bar=275,e.braceright=400,e.asciitilde=541,e.exclamdown=389,e.cent=500,e.sterling=500,e.fraction=167,e.yen=500,e.florin=500,e.section=500,e.currency=500,e.quotesingle=214,e.quotedblleft=556,e.guillemotleft=500,e.guilsinglleft=333,e.guilsinglright=333,e.fi=500,e.fl=500,e.endash=500,e.dagger=500,e.daggerdbl=500,e.periodcentered=250,e.paragraph=523,e.bullet=350,e.quotesinglbase=333,e.quotedblbase=556,e.quotedblright=556,e.guillemotright=500
@@ -4750,15 +4751,15 @@ e.atilde=500,e.Edotaccent=611,e.scaron=389,e.scedilla=389,e.iacute=278,e.lozenge
 e.Nacute=667,e.icircumflex=278,e.Ecircumflex=611,e.adieresis=500,e.edieresis=444,e.cacute=444,e.nacute=500,e.umacron=500,e.Ncaron=667,e.Iacute=333,e.plusminus=675,e.brokenbar=275,e.registered=760,e.Gbreve=722,e.Idotaccent=333,e.summation=600,e.Egrave=611,e.racute=389,e.omacron=500,e.Zacute=556,e.Zcaron=556,e.greaterequal=549,e.Eth=722,e.Ccedilla=667,e.lcommaaccent=278,e.tcaron=300,e.eogonek=444,e.Uogonek=722,e.Aacute=611,e.Adieresis=611
 e.egrave=444,e.zacute=389,e.iogonek=278,e.Oacute=722,e.oacute=500,e.amacron=500,e.sacute=389,e.idieresis=278,e.Ocircumflex=722,e.Ugrave=722,e.Delta=612,e.thorn=500,e.twosuperior=300,e.Odieresis=722,e.mu=500,e.igrave=278,e.ohungarumlaut=500,e.Eogonek=611,e.dcroat=500,e.threequarters=750,e.Scedilla=500,e.lcaron=300,e.Kcommaaccent=667,e.Lacute=556,e.trademark=980,e.edotaccent=444,e.Igrave=333,e.Imacron=333,e.Lcaron=611,e.onehalf=750
 e.lessequal=549,e.ocircumflex=500,e.ntilde=500,e.Uhungarumlaut=722,e.Eacute=611,e.emacron=444,e.gbreve=500,e.onequarter=750,e.Scaron=500,e.Scommaaccent=500,e.Ohungarumlaut=722,e.degree=400,e.ograve=500,e.Ccaron=667,e.ugrave=500,e.radical=453,e.Dcaron=722,e.rcommaaccent=389,e.Ntilde=667,e.otilde=500,e.Rcommaaccent=611,e.Lcommaaccent=556,e.Atilde=611,e.Aogonek=611,e.Aring=611,e.Otilde=722,e.zdotaccent=389,e.Ecaron=611,e.Iogonek=333,e.kcommaaccent=444
-e.minus=675,e.Icircumflex=333,e.ncaron=500,e.tcommaaccent=278,e.logicalnot=675,e.odieresis=500,e.udieresis=500,e.notequal=549,e.gcommaaccent=500,e.eth=500,e.zcaron=389,e.ncommaaccent=500,e.onesuperior=300,e.imacron=278,e.Euro=500})),e.ZapfDingbats=(0,n.getLookupTableFactory)((function(e){e.space=278,e.a1=974,e.a2=961,e.a202=974,e.a3=980,e.a4=719,e.a5=789,e.a119=790,e.a118=791,e.a117=690,e.a11=960,e.a12=939,e.a13=549,e.a14=855,e.a15=911,e.a16=933,e.a105=911,e.a17=945,e.a18=974,e.a19=755,e.a20=846,e.a21=762,e.a22=761,e.a23=571,e.a24=677,e.a25=763,e.a26=760,e.a27=759,e.a28=754,e.a6=494
+e.minus=675,e.Icircumflex=333,e.ncaron=500,e.tcommaaccent=278,e.logicalnot=675,e.odieresis=500,e.udieresis=500,e.notequal=549,e.gcommaaccent=500,e.eth=500,e.zcaron=389,e.ncommaaccent=500,e.onesuperior=300,e.imacron=278,e.Euro=500}),e.ZapfDingbats=(0,n.getLookupTableFactory)(function(e){e.space=278,e.a1=974,e.a2=961,e.a202=974,e.a3=980,e.a4=719,e.a5=789,e.a119=790,e.a118=791,e.a117=690,e.a11=960,e.a12=939,e.a13=549,e.a14=855,e.a15=911,e.a16=933,e.a105=911,e.a17=945,e.a18=974,e.a19=755,e.a20=846,e.a21=762,e.a22=761,e.a23=571,e.a24=677,e.a25=763,e.a26=760,e.a27=759,e.a28=754,e.a6=494
 e.a7=552,e.a8=537,e.a9=577,e.a10=692,e.a29=786,e.a30=788,e.a31=788,e.a32=790,e.a33=793,e.a34=794,e.a35=816,e.a36=823,e.a37=789,e.a38=841,e.a39=823,e.a40=833,e.a41=816,e.a42=831,e.a43=923,e.a44=744,e.a45=723,e.a46=749,e.a47=790,e.a48=792,e.a49=695,e.a50=776,e.a51=768,e.a52=792,e.a53=759,e.a54=707
 e.a55=708,e.a56=682,e.a57=701,e.a58=826,e.a59=815,e.a60=789,e.a61=789,e.a62=707,e.a63=687,e.a64=696,e.a65=689,e.a66=786,e.a67=787,e.a68=713,e.a69=791,e.a70=785,e.a71=791,e.a72=873,e.a73=761,e.a74=762,e.a203=762,e.a75=759,e.a204=759,e.a76=892,e.a77=892,e.a78=788,e.a79=784,e.a81=438,e.a82=138,e.a83=277
 e.a84=415,e.a97=392,e.a98=392,e.a99=668,e.a100=668,e.a89=390,e.a90=390,e.a93=317,e.a94=317,e.a91=276,e.a92=276,e.a205=509,e.a85=509,e.a206=410,e.a86=410,e.a87=234,e.a88=234,e.a95=334,e.a96=334,e.a101=732,e.a102=544,e.a103=544,e.a104=910,e.a106=667,e.a107=760,e.a108=760,e.a112=776,e.a111=595,e.a110=694,e.a109=626
 e.a120=788,e.a121=788,e.a122=788,e.a123=788,e.a124=788,e.a125=788,e.a126=788,e.a127=788,e.a128=788,e.a129=788,e.a130=788,e.a131=788,e.a132=788,e.a133=788,e.a134=788,e.a135=788,e.a136=788,e.a137=788,e.a138=788,e.a139=788,e.a140=788,e.a141=788,e.a142=788,e.a143=788,e.a144=788,e.a145=788,e.a146=788,e.a147=788,e.a148=788,e.a149=788
 e.a150=788,e.a151=788,e.a152=788,e.a153=788,e.a154=788,e.a155=788,e.a156=788,e.a157=788,e.a158=788,e.a159=788,e.a160=894,e.a161=838,e.a163=1016,e.a164=458,e.a196=748,e.a165=924,e.a192=748,e.a166=918,e.a167=927,e.a168=928,e.a169=928,e.a170=834,e.a171=873,e.a172=828,e.a173=924,e.a162=924,e.a174=917,e.a175=930,e.a176=931,e.a177=463
-e.a178=883,e.a179=836,e.a193=836,e.a180=867,e.a199=867,e.a181=696,e.a200=696,e.a182=874,e.a201=874,e.a183=760,e.a184=946,e.a197=771,e.a185=865,e.a194=771,e.a198=888,e.a186=967,e.a195=888,e.a187=831,e.a188=873,e.a189=927,e.a190=970,e.a191=918}))}))
+e.a178=883,e.a179=836,e.a193=836,e.a180=867,e.a199=867,e.a181=696,e.a200=696,e.a182=874,e.a201=874,e.a183=760,e.a184=946,e.a197=771,e.a185=865,e.a194=771,e.a198=888,e.a186=967,e.a195=888,e.a187=831,e.a188=873,e.a189=927,e.a190=970,e.a191=918})})
 t.getMetrics=r
-const i=(0,n.getLookupTableFactory)((function(e){e.Courier={ascent:629,descent:-157,capHeight:562,xHeight:-426},e["Courier-Bold"]={ascent:629,descent:-157,capHeight:562,xHeight:439},e["Courier-Oblique"]={ascent:629,descent:-157,capHeight:562,xHeight:426},e["Courier-BoldOblique"]={ascent:629,descent:-157,capHeight:562,xHeight:426},e.Helvetica={ascent:718,descent:-207,capHeight:718,xHeight:523},e["Helvetica-Bold"]={ascent:718,descent:-207,capHeight:718,xHeight:532},e["Helvetica-Oblique"]={ascent:718,descent:-207,capHeight:718,xHeight:523},e["Helvetica-BoldOblique"]={ascent:718,descent:-207,capHeight:718,xHeight:532},e["Times-Roman"]={ascent:683,descent:-217,capHeight:662,xHeight:450},e["Times-Bold"]={ascent:683,descent:-217,capHeight:676,xHeight:461},e["Times-Italic"]={ascent:683,descent:-217,capHeight:653,xHeight:441},e["Times-BoldItalic"]={ascent:683,descent:-217,capHeight:669,xHeight:462},e.Symbol={ascent:Math.NaN,descent:Math.NaN,capHeight:Math.NaN,xHeight:Math.NaN},e.ZapfDingbats={ascent:Math.NaN,descent:Math.NaN,capHeight:Math.NaN,xHeight:Math.NaN}}))
+const i=(0,n.getLookupTableFactory)(function(e){e.Courier={ascent:629,descent:-157,capHeight:562,xHeight:-426},e["Courier-Bold"]={ascent:629,descent:-157,capHeight:562,xHeight:439},e["Courier-Oblique"]={ascent:629,descent:-157,capHeight:562,xHeight:426},e["Courier-BoldOblique"]={ascent:629,descent:-157,capHeight:562,xHeight:426},e.Helvetica={ascent:718,descent:-207,capHeight:718,xHeight:523},e["Helvetica-Bold"]={ascent:718,descent:-207,capHeight:718,xHeight:532},e["Helvetica-Oblique"]={ascent:718,descent:-207,capHeight:718,xHeight:523},e["Helvetica-BoldOblique"]={ascent:718,descent:-207,capHeight:718,xHeight:532},e["Times-Roman"]={ascent:683,descent:-217,capHeight:662,xHeight:450},e["Times-Bold"]={ascent:683,descent:-217,capHeight:676,xHeight:461},e["Times-Italic"]={ascent:683,descent:-217,capHeight:653,xHeight:441},e["Times-BoldItalic"]={ascent:683,descent:-217,capHeight:669,xHeight:462},e.Symbol={ascent:Math.NaN,descent:Math.NaN,capHeight:Math.NaN,xHeight:Math.NaN},e.ZapfDingbats={ascent:Math.NaN,descent:Math.NaN,capHeight:Math.NaN,xHeight:Math.NaN}})
 t.getFontBasicMetrics=i},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.GlyfTable=void 0
 t.GlyfTable=class{constructor({glyfTable:e,isGlyphLocationsLong:t,locaTable:n,numGlyphs:r}){this.glyphs=[]
 const i=new DataView(n.buffer,n.byteOffset,n.byteLength),s=new DataView(e.buffer,e.byteOffset,e.byteLength),o=t?4:2
@@ -4767,7 +4768,7 @@ for(let h=0;h<r;h++){l+=o
 const e=t?i.getUint32(l):2*i.getUint16(l)
 if(e===c){this.glyphs.push(new a({}))
 continue}const n=a.parse(c,s)
-this.glyphs.push(n),c=e}}getSize(){return this.glyphs.reduce(((e,t)=>e+(t.getSize()+3&-4)),0)}write(){const e=this.getSize(),t=new DataView(new ArrayBuffer(e)),a=e>131070,n=a?4:2,r=new DataView(new ArrayBuffer((this.glyphs.length+1)*n))
+this.glyphs.push(n),c=e}}getSize(){return this.glyphs.reduce((e,t)=>e+(t.getSize()+3&-4),0)}write(){const e=this.getSize(),t=new DataView(new ArrayBuffer(e)),a=e>131070,n=a?4:2,r=new DataView(new ArrayBuffer((this.glyphs.length+1)*n))
 a?r.setUint32(0,0):r.setUint16(0,0)
 let i=0,s=0
 for(const o of this.glyphs)i+=o.write(i,t),i=i+3&-4,s+=n,a?r.setUint32(s,i):r.setUint16(s,i>>1)
@@ -4777,7 +4778,7 @@ if(e+=r,o.numberOfContours<0){const n=[]
 for(;;){const[a,r]=s.parse(e,t)
 if(e+=a,n.push(r),!(32&r.flags))break}return new a({header:o,composites:n})}const c=i.parse(e,t,o.numberOfContours)
 return new a({header:o,simple:c})}getSize(){if(!this.header)return 0
-const e=this.simple?this.simple.getSize():this.composites.reduce(((e,t)=>e+t.getSize()),0)
+const e=this.simple?this.simple.getSize():this.composites.reduce((e,t)=>e+t.getSize(),0)
 return this.header.getSize()+e}write(e,t){if(!this.header)return 0
 const a=e
 if(e+=this.header.write(e,t),this.simple)e+=this.simple.write(e,t)
@@ -4873,9 +4874,9 @@ try{i=e.getBytes(t),s=i.length}catch{}if(s===t&&(c=l(i,a,t-2*a.length),c.found&&
 for((0,r.warn)('Invalid "Length1" property in Type1 font -- trying to recover.'),e.pos=n;c=l(e.peekBytes(2048),a,0),0!==c.length;)if(e.pos+=c.length,c.found){h=e.pos-n
 break}return e.pos=n,h?{stream:new o.Stream(e.getBytes(h)),length:h}:((0,r.warn)('Unable to recover "Length1" property in Type1 font -- using as is.'),{stream:new o.Stream(e.getBytes(t)),length:t})}(t,n)
 new c.Type1Parser(d.stream,!1,i.SEAC_ANALYSIS_ENABLED).extractFontHeader(a),u&&(h=t.getBytes(6),s=h[5]<<24|h[4]<<16|h[3]<<8|h[2])
-const f=function(e,t){const a=e.getBytes()
-if(0===a.length)throw new r.FormatError("getEexecBlock - no font program found.")
-return{stream:new o.Stream(a),length:a.length}}(t),g=new c.Type1Parser(f.stream,!0,i.SEAC_ANALYSIS_ENABLED).extractFontProgram(a)
+const f=function(e){const t=e.getBytes()
+if(0===t.length)throw new r.FormatError("getEexecBlock - no font program found.")
+return{stream:new o.Stream(t),length:t.length}}(t),g=new c.Type1Parser(f.stream,!0,i.SEAC_ANALYSIS_ENABLED).extractFontProgram(a)
 for(const r in g.properties)a[r]=g.properties[r]
 const p=g.charstrings,m=this.getType2Charstrings(p),b=this.getType2Subrs(g.subrs)
 this.charstrings=p,this.data=this.wrap(e,m,this.charstrings,b,a),this.seacs=this.getSeacs(g.charstrings)}get numGlyphs(){return this.charstrings.length+1}getCharset(){const e=[".notdef"]
@@ -4983,7 +4984,7 @@ if(0===y&&3===A){const e=this.stack.splice(-17,17)
 this.stack.push(e[2]+e[0],e[3]+e[1],e[4],e[5],e[6],e[7],e[8],e[9],e[10],e[11],e[12],e[13],e[14]),w=this.executeCommand(13,d,!0),this.flexing=!1,this.stack.push(e[15],e[16])}else 1===y&&0===A&&(this.flexing=!0)
 break
 case 3089:break
-default:(0,s.warn)('Unknown type 1 charstring command of "'+n+'"')}if(w)break}else n<=246?n-=139:n=n<=250?256*(n-247)+e[++x]+108:n<=254?-256*(n-251)-e[++x]-108:(255&e[++x])<<24|(255&e[++x])<<16|(255&e[++x])<<8|(255&e[++x])<<0,this.stack.push(n)}return w}executeCommand(e,t,a){const n=this.stack.length
+default:(0,s.warn)('Unknown type 1 charstring command of "'+n+'"')}if(w)break}else n<=246?n-=139:n=n<=250?256*(n-247)+e[++x]+108:n<=254?-256*(n-251)-e[++x]-108:(255&e[++x])<<24|(255&e[++x])<<16|(255&e[++x])<<8|255&e[++x],this.stack.push(n)}return w}executeCommand(e,t,a){const n=this.stack.length
 if(e>n)return!0
 const r=n-e
 for(let i=r;i<n;i++){let e=this.stack[i]
@@ -5063,7 +5064,7 @@ e.builtInEncoding=i
 break
 case"FontBBox":const s=this.readNumberArray()
 e.ascent=Math.max(s[3],s[1]),e.descent=Math.min(s[1],s[3]),e.ascentScaled=!0}}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Pattern=void 0,t.clearPatternCaches=function(){m=Object.create(null)},t.getTilingPatternIR=function(e,t,a){const r=t.getArray("Matrix"),i=n.Util.normalizeRect(t.getArray("BBox")),s=t.get("XStep"),o=t.get("YStep"),c=t.get("PaintType"),l=t.get("TilingType")
-if(i[2]-i[0]==0||i[3]-i[1]==0)throw new n.FormatError(`Invalid getTilingPatternIR /BBox array: [${i}].`)
+if(i[2]-i[0]===0||i[3]-i[1]===0)throw new n.FormatError(`Invalid getTilingPatternIR /BBox array: [${i}].`)
 return["TilingPattern",a,e,r,i,s,o,c,l]}
 var n=a(2),r=a(5),i=a(12),s=a(3)
 const o=2,c=3,l=4,h=5,u=6,d=7
@@ -5213,10 +5214,10 @@ const c=this.figures
 for(e=0,t=c.length;e<t;e++){const t=c[e],r=t.coords,i=t.colors
 for(a=0,n=r.length;a<n;a++)r[a]*=2,i[a]*=3}}getIR(){return["Mesh",this.shadingType,this.coords,this.colors,this.figures,this.bounds,this.bbox,this.background]}}class w extends f{getIR(){return["Dummy"]}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.getXfaFontDict=function(e){const t=function(e){const t=d(e)
 if(!t)return null
-const{baseWidths:a,baseMapping:n,factors:r}=t,i=r?a.map(((e,t)=>e*r[t])):a
+const{baseWidths:a,baseMapping:n,factors:r}=t,i=r?a.map((e,t)=>e*r[t]):a
 let s,o=-2
 const c=[]
-for(const[l,h]of n.map(((e,t)=>[e,t])).sort((([e],[t])=>e-t)))-1!==l&&(l===o+1?(s.push(i[h]),o+=1):(o=l,s=[i[h]],c.push(l,s)))
+for(const[l,h]of n.map((e,t)=>[e,t]).sort(([e],[t])=>e-t))-1!==l&&(l===o+1?(s.push(i[h]),o+=1):(o=l,s=[i[h]],c.push(l,s)))
 return c}(e),a=new r.Dict(null)
 a.set("BaseFont",r.Name.get(e)),a.set("Type",r.Name.get("Font")),a.set("Subtype",r.Name.get("CIDFontType2")),a.set("Encoding",r.Name.get("Identity-H")),a.set("CIDToGIDMap",r.Name.get("Identity")),a.set("W",t),a.set("FirstChar",t[0]),a.set("LastChar",t.at(-2)+t.at(-1).length-1)
 const n=new r.Dict(null)
@@ -5224,7 +5225,7 @@ a.set("FontDescriptor",n)
 const i=new r.Dict(null)
 return i.set("Ordering","Identity"),i.set("Registry","Adobe"),i.set("Supplement",0),a.set("CIDSystemInfo",i),a},t.getXfaFontName=d
 var n=a(52),r=a(4),i=a(53),s=a(54),o=a(55),c=a(56),l=a(3),h=a(38)
-const u=(0,l.getLookupTableFactory)((function(e){e["MyriadPro-Regular"]=e["PdfJS-Fallback-Regular"]={name:"LiberationSans-Regular",factors:o.MyriadProRegularFactors,baseWidths:s.LiberationSansRegularWidths,baseMapping:s.LiberationSansRegularMapping,metrics:o.MyriadProRegularMetrics},e["MyriadPro-Bold"]=e["PdfJS-Fallback-Bold"]={name:"LiberationSans-Bold",factors:o.MyriadProBoldFactors,baseWidths:s.LiberationSansBoldWidths,baseMapping:s.LiberationSansBoldMapping,metrics:o.MyriadProBoldMetrics},e["MyriadPro-It"]=e["MyriadPro-Italic"]=e["PdfJS-Fallback-Italic"]={name:"LiberationSans-Italic",factors:o.MyriadProItalicFactors,baseWidths:s.LiberationSansItalicWidths,baseMapping:s.LiberationSansItalicMapping,metrics:o.MyriadProItalicMetrics},e["MyriadPro-BoldIt"]=e["MyriadPro-BoldItalic"]=e["PdfJS-Fallback-BoldItalic"]={name:"LiberationSans-BoldItalic",factors:o.MyriadProBoldItalicFactors,baseWidths:s.LiberationSansBoldItalicWidths,baseMapping:s.LiberationSansBoldItalicMapping,metrics:o.MyriadProBoldItalicMetrics},e.ArialMT=e.Arial=e["Arial-Regular"]={name:"LiberationSans-Regular",baseWidths:s.LiberationSansRegularWidths,baseMapping:s.LiberationSansRegularMapping},e["Arial-BoldMT"]=e["Arial-Bold"]={name:"LiberationSans-Bold",baseWidths:s.LiberationSansBoldWidths,baseMapping:s.LiberationSansBoldMapping},e["Arial-ItalicMT"]=e["Arial-Italic"]={name:"LiberationSans-Italic",baseWidths:s.LiberationSansItalicWidths,baseMapping:s.LiberationSansItalicMapping},e["Arial-BoldItalicMT"]=e["Arial-BoldItalic"]={name:"LiberationSans-BoldItalic",baseWidths:s.LiberationSansBoldItalicWidths,baseMapping:s.LiberationSansBoldItalicMapping},e["Calibri-Regular"]={name:"LiberationSans-Regular",factors:n.CalibriRegularFactors,baseWidths:s.LiberationSansRegularWidths,baseMapping:s.LiberationSansRegularMapping,metrics:n.CalibriRegularMetrics},e["Calibri-Bold"]={name:"LiberationSans-Bold",factors:n.CalibriBoldFactors,baseWidths:s.LiberationSansBoldWidths,baseMapping:s.LiberationSansBoldMapping,metrics:n.CalibriBoldMetrics},e["Calibri-Italic"]={name:"LiberationSans-Italic",factors:n.CalibriItalicFactors,baseWidths:s.LiberationSansItalicWidths,baseMapping:s.LiberationSansItalicMapping,metrics:n.CalibriItalicMetrics},e["Calibri-BoldItalic"]={name:"LiberationSans-BoldItalic",factors:n.CalibriBoldItalicFactors,baseWidths:s.LiberationSansBoldItalicWidths,baseMapping:s.LiberationSansBoldItalicMapping,metrics:n.CalibriBoldItalicMetrics},e["Segoeui-Regular"]={name:"LiberationSans-Regular",factors:c.SegoeuiRegularFactors,baseWidths:s.LiberationSansRegularWidths,baseMapping:s.LiberationSansRegularMapping,metrics:c.SegoeuiRegularMetrics},e["Segoeui-Bold"]={name:"LiberationSans-Bold",factors:c.SegoeuiBoldFactors,baseWidths:s.LiberationSansBoldWidths,baseMapping:s.LiberationSansBoldMapping,metrics:c.SegoeuiBoldMetrics},e["Segoeui-Italic"]={name:"LiberationSans-Italic",factors:c.SegoeuiItalicFactors,baseWidths:s.LiberationSansItalicWidths,baseMapping:s.LiberationSansItalicMapping,metrics:c.SegoeuiItalicMetrics},e["Segoeui-BoldItalic"]={name:"LiberationSans-BoldItalic",factors:c.SegoeuiBoldItalicFactors,baseWidths:s.LiberationSansBoldItalicWidths,baseMapping:s.LiberationSansBoldItalicMapping,metrics:c.SegoeuiBoldItalicMetrics},e["Helvetica-Regular"]=e.Helvetica={name:"LiberationSans-Regular",factors:i.HelveticaRegularFactors,baseWidths:s.LiberationSansRegularWidths,baseMapping:s.LiberationSansRegularMapping,metrics:i.HelveticaRegularMetrics},e["Helvetica-Bold"]={name:"LiberationSans-Bold",factors:i.HelveticaBoldFactors,baseWidths:s.LiberationSansBoldWidths,baseMapping:s.LiberationSansBoldMapping,metrics:i.HelveticaBoldMetrics},e["Helvetica-Italic"]={name:"LiberationSans-Italic",factors:i.HelveticaItalicFactors,baseWidths:s.LiberationSansItalicWidths,baseMapping:s.LiberationSansItalicMapping,metrics:i.HelveticaItalicMetrics},e["Helvetica-BoldItalic"]={name:"LiberationSans-BoldItalic",factors:i.HelveticaBoldItalicFactors,baseWidths:s.LiberationSansBoldItalicWidths,baseMapping:s.LiberationSansBoldItalicMapping,metrics:i.HelveticaBoldItalicMetrics}}))
+const u=(0,l.getLookupTableFactory)(function(e){e["MyriadPro-Regular"]=e["PdfJS-Fallback-Regular"]={name:"LiberationSans-Regular",factors:o.MyriadProRegularFactors,baseWidths:s.LiberationSansRegularWidths,baseMapping:s.LiberationSansRegularMapping,metrics:o.MyriadProRegularMetrics},e["MyriadPro-Bold"]=e["PdfJS-Fallback-Bold"]={name:"LiberationSans-Bold",factors:o.MyriadProBoldFactors,baseWidths:s.LiberationSansBoldWidths,baseMapping:s.LiberationSansBoldMapping,metrics:o.MyriadProBoldMetrics},e["MyriadPro-It"]=e["MyriadPro-Italic"]=e["PdfJS-Fallback-Italic"]={name:"LiberationSans-Italic",factors:o.MyriadProItalicFactors,baseWidths:s.LiberationSansItalicWidths,baseMapping:s.LiberationSansItalicMapping,metrics:o.MyriadProItalicMetrics},e["MyriadPro-BoldIt"]=e["MyriadPro-BoldItalic"]=e["PdfJS-Fallback-BoldItalic"]={name:"LiberationSans-BoldItalic",factors:o.MyriadProBoldItalicFactors,baseWidths:s.LiberationSansBoldItalicWidths,baseMapping:s.LiberationSansBoldItalicMapping,metrics:o.MyriadProBoldItalicMetrics},e.ArialMT=e.Arial=e["Arial-Regular"]={name:"LiberationSans-Regular",baseWidths:s.LiberationSansRegularWidths,baseMapping:s.LiberationSansRegularMapping},e["Arial-BoldMT"]=e["Arial-Bold"]={name:"LiberationSans-Bold",baseWidths:s.LiberationSansBoldWidths,baseMapping:s.LiberationSansBoldMapping},e["Arial-ItalicMT"]=e["Arial-Italic"]={name:"LiberationSans-Italic",baseWidths:s.LiberationSansItalicWidths,baseMapping:s.LiberationSansItalicMapping},e["Arial-BoldItalicMT"]=e["Arial-BoldItalic"]={name:"LiberationSans-BoldItalic",baseWidths:s.LiberationSansBoldItalicWidths,baseMapping:s.LiberationSansBoldItalicMapping},e["Calibri-Regular"]={name:"LiberationSans-Regular",factors:n.CalibriRegularFactors,baseWidths:s.LiberationSansRegularWidths,baseMapping:s.LiberationSansRegularMapping,metrics:n.CalibriRegularMetrics},e["Calibri-Bold"]={name:"LiberationSans-Bold",factors:n.CalibriBoldFactors,baseWidths:s.LiberationSansBoldWidths,baseMapping:s.LiberationSansBoldMapping,metrics:n.CalibriBoldMetrics},e["Calibri-Italic"]={name:"LiberationSans-Italic",factors:n.CalibriItalicFactors,baseWidths:s.LiberationSansItalicWidths,baseMapping:s.LiberationSansItalicMapping,metrics:n.CalibriItalicMetrics},e["Calibri-BoldItalic"]={name:"LiberationSans-BoldItalic",factors:n.CalibriBoldItalicFactors,baseWidths:s.LiberationSansBoldItalicWidths,baseMapping:s.LiberationSansBoldItalicMapping,metrics:n.CalibriBoldItalicMetrics},e["Segoeui-Regular"]={name:"LiberationSans-Regular",factors:c.SegoeuiRegularFactors,baseWidths:s.LiberationSansRegularWidths,baseMapping:s.LiberationSansRegularMapping,metrics:c.SegoeuiRegularMetrics},e["Segoeui-Bold"]={name:"LiberationSans-Bold",factors:c.SegoeuiBoldFactors,baseWidths:s.LiberationSansBoldWidths,baseMapping:s.LiberationSansBoldMapping,metrics:c.SegoeuiBoldMetrics},e["Segoeui-Italic"]={name:"LiberationSans-Italic",factors:c.SegoeuiItalicFactors,baseWidths:s.LiberationSansItalicWidths,baseMapping:s.LiberationSansItalicMapping,metrics:c.SegoeuiItalicMetrics},e["Segoeui-BoldItalic"]={name:"LiberationSans-BoldItalic",factors:c.SegoeuiBoldItalicFactors,baseWidths:s.LiberationSansBoldItalicWidths,baseMapping:s.LiberationSansBoldItalicMapping,metrics:c.SegoeuiBoldItalicMetrics},e["Helvetica-Regular"]=e.Helvetica={name:"LiberationSans-Regular",factors:i.HelveticaRegularFactors,baseWidths:s.LiberationSansRegularWidths,baseMapping:s.LiberationSansRegularMapping,metrics:i.HelveticaRegularMetrics},e["Helvetica-Bold"]={name:"LiberationSans-Bold",factors:i.HelveticaBoldFactors,baseWidths:s.LiberationSansBoldWidths,baseMapping:s.LiberationSansBoldMapping,metrics:i.HelveticaBoldMetrics},e["Helvetica-Italic"]={name:"LiberationSans-Italic",factors:i.HelveticaItalicFactors,baseWidths:s.LiberationSansItalicWidths,baseMapping:s.LiberationSansItalicMapping,metrics:i.HelveticaItalicMetrics},e["Helvetica-BoldItalic"]={name:"LiberationSans-BoldItalic",factors:i.HelveticaBoldItalicFactors,baseWidths:s.LiberationSansBoldItalicWidths,baseMapping:s.LiberationSansBoldItalicMapping,metrics:i.HelveticaBoldItalicMetrics}})
 function d(e){const t=(0,h.normalizeFontName)(e)
 return u()[t]}},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.CalibriRegularMetrics=t.CalibriRegularFactors=t.CalibriItalicMetrics=t.CalibriItalicFactors=t.CalibriBoldMetrics=t.CalibriBoldItalicMetrics=t.CalibriBoldItalicFactors=t.CalibriBoldFactors=void 0
 t.CalibriBoldFactors=[1.3877,1,1,1,.97801,.92482,.89552,.91133,.81988,.97566,.98152,.93548,.93548,1.2798,.85284,.92794,1,.96134,1.54657,.91133,.91133,.91133,.91133,.91133,.91133,.91133,.91133,.91133,.91133,.82845,.82845,.85284,.85284,.85284,.75859,.92138,.83908,.7762,.73293,.87289,.73133,.7514,.81921,.87356,.95958,.59526,.75727,.69225,1.04924,.9121,.86943,.79795,.88198,.77958,.70864,.81055,.90399,.88653,.96017,.82577,.77892,.78257,.97507,1.54657,.97507,.85284,.89552,.90176,.88762,.8785,.75241,.8785,.90518,.95015,.77618,.8785,.88401,.91916,.86304,.88401,.91488,.8785,.8801,.8785,.8785,.91343,.7173,1.04106,.8785,.85075,.95794,.82616,.85162,.79492,.88331,1.69808,.88331,.85284,.97801,.89552,.91133,.89552,.91133,1.7801,.89552,1.24487,1.13254,1.12401,.96839,.85284,.68787,.70645,.85592,.90747,1.01466,1.0088,.90323,1,1.07463,1,.91056,.75806,1.19118,.96839,.78864,.82845,.84133,.75859,.83908,.83908,.83908,.83908,.83908,.83908,.77539,.73293,.73133,.73133,.73133,.73133,.95958,.95958,.95958,.95958,.88506,.9121,.86943,.86943,.86943,.86943,.86943,.85284,.87508,.90399,.90399,.90399,.90399,.77892,.79795,.90807,.88762,.88762,.88762,.88762,.88762,.88762,.8715,.75241,.90518,.90518,.90518,.90518,.88401,.88401,.88401,.88401,.8785,.8785,.8801,.8801,.8801,.8801,.8801,.90747,.89049,.8785,.8785,.8785,.8785,.85162,.8785,.85162,.83908,.88762,.83908,.88762,.83908,.88762,.73293,.75241,.73293,.75241,.73293,.75241,.73293,.75241,.87289,.83016,.88506,.93125,.73133,.90518,.73133,.90518,.73133,.90518,.73133,.90518,.73133,.90518,.81921,.77618,.81921,.77618,.81921,.77618,1,1,.87356,.8785,.91075,.89608,.95958,.88401,.95958,.88401,.95958,.88401,.95958,.88401,.95958,.88401,.76229,.90167,.59526,.91916,1,1,.86304,.69225,.88401,1,1,.70424,.79468,.91926,.88175,.70823,.94903,.9121,.8785,1,1,.9121,.8785,.87802,.88656,.8785,.86943,.8801,.86943,.8801,.86943,.8801,.87402,.89291,.77958,.91343,1,1,.77958,.91343,.70864,.7173,.70864,.7173,.70864,.7173,.70864,.7173,1,1,.81055,.75841,.81055,1.06452,.90399,.8785,.90399,.8785,.90399,.8785,.90399,.8785,.90399,.8785,.90399,.8785,.96017,.95794,.77892,.85162,.77892,.78257,.79492,.78257,.79492,.78257,.79492,.9297,.56892,.83908,.88762,.77539,.8715,.87508,.89049,1,1,.81055,1.04106,1.20528,1.20528,1,1.15543,.70674,.98387,.94721,1.33431,1.45894,.95161,1.06303,.83908,.80352,.57184,.6965,.56289,.82001,.56029,.81235,1.02988,.83908,.7762,.68156,.80367,.73133,.78257,.87356,.86943,.95958,.75727,.89019,1.04924,.9121,.7648,.86943,.87356,.79795,.78275,.81055,.77892,.9762,.82577,.99819,.84896,.95958,.77892,.96108,1.01407,.89049,1.02988,.94211,.96108,.8936,.84021,.87842,.96399,.79109,.89049,1.00813,1.02988,.86077,.87445,.92099,.84723,.86513,.8801,.75638,.85714,.78216,.79586,.87965,.94211,.97747,.78287,.97926,.84971,1.02988,.94211,.8801,.94211,.84971,.73133,1,1,1,1,1,1,1,1,1,1,1,1,.90264,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,.90518,1,1,1,1,1,1,1,1,1,1,1,1,.90548,1,1,1,1,1,1,.96017,.95794,.96017,.95794,.96017,.95794,.77892,.85162,1,1,.89552,.90527,1,.90363,.92794,.92794,.92794,.92794,.87012,.87012,.87012,.89552,.89552,1.42259,.71143,1.06152,1,1,1.03372,1.03372,.97171,1.4956,2.2807,.93835,.83406,.91133,.84107,.91133,1,1,1,.72021,1,1.23108,.83489,.88525,.88525,.81499,.90527,1.81055,.90527,1.81055,1.31006,1.53711,.94434,1.08696,1,.95018,.77192,.85284,.90747,1.17534,.69825,.9716,1.37077,.90747,.90747,.85356,.90747,.90747,1.44947,.85284,.8941,.8941,.70572,.8,.70572,.70572,.70572,.70572,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,.99862,.99862,1,1,1,1,1,1.08004,.91027,1,1,1,.99862,1,1,1,1,1,1,1,1,1,1,1,1,.90727,.90727,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
@@ -5606,7 +5607,7 @@ e>=0&&h(d,e,w.length)}for(m=0,b=d.length;m<b;++m){const e=d[m]
 "<"!==e&&">"!==e||(d[m]="")}return u(d.join(""),g)}
 var n=a(2)
 const r=["BN","BN","BN","BN","BN","BN","BN","BN","BN","S","B","S","WS","B","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","B","B","B","S","WS","ON","ON","ET","ET","ET","ON","ON","ON","ON","ON","ES","CS","ES","CS","CS","EN","EN","EN","EN","EN","EN","EN","EN","EN","EN","CS","ON","ON","ON","ON","ON","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","ON","ON","ON","ON","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","ON","ON","ON","BN","BN","BN","BN","BN","BN","B","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","BN","CS","ON","ET","ET","ET","ET","ON","ON","ON","ON","L","ON","ON","BN","ON","ON","ET","ET","EN","EN","ON","L","ON","ON","ON","EN","L","ON","ON","ON","ON","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","L","ON","L","L","L","L","L","L","L","L"],i=["AN","AN","AN","AN","AN","AN","ON","ON","AL","ET","ET","AL","CS","AL","ON","ON","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AL","AL","","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AN","AN","AN","AN","AN","AN","AN","AN","AN","AN","ET","AN","AN","AL","AL","AL","NSM","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","AL","NSM","NSM","NSM","NSM","NSM","NSM","NSM","AN","ON","NSM","NSM","NSM","NSM","NSM","NSM","AL","AL","NSM","NSM","ON","NSM","NSM","NSM","NSM","AL","AL","EN","EN","EN","EN","EN","EN","EN","EN","EN","EN","AL","AL","AL","AL","AL","AL"]
-function s(e){return 0!=(1&e)}function o(e){return 0==(1&e)}function c(e,t,a){let n,r
+function s(e){return!!(1&e)}function o(e){return!(1&e)}function c(e,t,a){let n,r
 for(n=t,r=e.length;n<r;++n)if(e[n]!==a)return n
 return n}function l(e,t,a,n){for(let r=t;r<a;++r)e[r]=n}function h(e,t,a){for(let n=t,r=a-1;n<r;++n,--r){const t=e[n]
 e[n]=e[r],e[r]=t}}function u(e,t,a=!1){let n="ltr"
@@ -5692,11 +5693,11 @@ var n=a(2)
 function r(e,t,a,n,r){let i=e
 for(let s=0,o=t.length-1;s<o;s++){const e=t[s]
 i=i[e]||=[]}i[t.at(-1)]={checkFn:a,iterateFn:n,processFn:r}}const i=[]
-r(i,[n.OPS.save,n.OPS.transform,n.OPS.paintInlineImageXObject,n.OPS.restore],null,(function(e,t){const a=e.fnArray,r=(t-(e.iCurr-3))%4
+r(i,[n.OPS.save,n.OPS.transform,n.OPS.paintInlineImageXObject,n.OPS.restore],null,function(e,t){const a=e.fnArray,r=(t-(e.iCurr-3))%4
 switch(r){case 0:return a[t]===n.OPS.save
 case 1:return a[t]===n.OPS.transform
 case 2:return a[t]===n.OPS.paintInlineImageXObject
-case 3:return a[t]===n.OPS.restore}throw new Error(`iterateInlineImageGroup - invalid pos: ${r}`)}),(function(e,t){const a=e.fnArray,r=e.argsArray,i=e.iCurr,s=i-3,o=i-2,c=i-1,l=Math.min(Math.floor((t-s)/4),200)
+case 3:return a[t]===n.OPS.restore}throw new Error(`iterateInlineImageGroup - invalid pos: ${r}`)},function(e,t){const a=e.fnArray,r=e.argsArray,i=e.iCurr,s=i-3,o=i-2,c=i-1,l=Math.min(Math.floor((t-s)/4),200)
 if(l<10)return t-(t-s)%4
 let h=0
 const u=[]
@@ -5710,11 +5711,11 @@ for(let r=0,s=u[n].h;r<s;r++)b.set(e.subarray(a,a+t),i),a+=t,i+=y
 for(b.set(e.subarray(a-t,a),i);i>=0;)e[i-4]=e[i],e[i-3]=e[i+1],e[i-2]=e[i+2],e[i-1]=e[i+3],e[i+t]=e[i+t-4],e[i+t+1]=e[i+t-3],e[i+t+2]=e[i+t-2],e[i+t+3]=e[i+t-1],i-=y}const w={width:p,height:m}
 if(e.isOffscreenCanvasSupported){const e=new OffscreenCanvas(p,m)
 e.getContext("2d").putImageData(new ImageData(new Uint8ClampedArray(b.buffer),p,m),0,0),w.bitmap=e.transferToImageBitmap(),w.data=null}else w.kind=n.ImageKind.RGBA_32BPP,w.data=b
-return a.splice(s,4*l,n.OPS.paintInlineImageXObjectGroup),r.splice(s,4*l,[w,u]),s+1})),r(i,[n.OPS.save,n.OPS.transform,n.OPS.paintImageMaskXObject,n.OPS.restore],null,(function(e,t){const a=e.fnArray,r=(t-(e.iCurr-3))%4
+return a.splice(s,4*l,n.OPS.paintInlineImageXObjectGroup),r.splice(s,4*l,[w,u]),s+1}),r(i,[n.OPS.save,n.OPS.transform,n.OPS.paintImageMaskXObject,n.OPS.restore],null,function(e,t){const a=e.fnArray,r=(t-(e.iCurr-3))%4
 switch(r){case 0:return a[t]===n.OPS.save
 case 1:return a[t]===n.OPS.transform
 case 2:return a[t]===n.OPS.paintImageMaskXObject
-case 3:return a[t]===n.OPS.restore}throw new Error(`iterateImageMaskGroup - invalid pos: ${r}`)}),(function(e,t){const a=e.fnArray,r=e.argsArray,i=e.iCurr,s=i-3,o=i-2,c=i-1
+case 3:return a[t]===n.OPS.restore}throw new Error(`iterateImageMaskGroup - invalid pos: ${r}`)},function(e,t){const a=e.fnArray,r=e.argsArray,i=e.iCurr,s=i-3,o=i-2,c=i-1
 let l=Math.floor((t-s)/4)
 if(l<10)return t-(t-s)%4
 let h,u,d=!1
@@ -5730,8 +5731,8 @@ a.splice(s,4*l,n.OPS.paintImageMaskXObjectRepeat),r.splice(s,4*l,[f,g,p,m,b,e])}
 const e=[]
 for(let t=0;t<l;t++){u=r[o+(t<<2)]
 const a=r[c+(t<<2)][0]
-e.push({data:a.data,width:a.width,height:a.height,interpolate:a.interpolate,count:a.count,transform:u})}a.splice(s,4*l,n.OPS.paintImageMaskXObjectGroup),r.splice(s,4*l,[e])}return s+1})),r(i,[n.OPS.save,n.OPS.transform,n.OPS.paintImageXObject,n.OPS.restore],(function(e){const t=e.argsArray,a=e.iCurr-2
-return 0===t[a][1]&&0===t[a][2]}),(function(e,t){const a=e.fnArray,r=e.argsArray,i=(t-(e.iCurr-3))%4
+e.push({data:a.data,width:a.width,height:a.height,interpolate:a.interpolate,count:a.count,transform:u})}a.splice(s,4*l,n.OPS.paintImageMaskXObjectGroup),r.splice(s,4*l,[e])}return s+1}),r(i,[n.OPS.save,n.OPS.transform,n.OPS.paintImageXObject,n.OPS.restore],function(e){const t=e.argsArray,a=e.iCurr-2
+return 0===t[a][1]&&0===t[a][2]},function(e,t){const a=e.fnArray,r=e.argsArray,i=(t-(e.iCurr-3))%4
 switch(i){case 0:return a[t]===n.OPS.save
 case 1:if(a[t]!==n.OPS.transform)return!1
 const i=e.iCurr-2,s=r[i][0],o=r[i][3]
@@ -5739,27 +5740,27 @@ return r[t][0]===s&&0===r[t][1]&&0===r[t][2]&&r[t][3]===o
 case 2:if(a[t]!==n.OPS.paintImageXObject)return!1
 const c=r[e.iCurr-1][0]
 return r[t][0]===c
-case 3:return a[t]===n.OPS.restore}throw new Error(`iterateImageGroup - invalid pos: ${i}`)}),(function(e,t){const a=e.fnArray,r=e.argsArray,i=e.iCurr,s=i-3,o=i-2,c=r[i-1][0],l=r[o][0],h=r[o][3],u=Math.min(Math.floor((t-s)/4),1e3)
+case 3:return a[t]===n.OPS.restore}throw new Error(`iterateImageGroup - invalid pos: ${i}`)},function(e,t){const a=e.fnArray,r=e.argsArray,i=e.iCurr,s=i-3,o=i-2,c=r[i-1][0],l=r[o][0],h=r[o][3],u=Math.min(Math.floor((t-s)/4),1e3)
 if(u<3)return t-(t-s)%4
 const d=new Float32Array(2*u)
 let f=o
 for(let n=0;n<u;n++,f+=4){const e=r[f]
 d[n<<1]=e[4],d[1+(n<<1)]=e[5]}const g=[c,l,h,d]
-return a.splice(s,4*u,n.OPS.paintImageXObjectRepeat),r.splice(s,4*u,g),s+1})),r(i,[n.OPS.beginText,n.OPS.setFont,n.OPS.setTextMatrix,n.OPS.showText,n.OPS.endText],null,(function(e,t){const a=e.fnArray,r=e.argsArray,i=(t-(e.iCurr-4))%5
+return a.splice(s,4*u,n.OPS.paintImageXObjectRepeat),r.splice(s,4*u,g),s+1}),r(i,[n.OPS.beginText,n.OPS.setFont,n.OPS.setTextMatrix,n.OPS.showText,n.OPS.endText],null,function(e,t){const a=e.fnArray,r=e.argsArray,i=(t-(e.iCurr-4))%5
 switch(i){case 0:return a[t]===n.OPS.beginText
 case 1:return a[t]===n.OPS.setFont
 case 2:return a[t]===n.OPS.setTextMatrix
 case 3:if(a[t]!==n.OPS.showText)return!1
 const i=e.iCurr-3,s=r[i][0],o=r[i][1]
 return r[t][0]===s&&r[t][1]===o
-case 4:return a[t]===n.OPS.endText}throw new Error(`iterateShowTextGroup - invalid pos: ${i}`)}),(function(e,t){const a=e.fnArray,n=e.argsArray,r=e.iCurr,i=r-4,s=r-3,o=r-2,c=r-1,l=r,h=n[s][0],u=n[s][1]
+case 4:return a[t]===n.OPS.endText}throw new Error(`iterateShowTextGroup - invalid pos: ${i}`)},function(e,t){const a=e.fnArray,n=e.argsArray,r=e.iCurr,i=r-4,s=r-3,o=r-2,c=r-1,l=r,h=n[s][0],u=n[s][1]
 let d=Math.min(Math.floor((t-i)/5),1e3)
 if(d<3)return t-(t-i)%5
 let f=i
 i>=4&&a[i-4]===a[s]&&a[i-3]===a[o]&&a[i-2]===a[c]&&a[i-1]===a[l]&&n[i-4][0]===h&&n[i-4][1]===u&&(d++,f-=5)
 let g=f+4
 for(let p=1;p<d;p++)a.splice(g,3),n.splice(g,3),g+=2
-return g+1}))
+return g+1})
 class s{constructor(e){this.queue=e}_optimize(){}push(e,t){this.queue.fnArray.push(e),this.queue.argsArray.push(t),this._optimize()}flush(){}reset(){}}class o extends s{constructor(e){super(e),this.state=null,this.context={iCurr:0,fnArray:e.fnArray,argsArray:e.argsArray,isOffscreenCanvasSupported:!1},this.match=null,this.lastProcessed=0}set isOffscreenCanvasSupported(e){this.context.isOffscreenCanvasSupported=e}_optimize(){const e=this.queue.fnArray
 let t=this.lastProcessed,a=e.length,n=this.state,r=this.match
 if(!n&&!r&&t+1===a&&!i[e[t]])return void(this.lastProcessed=a)
@@ -5833,7 +5834,7 @@ let h,u,d=0
 if(1===t){let t,a,r
 for(let i=0;i<n;i++){for(a=d+(-8&c),r=d+c;d<a;)u=e[o++],s[d]=u>>7&1,s[d+1]=u>>6&1,s[d+2]=u>>5&1,s[d+3]=u>>4&1,s[d+4]=u>>3&1,s[d+5]=u>>2&1,s[d+6]=u>>1&1,s[d+7]=1&u,d+=8
 if(d<r)for(u=e[o++],t=128;d<r;)s[d++]=+!!(u&t),t>>=1}}else{let a=0
-for(u=0,d=0,h=i;d<h;++d){for(d%c==0&&(u=0,a=0);a<t;)u=u<<8|e[o++],a+=8
+for(u=0,d=0,h=i;d<h;++d){for(d%c===0&&(u=0,a=0);a<t;)u=u<<8|e[o++],a+=8
 const n=a-t
 let r=u>>n
 r<0?r=0:r>l&&(r=l),s[d]=r,u&=(1<<n)-1,a=n}}return s}fillOpacity(e,t,a,r,i){const s=this.smask,o=this.mask
@@ -5969,8 +5970,8 @@ return{name:"string"==typeof e.get("Name")?(0,r.stringToPDFString)(e.get("Name")
 if(!Number.isInteger(e))throw new r.FormatError("Page count in top-level pages dictionary is not an integer.")
 return(0,r.shadow)(this,"_pagesCount",e)}get numPages(){return this.hasActualNumPages?this._actualNumPages:this._pagesCount}get destinations(){const e=this._readDests(),t=Object.create(null)
 if(e instanceof s.NameTree)for(const[a,n]of e.getAll()){const e=g(n)
-e&&(t[(0,r.stringToPDFString)(a)]=e)}else e instanceof i.Dict&&e.forEach((function(e,a){const n=g(a)
-n&&(t[e]=n)}))
+e&&(t[(0,r.stringToPDFString)(a)]=e)}else e instanceof i.Dict&&e.forEach(function(e,a){const n=g(a)
+n&&(t[e]=n)})
 return(0,r.shadow)(this,"destinations",t)}getDestination(e){const t=this._readDests()
 if(t instanceof s.NameTree){const a=g(t.get(e))
 if(a)return a
@@ -6029,7 +6030,7 @@ default:s="AppDefault"}break
 case"Duplex":if(n instanceof i.Name)switch(n.name){case"Simplex":case"DuplexFlipShortEdge":case"DuplexFlipLongEdge":s=n.name
 break
 default:s="None"}break
-case"PrintPageRange":if(Array.isArray(n)&&n.length%2==0){n.every(((e,t,a)=>Number.isInteger(e)&&e>0&&(0===t||e>=a[t-1])&&e<=this.numPages))&&(s=n)}break
+case"PrintPageRange":if(Array.isArray(n)&&n.length%2==0){n.every((e,t,a)=>Number.isInteger(e)&&e>0&&(0===t||e>=a[t-1])&&e<=this.numPages)&&(s=n)}break
 case"NumCopies":Number.isInteger(n)&&n>0&&(s=n)
 break
 default:(0,r.warn)(`Ignoring non-standard key in ViewerPreferences: ${a}.`)
@@ -6087,42 +6088,41 @@ continue}throw new r.FormatError("Page dictionary kids object is not an array.")
 o instanceof i.Ref&&s.put(o)
 const c=new Map,l=this.xref,h=this.pageIndexCache
 let u=0
-function d(a){if(a instanceof n.XRefEntryException&&!e)throw a
+function d(e,t){t&&!h.has(t)&&h.put(t,u),c.set(u++,[e,t])}function f(a){if(a instanceof n.XRefEntryException&&!e)throw a
 e&&t&&0===u&&((0,r.warn)(`getAllPageDicts - Skipping invalid first page: "${a}".`),a=i.Dict.empty),c.set(u++,[a,null])}for(;a.length>0;){const e=a.at(-1),{currentNode:t,posInKids:n}=e
 let o=t.getRaw("Kids")
-if(o instanceof i.Ref)try{o=await l.fetchAsync(o)}catch(p){d(p)
-break}if(!Array.isArray(o)){d(new r.FormatError("Page dictionary kids object is not an array."))
+if(o instanceof i.Ref)try{o=await l.fetchAsync(o)}catch(g){f(g)
+break}if(!Array.isArray(o)){f(new r.FormatError("Page dictionary kids object is not an array."))
 break}if(n>=o.length){a.pop()
-continue}const m=o[n]
-let b
-if(m instanceof i.Ref){if(s.has(m)){d(new r.FormatError("Pages tree contains circular reference."))
-break}s.put(m)
-try{b=await l.fetchAsync(m)}catch(p){d(p)
-break}}else b=m
-if(!(b instanceof i.Dict)){d(new r.FormatError("Page dictionary kid reference points to wrong type of object."))
-break}let y=b.getRaw("Type")
-if(y instanceof i.Ref)try{y=await l.fetchAsync(y)}catch(p){d(p)
-break}(0,i.isName)(y,"Page")||!b.has("Kids")?(f=b,(g=m instanceof i.Ref?m:null)&&!h.has(g)&&h.put(g,u),c.set(u++,[f,g])):a.push({currentNode:b,posInKids:0}),e.posInKids++}var f,g
-return c}getPageIndex(e){const t=this.pageIndexCache.get(e)
+continue}const c=o[n]
+let h
+if(c instanceof i.Ref){if(s.has(c)){f(new r.FormatError("Pages tree contains circular reference."))
+break}s.put(c)
+try{h=await l.fetchAsync(c)}catch(g){f(g)
+break}}else h=c
+if(!(h instanceof i.Dict)){f(new r.FormatError("Page dictionary kid reference points to wrong type of object."))
+break}let u=h.getRaw("Type")
+if(u instanceof i.Ref)try{u=await l.fetchAsync(u)}catch(g){f(g)
+break}(0,i.isName)(u,"Page")||!h.has("Kids")?d(h,c instanceof i.Ref?c:null):a.push({currentNode:h,posInKids:0}),e.posInKids++}return c}getPageIndex(e){const t=this.pageIndexCache.get(e)
 if(void 0!==t)return Promise.resolve(t)
 const a=this.xref
 let n=0
 const s=t=>function(t){let n,s=0
-return a.fetchAsync(t).then((function(a){if((0,i.isRefsEqual)(t,e)&&!(0,i.isDict)(a,"Page")&&!(a instanceof i.Dict&&!a.has("Type")&&a.has("Contents")))throw new r.FormatError("The reference does not point to a /Page dictionary.")
+return a.fetchAsync(t).then(function(a){if((0,i.isRefsEqual)(t,e)&&!(0,i.isDict)(a,"Page")&&!(a instanceof i.Dict&&!a.has("Type")&&a.has("Contents")))throw new r.FormatError("The reference does not point to a /Page dictionary.")
 if(!a)return null
 if(!(a instanceof i.Dict))throw new r.FormatError("Node must be a dictionary.")
-return n=a.getRaw("Parent"),a.getAsync("Parent")})).then((function(e){if(!e)return null
+return n=a.getRaw("Parent"),a.getAsync("Parent")}).then(function(e){if(!e)return null
 if(!(e instanceof i.Dict))throw new r.FormatError("Parent must be a dictionary.")
-return e.getAsync("Kids")})).then((function(e){if(!e)return null
+return e.getAsync("Kids")}).then(function(e){if(!e)return null
 const o=[]
 let c=!1
 for(const n of e){if(!(n instanceof i.Ref))throw new r.FormatError("Kid must be a reference.")
 if((0,i.isRefsEqual)(n,t)){c=!0
-break}o.push(a.fetchAsync(n).then((function(e){if(!(e instanceof i.Dict))throw new r.FormatError("Kid node must be a dictionary.")
-e.has("Count")?s+=e.get("Count"):s++})))}if(!c)throw new r.FormatError("Kid reference not found in parent's kids.")
-return Promise.all(o).then((function(){return[s,n]}))}))}(t).then((t=>{if(!t)return this.pageIndexCache.put(e,n),n
+break}o.push(a.fetchAsync(n).then(function(e){if(!(e instanceof i.Dict))throw new r.FormatError("Kid node must be a dictionary.")
+e.has("Count")?s+=e.get("Count"):s++}))}if(!c)throw new r.FormatError("Kid reference not found in parent's kids.")
+return Promise.all(o).then(function(){return[s,n]})})}(t).then(t=>{if(!t)return this.pageIndexCache.put(e,n),n
 const[a,r]=t
-return n+=a,s(r)}))
+return n+=a,s(r)})
 return s(e)}get baseUrl(){const e=this._catDict.get("URI")
 if(e instanceof i.Dict){const t=e.get("Base")
 if("string"==typeof t){const e=(0,r.createValidAbsoluteUrl)(t,null,{tryConvertEncoding:!0})
@@ -6131,7 +6131,7 @@ let c,l,h=e.get("A")
 if(h instanceof i.Dict||(e.has("Dest")?h=e.get("Dest"):(h=e.get("AA"),h instanceof i.Dict&&(h.has("D")?h=h.get("D"):h.has("U")&&(h=h.get("U"))))),h instanceof i.Dict){const e=h.get("S")
 if(!(e instanceof i.Name))return void(0,r.warn)("parseDestDictionary: Invalid type in Action dictionary.")
 const a=e.name
-switch(a){case"ResetForm":const e=h.get("Flags"),u=0==(1&("number"==typeof e?e:0)),d=[],f=[]
+switch(a){case"ResetForm":const e=h.get("Flags"),u=!(1&("number"==typeof e?e:0)),d=[],f=[]
 for(const t of h.get("Fields")||[])t instanceof i.Ref?f.push(t.toString()):"string"==typeof t&&d.push((0,r.stringToPDFString)(t))
 t.resetForm={fields:d,refs:f,include:u}
 break
@@ -6209,16 +6209,16 @@ return e}get serializable(){return{filename:this.filename,content:this.content}}
 var n=a(71)
 t.MetadataParser=class{constructor(e){e=this._repair(e)
 const t=new n.SimpleXMLParser({lowerCaseName:!0}).parseFromString(e)
-this._metadataMap=new Map,this._data=e,t&&this._parse(t)}_repair(e){return e.replace(/^[^<]+/,"").replaceAll(/>\\376\\377([^<]+)/g,(function(e,t){const a=t.replaceAll(/\\([0-3])([0-7])([0-7])/g,(function(e,t,a,n){return String.fromCharCode(64*t+8*a+1*n)})).replaceAll(/&(amp|apos|gt|lt|quot);/g,(function(e,t){switch(t){case"amp":return"&"
+this._metadataMap=new Map,this._data=e,t&&this._parse(t)}_repair(e){return e.replace(/^[^<]+/,"").replaceAll(/>\\376\\377([^<]+)/g,function(e,t){const a=t.replaceAll(/\\([0-3])([0-7])([0-7])/g,function(e,t,a,n){return String.fromCharCode(64*t+8*a+1*n)}).replaceAll(/&(amp|apos|gt|lt|quot);/g,function(e,t){switch(t){case"amp":return"&"
 case"apos":return"'"
 case"gt":return">"
 case"lt":return"<"
-case"quot":return'"'}throw new Error(`_repair: ${t} isn't defined.`)})),n=[">"]
+case"quot":return'"'}throw new Error(`_repair: ${t} isn't defined.`)}),n=[">"]
 for(let r=0,i=a.length;r<i;r+=2){const e=256*a.charCodeAt(r)+a.charCodeAt(r+1)
-e>=32&&e<127&&60!==e&&62!==e&&38!==e?n.push(String.fromCharCode(e)):n.push("&#x"+(65536+e).toString(16).substring(1)+";")}return n.join("")}))}_getSequence(e){const t=e.nodeName
-return"rdf:bag"!==t&&"rdf:seq"!==t&&"rdf:alt"!==t?null:e.childNodes.filter((e=>"rdf:li"===e.nodeName))}_parseArray(e){if(!e.hasChildNodes())return
+e>=32&&e<127&&60!==e&&62!==e&&38!==e?n.push(String.fromCharCode(e)):n.push("&#x"+(65536+e).toString(16).substring(1)+";")}return n.join("")})}_getSequence(e){const t=e.nodeName
+return"rdf:bag"!==t&&"rdf:seq"!==t&&"rdf:alt"!==t?null:e.childNodes.filter(e=>"rdf:li"===e.nodeName)}_parseArray(e){if(!e.hasChildNodes())return
 const[t]=e.childNodes,a=this._getSequence(t)||[]
-this._metadataMap.set(e.nodeName,a.map((e=>e.textContent.trim())))}_parse(e){let t=e.documentElement
+this._metadataMap.set(e.nodeName,a.map(e=>e.textContent.trim()))}_parse(e){let t=e.documentElement
 if("rdf:rdf"!==t.nodeName)for(t=t.firstChild;t&&"rdf:rdf"!==t.nodeName;)t=t.nextSibling
 if(t&&"rdf:rdf"===t.nodeName&&t.hasChildNodes())for(const a of t.childNodes)if("rdf:description"===a.nodeName)for(const e of a.childNodes){const t=e.nodeName
 switch(t){case"#text":continue
@@ -6228,13 +6228,13 @@ var n=a(3)
 const r={NoError:0,EndOfDocument:-1,UnterminatedCdat:-2,UnterminatedXmlDeclaration:-3,UnterminatedDoctypeDeclaration:-4,UnterminatedComment:-5,MalformedElement:-6,OutOfMemory:-7,UnterminatedAttributeValue:-8,UnterminatedElement:-9,ElementNeverBegun:-10}
 function i(e,t){const a=e[t]
 return" "===a||"\n"===a||"\r"===a||"\t"===a}t.XMLParserErrorCode=r
-class s{_resolveEntities(e){return e.replaceAll(/&([^;]+);/g,((e,t)=>{if("#x"===t.substring(0,2))return String.fromCodePoint(parseInt(t.substring(2),16))
+class s{_resolveEntities(e){return e.replaceAll(/&([^;]+);/g,(e,t)=>{if("#x"===t.substring(0,2))return String.fromCodePoint(parseInt(t.substring(2),16))
 if("#"===t.substring(0,1))return String.fromCodePoint(parseInt(t.substring(1),10))
 switch(t){case"lt":return"<"
 case"gt":return">"
 case"amp":return"&"
 case"quot":return'"'
-case"apos":return"'"}return this.onResolveEntity(t)}))}_parseContent(e,t){const a=[]
+case"apos":return"'"}return this.onResolveEntity(t)})}_parseContent(e,t){const a=[]
 let n=t
 function r(){for(;n<e.length&&i(e,n);)++n}for(;n<e.length&&!i(e,n)&&">"!==e[n]&&"/"!==e[n];)++n
 const s=e.substring(t,n)
@@ -6283,7 +6283,7 @@ this.onText(this._resolveEntities(n))}t=a}}onResolveEntity(e){return`&${e};`}onP
 class o{constructor(e,t){this.nodeName=e,this.nodeValue=t,Object.defineProperty(this,"parentNode",{value:null,writable:!0})}get firstChild(){return this.childNodes?.[0]}get nextSibling(){const e=this.parentNode.childNodes
 if(!e)return
 const t=e.indexOf(this)
-return-1!==t?e[t+1]:void 0}get textContent(){return this.childNodes?this.childNodes.map((function(e){return e.textContent})).join(""):this.nodeValue||""}get children(){return this.childNodes||[]}hasChildNodes(){return this.childNodes?.length>0}searchNode(e,t){if(t>=e.length)return this
+return-1!==t?e[t+1]:void 0}get textContent(){return this.childNodes?this.childNodes.map(function(e){return e.textContent}).join(""):this.nodeValue||""}get children(){return this.childNodes||[]}hasChildNodes(){return this.childNodes?.length>0}searchNode(e,t){if(t>=e.length)return this
 const a=e[t]
 if(a.name.startsWith("#")&&t<e.length-1)return this.searchNode(e,t+1)
 const n=[]
@@ -6320,7 +6320,7 @@ class d{constructor(e,t){this.dict=e,this.ref=t instanceof r.Ref?t:null,this.rol
 this.structParentIds||=new r.RefSetCache
 let n=this.structParentIds.get(e)
 n||(n=[],this.structParentIds.put(e,n)),n.push([t,a])}addAnnotationIdToPage(e,t){this.#k(e,t,h)}readRoleMap(){const e=this.dict.get("RoleMap")
-e instanceof r.Dict&&e.forEach(((e,t)=>{t instanceof r.Name&&this.roleMap.set(e,t.name)}))}static async canCreateStructureTree({catalogRef:e,pdfManager:t,newAnnotationsByPage:a}){if(!(e instanceof r.Ref))return(0,n.warn)("Cannot save the struct tree: no catalog reference."),!1
+e instanceof r.Dict&&e.forEach((e,t)=>{t instanceof r.Name&&this.roleMap.set(e,t.name)})}static async canCreateStructureTree({catalogRef:e,pdfManager:t,newAnnotationsByPage:a}){if(!(e instanceof r.Ref))return(0,n.warn)("Cannot save the struct tree: no catalog reference."),!1
 let i=0,s=!0
 for(const[o,c]of a){const{ref:e}=await t.getPage(o)
 if(!(e instanceof r.Ref)){(0,n.warn)(`Cannot save the struct tree: page ${o} has no ref.`),s=!0
@@ -6451,7 +6451,7 @@ const{path:e,value:t}=o
 if(!e)continue
 const r=(0,i.parseXFAPath)(e)
 let c=a.documentElement.searchNode(r,0)
-!c&&r.length>1&&(c=a.documentElement.searchNode([r.at(-1)],0)),c?c.childNodes=Array.isArray(t)?t.map((e=>new s.SimpleDOMNode("value",e))):[new s.SimpleDOMNode("#text",t)]:(0,n.warn)(`Node not found for path: ${e}`)}const r=[]
+!c&&r.length>1&&(c=a.documentElement.searchNode([r.at(-1)],0)),c?c.childNodes=Array.isArray(t)?t.map(e=>new s.SimpleDOMNode("value",e)):[new s.SimpleDOMNode("#text",t)]:(0,n.warn)(`Node not found for path: ${e}`)}const r=[]
 return a.documentElement.dump(r),r.join("")}(r.fetchIfRef(t).getString(),a)}const o=r.encrypt
 if(o){e=o.createCipherTransform(t.num,t.gen).encryptString(e)}const c=`${t.num} ${t.gen} obj\n<< /Type /EmbeddedFile /Length ${e.length}>>\nstream\n`+e+"\nendstream\nendobj\n"
 a.push({ref:t,data:c})}({xfaData:w,xfaDatasetsRef:d,newRefs:a,xref:o})
@@ -6462,12 +6462,12 @@ const C=e.at(-1)
 x.set("Size",S.num+1),x.set("Prev",t.startXRef),x.set("Type",r.Name.get("XRef")),null!==t.rootRef&&x.set("Root",t.rootRef)
 null!==t.infoRef&&x.set("Info",t.infoRef)
 null!==t.encryptRef&&x.set("Encrypt",t.encryptRef)
-a.push({ref:S,data:""}),a=a.sort(((e,t)=>e.ref.num-t.ref.num))
+a.push({ref:S,data:""}),a=a.sort((e,t)=>e.ref.num-t.ref.num)
 const v=[[0,1,65535]],F=[0,1]
 let O=0
 for(const{ref:n,data:r}of a)O=Math.max(O,k),v.push([1,k,Math.min(n.gen,65535)]),k+=r.length,F.push(n.num,1),A.push(r)
 if(x.set("Index",F),Array.isArray(t.fileIds)&&t.fileIds.length>0){const e=function(e,t){const a=Math.floor(Date.now()/1e3),r=t.filename||"",i=[a.toString(),r,e.toString()]
-let s=i.reduce(((e,t)=>e+t.length),0)
+let s=i.reduce((e,t)=>e+t.length,0)
 for(const n of Object.values(t.info))i.push(n),s+=n.length
 const o=new Uint8Array(s)
 let l=0
@@ -6475,7 +6475,7 @@ for(const n of i)p(n,l,o),l+=n.length
 return(0,n.bytesToString)((0,c.calculateMD5)(o))}(k,t)
 x.set("ID",[t.fileIds[0],e])}const I=[1,Math.ceil(Math.log2(O)/8),2],T=(I[0]+I[1]+I[2])*v.length
 x.set("W",I),x.set("Length",T),A.push(`${S.num} ${S.gen} obj\n`),await h(x,A,null),A.push(" stream\n")
-const M=A.reduce(((e,t)=>e+t.length),0),P=`\nendstream\nendobj\nstartxref\n${k}\n%%EOF\n`,N=new Uint8Array(e.length+M+T+P.length)
+const M=A.reduce((e,t)=>e+t.length,0),P=`\nendstream\nendobj\nstartxref\n${k}\n%%EOF\n`,N=new Uint8Array(e.length+M+T+P.length)
 N.set(e)
 let D=e.length
 for(const n of A)p(n,D,N),D+=n.length
@@ -6527,22 +6527,21 @@ t.calculateMD5=o
 class c{constructor(e,t){this.high=0|e,this.low=0|t}and(e){this.high&=e.high,this.low&=e.low}xor(e){this.high^=e.high,this.low^=e.low}or(e){this.high|=e.high,this.low|=e.low}shiftRight(e){e>=32?(this.low=this.high>>>e-32|0,this.high=0):(this.low=this.low>>>e|this.high<<32-e,this.high=this.high>>>e|0)}shiftLeft(e){e>=32?(this.high=this.low<<e-32,this.low=0):(this.high=this.high<<e|this.low>>>32-e,this.low<<=e)}rotateRight(e){let t,a
 32&e?(a=this.low,t=this.high):(t=this.low,a=this.high),e&=31,this.low=t>>>e|a<<32-e,this.high=a>>>e|t<<32-e}not(){this.high=~this.high,this.low=~this.low}add(e){const t=(this.low>>>0)+(e.low>>>0)
 let a=(this.high>>>0)+(e.high>>>0)
-t>4294967295&&(a+=1),this.low=0|t,this.high=0|a}copyTo(e,t){e[t]=this.high>>>24&255,e[t+1]=this.high>>16&255,e[t+2]=this.high>>8&255,e[t+3]=255&this.high,e[t+4]=this.low>>>24&255,e[t+5]=this.low>>16&255,e[t+6]=this.low>>8&255,e[t+7]=255&this.low}assign(e){this.high=e.high,this.low=e.low}}const l=function(){function e(e,t){return e>>>t|e<<32-t}function t(e,t,a){return e&t^~e&a}function a(e,t,a){return e&t^e&a^t&a}function n(t){return e(t,2)^e(t,13)^e(t,22)}function r(t){return e(t,6)^e(t,11)^e(t,25)}function i(t){return e(t,7)^e(t,18)^t>>>3}const s=[1116352408,1899447441,3049323471,3921009573,961987163,1508970993,2453635748,2870763221,3624381080,310598401,607225278,1426881987,1925078388,2162078206,2614888103,3248222580,3835390401,4022224774,264347078,604807628,770255983,1249150122,1555081692,1996064986,2554220882,2821834349,2952996808,3210313671,3336571891,3584528711,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,2177026350,2456956037,2730485921,2820302411,3259730800,3345764771,3516065817,3600352804,4094571909,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,2227730452,2361852424,2428436474,2756734187,3204031479,3329325298]
-return function(o,c,l){let h=1779033703,u=3144134277,d=1013904242,f=2773480762,g=1359893119,p=2600822924,m=528734635,b=1541459225
+t>4294967295&&(a+=1),this.low=0|t,this.high=0|a}copyTo(e,t){e[t]=this.high>>>24&255,e[t+1]=this.high>>16&255,e[t+2]=this.high>>8&255,e[t+3]=255&this.high,e[t+4]=this.low>>>24&255,e[t+5]=this.low>>16&255,e[t+6]=this.low>>8&255,e[t+7]=255&this.low}assign(e){this.high=e.high,this.low=e.low}}const l=function(){function e(e,t){return e>>>t|e<<32-t}function t(e,t,a){return e&t^~e&a}function a(e,t,a){return e&t^e&a^t&a}function n(t){return e(t,2)^e(t,13)^e(t,22)}function r(t){return e(t,6)^e(t,11)^e(t,25)}function i(t){return e(t,7)^e(t,18)^t>>>3}function s(t){return e(t,17)^e(t,19)^t>>>10}const o=[1116352408,1899447441,3049323471,3921009573,961987163,1508970993,2453635748,2870763221,3624381080,310598401,607225278,1426881987,1925078388,2162078206,2614888103,3248222580,3835390401,4022224774,264347078,604807628,770255983,1249150122,1555081692,1996064986,2554220882,2821834349,2952996808,3210313671,3336571891,3584528711,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,2177026350,2456956037,2730485921,2820302411,3259730800,3345764771,3516065817,3600352804,4094571909,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,2227730452,2361852424,2428436474,2756734187,3204031479,3329325298]
+return function(e,c,l){let h=1779033703,u=3144134277,d=1013904242,f=2773480762,g=1359893119,p=2600822924,m=528734635,b=1541459225
 const y=64*Math.ceil((l+9)/64),w=new Uint8Array(y)
 let x,S
-for(x=0;x<l;++x)w[x]=o[c++]
+for(x=0;x<l;++x)w[x]=e[c++]
 w[x++]=128
 const A=y-8
 for(;x<A;)w[x++]=0
 w[x++]=0,w[x++]=0,w[x++]=0,w[x++]=l>>>29&255,w[x++]=l>>21&255,w[x++]=l>>13&255,w[x++]=l>>5&255,w[x++]=l<<3&255
 const k=new Uint32Array(64)
 for(x=0;x<y;){for(S=0;S<16;++S)k[S]=w[x]<<24|w[x+1]<<16|w[x+2]<<8|w[x+3],x+=4
-for(S=16;S<64;++S)k[S]=0|(e(C=k[S-2],17)^e(C,19)^C>>>10)+k[S-7]+i(k[S-15])+k[S-16]
-let o,c,l=h,y=u,A=d,v=f,F=g,O=p,I=m,T=b
-for(S=0;S<64;++S)o=T+r(F)+t(F,O,I)+s[S]+k[S],c=n(l)+a(l,y,A),T=I,I=O,O=F,F=v+o|0,v=A,A=y,y=l,l=o+c|0
-h=h+l|0,u=u+y|0,d=d+A|0,f=f+v|0,g=g+F|0,p=p+O|0,m=m+I|0,b=b+T|0}var C
-return new Uint8Array([h>>24&255,h>>16&255,h>>8&255,255&h,u>>24&255,u>>16&255,u>>8&255,255&u,d>>24&255,d>>16&255,d>>8&255,255&d,f>>24&255,f>>16&255,f>>8&255,255&f,g>>24&255,g>>16&255,g>>8&255,255&g,p>>24&255,p>>16&255,p>>8&255,255&p,m>>24&255,m>>16&255,m>>8&255,255&m,b>>24&255,b>>16&255,b>>8&255,255&b])}}()
+for(S=16;S<64;++S)k[S]=s(k[S-2])+k[S-7]+i(k[S-15])+k[S-16]|0
+let e,c,l=h,y=u,A=d,C=f,v=g,F=p,O=m,I=b
+for(S=0;S<64;++S)e=I+r(v)+t(v,F,O)+o[S]+k[S],c=n(l)+a(l,y,A),I=O,O=F,F=v,v=C+e|0,C=A,A=y,y=l,l=e+c|0
+h=h+l|0,u=u+y|0,d=d+A|0,f=f+C|0,g=g+v|0,p=p+F|0,m=m+O|0,b=b+I|0}return new Uint8Array([h>>24&255,h>>16&255,h>>8&255,255&h,u>>24&255,u>>16&255,u>>8&255,255&u,d>>24&255,d>>16&255,d>>8&255,255&d,f>>24&255,f>>16&255,f>>8&255,255&f,g>>24&255,g>>16&255,g>>8&255,255&g,p>>24&255,p>>16&255,p>>8&255,255&p,m>>24&255,m>>16&255,m>>8&255,255&m,b>>24&255,b>>16&255,b>>8&255,255&b])}}()
 t.calculateSHA256=l
 const h=function(){function e(e,t,a,n,r){e.assign(t),e.and(a),r.assign(t),r.not(),r.and(n),e.xor(r)}function t(e,t,a,n,r){e.assign(t),e.and(a),r.assign(t),r.and(n),e.xor(r),r.assign(a),r.and(n),e.xor(r)}function a(e,t,a){e.assign(t),e.rotateRight(28),a.assign(t),a.rotateRight(34),e.xor(a),a.assign(t),a.rotateRight(39),e.xor(a)}function n(e,t,a){e.assign(t),e.rotateRight(14),a.assign(t),a.rotateRight(18),e.xor(a),a.assign(t),a.rotateRight(41),e.xor(a)}function r(e,t,a){e.assign(t),e.rotateRight(1),a.assign(t),a.rotateRight(8),e.xor(a),a.assign(t),a.shiftRight(7),e.xor(a)}function i(e,t,a){e.assign(t),e.rotateRight(19),a.assign(t),a.rotateRight(61),e.xor(a),a.assign(t),a.shiftRight(6),e.xor(a)}const s=[new c(1116352408,3609767458),new c(1899447441,602891725),new c(3049323471,3964484399),new c(3921009573,2173295548),new c(961987163,4081628472),new c(1508970993,3053834265),new c(2453635748,2937671579),new c(2870763221,3664609560),new c(3624381080,2734883394),new c(310598401,1164996542),new c(607225278,1323610764),new c(1426881987,3590304994),new c(1925078388,4068182383),new c(2162078206,991336113),new c(2614888103,633803317),new c(3248222580,3479774868),new c(3835390401,2666613458),new c(4022224774,944711139),new c(264347078,2341262773),new c(604807628,2007800933),new c(770255983,1495990901),new c(1249150122,1856431235),new c(1555081692,3175218132),new c(1996064986,2198950837),new c(2554220882,3999719339),new c(2821834349,766784016),new c(2952996808,2566594879),new c(3210313671,3203337956),new c(3336571891,1034457026),new c(3584528711,2466948901),new c(113926993,3758326383),new c(338241895,168717936),new c(666307205,1188179964),new c(773529912,1546045734),new c(1294757372,1522805485),new c(1396182291,2643833823),new c(1695183700,2343527390),new c(1986661051,1014477480),new c(2177026350,1206759142),new c(2456956037,344077627),new c(2730485921,1290863460),new c(2820302411,3158454273),new c(3259730800,3505952657),new c(3345764771,106217008),new c(3516065817,3606008344),new c(3600352804,1432725776),new c(4094571909,1467031594),new c(275423344,851169720),new c(430227734,3100823752),new c(506948616,1363258195),new c(659060556,3750685593),new c(883997877,3785050280),new c(958139571,3318307427),new c(1322822218,3812723403),new c(1537002063,2003034995),new c(1747873779,3602036899),new c(1955562222,1575990012),new c(2024104815,1125592928),new c(2227730452,2716904306),new c(2361852424,442776044),new c(2428436474,593698344),new c(2756734187,3733110249),new c(3204031479,2999351573),new c(3329325298,3815920427),new c(3391569614,3928383900),new c(3515267271,566280711),new c(3940187606,3454069534),new c(4118630271,4000239992),new c(116418474,1914138554),new c(174292421,2731055270),new c(289380356,3203993006),new c(460393269,320620315),new c(685471733,587496836),new c(852142971,1086792851),new c(1017036298,365543100),new c(1126000580,2618297676),new c(1288033470,3409855158),new c(1501505948,4234509866),new c(1607167915,987167468),new c(1816402316,1246189591)]
 return function(o,l,h,u=!1){let d,f,g,p,m,b,y,w
@@ -6646,7 +6645,7 @@ s.set(e,o),o+=e.length,s.set(n,o),o+=n.length,s.set(a,o)
 const c=new Uint8Array(64*t)
 for(let e=0,a=0;e<64;e++,a+=t)c.set(s,a)
 r=new g(n.subarray(0,16)).encrypt(c,n.subarray(16,32))
-const d=r.slice(0,16).reduce(((e,t)=>e+t),0)%3
+const d=r.slice(0,16).reduce((e,t)=>e+t,0)%3
 0===d?n=l(r,0,r.length):1===d?n=u(r,0,r.length):2===d&&(n=h(r,0,r.length)),i++}return n.subarray(0,32)}checkOwnerPassword(e,t,a,r){const i=new Uint8Array(e.length+56)
 i.set(e,0),i.set(t,e.length),i.set(a,e.length+t.length)
 const s=this._hash(e,i,a)
@@ -6661,7 +6660,7 @@ n.set(e,0),n.set(t,e.length)
 const r=this._hash(e,n,[])
 return new p(r).decryptBlock(a,!1,new Uint8Array(16))}}t.PDF20=b
 class y{constructor(e,t){this.StringCipherConstructor=e,this.StreamCipherConstructor=t}createStream(e,t){const a=new this.StreamCipherConstructor
-return new i.DecryptStream(e,t,(function(e,t){return a.decryptBlock(e,t)}))}decryptString(e){const t=new this.StringCipherConstructor
+return new i.DecryptStream(e,t,function(e,t){return a.decryptBlock(e,t)})}decryptString(e){const t=new this.StringCipherConstructor
 let a=(0,n.stringToBytes)(e)
 return a=t.decryptBlock(a,!0),(0,n.bytesToString)(a)}encryptString(e){const t=new this.StringCipherConstructor
 if(t instanceof f){const a=16-e.length%16
@@ -6753,11 +6752,10 @@ e=(0,this.decrypt)(e,!t)
 const a=this.bufferLength,n=a+e.length
 this.ensureBuffer(n).set(e,a),this.bufferLength=n}}t.DecryptStream=r},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.ObjectLoader=void 0
 var n=a(4),r=a(5),i=a(3),s=a(2)
-function o(e,t){if(e instanceof n.Dict)e=e.getRawValues()
+function o(e){return e instanceof n.Ref||e instanceof n.Dict||e instanceof r.BaseStream||Array.isArray(e)}function c(e,t){if(e instanceof n.Dict)e=e.getRawValues()
 else if(e instanceof r.BaseStream)e=e.dict.getRawValues()
 else if(!Array.isArray(e))return
-for(const i of e)((a=i)instanceof n.Ref||a instanceof n.Dict||a instanceof r.BaseStream||Array.isArray(a))&&t.push(i)
-var a}t.ObjectLoader=class{constructor(e,t,a){this.dict=e,this.keys=t,this.xref=a,this.refSet=null}async load(){if(this.xref.stream.isDataLoaded)return
+for(const a of e)o(a)&&t.push(a)}t.ObjectLoader=class{constructor(e,t,a){this.dict=e,this.keys=t,this.xref=a,this.refSet=null}async load(){if(this.xref.stream.isDataLoaded)return
 const{keys:e,dict:t}=this
 this.refSet=new n.RefSet
 const a=[]
@@ -6765,22 +6763,22 @@ for(const n of e){const e=t.getRaw(n)
 void 0!==e&&a.push(e)}return this._walk(a)}async _walk(e){const t=[],a=[]
 for(;e.length;){let l=e.pop()
 if(l instanceof n.Ref){if(this.refSet.has(l))continue
-try{this.refSet.put(l),l=this.xref.fetch(l)}catch(c){if(!(c instanceof i.MissingDataException)){(0,s.warn)(`ObjectLoader._walk - requesting all data: "${c}".`),this.refSet=null
+try{this.refSet.put(l),l=this.xref.fetch(l)}catch(o){if(!(o instanceof i.MissingDataException)){(0,s.warn)(`ObjectLoader._walk - requesting all data: "${o}".`),this.refSet=null
 const{manager:e}=this.xref.stream
-return e.requestAllChunks()}t.push(l),a.push({begin:c.begin,end:c.end})}}if(l instanceof r.BaseStream){const e=l.getBaseStreams()
+return e.requestAllChunks()}t.push(l),a.push({begin:o.begin,end:o.end})}}if(l instanceof r.BaseStream){const e=l.getBaseStreams()
 if(e){let n=!1
 for(const t of e)t.isDataLoaded||(n=!0,a.push({begin:t.start,end:t.end}))
-n&&t.push(l)}}o(l,e)}if(a.length){await this.xref.stream.manager.requestRanges(a)
+n&&t.push(l)}}c(l,e)}if(a.length){await this.xref.stream.manager.requestRanges(a)
 for(const e of t)e instanceof n.Ref&&this.refSet.remove(e)
 return this._walk(t)}this.refSet=null}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.XFAFactory=void 0
 var n=a(78),r=a(79),i=a(89),s=a(85),o=a(84),c=a(2),l=a(90),h=a(100)
 class u{constructor(e){try{this.root=(new l.XFAParser).parse(u._createDocument(e))
 const t=new r.Binder(this.root)
 this.form=t.bind(),this.dataHandler=new i.DataHandler(this.root,t.getData()),this.form[n.$globalData].template=this.form}catch(t){(0,c.warn)(`XFA - an error occurred during parsing and binding: ${t}`)}}isValid(){return this.root&&this.form}_createPagesHelper(){const e=this.form[n.$toPages]()
-return new Promise(((t,a)=>{const n=()=>{try{const a=e.next()
+return new Promise((t,a)=>{const n=()=>{try{const a=e.next()
 a.done?t(a.value):setTimeout(n,0)}catch(r){a(r)}}
-setTimeout(n,0)}))}async _createPages(){try{this.pages=await this._createPagesHelper(),this.dims=this.pages.children.map((e=>{const{width:t,height:a}=e.attributes.style
-return[0,0,parseInt(t),parseInt(a)]}))}catch(e){(0,c.warn)(`XFA - an error occurred during layout: ${e}`)}}getBoundingBox(e){return this.dims[e]}async getNumPages(){return this.pages||await this._createPages(),this.dims.length}setImages(e){this.form[n.$globalData].images=e}setFonts(e){this.form[n.$globalData].fontFinder=new s.FontFinder(e)
+setTimeout(n,0)})}async _createPages(){try{this.pages=await this._createPagesHelper(),this.dims=this.pages.children.map(e=>{const{width:t,height:a}=e.attributes.style
+return[0,0,parseInt(t),parseInt(a)]})}catch(e){(0,c.warn)(`XFA - an error occurred during layout: ${e}`)}}getBoundingBox(e){return this.dims[e]}async getNumPages(){return this.pages||await this._createPages(),this.dims.length}setImages(e){this.form[n.$globalData].images=e}setFonts(e){this.form[n.$globalData].fontFinder=new s.FontFinder(e)
 const t=[]
 for(let a of this.form[n.$globalData].usedTypefaces){a=(0,o.stripQuotes)(a)
 this.form[n.$globalData].fontFinder.find(a)||t.push(a)}return t.length>0?t:null}appendFonts(e,t){this.form[n.$globalData].fontFinder.add(e,t)}async getPages(){this.pages||await this._createPages()
@@ -6791,7 +6789,7 @@ if(!["body","xhtml"].includes(t[n.$nodeName])){const e=h.XhtmlNamespace.body({})
 e[n.$appendChild](t),t=e}const a=t[n.$toHTML]()
 if(!a.success)return null
 const{html:r}=a,{attributes:i}=r
-return i&&(i.class&&(i.class=i.class.filter((e=>!e.startsWith("xfa")))),i.dir="auto"),{html:r,str:t[n.$text]()}}catch(t){(0,c.warn)(`XFA - an error occurred during parsing of rich text: ${t}`)}return null}}t.XFAFactory=u},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.$uid=t.$toStyle=t.$toString=t.$toPages=t.$toHTML=t.$text=t.$tabIndex=t.$setValue=t.$setSetAttributes=t.$setId=t.$searchNode=t.$root=t.$resolvePrototypes=t.$removeChild=t.$pushPara=t.$pushGlyphs=t.$popPara=t.$onText=t.$onChildCheck=t.$onChild=t.$nsAttributes=t.$nodeName=t.$namespaceId=t.$lastAttribute=t.$isUsable=t.$isTransparent=t.$isThereMoreWidth=t.$isSplittable=t.$isNsAgnostic=t.$isDescendent=t.$isDataValue=t.$isCDATAXml=t.$isBindable=t.$insertAt=t.$indexOf=t.$ids=t.$hasSettableValue=t.$globalData=t.$getTemplateRoot=t.$getSubformParent=t.$getRealChildrenByNameIt=t.$getParent=t.$getNextPage=t.$getExtra=t.$getDataValue=t.$getContainedChildren=t.$getChildrenByNameIt=t.$getChildrenByName=t.$getChildrenByClass=t.$getChildren=t.$getAvailableSpace=t.$getAttributes=t.$getAttributeIt=t.$flushHTML=t.$finalize=t.$extra=t.$dump=t.$data=t.$content=t.$consumed=t.$clone=t.$cleanup=t.$cleanPage=t.$clean=t.$childrenToHTML=t.$appendChild=t.$addHTML=t.$acceptWhitespace=void 0
+return i&&(i.class&&(i.class=i.class.filter(e=>!e.startsWith("xfa"))),i.dir="auto"),{html:r,str:t[n.$text]()}}catch(t){(0,c.warn)(`XFA - an error occurred during parsing of rich text: ${t}`)}return null}}t.XFAFactory=u},(e,t)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.$uid=t.$toStyle=t.$toString=t.$toPages=t.$toHTML=t.$text=t.$tabIndex=t.$setValue=t.$setSetAttributes=t.$setId=t.$searchNode=t.$root=t.$resolvePrototypes=t.$removeChild=t.$pushPara=t.$pushGlyphs=t.$popPara=t.$onText=t.$onChildCheck=t.$onChild=t.$nsAttributes=t.$nodeName=t.$namespaceId=t.$lastAttribute=t.$isUsable=t.$isTransparent=t.$isThereMoreWidth=t.$isSplittable=t.$isNsAgnostic=t.$isDescendent=t.$isDataValue=t.$isCDATAXml=t.$isBindable=t.$insertAt=t.$indexOf=t.$ids=t.$hasSettableValue=t.$globalData=t.$getTemplateRoot=t.$getSubformParent=t.$getRealChildrenByNameIt=t.$getParent=t.$getNextPage=t.$getExtra=t.$getDataValue=t.$getContainedChildren=t.$getChildrenByNameIt=t.$getChildrenByName=t.$getChildrenByClass=t.$getChildren=t.$getAvailableSpace=t.$getAttributes=t.$getAttributeIt=t.$flushHTML=t.$finalize=t.$extra=t.$dump=t.$data=t.$content=t.$consumed=t.$clone=t.$cleanup=t.$cleanPage=t.$clean=t.$childrenToHTML=t.$appendChild=t.$addHTML=t.$acceptWhitespace=void 0
 const a=Symbol()
 t.$acceptWhitespace=a
 const n=Symbol()
@@ -6932,7 +6930,7 @@ var n=a(78),r=a(80),i=a(88),s=a(87),o=a(81),c=a(2)
 const l=o.NamespaceIds.datasets.id
 function h(e){const t=new r.Text({})
 return t[n.$content]=e,t}t.Binder=class{constructor(e){this.root=e,this.datasets=e.datasets,this.data=e.datasets?.data||new s.XmlObject(o.NamespaceIds.datasets.id,"data"),this.emptyMerge=0===this.data[n.$getChildren]().length,this.root.form=this.form=e.template[n.$clone]()}_isConsumeData(){return!this.emptyMerge&&this._mergeMode}_isMatchTemplate(){return!this._isConsumeData()}bind(){return this._bindElement(this.form,this.data),this.form}getData(){return this.data}_bindValue(e,t,a){if(e[n.$data]=t,e[n.$hasSettableValue]())if(t[n.$isDataValue]()){const a=t[n.$getDataValue]()
-e[n.$setValue](h(a))}else if(e instanceof r.Field&&"multiSelect"===e.ui?.choiceList?.open){const a=t[n.$getChildren]().map((e=>e[n.$content].trim())).join("\n")
+e[n.$setValue](h(a))}else if(e instanceof r.Field&&"multiSelect"===e.ui?.choiceList?.open){const a=t[n.$getChildren]().map(e=>e[n.$content].trim()).join("\n")
 e[n.$setValue](h(a))}else this._isConsumeData()&&(0,c.warn)("XFA - Nodes haven't the same type.")
 else!t[n.$isDataValue]()||this._isMatchTemplate()?this._bindElement(e,t):(0,c.warn)("XFA - Nodes haven't the same type.")}_findDataByNameToConsume(e,t,a,r){if(!e)return null
 let i,s
@@ -6955,7 +6953,8 @@ continue}const p=u[n.$text](),m=f[n.$nodeName]
 if(f instanceof s.XFAAttribute){const e=Object.create(null)
 e[m]=p
 const t=Reflect.construct(Object.getPrototypeOf(g).constructor,[e])
-g[m]=t[m]}else f.hasOwnProperty(n.$content)?(f[n.$data]=u,f[n.$content]=p,f[n.$finalize]()):(0,c.warn)("XFA - Invalid node to use in setProperty")}}_bindItems(e,t){if(!e.hasOwnProperty("items")||!e.hasOwnProperty("bindItems")||e.bindItems.isEmpty())return
+g[m]=t[m]
+continue}f.hasOwnProperty(n.$content)?(f[n.$data]=u,f[n.$content]=p,f[n.$finalize]()):(0,c.warn)("XFA - Invalid node to use in setProperty")}}_bindItems(e,t){if(!e.hasOwnProperty("items")||!e.hasOwnProperty("bindItems")||e.bindItems.isEmpty())return
 for(const r of e.items.children)e[n.$removeChild](r)
 e.items.clear()
 const a=new r.Items({}),s=new r.Items({})
@@ -6983,7 +6982,7 @@ if(!t||t.initial<=1)return
 const a=e[n.$getParent](),r=e[n.$nodeName]
 if(!(a[r]instanceof s.XFAObjectArray))return
 let i
-i=e.name?a[r].children.filter((t=>t.name===e.name)).length:a[r].children.length
+i=e.name?a[r].children.filter(t=>t.name===e.name).length:a[r].children.length
 const o=a[n.$indexOf](e)+1,c=t.initial-i
 if(c){const t=e[n.$clone]()
 t[n.$removeChild](t.occur),t.occur=null,a[r].push(t),a[n.$insertAt](o,t)
@@ -7008,14 +7007,14 @@ case"dataRef":if(!r.bind.ref){(0,c.warn)(`XFA - ref is empty in node ${r[n.$node
 continue}h=r.bind.ref}r.bind.picture&&(o=r.bind.picture[n.$content])}const[d,f]=this._getOccurInfo(r)
 if(h){if(u=(0,i.searchNode)(this.root,t,h,!0,!1),null===u){if(u=(0,i.createDataNode)(this.data,t,h),!u)continue
 this._isConsumeData()&&(u[n.$consumed]=!0),this._setAndBind(r,u)
-continue}this._isConsumeData()&&(u=u.filter((e=>!e[n.$consumed]))),u.length>f?u=u.slice(0,f):0===u.length&&(u=null),u&&this._isConsumeData()&&u.forEach((e=>{e[n.$consumed]=!0}))}else{if(!r.name){this._setAndBind(r,t)
+continue}this._isConsumeData()&&(u=u.filter(e=>!e[n.$consumed])),u.length>f?u=u.slice(0,f):0===u.length&&(u=null),u&&this._isConsumeData()&&u.forEach(e=>{e[n.$consumed]=!0})}else{if(!r.name){this._setAndBind(r,t)
 continue}if(this._isConsumeData()){const a=[]
 for(;a.length<f;){const i=this._findDataByNameToConsume(r.name,r[n.$hasSettableValue](),t,e)
 if(!i)break
 i[n.$consumed]=!0,a.push(i)}u=a.length>0?a:null}else{if(u=t[n.$getRealChildrenByNameIt](r.name,!1,this.emptyMerge).next().value,!u){if(0===d){a.push(r)
 continue}const e=t[n.$namespaceId]===l?-1:t[n.$namespaceId]
 u=r[n.$data]=new s.XmlObject(e,r.name),this.emptyMerge&&(u[n.$consumed]=!0),t[n.$appendChild](u),this._setAndBind(r,u)
-continue}this.emptyMerge&&(u[n.$consumed]=!0),u=[u]}}u?this._bindOccurrences(r,u,o):d>0?this._setAndBind(r,t):a.push(r)}a.forEach((e=>e[n.$getParent]()[n.$removeChild](e)))}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Value=t.Text=t.TemplateNamespace=t.Template=t.SetProperty=t.Items=t.Field=t.BindItems=void 0
+continue}this.emptyMerge&&(u[n.$consumed]=!0),u=[u]}}u?this._bindOccurrences(r,u,o):d>0?this._setAndBind(r,t):a.push(r)}a.forEach(e=>e[n.$getParent]()[n.$removeChild](e))}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Value=t.Text=t.TemplateNamespace=t.Template=t.SetProperty=t.Items=t.Field=t.BindItems=void 0
 var n=a(78),r=a(81),i=a(82),s=a(83),o=a(87),c=a(84),l=a(2),h=a(85),u=a(3),d=a(88)
 const f=r.NamespaceIds.template.id,g="http://www.w3.org/2000/svg",p=/^H(\d+)$/,m=new Set(["image/gif","image/jpeg","image/jpg","image/pjpeg","image/png","image/apng","image/x-png","image/bmp","image/x-ms-bmp","image/tiff","image/tif","application/octet-stream"]),b=[[[66,77],"image/bmp"],[[255,216,255],"image/jpeg"],[[73,73,42,0],"image/tiff"],[[77,77,0,42],"image/tiff"],[[71,73,70,56,57,97],"image/gif"],[[137,80,78,71,13,10,26,10],"image/png"]]
 function y(e){if(!e||!e.border)return{w:0,h:0}
@@ -7075,16 +7074,16 @@ const o={name:"div",attributes:a,children:r},l=[this.x,this.y,this[n.$extra].wid
 return delete this[n.$extra],c.HTMLResult.success(o,l)}}class R extends o.XFAObject{constructor(e){super(f,"assist",!0),this.id=e.id||"",this.role=e.role||"",this.use=e.use||"",this.usehref=e.usehref||"",this.speak=null,this.toolTip=null}[n.$toHTML](){return this.toolTip?.[n.$content]||null}}class E extends o.XFAObject{constructor(e){super(f,"barcode",!0),this.charEncoding=(0,c.getKeyword)({data:e.charEncoding?e.charEncoding.toLowerCase():"",defaultValue:"",validate:e=>["utf-8","big-five","fontspecific","gbk","gb-18030","gb-2312","ksc-5601","none","shift-jis","ucs-2","utf-16"].includes(e)||e.match(/iso-8859-\d{2}/)}),this.checksum=(0,c.getStringOption)(e.checksum,["none","1mod10","1mod10_1mod11","2mod10","auto"]),this.dataColumnCount=(0,c.getInteger)({data:e.dataColumnCount,defaultValue:-1,validate:e=>e>=0}),this.dataLength=(0,c.getInteger)({data:e.dataLength,defaultValue:-1,validate:e=>e>=0}),this.dataPrep=(0,c.getStringOption)(e.dataPrep,["none","flateCompress"]),this.dataRowCount=(0,c.getInteger)({data:e.dataRowCount,defaultValue:-1,validate:e=>e>=0}),this.endChar=e.endChar||"",this.errorCorrectionLevel=(0,c.getInteger)({data:e.errorCorrectionLevel,defaultValue:-1,validate:e=>e>=0&&e<=8}),this.id=e.id||"",this.moduleHeight=(0,c.getMeasurement)(e.moduleHeight,"5mm"),this.moduleWidth=(0,c.getMeasurement)(e.moduleWidth,"0.25mm"),this.printCheckDigit=(0,c.getInteger)({data:e.printCheckDigit,defaultValue:0,validate:e=>1===e}),this.rowColumnRatio=(0,c.getRatio)(e.rowColumnRatio),this.startChar=e.startChar||"",this.textLocation=(0,c.getStringOption)(e.textLocation,["below","above","aboveEmbedded","belowEmbedded","none"]),this.truncate=(0,c.getInteger)({data:e.truncate,defaultValue:0,validate:e=>1===e}),this.type=(0,c.getStringOption)(e.type?e.type.toLowerCase():"",["aztec","codabar","code2of5industrial","code2of5interleaved","code2of5matrix","code2of5standard","code3of9","code3of9extended","code11","code49","code93","code128","code128a","code128b","code128c","code128sscc","datamatrix","ean8","ean8add2","ean8add5","ean13","ean13add2","ean13add5","ean13pwcd","fim","logmars","maxicode","msi","pdf417","pdf417macro","plessey","postauscust2","postauscust3","postausreplypaid","postausstandard","postukrm4scc","postusdpbc","postusimb","postusstandard","postus5zip","qrcode","rfid","rss14","rss14expanded","rss14limited","rss14stacked","rss14stackedomni","rss14truncated","telepen","ucc128","ucc128random","ucc128sscc","upca","upcaadd2","upcaadd5","upcapwcd","upce","upceadd2","upceadd5","upcean2","upcean5","upsmaxicode"]),this.upsMode=(0,c.getStringOption)(e.upsMode,["usCarrier","internationalCarrier","secureSymbol","standardSymbol"]),this.use=e.use||"",this.usehref=e.usehref||"",this.wideNarrowRatio=(0,c.getRatio)(e.wideNarrowRatio),this.encrypt=null,this.extras=null}}class B extends o.XFAObject{constructor(e){super(f,"bind",!0),this.match=(0,c.getStringOption)(e.match,["once","dataRef","global","none"]),this.ref=e.ref||"",this.picture=null}}class $ extends o.XFAObject{constructor(e){super(f,"bindItems"),this.connection=e.connection||"",this.labelRef=e.labelRef||"",this.ref=e.ref||"",this.valueRef=e.valueRef||""}}t.BindItems=$
 class L extends o.XFAObject{constructor(e){super(f,"bookend"),this.id=e.id||"",this.leader=e.leader||"",this.trailer=e.trailer||"",this.use=e.use||"",this.usehref=e.usehref||""}}class _ extends o.Option01{constructor(e){super(f,"boolean"),this.id=e.id||"",this.name=e.name||"",this.use=e.use||"",this.usehref=e.usehref||""}[n.$toHTML](e){return F(1===this[n.$content]?"1":"0")}}class j extends o.XFAObject{constructor(e){super(f,"border",!0),this.break=(0,c.getStringOption)(e.break,["close","open"]),this.hand=(0,c.getStringOption)(e.hand,["even","left","right"]),this.id=e.id||"",this.presence=(0,c.getStringOption)(e.presence,["visible","hidden","inactive","invisible"]),this.relevant=(0,c.getRelevant)(e.relevant),this.use=e.use||"",this.usehref=e.usehref||"",this.corner=new o.XFAObjectArray(4),this.edge=new o.XFAObjectArray(4),this.extras=null,this.fill=null,this.margin=null}[n.$getExtra](){if(!this[n.$extra]){const e=this.edge.children.slice()
 if(e.length<4){const t=e.at(-1)||new ue({})
-for(let a=e.length;a<4;a++)e.push(t)}const t=e.map((e=>e.thickness)),a=[0,0,0,0]
-this.margin&&(a[0]=this.margin.topInset,a[1]=this.margin.rightInset,a[2]=this.margin.bottomInset,a[3]=this.margin.leftInset),this[n.$extra]={widths:t,insets:a,edges:e}}return this[n.$extra]}[n.$toStyle](){const{edges:e}=this[n.$getExtra](),t=e.map((e=>{const t=e[n.$toStyle]()
-return t.color||="#000000",t})),a=Object.create(null)
-if(this.margin&&Object.assign(a,this.margin[n.$toStyle]()),"visible"===this.fill?.presence&&Object.assign(a,this.fill[n.$toStyle]()),this.corner.children.some((e=>0!==e.radius))){const e=this.corner.children.map((e=>e[n.$toStyle]()))
+for(let a=e.length;a<4;a++)e.push(t)}const t=e.map(e=>e.thickness),a=[0,0,0,0]
+this.margin&&(a[0]=this.margin.topInset,a[1]=this.margin.rightInset,a[2]=this.margin.bottomInset,a[3]=this.margin.leftInset),this[n.$extra]={widths:t,insets:a,edges:e}}return this[n.$extra]}[n.$toStyle](){const{edges:e}=this[n.$getExtra](),t=e.map(e=>{const t=e[n.$toStyle]()
+return t.color||="#000000",t}),a=Object.create(null)
+if(this.margin&&Object.assign(a,this.margin[n.$toStyle]()),"visible"===this.fill?.presence&&Object.assign(a,this.fill[n.$toStyle]()),this.corner.children.some(e=>0!==e.radius)){const e=this.corner.children.map(e=>e[n.$toStyle]())
 if(2===e.length||3===e.length){const t=e.at(-1)
-for(let a=e.length;a<4;a++)e.push(t)}a.borderRadius=e.map((e=>e.radius)).join(" ")}switch(this.presence){case"invisible":case"hidden":a.borderStyle=""
+for(let a=e.length;a<4;a++)e.push(t)}a.borderRadius=e.map(e=>e.radius).join(" ")}switch(this.presence){case"invisible":case"hidden":a.borderStyle=""
 break
 case"inactive":a.borderStyle="none"
 break
-default:a.borderStyle=t.map((e=>e.style)).join(" ")}return a.borderWidth=t.map((e=>e.width)).join(" "),a.borderColor=t.map((e=>e.color)).join(" "),a}}class U extends o.XFAObject{constructor(e){super(f,"break",!0),this.after=(0,c.getStringOption)(e.after,["auto","contentArea","pageArea","pageEven","pageOdd"]),this.afterTarget=e.afterTarget||"",this.before=(0,c.getStringOption)(e.before,["auto","contentArea","pageArea","pageEven","pageOdd"]),this.beforeTarget=e.beforeTarget||"",this.bookendLeader=e.bookendLeader||"",this.bookendTrailer=e.bookendTrailer||"",this.id=e.id||"",this.overflowLeader=e.overflowLeader||"",this.overflowTarget=e.overflowTarget||"",this.overflowTrailer=e.overflowTrailer||"",this.startNew=(0,c.getInteger)({data:e.startNew,defaultValue:0,validate:e=>1===e}),this.use=e.use||"",this.usehref=e.usehref||"",this.extras=null}}class X extends o.XFAObject{constructor(e){super(f,"breakAfter",!0),this.id=e.id||"",this.leader=e.leader||"",this.startNew=(0,c.getInteger)({data:e.startNew,defaultValue:0,validate:e=>1===e}),this.target=e.target||"",this.targetType=(0,c.getStringOption)(e.targetType,["auto","contentArea","pageArea"]),this.trailer=e.trailer||"",this.use=e.use||"",this.usehref=e.usehref||"",this.script=null}}class H extends o.XFAObject{constructor(e){super(f,"breakBefore",!0),this.id=e.id||"",this.leader=e.leader||"",this.startNew=(0,c.getInteger)({data:e.startNew,defaultValue:0,validate:e=>1===e}),this.target=e.target||"",this.targetType=(0,c.getStringOption)(e.targetType,["auto","contentArea","pageArea"]),this.trailer=e.trailer||"",this.use=e.use||"",this.usehref=e.usehref||"",this.script=null}[n.$toHTML](e){return this[n.$extra]={},c.HTMLResult.FAILURE}}class q extends o.XFAObject{constructor(e){super(f,"button",!0),this.highlight=(0,c.getStringOption)(e.highlight,["inverted","none","outline","push"]),this.id=e.id||"",this.use=e.use||"",this.usehref=e.usehref||"",this.extras=null}[n.$toHTML](e){const t=this[n.$getParent]()[n.$getParent](),a={name:"button",attributes:{id:this[n.$uid],class:["xfaButton"],style:{}},children:[]}
+default:a.borderStyle=t.map(e=>e.style).join(" ")}return a.borderWidth=t.map(e=>e.width).join(" "),a.borderColor=t.map(e=>e.color).join(" "),a}}class U extends o.XFAObject{constructor(e){super(f,"break",!0),this.after=(0,c.getStringOption)(e.after,["auto","contentArea","pageArea","pageEven","pageOdd"]),this.afterTarget=e.afterTarget||"",this.before=(0,c.getStringOption)(e.before,["auto","contentArea","pageArea","pageEven","pageOdd"]),this.beforeTarget=e.beforeTarget||"",this.bookendLeader=e.bookendLeader||"",this.bookendTrailer=e.bookendTrailer||"",this.id=e.id||"",this.overflowLeader=e.overflowLeader||"",this.overflowTarget=e.overflowTarget||"",this.overflowTrailer=e.overflowTrailer||"",this.startNew=(0,c.getInteger)({data:e.startNew,defaultValue:0,validate:e=>1===e}),this.use=e.use||"",this.usehref=e.usehref||"",this.extras=null}}class X extends o.XFAObject{constructor(e){super(f,"breakAfter",!0),this.id=e.id||"",this.leader=e.leader||"",this.startNew=(0,c.getInteger)({data:e.startNew,defaultValue:0,validate:e=>1===e}),this.target=e.target||"",this.targetType=(0,c.getStringOption)(e.targetType,["auto","contentArea","pageArea"]),this.trailer=e.trailer||"",this.use=e.use||"",this.usehref=e.usehref||"",this.script=null}}class H extends o.XFAObject{constructor(e){super(f,"breakBefore",!0),this.id=e.id||"",this.leader=e.leader||"",this.startNew=(0,c.getInteger)({data:e.startNew,defaultValue:0,validate:e=>1===e}),this.target=e.target||"",this.targetType=(0,c.getStringOption)(e.targetType,["auto","contentArea","pageArea"]),this.trailer=e.trailer||"",this.use=e.use||"",this.usehref=e.usehref||"",this.script=null}[n.$toHTML](e){return this[n.$extra]={},c.HTMLResult.FAILURE}}class q extends o.XFAObject{constructor(e){super(f,"button",!0),this.highlight=(0,c.getStringOption)(e.highlight,["inverted","none","outline","push"]),this.id=e.id||"",this.use=e.use||"",this.usehref=e.usehref||"",this.extras=null}[n.$toHTML](e){const t=this[n.$getParent]()[n.$getParent](),a={name:"button",attributes:{id:this[n.$uid],class:["xfaButton"],style:{}},children:[]}
 for(const r of t.event.children){if("click"!==r.activity||!r.script)continue
 const e=(0,u.recoverJsURL)(r.script[n.$content])
 if(!e)continue
@@ -7243,7 +7242,7 @@ return t&&("#000000"===t?delete e.color:t.startsWith("#")||(e.background=t,e.bac
 let e=this[n.$globalData].images&&this[n.$globalData].images.get(this.href)
 if(!e&&(this.href||!this[n.$content]))return c.HTMLResult.EMPTY
 if(e||"base64"!==this.transferEncoding||(e=(0,l.stringToBytes)(atob(this[n.$content]))),!e)return c.HTMLResult.EMPTY
-if(!this.contentType){for(const[t,a]of b)if(e.length>t.length&&t.every(((t,a)=>t===e[a]))){this.contentType=a
+if(!this.contentType){for(const[t,a]of b)if(e.length>t.length&&t.every((t,a)=>t===e[a])){this.contentType=a
 break}if(!this.contentType)return c.HTMLResult.EMPTY}const t=new Blob([e],{type:this.contentType})
 let a
 switch(this.aspect){case"fit":case"actual":break
@@ -7284,8 +7283,8 @@ return this.pageArea.children[this[n.$extra].pageIndex][n.$getNextPage]()}if(thi
 if(this[n.$isUsable]())return this[n.$extra].numberOfUse+=1,this[n.$extra].pageIndex=-1,this[n.$extra].pageSetIndex=-1,this[n.$getNextPage]()
 const e=this[n.$getParent]()
 return e instanceof et?e[n.$getNextPage]():(this[n.$cleanPage](),this[n.$getNextPage]())}const e=this[n.$getTemplateRoot]()[n.$extra].pageNumber,t=e%2==0?"even":"odd",a=0===e?"first":"rest"
-let r=this.pageArea.children.find((e=>e.oddOrEven===t&&e.pagePosition===a))
-return r||(r=this.pageArea.children.find((e=>"any"===e.oddOrEven&&e.pagePosition===a)),r||(r=this.pageArea.children.find((e=>"any"===e.oddOrEven&&"any"===e.pagePosition)),r||this.pageArea.children[0]))}}class tt extends o.XFAObject{constructor(e){super(f,"para",!0),this.hAlign=(0,c.getStringOption)(e.hAlign,["left","center","justify","justifyAll","radix","right"]),this.id=e.id||"",this.lineHeight=e.lineHeight?(0,c.getMeasurement)(e.lineHeight,"0pt"):"",this.marginLeft=e.marginLeft?(0,c.getMeasurement)(e.marginLeft,"0pt"):"",this.marginRight=e.marginRight?(0,c.getMeasurement)(e.marginRight,"0pt"):"",this.orphans=(0,c.getInteger)({data:e.orphans,defaultValue:0,validate:e=>e>=0}),this.preserve=e.preserve||"",this.radixOffset=e.radixOffset?(0,c.getMeasurement)(e.radixOffset,"0pt"):"",this.spaceAbove=e.spaceAbove?(0,c.getMeasurement)(e.spaceAbove,"0pt"):"",this.spaceBelow=e.spaceBelow?(0,c.getMeasurement)(e.spaceBelow,"0pt"):"",this.tabDefault=e.tabDefault?(0,c.getMeasurement)(this.tabDefault):"",this.tabStops=(e.tabStops||"").trim().split(/\s+/).map(((e,t)=>t%2==1?(0,c.getMeasurement)(e):e)),this.textIndent=e.textIndent?(0,c.getMeasurement)(e.textIndent,"0pt"):"",this.use=e.use||"",this.usehref=e.usehref||"",this.vAlign=(0,c.getStringOption)(e.vAlign,["top","bottom","middle"]),this.widows=(0,c.getInteger)({data:e.widows,defaultValue:0,validate:e=>e>=0}),this.hyphenation=null}[n.$toStyle](){const e=(0,s.toStyle)(this,"hAlign")
+let r=this.pageArea.children.find(e=>e.oddOrEven===t&&e.pagePosition===a)
+return r||(r=this.pageArea.children.find(e=>"any"===e.oddOrEven&&e.pagePosition===a),r||(r=this.pageArea.children.find(e=>"any"===e.oddOrEven&&"any"===e.pagePosition),r||this.pageArea.children[0]))}}class tt extends o.XFAObject{constructor(e){super(f,"para",!0),this.hAlign=(0,c.getStringOption)(e.hAlign,["left","center","justify","justifyAll","radix","right"]),this.id=e.id||"",this.lineHeight=e.lineHeight?(0,c.getMeasurement)(e.lineHeight,"0pt"):"",this.marginLeft=e.marginLeft?(0,c.getMeasurement)(e.marginLeft,"0pt"):"",this.marginRight=e.marginRight?(0,c.getMeasurement)(e.marginRight,"0pt"):"",this.orphans=(0,c.getInteger)({data:e.orphans,defaultValue:0,validate:e=>e>=0}),this.preserve=e.preserve||"",this.radixOffset=e.radixOffset?(0,c.getMeasurement)(e.radixOffset,"0pt"):"",this.spaceAbove=e.spaceAbove?(0,c.getMeasurement)(e.spaceAbove,"0pt"):"",this.spaceBelow=e.spaceBelow?(0,c.getMeasurement)(e.spaceBelow,"0pt"):"",this.tabDefault=e.tabDefault?(0,c.getMeasurement)(this.tabDefault):"",this.tabStops=(e.tabStops||"").trim().split(/\s+/).map((e,t)=>t%2==1?(0,c.getMeasurement)(e):e),this.textIndent=e.textIndent?(0,c.getMeasurement)(e.textIndent,"0pt"):"",this.use=e.use||"",this.usehref=e.usehref||"",this.vAlign=(0,c.getStringOption)(e.vAlign,["top","bottom","middle"]),this.widows=(0,c.getInteger)({data:e.widows,defaultValue:0,validate:e=>e>=0}),this.hyphenation=null}[n.$toStyle](){const e=(0,s.toStyle)(this,"hAlign")
 return""!==this.marginLeft&&(e.paddingLeft=(0,s.measureToString)(this.marginLeft)),""!==this.marginRight&&(e.paddingight=(0,s.measureToString)(this.marginRight)),""!==this.spaceAbove&&(e.paddingTop=(0,s.measureToString)(this.spaceAbove)),""!==this.spaceBelow&&(e.paddingBottom=(0,s.measureToString)(this.spaceBelow)),""!==this.textIndent&&(e.textIndent=(0,s.measureToString)(this.textIndent),(0,s.fixTextIndent)(e)),this.lineHeight>0&&(e.lineHeight=(0,s.measureToString)(this.lineHeight)),""!==this.tabDefault&&(e.tabSize=(0,s.measureToString)(this.tabDefault)),this.tabStops.length,this.hyphenatation&&Object.assign(e,this.hyphenatation[n.$toStyle]()),e}}class at extends o.XFAObject{constructor(e){super(f,"passwordEdit",!0),this.hScrollPolicy=(0,c.getStringOption)(e.hScrollPolicy,["auto","off","on"]),this.id=e.id||"",this.passwordChar=e.passwordChar||"*",this.use=e.use||"",this.usehref=e.usehref||"",this.border=null,this.extras=null,this.margin=null}}class nt extends o.XFAObject{constructor(e){super(f,"pattern",!0),this.id=e.id||"",this.type=(0,c.getStringOption)(e.type,["crossHatch","crossDiagonal","diagonalLeft","diagonalRight","horizontal","vertical"]),this.use=e.use||"",this.usehref=e.usehref||"",this.color=null,this.extras=null}[n.$toStyle](e){e=e?e[n.$toStyle]():"#FFFFFF"
 const t=this.color?this.color[n.$toStyle]():"#000000",a="repeating-linear-gradient",r=`${e},${e} 5px,${t} 5px,${t} 10px`
 switch(this.type){case"crossHatch":return`${a}(to top,${r}) ${a}(to right,${r})`
@@ -7303,7 +7302,7 @@ return`radial-gradient(circle at center, ${"toEdge"===this.type?`${e},${t}`:`${t
 const r=(this.corner.children.length?this.corner.children[0]:new te({}))[n.$toStyle](),i={name:"svg",children:[{name:"rect",attributes:{xmlns:g,width:"100%",height:"100%",x:0,y:0,rx:r.radius,ry:r.radius,style:a}}],attributes:{xmlns:g,style:{overflow:"visible"},width:"100%",height:"100%"}}
 return w(this[n.$getParent]()[n.$getParent]())?c.HTMLResult.success({name:"div",attributes:{style:{display:"inline",width:"100%",height:"100%"}},children:[i]}):(i.attributes.style.position="absolute",c.HTMLResult.success(i))}}class ht extends o.StringObject{constructor(e){super(f,"ref"),this.id=e.id||"",this.use=e.use||"",this.usehref=e.usehref||""}}class ut extends o.StringObject{constructor(e){super(f,"script"),this.binding=e.binding||"",this.contentType=e.contentType||"",this.id=e.id||"",this.name=e.name||"",this.runAt=(0,c.getStringOption)(e.runAt,["client","both","server"]),this.use=e.use||"",this.usehref=e.usehref||""}}class dt extends o.XFAObject{constructor(e){super(f,"setProperty"),this.connection=e.connection||"",this.ref=e.ref||"",this.target=e.target||""}}t.SetProperty=dt
 class ft extends o.XFAObject{constructor(e){super(f,"signData",!0),this.id=e.id||"",this.operation=(0,c.getStringOption)(e.operation,["sign","clear","verify"]),this.ref=e.ref||"",this.target=e.target||"",this.use=e.use||"",this.usehref=e.usehref||"",this.filter=null,this.manifest=null}}class gt extends o.XFAObject{constructor(e){super(f,"signature",!0),this.id=e.id||"",this.type=(0,c.getStringOption)(e.type,["PDF1.3","PDF1.6"]),this.use=e.use||"",this.usehref=e.usehref||"",this.border=null,this.extras=null,this.filter=null,this.manifest=null,this.margin=null}}class pt extends o.XFAObject{constructor(e){super(f,"signing",!0),this.id=e.id||"",this.type=(0,c.getStringOption)(e.type,["optional","required"]),this.use=e.use||"",this.usehref=e.usehref||"",this.certificate=new o.XFAObjectArray}}class mt extends o.XFAObject{constructor(e){super(f,"solid",!0),this.id=e.id||"",this.use=e.use||"",this.usehref=e.usehref||"",this.extras=null}[n.$toStyle](e){return e?e[n.$toStyle]():"#FFFFFF"}}class bt extends o.StringObject{constructor(e){super(f,"speak"),this.disable=(0,c.getInteger)({data:e.disable,defaultValue:0,validate:e=>1===e}),this.id=e.id||"",this.priority=(0,c.getStringOption)(e.priority,["custom","caption","name","toolTip"]),this.rid=e.rid||"",this.use=e.use||"",this.usehref=e.usehref||""}}class yt extends o.XFAObject{constructor(e){super(f,"stipple",!0),this.id=e.id||"",this.rate=(0,c.getInteger)({data:e.rate,defaultValue:50,validate:e=>e>=0&&e<=100}),this.use=e.use||"",this.usehref=e.usehref||"",this.color=null,this.extras=null}[n.$toStyle](e){const t=this.rate/100
-return l.Util.makeHexColor(Math.round(e.value.r*(1-t)+this.value.r*t),Math.round(e.value.g*(1-t)+this.value.g*t),Math.round(e.value.b*(1-t)+this.value.b*t))}}class wt extends o.XFAObject{constructor(e){super(f,"subform",!0),this.access=(0,c.getStringOption)(e.access,["open","nonInteractive","protected","readOnly"]),this.allowMacro=(0,c.getInteger)({data:e.allowMacro,defaultValue:0,validate:e=>1===e}),this.anchorType=(0,c.getStringOption)(e.anchorType,["topLeft","bottomCenter","bottomLeft","bottomRight","middleCenter","middleLeft","middleRight","topCenter","topRight"]),this.colSpan=(0,c.getInteger)({data:e.colSpan,defaultValue:1,validate:e=>e>=1||-1===e}),this.columnWidths=(e.columnWidths||"").trim().split(/\s+/).map((e=>"-1"===e?-1:(0,c.getMeasurement)(e))),this.h=e.h?(0,c.getMeasurement)(e.h):"",this.hAlign=(0,c.getStringOption)(e.hAlign,["left","center","justify","justifyAll","radix","right"]),this.id=e.id||"",this.layout=(0,c.getStringOption)(e.layout,["position","lr-tb","rl-row","rl-tb","row","table","tb"]),this.locale=e.locale||"",this.maxH=(0,c.getMeasurement)(e.maxH,"0pt"),this.maxW=(0,c.getMeasurement)(e.maxW,"0pt"),this.mergeMode=(0,c.getStringOption)(e.mergeMode,["consumeData","matchTemplate"]),this.minH=(0,c.getMeasurement)(e.minH,"0pt"),this.minW=(0,c.getMeasurement)(e.minW,"0pt"),this.name=e.name||"",this.presence=(0,c.getStringOption)(e.presence,["visible","hidden","inactive","invisible"]),this.relevant=(0,c.getRelevant)(e.relevant),this.restoreState=(0,c.getStringOption)(e.restoreState,["manual","auto"]),this.scope=(0,c.getStringOption)(e.scope,["name","none"]),this.use=e.use||"",this.usehref=e.usehref||"",this.w=e.w?(0,c.getMeasurement)(e.w):"",this.x=(0,c.getMeasurement)(e.x,"0pt"),this.y=(0,c.getMeasurement)(e.y,"0pt"),this.assist=null,this.bind=null,this.bookend=null,this.border=null
+return l.Util.makeHexColor(Math.round(e.value.r*(1-t)+this.value.r*t),Math.round(e.value.g*(1-t)+this.value.g*t),Math.round(e.value.b*(1-t)+this.value.b*t))}}class wt extends o.XFAObject{constructor(e){super(f,"subform",!0),this.access=(0,c.getStringOption)(e.access,["open","nonInteractive","protected","readOnly"]),this.allowMacro=(0,c.getInteger)({data:e.allowMacro,defaultValue:0,validate:e=>1===e}),this.anchorType=(0,c.getStringOption)(e.anchorType,["topLeft","bottomCenter","bottomLeft","bottomRight","middleCenter","middleLeft","middleRight","topCenter","topRight"]),this.colSpan=(0,c.getInteger)({data:e.colSpan,defaultValue:1,validate:e=>e>=1||-1===e}),this.columnWidths=(e.columnWidths||"").trim().split(/\s+/).map(e=>"-1"===e?-1:(0,c.getMeasurement)(e)),this.h=e.h?(0,c.getMeasurement)(e.h):"",this.hAlign=(0,c.getStringOption)(e.hAlign,["left","center","justify","justifyAll","radix","right"]),this.id=e.id||"",this.layout=(0,c.getStringOption)(e.layout,["position","lr-tb","rl-row","rl-tb","row","table","tb"]),this.locale=e.locale||"",this.maxH=(0,c.getMeasurement)(e.maxH,"0pt"),this.maxW=(0,c.getMeasurement)(e.maxW,"0pt"),this.mergeMode=(0,c.getStringOption)(e.mergeMode,["consumeData","matchTemplate"]),this.minH=(0,c.getMeasurement)(e.minH,"0pt"),this.minW=(0,c.getMeasurement)(e.minW,"0pt"),this.name=e.name||"",this.presence=(0,c.getStringOption)(e.presence,["visible","hidden","inactive","invisible"]),this.relevant=(0,c.getRelevant)(e.relevant),this.restoreState=(0,c.getStringOption)(e.restoreState,["manual","auto"]),this.scope=(0,c.getStringOption)(e.scope,["name","none"]),this.use=e.use||"",this.usehref=e.usehref||"",this.w=e.w?(0,c.getMeasurement)(e.w):"",this.x=(0,c.getMeasurement)(e.x,"0pt"),this.y=(0,c.getMeasurement)(e.y,"0pt"),this.assist=null,this.bind=null,this.bookend=null,this.border=null
 this.break=null,this.calculate=null,this.desc=null,this.extras=null,this.keep=null,this.margin=null,this.occur=null,this.overflow=null,this.pageSet=null,this.para=null,this.traversal=null,this.validate=null,this.variables=null,this.area=new o.XFAObjectArray,this.breakAfter=new o.XFAObjectArray,this.breakBefore=new o.XFAObjectArray,this.connect=new o.XFAObjectArray,this.draw=new o.XFAObjectArray,this.event=new o.XFAObjectArray,this.exObject=new o.XFAObjectArray,this.exclGroup=new o.XFAObjectArray,this.field=new o.XFAObjectArray,this.proto=new o.XFAObjectArray,this.setProperty=new o.XFAObjectArray,this.subform=new o.XFAObjectArray,this.subformSet=new o.XFAObjectArray}[n.$getSubformParent](){const e=this[n.$getParent]()
 return e instanceof xt?e[n.$getSubformParent]():e}[n.$isBindable](){return!0}[n.$isThereMoreWidth](){return this.layout.endsWith("-tb")&&0===this[n.$extra].attempt&&this[n.$extra].numberInLine>0||this[n.$getParent]()[n.$isThereMoreWidth]()}*[n.$getContainedChildren](){yield*S(this)}[n.$flushHTML](){return(0,i.flushHTML)(this)}[n.$addHTML](e,t){(0,i.addHTML)(this,e,t)}[n.$getAvailableSpace](){return(0,i.getAvailableSpace)(this)}[n.$isSplittable](){const e=this[n.$getSubformParent]()
 return!!e[n.$isSplittable]()&&(void 0!==this[n.$extra]._isSplittable?this[n.$extra]._isSplittable:"position"===this.layout||this.layout.includes("row")||this.keep&&"none"!==this.keep.intact?(this[n.$extra]._isSplittable=!1,!1):(!e.layout?.endsWith("-tb")||0===e[n.$extra].numberInLine)&&(this[n.$extra]._isSplittable=!0,!0))}[n.$toHTML](e){if(k(this),this.break){if("auto"!==this.break.after||""!==this.break.afterTarget){const e=new X({targetType:this.break.after,target:this.break.afterTarget,startNew:this.break.startNew.toString()})
@@ -7338,7 +7337,7 @@ const v=c.HTMLResult.success((0,s.createWrapper)(this,A),S)
 if(this.breakAfter.children.length>=1){const e=this.breakAfter.children[0]
 if(T(e))return this[n.$extra].afterBreakAfter=v,c.HTMLResult.breakNode(e)}return delete this[n.$extra],v}}class xt extends o.XFAObject{constructor(e){super(f,"subformSet",!0),this.id=e.id||"",this.name=e.name||"",this.relation=(0,c.getStringOption)(e.relation,["ordered","choice","unordered"]),this.relevant=(0,c.getRelevant)(e.relevant),this.use=e.use||"",this.usehref=e.usehref||"",this.bookend=null,this.break=null,this.desc=null,this.extras=null,this.occur=null,this.overflow=null,this.breakAfter=new o.XFAObjectArray,this.breakBefore=new o.XFAObjectArray,this.subform=new o.XFAObjectArray,this.subformSet=new o.XFAObjectArray}*[n.$getContainedChildren](){yield*S(this)}[n.$getSubformParent](){let e=this[n.$getParent]()
 for(;!(e instanceof wt);)e=e[n.$getParent]()
-return e}[n.$isBindable](){return!0}}class St extends o.ContentObject{constructor(e){super(f,"subjectDN"),this.delimiter=e.delimiter||",",this.id=e.id||"",this.name=e.name||"",this.use=e.use||"",this.usehref=e.usehref||""}[n.$finalize](){this[n.$content]=new Map(this[n.$content].split(this.delimiter).map((e=>((e=e.split("=",2))[0]=e[0].trim(),e))))}}class At extends o.XFAObject{constructor(e){super(f,"subjectDNs",!0),this.id=e.id||"",this.type=(0,c.getStringOption)(e.type,["optional","required"]),this.use=e.use||"",this.usehref=e.usehref||"",this.subjectDN=new o.XFAObjectArray}}class kt extends o.XFAObject{constructor(e){super(f,"submit",!0),this.embedPDF=(0,c.getInteger)({data:e.embedPDF,defaultValue:0,validate:e=>1===e}),this.format=(0,c.getStringOption)(e.format,["xdp","formdata","pdf","urlencoded","xfd","xml"]),this.id=e.id||"",this.target=e.target||"",this.textEncoding=(0,c.getKeyword)({data:e.textEncoding?e.textEncoding.toLowerCase():"",defaultValue:"",validate:e=>["utf-8","big-five","fontspecific","gbk","gb-18030","gb-2312","ksc-5601","none","shift-jis","ucs-2","utf-16"].includes(e)||e.match(/iso-8859-\d{2}/)}),this.use=e.use||"",this.usehref=e.usehref||"",this.xdpContent=e.xdpContent||"",this.encrypt=null,this.encryptData=new o.XFAObjectArray,this.signData=new o.XFAObjectArray}}class Ct extends o.XFAObject{constructor(e){super(f,"template",!0),this.baseProfile=(0,c.getStringOption)(e.baseProfile,["full","interactiveForms"]),this.extras=null,this.subform=new o.XFAObjectArray}[n.$finalize](){0===this.subform.children.length&&(0,l.warn)("XFA - No subforms in template node."),this.subform.children.length>=2&&(0,l.warn)("XFA - Several subforms in template node: please file a bug."),this[n.$tabIndex]=5e3}[n.$isSplittable](){return!0}[n.$searchNode](e,t){return e.startsWith("#")?[this[n.$ids].get(e.slice(1))]:(0,d.searchNode)(this,t,e,!0,!0)}*[n.$toPages](){if(!this.subform.children.length)return c.HTMLResult.success({name:"div",children:[]})
+return e}[n.$isBindable](){return!0}}class St extends o.ContentObject{constructor(e){super(f,"subjectDN"),this.delimiter=e.delimiter||",",this.id=e.id||"",this.name=e.name||"",this.use=e.use||"",this.usehref=e.usehref||""}[n.$finalize](){this[n.$content]=new Map(this[n.$content].split(this.delimiter).map(e=>((e=e.split("=",2))[0]=e[0].trim(),e)))}}class At extends o.XFAObject{constructor(e){super(f,"subjectDNs",!0),this.id=e.id||"",this.type=(0,c.getStringOption)(e.type,["optional","required"]),this.use=e.use||"",this.usehref=e.usehref||"",this.subjectDN=new o.XFAObjectArray}}class kt extends o.XFAObject{constructor(e){super(f,"submit",!0),this.embedPDF=(0,c.getInteger)({data:e.embedPDF,defaultValue:0,validate:e=>1===e}),this.format=(0,c.getStringOption)(e.format,["xdp","formdata","pdf","urlencoded","xfd","xml"]),this.id=e.id||"",this.target=e.target||"",this.textEncoding=(0,c.getKeyword)({data:e.textEncoding?e.textEncoding.toLowerCase():"",defaultValue:"",validate:e=>["utf-8","big-five","fontspecific","gbk","gb-18030","gb-2312","ksc-5601","none","shift-jis","ucs-2","utf-16"].includes(e)||e.match(/iso-8859-\d{2}/)}),this.use=e.use||"",this.usehref=e.usehref||"",this.xdpContent=e.xdpContent||"",this.encrypt=null,this.encryptData=new o.XFAObjectArray,this.signData=new o.XFAObjectArray}}class Ct extends o.XFAObject{constructor(e){super(f,"template",!0),this.baseProfile=(0,c.getStringOption)(e.baseProfile,["full","interactiveForms"]),this.extras=null,this.subform=new o.XFAObjectArray}[n.$finalize](){0===this.subform.children.length&&(0,l.warn)("XFA - No subforms in template node."),this.subform.children.length>=2&&(0,l.warn)("XFA - Several subforms in template node: please file a bug."),this[n.$tabIndex]=5e3}[n.$isSplittable](){return!0}[n.$searchNode](e,t){return e.startsWith("#")?[this[n.$ids].get(e.slice(1))]:(0,d.searchNode)(this,t,e,!0,!0)}*[n.$toPages](){if(!this.subform.children.length)return c.HTMLResult.success({name:"div",children:[]})
 this[n.$extra]={overflowNode:null,firstUnsplittable:null,currentContentArea:null,currentPageArea:null,noLayoutFailure:!1,pageNumber:1,pagePosition:"first",oddOrEven:"odd",blankOrNotBlank:"nonBlank",paraStack:[]}
 const e=this.subform.children[0]
 e.pageSet[n.$cleanPage]()
@@ -7351,11 +7350,11 @@ let h
 o[n.$extra]={numberOfUse:1,pageIndex:o.pageArea.children.indexOf(r),pageSetIndex:0}
 let u=null,d=null,f=!0,g=0,p=0
 for(;;){if(f)g=0
-else if(a.children.pop(),3==++g)return(0,l.warn)("XFA - Something goes wrong: please file a bug."),a
+else if(a.children.pop(),3===++g)return(0,l.warn)("XFA - Something goes wrong: please file a bug."),a
 h=null,this[n.$extra].currentPageArea=r
 const t=r[n.$toHTML]().html
 a.children.push(t),u&&(this[n.$extra].noLayoutFailure=!0,t.children.push(u[n.$toHTML](r[n.$extra].space).html),u=null),d&&(this[n.$extra].noLayoutFailure=!0,t.children.push(d[n.$toHTML](r[n.$extra].space).html),d=null)
-const i=r.contentArea.children,s=t.children.filter((e=>e.attributes.class.includes("xfaContentarea")))
+const i=r.contentArea.children,s=t.children.filter(e=>e.attributes.class.includes("xfaContentarea"))
 f=!1,this[n.$extra].firstUnsplittable=null,this[n.$extra].noLayoutFailure=!1
 const o=t=>{const a=e[n.$flushHTML]()
 a&&(f||=a.children?.length>0,s[t].children.push(a))}
@@ -7365,15 +7364,16 @@ const l=e[n.$toHTML](c)
 if(l.success)return l.html?(f||=l.html.children?.length>0,s[r].children.push(l.html)):!f&&a.children.length>1&&a.children.pop(),a
 if(l.isBreak()){const e=l.breakNode
 if(o(r),"auto"===e.targetType)continue
-e.leader&&(u=this[n.$searchNode](e.leader,e[n.$getParent]()),u=u?u[0]:null),e.trailer&&(d=this[n.$searchNode](e.trailer,e[n.$getParent]()),d=d?d[0]:null),"pageArea"===e.targetType?(h=e[n.$extra].target,r=1/0):e[n.$extra].target?(h=e[n.$extra].target,p=e[n.$extra].index+1,r=1/0):r=e[n.$extra].index}else if(this[n.$extra].overflowNode){const e=this[n.$extra].overflowNode
+e.leader&&(u=this[n.$searchNode](e.leader,e[n.$getParent]()),u=u?u[0]:null),e.trailer&&(d=this[n.$searchNode](e.trailer,e[n.$getParent]()),d=d?d[0]:null),"pageArea"===e.targetType?(h=e[n.$extra].target,r=1/0):e[n.$extra].target?(h=e[n.$extra].target,p=e[n.$extra].index+1,r=1/0):r=e[n.$extra].index
+continue}if(this[n.$extra].overflowNode){const e=this[n.$extra].overflowNode
 this[n.$extra].overflowNode=null
 const t=e[n.$getExtra](),a=t.target
 t.addLeader=null!==t.leader,t.addTrailer=null!==t.trailer,o(r)
 const s=r
 if(r=1/0,a instanceof Qe)h=a
-else if(a instanceof ee){const e=i.indexOf(a);-1!==e?e>s?r=e-1:p=e:(h=a[n.$getParent](),p=h.contentArea.children.indexOf(a))}}else o(r)}this[n.$extra].pageNumber+=1,h&&(h[n.$isUsable]()?h[n.$extra].numberOfUse+=1:h=null),r=h||r[n.$getNextPage](),yield null}}}t.Template=Ct
-class vt extends o.ContentObject{constructor(e){super(f,"text"),this.id=e.id||"",this.maxChars=(0,c.getInteger)({data:e.maxChars,defaultValue:0,validate:e=>e>=0}),this.name=e.name||"",this.rid=e.rid||"",this.use=e.use||"",this.usehref=e.usehref||""}[n.$acceptWhitespace](){return!0}[n.$onChild](e){return e[n.$namespaceId]===r.NamespaceIds.xhtml.id?(this[n.$content]=e,!0):((0,l.warn)(`XFA - Invalid content in Text: ${e[n.$nodeName]}.`),!1)}[n.$onText](e){this[n.$content]instanceof o.XFAObject||super[n.$onText](e)}[n.$finalize](){"string"==typeof this[n.$content]&&(this[n.$content]=this[n.$content].replaceAll("\r\n","\n"))}[n.$getExtra](){return"string"==typeof this[n.$content]?this[n.$content].split(/[\u2029\u2028\n]/).reduce(((e,t)=>(t&&e.push(t),e)),[]).join("\n"):this[n.$content][n.$text]()}[n.$toHTML](e){if("string"==typeof this[n.$content]){const e=F(this[n.$content]).html
-return this[n.$content].includes("\u2029")?(e.name="div",e.children=[],this[n.$content].split("\u2029").map((e=>e.split(/[\u2028\n]/).reduce(((e,t)=>(e.push({name:"span",value:t},{name:"br"}),e)),[]))).forEach((t=>{e.children.push({name:"p",children:t})}))):/[\u2028\n]/.test(this[n.$content])&&(e.name="div",e.children=[],this[n.$content].split(/[\u2028\n]/).forEach((t=>{e.children.push({name:"span",value:t},{name:"br"})}))),c.HTMLResult.success(e)}return this[n.$content][n.$toHTML](e)}}t.Text=vt
+else if(a instanceof ee){const e=i.indexOf(a);-1!==e?e>s?r=e-1:p=e:(h=a[n.$getParent](),p=h.contentArea.children.indexOf(a))}continue}o(r)}this[n.$extra].pageNumber+=1,h&&(h[n.$isUsable]()?h[n.$extra].numberOfUse+=1:h=null),r=h||r[n.$getNextPage](),yield null}}}t.Template=Ct
+class vt extends o.ContentObject{constructor(e){super(f,"text"),this.id=e.id||"",this.maxChars=(0,c.getInteger)({data:e.maxChars,defaultValue:0,validate:e=>e>=0}),this.name=e.name||"",this.rid=e.rid||"",this.use=e.use||"",this.usehref=e.usehref||""}[n.$acceptWhitespace](){return!0}[n.$onChild](e){return e[n.$namespaceId]===r.NamespaceIds.xhtml.id?(this[n.$content]=e,!0):((0,l.warn)(`XFA - Invalid content in Text: ${e[n.$nodeName]}.`),!1)}[n.$onText](e){this[n.$content]instanceof o.XFAObject||super[n.$onText](e)}[n.$finalize](){"string"==typeof this[n.$content]&&(this[n.$content]=this[n.$content].replaceAll("\r\n","\n"))}[n.$getExtra](){return"string"==typeof this[n.$content]?this[n.$content].split(/[\u2029\u2028\n]/).reduce((e,t)=>(t&&e.push(t),e),[]).join("\n"):this[n.$content][n.$text]()}[n.$toHTML](e){if("string"==typeof this[n.$content]){const e=F(this[n.$content]).html
+return this[n.$content].includes("\u2029")?(e.name="div",e.children=[],this[n.$content].split("\u2029").map(e=>e.split(/[\u2028\n]/).reduce((e,t)=>(e.push({name:"span",value:t},{name:"br"}),e),[])).forEach(t=>{e.children.push({name:"p",children:t})})):/[\u2028\n]/.test(this[n.$content])&&(e.name="div",e.children=[],this[n.$content].split(/[\u2028\n]/).forEach(t=>{e.children.push({name:"span",value:t},{name:"br"})})),c.HTMLResult.success(e)}return this[n.$content][n.$toHTML](e)}}t.Text=vt
 class Ft extends o.XFAObject{constructor(e){super(f,"textEdit",!0),this.allowRichText=(0,c.getInteger)({data:e.allowRichText,defaultValue:0,validate:e=>1===e}),this.hScrollPolicy=(0,c.getStringOption)(e.hScrollPolicy,["auto","off","on"]),this.id=e.id||"",this.multiLine=(0,c.getInteger)({data:e.multiLine,defaultValue:"",validate:e=>0===e||1===e}),this.use=e.use||"",this.usehref=e.usehref||"",this.vScrollPolicy=(0,c.getStringOption)(e.vScrollPolicy,["auto","off","on"]),this.border=null,this.comb=null,this.extras=null,this.margin=null}[n.$toHTML](e){const t=(0,s.toStyle)(this,"border","font","margin")
 let a
 const r=this[n.$getParent]()[n.$getParent]()
@@ -7438,7 +7438,7 @@ if(e[n.$extra].failingNode){const a=e[n.$extra].failingNode[n.$flushHTML]()
 a&&(e.layout.endsWith("-tb")?t.children.push(i(e,[a])):t.children.push(a))}if(0===t.children.length)return null
 return t},t.getAvailableSpace=function(e){const t=e[n.$extra].availableSpace,a=e.margin?e.margin.topInset+e.margin.bottomInset:0,r=e.margin?e.margin.leftInset+e.margin.rightInset:0
 switch(e.layout){case"lr-tb":case"rl-tb":return 0===e[n.$extra].attempt?{width:t.width-r-e[n.$extra].currentWidth,height:t.height-a-e[n.$extra].prevHeight}:{width:t.width-r,height:t.height-a-e[n.$extra].height}
-case"rl-row":case"row":return{width:e[n.$extra].columnWidths.slice(e[n.$extra].currentColumn).reduce(((e,t)=>e+t)),height:t.height-r}
+case"rl-row":case"row":return{width:e[n.$extra].columnWidths.slice(e[n.$extra].currentColumn).reduce((e,t)=>e+t),height:t.height-r}
 case"table":case"tb":return{width:t.width-r,height:t.height-a-e[n.$extra].height}
 default:return t}}
 var n=a(78),r=a(83)
@@ -7469,8 +7469,8 @@ i.attributes.style.position="absolute"===r.position?"absolute":"relative",delete
 return i},t.fixDimensions=function(e){const t=e[n.$getSubformParent]()
 if(t.layout?.includes("row")){const a=t[n.$extra],r=e.colSpan
 let i
-i=-1===r?a.columnWidths.slice(a.currentColumn).reduce(((e,t)=>e+t),0):a.columnWidths.slice(a.currentColumn,a.currentColumn+r).reduce(((e,t)=>e+t),0),isNaN(i)||(e.w=i)}t.layout&&"position"!==t.layout&&(e.x=e.y=0)
-"table"===e.layout&&""===e.w&&Array.isArray(e.columnWidths)&&(e.w=e.columnWidths.reduce(((e,t)=>e+t),0))},t.fixTextIndent=function(e){const t=(0,i.getMeasurement)(e.textIndent,"0px")
+i=-1===r?a.columnWidths.slice(a.currentColumn).reduce((e,t)=>e+t,0):a.columnWidths.slice(a.currentColumn,a.currentColumn+r).reduce((e,t)=>e+t,0),isNaN(i)||(e.w=i)}t.layout&&"position"!==t.layout&&(e.x=e.y=0)
+"table"===e.layout&&""===e.w&&Array.isArray(e.columnWidths)&&(e.w=e.columnWidths.reduce((e,t)=>e+t,0))},t.fixTextIndent=function(e){const t=(0,i.getMeasurement)(e.textIndent,"0px")
 if(t>=0)return
 const a="padding"+("left"==("right"===e.textAlign?"right":"left")?"Left":"Right"),n=(0,i.getMeasurement)(e[a],"0px")
 e[a]=n-t+"px"},t.fixURL=function(e){const t=(0,r.createValidAbsoluteUrl)(e,null,{addDefaultProtocol:!0,tryConvertEncoding:!0})
@@ -7540,7 +7540,7 @@ case"topRight":t.transform+="translate(-100%,0)"}},dimensions(e,t){const a=e[n.$
 let r=e.w
 const i=e.h
 if(a.layout?.includes("row")){const t=a[n.$extra],i=e.colSpan
-let s;-1===i?(s=t.columnWidths.slice(t.currentColumn).reduce(((e,t)=>e+t),0),t.currentColumn=0):(s=t.columnWidths.slice(t.currentColumn,t.currentColumn+i).reduce(((e,t)=>e+t),0),t.currentColumn=(t.currentColumn+e.colSpan)%t.columnWidths.length),isNaN(s)||(r=e.w=s)}t.width=""!==r?l(r):"auto",t.height=""!==i?l(i):"auto"},position(e,t){const a=e[n.$getSubformParent]()
+let s;-1===i?(s=t.columnWidths.slice(t.currentColumn).reduce((e,t)=>e+t,0),t.currentColumn=0):(s=t.columnWidths.slice(t.currentColumn,t.currentColumn+i).reduce((e,t)=>e+t,0),t.currentColumn=(t.currentColumn+e.colSpan)%t.columnWidths.length),isNaN(s)||(r=e.w=s)}t.width=""!==r?l(r):"auto",t.height=""!==i?l(i):"auto"},position(e,t){const a=e[n.$getSubformParent]()
 a?.layout&&"position"!==a.layout||(t.position="absolute",t.left=l(e.x),t.top=l(e.y))},rotate(e,t){e.rotate&&("transform"in t||(t.transform=""),t.transform+=`rotate(-${e.rotate}deg)`,t.transformOrigin="top left")},presence(e,t){switch(e.presence){case"invisible":t.visibility="hidden"
 break
 case"hidden":case"inactive":t.display="none"}},hAlign(e,t){if("para"===e[n.$nodeName])switch(e.hAlign){case"justifyAll":t.textAlign="justify-all"
@@ -7556,12 +7556,12 @@ function u(e,t,a,r,i,s){const c=new o.TextMeasure(t,a,r,i)
 return"string"==typeof e?c.addString(e):e[n.$pushGlyphs](c),c.compute(s)}function d(e){return e.relevant.length>0&&!e.relevant[0].excluded&&"print"===e.relevant[0].viewname}function f(e){const t=e[n.$getTemplateRoot]()[n.$extra].paraStack
 return t.length?t.at(-1):null}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.HTMLResult=void 0,t.getBBox=function(e){const t=-1
 if(!e)return{x:t,y:t,width:t,height:t}
-const a=e.trim().split(/\s*,\s*/).map((e=>o(e,"-1")))
+const a=e.trim().split(/\s*,\s*/).map(e=>o(e,"-1"))
 if(a.length<4||a[2]<0||a[3]<0)return{x:t,y:t,width:t,height:t}
 const[n,r,i,s]=a
 return{x:n,y:r,width:i,height:s}},t.getColor=function(e,t=[0,0,0]){let[a,n,r]=t
 if(!e)return{r:a,g:n,b:r}
-const i=e.trim().split(/\s*,\s*/).map((e=>Math.min(Math.max(0,parseInt(e.trim(),10)),255))).map((e=>isNaN(e)?0:e))
+const i=e.trim().split(/\s*,\s*/).map(e=>Math.min(Math.max(0,parseInt(e.trim(),10)),255)).map(e=>isNaN(e)?0:e)
 if(i.length<3)return{r:a,g:n,b:r}
 return[a,n,r]=i,{r:a,g:n,b:r}},t.getFloat=function({data:e,defaultValue:t,validate:a}){if(!e)return t
 e=e.trim()
@@ -7572,12 +7572,12 @@ e=e.trim()
 const n=parseInt(e,10)
 if(!isNaN(n)&&a(n))return n
 return t},t.getKeyword=s,t.getMeasurement=o,t.getRatio=function(e){if(!e)return{num:1,den:1}
-const t=e.trim().split(/\s*:\s*/).map((e=>parseFloat(e))).filter((e=>!isNaN(e)))
+const t=e.trim().split(/\s*:\s*/).map(e=>parseFloat(e)).filter(e=>!isNaN(e))
 1===t.length&&t.push(1)
 if(0===t.length)return{num:1,den:1}
 const[a,n]=t
 return{num:a,den:n}},t.getRelevant=function(e){if(!e)return[]
-return e.trim().split(/\s+/).map((e=>({excluded:"-"===e[0],viewname:e.substring(1)})))},t.getStringOption=function(e,t){return s({data:e,defaultValue:t[0],validate:e=>t.includes(e)})},t.stripQuotes=function(e){if(e.startsWith("'")||e.startsWith('"'))return e.slice(1,-1)
+return e.trim().split(/\s+/).map(e=>({excluded:"-"===e[0],viewname:e.substring(1)}))},t.getStringOption=function(e,t){return s({data:e,defaultValue:t[0],validate:e=>t.includes(e)})},t.stripQuotes=function(e){if(e.startsWith("'")||e.startsWith('"'))return e.slice(1,-1)
 return e}
 var n=a(2)
 const r={pt:e=>e,cm:e=>e/2.54*72,mm:e=>e/25.4*72,in:e=>72*e,px:e=>e},i=/([+-]?\d+\.?\d*)(.*)/
@@ -7631,8 +7631,8 @@ const t=this.fontSelector.topFont(),a=t.xfaFont.size
 if(t.pdfFont){const n=t.xfaFont.letterSpacing,r=t.pdfFont,i=r.lineHeight||1.2,s=t.lineHeight||Math.max(1.2,i)*a,o=i-(void 0===r.lineGap?.2:r.lineGap),c=Math.max(1,o)*a,l=a/1e3,h=r.defaultWidth||r.charsToGlyphs(" ")[0].width
 for(const t of e.split(/[\u2029\n]/)){const e=r.encodeString(t).join(""),a=r.charsToGlyphs(e)
 for(const t of a){const e=t.width||h
-this.glyphs.push([e*l+n,s,c,t.unicode,!1])}this.glyphs.push([0,0,0,"\n",!0])}this.glyphs.pop()}else{for(const t of e.split(/[\u2029\n]/)){for(const e of t.split(""))this.glyphs.push([a,1.2*a,a,e,!1])
-this.glyphs.push([0,0,0,"\n",!0])}this.glyphs.pop()}}compute(e){let t=-1,a=0,n=0,r=0,i=0,s=0,o=!1,c=!0
+this.glyphs.push([e*l+n,s,c,t.unicode,!1])}this.glyphs.push([0,0,0,"\n",!0])}return void this.glyphs.pop()}for(const n of e.split(/[\u2029\n]/)){for(const e of n.split(""))this.glyphs.push([a,1.2*a,a,e,!1])
+this.glyphs.push([0,0,0,"\n",!0])}this.glyphs.pop()}compute(e){let t=-1,a=0,n=0,r=0,i=0,s=0,o=!1,c=!0
 for(let l=0,h=this.glyphs.length;l<h;l++){const[h,u,d,f,g]=this.glyphs[l],p=" "===f,m=c?d:u
 g?(n=Math.max(n,i),i=0,r+=s,s=m,t=-1,a=0,c=!1):p?i+h>e?(n=Math.max(n,i),i=0,r+=s,s=m,t=-1,a=0,o=!0,c=!1):(s=Math.max(m,s),a=i,i+=h,t=l):i+h>e?(r+=s,s=m,-1!==t?(l=t,n=Math.max(n,a),i=0,t=-1,a=0):(n=Math.max(n,i),i=h),o=!0,c=!1):(i+=h,s=Math.max(m,s))}return n=Math.max(n,i),r+=s+this.extraHeight,{width:1.02*n,height:r,isBroken:o}}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.XmlObject=t.XFAObjectArray=t.XFAObject=t.XFAAttribute=t.StringObject=t.OptionObject=t.Option10=t.Option01=t.IntegerObject=t.ContentObject=void 0
 var n=a(78),r=a(84),i=a(2),s=a(3),o=a(81),c=a(88)
@@ -7647,7 +7647,7 @@ if(!(a instanceof T))return null!==a&&this[n.$removeChild](a),this[t]=e,this[n.$
 if(a.push(e))return this[n.$appendChild](e),!0
 let r=""
 return this.id?r=` (id: ${this.id})`:this.name&&(r=` (name: ${this.name} ${this.h.value})`),(0,i.warn)(`XFA - node "${this[n.$nodeName]}"${r} has already enough "${t}"!`),!1}[n.$onChildCheck](e){return this.hasOwnProperty(e[n.$nodeName])&&e[n.$namespaceId]===this[n.$namespaceId]}[n.$isNsAgnostic](){return!1}[n.$acceptWhitespace](){return!1}[n.$isCDATAXml](){return!1}[n.$isBindable](){return!1}[n.$popPara](){this.para&&this[n.$getTemplateRoot]()[n.$extra].paraStack.pop()}[n.$pushPara](){this[n.$getTemplateRoot]()[n.$extra].paraStack.push(this.para)}[n.$setId](e){this.id&&this[n.$namespaceId]===o.NamespaceIds.template.id&&e.set(this.id,this)}[n.$getTemplateRoot](){return this[n.$globalData].template}[n.$isSplittable](){return!1}[n.$isThereMoreWidth](){return!1}[n.$appendChild](e){e[A]=this,this[d].push(e),!e[n.$globalData]&&this[n.$globalData]&&(e[n.$globalData]=this[n.$globalData])}[n.$removeChild](e){const t=this[d].indexOf(e)
-this[d].splice(t,1)}[n.$hasSettableValue](){return this.hasOwnProperty("value")}[n.$setValue](e){}[n.$onText](e){}[n.$finalize](){}[n.$clean](e){delete this[w],this[n.$cleanup]&&(e.clean(this[n.$cleanup]),delete this[n.$cleanup])}[n.$indexOf](e){return this[d].indexOf(e)}[n.$insertAt](e,t){t[A]=this,this[d].splice(e,0,t),!t[n.$globalData]&&this[n.$globalData]&&(t[n.$globalData]=this[n.$globalData])}[n.$isTransparent](){return!this.name}[n.$lastAttribute](){return""}[n.$text](){return 0===this[d].length?this[n.$content]:this[d].map((e=>e[n.$text]())).join("")}get[u](){const e=Object.getPrototypeOf(this)
+this[d].splice(t,1)}[n.$hasSettableValue](){return this.hasOwnProperty("value")}[n.$setValue](e){}[n.$onText](e){}[n.$finalize](){}[n.$clean](e){delete this[w],this[n.$cleanup]&&(e.clean(this[n.$cleanup]),delete this[n.$cleanup])}[n.$indexOf](e){return this[d].indexOf(e)}[n.$insertAt](e,t){t[A]=this,this[d].splice(e,0,t),!t[n.$globalData]&&this[n.$globalData]&&(t[n.$globalData]=this[n.$globalData])}[n.$isTransparent](){return!this.name}[n.$lastAttribute](){return""}[n.$text](){return 0===this[d].length?this[n.$content]:this[d].map(e=>e[n.$text]()).join("")}get[u](){const e=Object.getPrototypeOf(this)
 if(!e._attributes){const t=e._attributes=new Set
 for(const e of Object.getOwnPropertyNames(this)){if(null===this[e]||this[e]instanceof I||this[e]instanceof T)break
 t.add(e)}}return(0,i.shadow)(this,u,e._attributes)}[n.$isDescendent](e){let t=this
@@ -7664,7 +7664,7 @@ if(e.done)break
 const t=e.value
 if(!t.success)return t
 t.html&&this[n.$addHTML](t.html,t.bbox)}return this[n.$extra].generator=null,r.HTMLResult.EMPTY}[n.$setSetAttributes](e){this[C]=new Set(Object.keys(e))}[y](e){const t=this[u],a=this[C]
-return[...e].filter((e=>t.has(e)&&!a.has(e)))}[n.$resolvePrototypes](e,t=new Set){for(const a of this[d])a[k](e,t)}[k](e,t){const a=this[b](e,t)
+return[...e].filter(e=>t.has(e)&&!a.has(e))}[n.$resolvePrototypes](e,t=new Set){for(const a of this[d])a[k](e,t)}[k](e,t){const a=this[b](e,t)
 a?this[l](a,e,t):this[n.$resolvePrototypes](e,t)}[b](e,t){const{use:a,usehref:r}=this
 if(!a&&!r)return null
 let s=null,o=null,h=null,u=a
@@ -7683,15 +7683,15 @@ if(i instanceof T){for(const e of i[d])e[k](t,a)
 for(let r=i[d].length,o=s[d].length;r<o;r++){const s=e[d][r][n.$clone]()
 if(!i.push(s))break
 s[A]=this,this[d].push(s),s[k](t,a)}}else if(null===i){if(null!==s){const e=s[n.$clone]()
-e[A]=this,this[r]=e,this[d].push(e),e[k](t,a)}}else i[n.$resolvePrototypes](t,a),s&&i[l](s,t,a)}}static[f](e){return Array.isArray(e)?e.map((e=>I[f](e))):"object"==typeof e&&null!==e?Object.assign({},e):e}[n.$clone](){const e=Object.create(Object.getPrototypeOf(this))
+e[A]=this,this[r]=e,this[d].push(e),e[k](t,a)}}else i[n.$resolvePrototypes](t,a),s&&i[l](s,t,a)}}static[f](e){return Array.isArray(e)?e.map(e=>I[f](e)):"object"==typeof e&&null!==e?Object.assign({},e):e}[n.$clone](){const e=Object.create(Object.getPrototypeOf(this))
 for(const t of Object.getOwnPropertySymbols(this))try{e[t]=this[t]}catch{(0,i.shadow)(e,t,this[t])}e[n.$uid]=`${e[n.$nodeName]}${F++}`,e[d]=[]
 for(const t of Object.getOwnPropertyNames(this)){if(this[u].has(t)){e[t]=I[f](this[t])
 continue}const a=this[t]
 e[t]=a instanceof T?new T(a[x]):null}for(const t of this[d]){const a=t[n.$nodeName],r=t[n.$clone]()
-e[d].push(r),r[A]=e,null===e[a]?e[a]=r:e[a][d].push(r)}return e}[n.$getChildren](e=null){return e?this[d].filter((t=>t[n.$nodeName]===e)):this[d]}[n.$getChildrenByClass](e){return this[e]}[n.$getChildrenByName](e,t,a=!0){return Array.from(this[n.$getChildrenByNameIt](e,t,a))}*[n.$getChildrenByNameIt](e,t,a=!0){if("parent"!==e){for(const a of this[d])a[n.$nodeName]===e&&(yield a),a.name===e&&(yield a),(t||a[n.$isTransparent]())&&(yield*a[n.$getChildrenByNameIt](e,t,!1))
+e[d].push(r),r[A]=e,null===e[a]?e[a]=r:e[a][d].push(r)}return e}[n.$getChildren](e=null){return e?this[d].filter(t=>t[n.$nodeName]===e):this[d]}[n.$getChildrenByClass](e){return this[e]}[n.$getChildrenByName](e,t,a=!0){return Array.from(this[n.$getChildrenByNameIt](e,t,a))}*[n.$getChildrenByNameIt](e,t,a=!0){if("parent"!==e){for(const a of this[d])a[n.$nodeName]===e&&(yield a),a.name===e&&(yield a),(t||a[n.$isTransparent]())&&(yield*a[n.$getChildrenByNameIt](e,t,!1))
 a&&this[u].has(e)&&(yield new M(this,e,this[e]))}else yield this[A]}}t.XFAObject=I
-class T{constructor(e=1/0){this[x]=e,this[d]=[]}get isXFAObject(){return!1}get isXFAObjectArray(){return!0}push(e){return this[d].length<=this[x]?(this[d].push(e),!0):((0,i.warn)(`XFA - node "${e[n.$nodeName]}" accepts no more than ${this[x]} children`),!1)}isEmpty(){return 0===this[d].length}dump(){return 1===this[d].length?this[d][0][n.$dump]():this[d].map((e=>e[n.$dump]()))}[n.$clone](){const e=new T(this[x])
-return e[d]=this[d].map((e=>e[n.$clone]())),e}get children(){return this[d]}clear(){this[d].length=0}}t.XFAObjectArray=T
+class T{constructor(e=1/0){this[x]=e,this[d]=[]}get isXFAObject(){return!1}get isXFAObjectArray(){return!0}push(e){return this[d].length<=this[x]?(this[d].push(e),!0):((0,i.warn)(`XFA - node "${e[n.$nodeName]}" accepts no more than ${this[x]} children`),!1)}isEmpty(){return 0===this[d].length}dump(){return 1===this[d].length?this[d][0][n.$dump]():this[d].map(e=>e[n.$dump]())}[n.$clone](){const e=new T(this[x])
+return e[d]=this[d].map(e=>e[n.$clone]()),e}get children(){return this[d]}clear(){this[d].length=0}}t.XFAObjectArray=T
 class M{constructor(e,t,a){this[A]=e,this[n.$nodeName]=t,this[n.$content]=a,this[n.$consumed]=!1,this[n.$uid]="attribute"+F++}[n.$getParent](){return this[A]}[n.$isDataValue](){return!0}[n.$getDataValue](){return this[n.$content].trim()}[n.$setValue](e){e=e.value||"",this[n.$content]=e.toString()}[n.$text](){return this[n.$content]}[n.$isDescendent](e){return this[A]===e||this[A][n.$isDescendent](e)}}t.XFAAttribute=M
 class P extends I{constructor(e,t,a={}){if(super(e,t),this[n.$content]="",this[g]=null,"#text"!==t){const e=new Map
 this[h]=e
@@ -7706,7 +7706,7 @@ e.push(` ${t}="${(0,s.encodeToXmlString)(c[n.$content])}"`)}if(null!==this[g]&&(
 else for(const t of this[d])t[n.$toString](e)
 e.push(`</${r}${a}>`)}else e.push("/>")}[n.$onChild](e){if(this[n.$content]){const e=new P(this[n.$namespaceId],"#text")
 this[n.$appendChild](e),e[n.$content]=this[n.$content],this[n.$content]=""}return this[n.$appendChild](e),!0}[n.$onText](e){this[n.$content]+=e}[n.$finalize](){if(this[n.$content]&&this[d].length>0){const e=new P(this[n.$namespaceId],"#text")
-this[n.$appendChild](e),e[n.$content]=this[n.$content],delete this[n.$content]}}[n.$toHTML](){return"#text"===this[n.$nodeName]?r.HTMLResult.success({name:"#text",value:this[n.$content]}):r.HTMLResult.EMPTY}[n.$getChildren](e=null){return e?this[d].filter((t=>t[n.$nodeName]===e)):this[d]}[n.$getAttributes](){return this[h]}[n.$getChildrenByClass](e){const t=this[h].get(e)
+this[n.$appendChild](e),e[n.$content]=this[n.$content],delete this[n.$content]}}[n.$toHTML](){return"#text"===this[n.$nodeName]?r.HTMLResult.success({name:"#text",value:this[n.$content]}):r.HTMLResult.EMPTY}[n.$getChildren](e=null){return e?this[d].filter(t=>t[n.$nodeName]===e):this[d]}[n.$getAttributes](){return this[h]}[n.$getChildrenByClass](e){const t=this[h].get(e)
 return void 0!==t?t:this[n.$getChildren](e)}*[n.$getChildrenByNameIt](e,t){const a=this[h].get(e)
 a&&(yield a)
 for(const r of this[d])r[n.$nodeName]===e&&(yield r),t&&(yield*r[n.$getChildrenByNameIt](e,t))}*[n.$getAttributeIt](e,t){const a=this[h].get(e)
@@ -7721,10 +7721,10 @@ class N extends I{constructor(e,t){super(e,t),this[n.$content]=""}[n.$onText](e)
 class D extends N{constructor(e,t,a){super(e,t),this[S]=a}[n.$finalize](){this[n.$content]=(0,r.getKeyword)({data:this[n.$content],defaultValue:this[S][0],validate:e=>this[S].includes(e)})}[n.$clean](e){super[n.$clean](e),delete this[S]}}t.OptionObject=D
 class R extends N{[n.$finalize](){this[n.$content]=this[n.$content].trim()}}t.StringObject=R
 class E extends N{constructor(e,t,a,n){super(e,t),this[p]=a,this[v]=n}[n.$finalize](){this[n.$content]=(0,r.getInteger)({data:this[n.$content],defaultValue:this[p],validate:this[v]})}[n.$clean](e){super[n.$clean](e),delete this[p],delete this[v]}}t.IntegerObject=E
-t.Option01=class extends E{constructor(e,t){super(e,t,0,(e=>1===e))}}
-t.Option10=class extends E{constructor(e,t){super(e,t,1,(e=>0===e))}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.createDataNode=function(e,t,a){const i=h(a)
+t.Option01=class extends E{constructor(e,t){super(e,t,0,e=>1===e)}}
+t.Option10=class extends E{constructor(e,t){super(e,t,1,e=>0===e)}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.createDataNode=function(e,t,a){const i=u(a)
 if(!i)return null
-if(i.some((e=>e.operator===o.dotDot)))return null
+if(i.some(e=>e.operator===o.dotDot))return null
 const s=c.get(i[0].name)
 let l=0
 s?(e=s(e,t),l=1):e=t||e
@@ -7739,11 +7739,11 @@ case o.dotHash:c=e[n.$getChildrenByClass](t),c=c.isXFAObjectArray?c.children:[c]
 if(!(s<c.length))return i[l].index=s-c.length,e.createNodes(i.slice(l))
 {const t=c[s]
 if(!t.isXFAObject)return(0,r.warn)("XFA - Cannot create a node."),null
-e=t}}return null},t.searchNode=function(e,t,a,r=!0,i=!0){const s=h(a,r)
+e=t}}return null},t.searchNode=function(e,t,a,r=!0,i=!0){const s=u(a,r)
 if(!s)return null
-const u=c.get(s[0].name)
+const h=c.get(s[0].name)
 let d,f=0
-u?(d=!0,e=[u(e,t)],f=1):(d=null===t,e=[t||e])
+h?(d=!0,e=[h(e,t)],f=1):(d=null===t,e=[t||e])
 for(let c=s.length;f<c;f++){const{name:a,cacheName:r,operator:c,index:h}=s[f],u=[]
 for(const t of e){if(!t.isXFAObject)continue
 let e,s
@@ -7751,26 +7751,26 @@ if(i&&(s=l.get(t),s||(s=new Map,l.set(t,s)),e=s.get(r)),!e){switch(c){case o.dot
 break
 case o.dotDot:e=t[n.$getChildrenByName](a,!0)
 break
-case o.dotHash:e=t[n.$getChildrenByClass](a),e=e.isXFAObjectArray?e.children:[e]}i&&s.set(r,e)}e.length>0&&u.push(e)}if(0!==u.length||d||0!==f)e=isFinite(h)?u.filter((e=>h<e.length)).map((e=>e[h])):u.flat()
-else{const a=t[n.$getParent]()
+case o.dotHash:e=t[n.$getChildrenByClass](a),e=e.isXFAObjectArray?e.children:[e]}i&&s.set(r,e)}e.length>0&&u.push(e)}if(0===u.length&&!d&&0===f){const a=t[n.$getParent]()
 if(!(t=a))return null
-f=-1,e=[t]}}if(0===e.length)return null
+f=-1,e=[t]
+continue}e=isFinite(h)?u.filter(e=>h<e.length).map(e=>e[h]):u.flat()}if(0===e.length)return null
 return e}
 var n=a(78),r=a(2)
 const i=/^[^.[]+/,s=/^[^\]]+/,o={dot:0,dotDot:1,dotHash:2,dotBracket:3,dotParen:4},c=new Map([["$data",(e,t)=>e.datasets?e.datasets.data:e],["$record",(e,t)=>(e.datasets?e.datasets.data:e)[n.$getChildren]()[0]],["$template",(e,t)=>e.template],["$connectionSet",(e,t)=>e.connectionSet],["$form",(e,t)=>e.form],["$layout",(e,t)=>e.layout],["$host",(e,t)=>e.host],["$dataWindow",(e,t)=>e.dataWindow],["$event",(e,t)=>e.event],["!",(e,t)=>e.datasets],["$xfa",(e,t)=>e],["xfa",(e,t)=>e],["$",(e,t)=>t]]),l=new WeakMap
-function h(e,t,a=!0){let n=e.match(i)
+function h(e){return"*"===(e=e.trim())?1/0:parseInt(e,10)||0}function u(e,t,a=!0){let n=e.match(i)
 if(!n)return null
 let[c]=n
 const l=[{name:c,cacheName:"."+c,index:0,js:null,formCalc:null,operator:o.dot}]
-let h=c.length
-for(;h<e.length;){const d=h
-if("["===e.charAt(h++)){if(n=e.slice(h).match(s),!n)return(0,r.warn)("XFA - Invalid index in SOM expression"),null
-l.at(-1).index="*"===(u=(u=n[0]).trim())?1/0:parseInt(u,10)||0,h+=n[0].length+1
+let u=c.length
+for(;u<e.length;){const d=u
+if("["===e.charAt(u++)){if(n=e.slice(u).match(s),!n)return(0,r.warn)("XFA - Invalid index in SOM expression"),null
+l.at(-1).index=h(n[0]),u+=n[0].length+1
 continue}let f
-switch(e.charAt(h)){case".":if(!t)return null
-h++,f=o.dotDot
+switch(e.charAt(u)){case".":if(!t)return null
+u++,f=o.dotDot
 break
-case"#":h++,f=o.dotHash
+case"#":u++,f=o.dotHash
 break
 case"[":if(a)return(0,r.warn)("XFA - SOM expression contains a FormCalc subexpression which is not supported for now."),null
 f=o.dotBracket
@@ -7778,8 +7778,7 @@ break
 case"(":if(a)return(0,r.warn)("XFA - SOM expression contains a JavaScript subexpression which is not supported for now."),null
 f=o.dotParen
 break
-default:f=o.dot}if(n=e.slice(h).match(i),!n)break;[c]=n,h+=c.length,l.push({name:c,cacheName:e.slice(d,h),operator:f,index:0,js:null,formCalc:null})}var u
-return l}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.DataHandler=void 0
+default:f=o.dot}if(n=e.slice(u).match(i),!n)break;[c]=n,u+=c.length,l.push({name:c,cacheName:e.slice(d,u),operator:f,index:0,js:null,formCalc:null})}return l}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.DataHandler=void 0
 var n=a(78)
 t.DataHandler=class{constructor(e,t){this.data=t,this.dataset=e.datasets||null}serialize(e){const t=[[-1,this.data[n.$getChildren]()]]
 for(;t.length>0;){const a=t.at(-1),[r,i]=a
@@ -7794,7 +7793,7 @@ c.length>0&&t.push([-1,c])}const a=['<xfa:datasets xmlns:xfa="http://www.xfa.org
 if(this.dataset)for(const r of this.dataset[n.$getChildren]())"data"!==r[n.$nodeName]&&r[n.$toString](a)
 return this.data[n.$toString](a),a.push("</xfa:datasets>"),a.join("")}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.XFAParser=void 0
 var n=a(78),r=a(71),i=a(91),s=a(2)
-class o extends r.XMLParserBase{constructor(e=null,t=!1){super(),this._builder=new i.Builder(e),this._stack=[],this._globalData={usedTypefaces:new Set},this._ids=new Map,this._current=this._builder.buildRoot(this._ids),this._errorCode=r.XMLParserErrorCode.NoError,this._whiteRegex=/^\s+$/,this._nbsps=/\xa0+/g,this._richText=t}parse(e){if(this.parseXml(e),this._errorCode===r.XMLParserErrorCode.NoError)return this._current[n.$finalize](),this._current.element}onText(e){e=e.replace(this._nbsps,(e=>e.slice(1)+" ")),this._richText||this._current[n.$acceptWhitespace]()?this._current[n.$onText](e,this._richText):this._whiteRegex.test(e)||this._current[n.$onText](e.trim())}onCdata(e){this._current[n.$onText](e)}_mkAttributes(e,t){let a=null,r=null
+class o extends r.XMLParserBase{constructor(e=null,t=!1){super(),this._builder=new i.Builder(e),this._stack=[],this._globalData={usedTypefaces:new Set},this._ids=new Map,this._current=this._builder.buildRoot(this._ids),this._errorCode=r.XMLParserErrorCode.NoError,this._whiteRegex=/^\s+$/,this._nbsps=/\xa0+/g,this._richText=t}parse(e){if(this.parseXml(e),this._errorCode===r.XMLParserErrorCode.NoError)return this._current[n.$finalize](),this._current.element}onText(e){e=e.replace(this._nbsps,e=>e.slice(1)+" "),this._richText||this._current[n.$acceptWhitespace]()?this._current[n.$onText](e,this._richText):this._whiteRegex.test(e)||this._current[n.$onText](e.trim())}onCdata(e){this._current[n.$onText](e)}_mkAttributes(e,t){let a=null,r=null
 const i=Object.create({})
 for(const{name:o,value:c}of e)if("xmlns"===o)a?(0,s.warn)(`XFA - multiple namespace definition in <${t}>`):a=c
 else if(o.startsWith("xmlns:")){const e=o.substring(6)
@@ -7811,7 +7810,7 @@ e._globalData=this._globalData
 const a=e.parse(t[n.$content])
 t[n.$content]=null,t[n.$onChild](a)}t[n.$finalize](),this._current=this._stack.pop(),this._current[n.$onChild](t)&&t[n.$setId](this._ids),t[n.$clean](this._builder)}onError(e){this._errorCode=e}}t.XFAParser=o},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.Builder=void 0
 var n=a(81),r=a(78),i=a(92),s=a(80),o=a(101),c=a(2),l=a(87)
-class h extends l.XFAObject{constructor(e){super(-1,"root",Object.create(null)),this.element=null,this[r.$ids]=e}[r.$onChild](e){return this.element=e,!0}[r.$finalize](){super[r.$finalize](),this.element.template instanceof s.Template&&(this[r.$ids].set(r.$root,this.element),this.element.template[r.$resolvePrototypes](this[r.$ids]),this.element.template[r.$ids]=this[r.$ids])}}class u extends l.XFAObject{constructor(){super(-1,"",Object.create(null))}[r.$onChild](e){return!1}}t.Builder=class{constructor(e=null){this._namespaceStack=[],this._nsAgnosticLevel=0,this._namespacePrefixes=new Map,this._namespaces=new Map,this._nextNsId=Math.max(...Object.values(n.NamespaceIds).map((({id:e})=>e))),this._currentNamespace=e||new o.UnknownNamespace(++this._nextNsId)}buildRoot(e){return new h(e)}build({nsPrefix:e,name:t,attributes:a,namespace:s,prefixes:o}){const c=null!==s
+class h extends l.XFAObject{constructor(e){super(-1,"root",Object.create(null)),this.element=null,this[r.$ids]=e}[r.$onChild](e){return this.element=e,!0}[r.$finalize](){super[r.$finalize](),this.element.template instanceof s.Template&&(this[r.$ids].set(r.$root,this.element),this.element.template[r.$resolvePrototypes](this[r.$ids]),this.element.template[r.$ids]=this[r.$ids])}}class u extends l.XFAObject{constructor(){super(-1,"",Object.create(null))}[r.$onChild](e){return!1}}t.Builder=class{constructor(e=null){this._namespaceStack=[],this._nsAgnosticLevel=0,this._namespacePrefixes=new Map,this._namespaces=new Map,this._nextNsId=Math.max(...Object.values(n.NamespaceIds).map(({id:e})=>e)),this._currentNamespace=e||new o.UnknownNamespace(++this._nextNsId)}buildRoot(e){return new h(e)}build({nsPrefix:e,name:t,attributes:a,namespace:s,prefixes:o}){const c=null!==s
 if(c&&(this._namespaceStack.push(this._currentNamespace),this._currentNamespace=this._searchNamespace(s)),o&&this._addNamespacePrefix(o),a.hasOwnProperty(r.$nsAttributes)){const e=i.NamespaceSetUp.datasets,t=a[r.$nsAttributes]
 let n=null
 for(const[a,r]of Object.entries(t)){if(this._getNamespaceToUse(a)===e){n={xfa:r}
@@ -7824,21 +7823,21 @@ let n=this._namespacePrefixes.get(t)
 n||(n=[],this._namespacePrefixes.set(t,n)),n.push(e)}}_getNamespaceToUse(e){if(!e)return this._currentNamespace
 const t=this._namespacePrefixes.get(e)
 return t?.length>0?t.at(-1):((0,c.warn)(`Unknown namespace prefix: ${e}.`),null)}clean(e){const{hasNamespace:t,prefixes:a,nsAgnostic:n}=e
-t&&(this._currentNamespace=this._namespaceStack.pop()),a&&a.forEach((({prefix:e})=>{this._namespacePrefixes.get(e).pop()})),n&&this._nsAgnosticLevel--}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.NamespaceSetUp=void 0
+t&&(this._currentNamespace=this._namespaceStack.pop()),a&&a.forEach(({prefix:e})=>{this._namespacePrefixes.get(e).pop()}),n&&this._nsAgnosticLevel--}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.NamespaceSetUp=void 0
 var n=a(93),r=a(94),i=a(95),s=a(96),o=a(97),c=a(98),l=a(80),h=a(99),u=a(100)
 const d={config:n.ConfigNamespace,connection:r.ConnectionSetNamespace,datasets:i.DatasetsNamespace,localeSet:s.LocaleSetNamespace,signature:o.SignatureNamespace,stylesheet:c.StylesheetNamespace,template:l.TemplateNamespace,xdp:h.XdpNamespace,xhtml:u.XhtmlNamespace}
 t.NamespaceSetUp=d},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.ConfigNamespace=void 0
 var n=a(81),r=a(78),i=a(87),s=a(84),o=a(2)
 const c=n.NamespaceIds.config.id
-class l extends i.XFAObject{constructor(e){super(c,"acrobat",!0),this.acrobat7=null,this.autoSave=null,this.common=null,this.validate=null,this.validateApprovalSignatures=null,this.submitUrl=new i.XFAObjectArray}}class h extends i.XFAObject{constructor(e){super(c,"acrobat7",!0),this.dynamicRender=null}}class u extends i.OptionObject{constructor(e){super(c,"ADBE_JSConsole",["delegate","Enable","Disable"])}}class d extends i.OptionObject{constructor(e){super(c,"ADBE_JSDebugger",["delegate","Enable","Disable"])}}class f extends i.Option01{constructor(e){super(c,"addSilentPrint")}}class g extends i.Option01{constructor(e){super(c,"addViewerPreferences")}}class p extends i.Option10{constructor(e){super(c,"adjustData")}}class m extends i.IntegerObject{constructor(e){super(c,"adobeExtensionLevel",0,(e=>e>=1&&e<=8))}}class b extends i.XFAObject{constructor(e){super(c,"agent",!0),this.name=e.name?e.name.trim():"",this.common=new i.XFAObjectArray}}class y extends i.ContentObject{constructor(e){super(c,"alwaysEmbed")}}class w extends i.StringObject{constructor(e){super(c,"amd")}}class x extends i.XFAObject{constructor(e){super(c,"area"),this.level=(0,s.getInteger)({data:e.level,defaultValue:0,validate:e=>e>=1&&e<=3}),this.name=(0,s.getStringOption)(e.name,["","barcode","coreinit","deviceDriver","font","general","layout","merge","script","signature","sourceSet","templateCache"])}}class S extends i.OptionObject{constructor(e){super(c,"attributes",["preserve","delegate","ignore"])}}class A extends i.OptionObject{constructor(e){super(c,"autoSave",["disabled","enabled"])}}class k extends i.StringObject{constructor(e){super(c,"base")}}class C extends i.XFAObject{constructor(e){super(c,"batchOutput"),this.format=(0,s.getStringOption)(e.format,["none","concat","zip","zipCompress"])}}class v extends i.ContentObject{constructor(e){super(c,"behaviorOverride")}[r.$finalize](){this[r.$content]=new Map(this[r.$content].trim().split(/\s+/).filter((e=>e.includes(":"))).map((e=>e.split(":",2))))}}class F extends i.XFAObject{constructor(e){super(c,"cache",!0),this.templateCache=null}}class O extends i.Option01{constructor(e){super(c,"change")}}class I extends i.XFAObject{constructor(e){super(c,"common",!0),this.data=null,this.locale=null,this.localeSet=null,this.messaging=null,this.suppressBanner=null,this.template=null,this.validationMessaging=null,this.versionControl=null,this.log=new i.XFAObjectArray}}class T extends i.XFAObject{constructor(e){super(c,"compress"),this.scope=(0,s.getStringOption)(e.scope,["imageOnly","document"])}}class M extends i.Option01{constructor(e){super(c,"compressLogicalStructure")}}class P extends i.Option10{constructor(e){super(c,"compressObjectStream")}}class N extends i.XFAObject{constructor(e){super(c,"compression",!0),this.compressLogicalStructure=null,this.compressObjectStream=null,this.level=null,this.type=null}}class D extends i.XFAObject{constructor(e){super(c,"config",!0),this.acrobat=null,this.present=null,this.trace=null,this.agent=new i.XFAObjectArray}}class R extends i.OptionObject{constructor(e){super(c,"conformance",["A","B"])}}class E extends i.Option01{constructor(e){super(c,"contentCopy")}}class B extends i.IntegerObject{constructor(e){super(c,"copies",1,(e=>e>=1))}}class $ extends i.StringObject{constructor(e){super(c,"creator")}}class L extends i.IntegerObject{constructor(e){super(c,"currentPage",0,(e=>e>=0))}}class _ extends i.XFAObject{constructor(e){super(c,"data",!0),this.adjustData=null,this.attributes=null,this.incrementalLoad=null,this.outputXSL=null,this.range=null,this.record=null,this.startNode=null,this.uri=null,this.window=null,this.xsl=null,this.excludeNS=new i.XFAObjectArray,this.transform=new i.XFAObjectArray}}class j extends i.XFAObject{constructor(e){super(c,"debug",!0),this.uri=null}}class U extends i.ContentObject{constructor(e){super(c,"defaultTypeface"),this.writingScript=(0,s.getStringOption)(e.writingScript,["*","Arabic","Cyrillic","EastEuropeanRoman","Greek","Hebrew","Japanese","Korean","Roman","SimplifiedChinese","Thai","TraditionalChinese","Vietnamese"])}}class X extends i.OptionObject{constructor(e){super(c,"destination",["pdf","pcl","ps","webClient","zpl"])}}class H extends i.Option01{constructor(e){super(c,"documentAssembly")}}class q extends i.XFAObject{constructor(e){super(c,"driver",!0),this.name=e.name?e.name.trim():"",this.fontInfo=null,this.xdc=null}}class z extends i.OptionObject{constructor(e){super(c,"duplexOption",["simplex","duplexFlipLongEdge","duplexFlipShortEdge"])}}class G extends i.OptionObject{constructor(e){super(c,"dynamicRender",["forbidden","required"])}}class W extends i.Option01{constructor(e){super(c,"embed")}}class V extends i.Option01{constructor(e){super(c,"encrypt")}}class K extends i.XFAObject{constructor(e){super(c,"encryption",!0),this.encrypt=null,this.encryptionLevel=null,this.permissions=null}}class Y extends i.OptionObject{constructor(e){super(c,"encryptionLevel",["40bit","128bit"])}}class J extends i.StringObject{constructor(e){super(c,"enforce")}}class Z extends i.XFAObject{constructor(e){super(c,"equate"),this.force=(0,s.getInteger)({data:e.force,defaultValue:1,validate:e=>0===e}),this.from=e.from||"",this.to=e.to||""}}class Q extends i.XFAObject{constructor(e){super(c,"equateRange"),this.from=e.from||"",this.to=e.to||"",this._unicodeRange=e.unicodeRange||""}get unicodeRange(){const e=[],t=/U\+([0-9a-fA-F]+)/,a=this._unicodeRange
-for(let n of a.split(",").map((e=>e.trim())).filter((e=>!!e)))n=n.split("-",2).map((e=>{const a=e.match(t)
-return a?parseInt(a[1],16):0})),1===n.length&&n.push(n[0]),e.push(n)
-return(0,o.shadow)(this,"unicodeRange",e)}}class ee extends i.ContentObject{constructor(e){super(c,"exclude")}[r.$finalize](){this[r.$content]=this[r.$content].trim().split(/\s+/).filter((e=>e&&["calculate","close","enter","exit","initialize","ready","validate"].includes(e)))}}class te extends i.StringObject{constructor(e){super(c,"excludeNS")}}class ae extends i.OptionObject{constructor(e){super(c,"flipLabel",["usePrinterSetting","on","off"])}}class ne extends i.XFAObject{constructor(e){super(c,"fontInfo",!0),this.embed=null,this.map=null,this.subsetBelow=null,this.alwaysEmbed=new i.XFAObjectArray,this.defaultTypeface=new i.XFAObjectArray,this.neverEmbed=new i.XFAObjectArray}}class re extends i.Option01{constructor(e){super(c,"formFieldFilling")}}class ie extends i.StringObject{constructor(e){super(c,"groupParent")}}class se extends i.OptionObject{constructor(e){super(c,"ifEmpty",["dataValue","dataGroup","ignore","remove"])}}class oe extends i.StringObject{constructor(e){super(c,"includeXDPContent")}}class ce extends i.OptionObject{constructor(e){super(c,"incrementalLoad",["none","forwardOnly"])}}class le extends i.Option01{constructor(e){super(c,"incrementalMerge")}}class he extends i.Option01{constructor(e){super(c,"interactive")}}class ue extends i.OptionObject{constructor(e){super(c,"jog",["usePrinterSetting","none","pageSet"])}}class de extends i.XFAObject{constructor(e){super(c,"labelPrinter",!0),this.name=(0,s.getStringOption)(e.name,["zpl","dpl","ipl","tcpl"]),this.batchOutput=null,this.flipLabel=null,this.fontInfo=null,this.xdc=null}}class fe extends i.OptionObject{constructor(e){super(c,"layout",["paginate","panel"])}}class ge extends i.IntegerObject{constructor(e){super(c,"level",0,(e=>e>0))}}class pe extends i.Option01{constructor(e){super(c,"linearized")}}class me extends i.StringObject{constructor(e){super(c,"locale")}}class be extends i.StringObject{constructor(e){super(c,"localeSet")}}class ye extends i.XFAObject{constructor(e){super(c,"log",!0),this.mode=null,this.threshold=null,this.to=null,this.uri=null}}class we extends i.XFAObject{constructor(e){super(c,"map",!0),this.equate=new i.XFAObjectArray,this.equateRange=new i.XFAObjectArray}}class xe extends i.XFAObject{constructor(e){super(c,"mediumInfo",!0),this.map=null}}class Se extends i.XFAObject{constructor(e){super(c,"message",!0),this.msgId=null,this.severity=null}}class Ae extends i.XFAObject{constructor(e){super(c,"messaging",!0),this.message=new i.XFAObjectArray}}class ke extends i.OptionObject{constructor(e){super(c,"mode",["append","overwrite"])}}class Ce extends i.Option01{constructor(e){super(c,"modifyAnnots")}}class ve extends i.IntegerObject{constructor(e){super(c,"msgId",1,(e=>e>=1))}}class Fe extends i.StringObject{constructor(e){super(c,"nameAttr")}}class Oe extends i.ContentObject{constructor(e){super(c,"neverEmbed")}}class Ie extends i.IntegerObject{constructor(e){super(c,"numberOfCopies",null,(e=>e>=2&&e<=5))}}class Te extends i.XFAObject{constructor(e){super(c,"openAction",!0),this.destination=null}}class Me extends i.XFAObject{constructor(e){super(c,"output",!0),this.to=null,this.type=null,this.uri=null}}class Pe extends i.StringObject{constructor(e){super(c,"outputBin")}}class Ne extends i.XFAObject{constructor(e){super(c,"outputXSL",!0),this.uri=null}}class De extends i.OptionObject{constructor(e){super(c,"overprint",["none","both","draw","field"])}}class Re extends i.StringObject{constructor(e){super(c,"packets")}[r.$finalize](){"*"!==this[r.$content]&&(this[r.$content]=this[r.$content].trim().split(/\s+/).filter((e=>["config","datasets","template","xfdf","xslt"].includes(e))))}}class Ee extends i.XFAObject{constructor(e){super(c,"pageOffset"),this.x=(0,s.getInteger)({data:e.x,defaultValue:"useXDCSetting",validate:e=>!0}),this.y=(0,s.getInteger)({data:e.y,defaultValue:"useXDCSetting",validate:e=>!0})}}class Be extends i.StringObject{constructor(e){super(c,"pageRange")}[r.$finalize](){const e=this[r.$content].trim().split(/\s+/).map((e=>parseInt(e,10))),t=[]
+class l extends i.XFAObject{constructor(e){super(c,"acrobat",!0),this.acrobat7=null,this.autoSave=null,this.common=null,this.validate=null,this.validateApprovalSignatures=null,this.submitUrl=new i.XFAObjectArray}}class h extends i.XFAObject{constructor(e){super(c,"acrobat7",!0),this.dynamicRender=null}}class u extends i.OptionObject{constructor(e){super(c,"ADBE_JSConsole",["delegate","Enable","Disable"])}}class d extends i.OptionObject{constructor(e){super(c,"ADBE_JSDebugger",["delegate","Enable","Disable"])}}class f extends i.Option01{constructor(e){super(c,"addSilentPrint")}}class g extends i.Option01{constructor(e){super(c,"addViewerPreferences")}}class p extends i.Option10{constructor(e){super(c,"adjustData")}}class m extends i.IntegerObject{constructor(e){super(c,"adobeExtensionLevel",0,e=>e>=1&&e<=8)}}class b extends i.XFAObject{constructor(e){super(c,"agent",!0),this.name=e.name?e.name.trim():"",this.common=new i.XFAObjectArray}}class y extends i.ContentObject{constructor(e){super(c,"alwaysEmbed")}}class w extends i.StringObject{constructor(e){super(c,"amd")}}class x extends i.XFAObject{constructor(e){super(c,"area"),this.level=(0,s.getInteger)({data:e.level,defaultValue:0,validate:e=>e>=1&&e<=3}),this.name=(0,s.getStringOption)(e.name,["","barcode","coreinit","deviceDriver","font","general","layout","merge","script","signature","sourceSet","templateCache"])}}class S extends i.OptionObject{constructor(e){super(c,"attributes",["preserve","delegate","ignore"])}}class A extends i.OptionObject{constructor(e){super(c,"autoSave",["disabled","enabled"])}}class k extends i.StringObject{constructor(e){super(c,"base")}}class C extends i.XFAObject{constructor(e){super(c,"batchOutput"),this.format=(0,s.getStringOption)(e.format,["none","concat","zip","zipCompress"])}}class v extends i.ContentObject{constructor(e){super(c,"behaviorOverride")}[r.$finalize](){this[r.$content]=new Map(this[r.$content].trim().split(/\s+/).filter(e=>e.includes(":")).map(e=>e.split(":",2)))}}class F extends i.XFAObject{constructor(e){super(c,"cache",!0),this.templateCache=null}}class O extends i.Option01{constructor(e){super(c,"change")}}class I extends i.XFAObject{constructor(e){super(c,"common",!0),this.data=null,this.locale=null,this.localeSet=null,this.messaging=null,this.suppressBanner=null,this.template=null,this.validationMessaging=null,this.versionControl=null,this.log=new i.XFAObjectArray}}class T extends i.XFAObject{constructor(e){super(c,"compress"),this.scope=(0,s.getStringOption)(e.scope,["imageOnly","document"])}}class M extends i.Option01{constructor(e){super(c,"compressLogicalStructure")}}class P extends i.Option10{constructor(e){super(c,"compressObjectStream")}}class N extends i.XFAObject{constructor(e){super(c,"compression",!0),this.compressLogicalStructure=null,this.compressObjectStream=null,this.level=null,this.type=null}}class D extends i.XFAObject{constructor(e){super(c,"config",!0),this.acrobat=null,this.present=null,this.trace=null,this.agent=new i.XFAObjectArray}}class R extends i.OptionObject{constructor(e){super(c,"conformance",["A","B"])}}class E extends i.Option01{constructor(e){super(c,"contentCopy")}}class B extends i.IntegerObject{constructor(e){super(c,"copies",1,e=>e>=1)}}class $ extends i.StringObject{constructor(e){super(c,"creator")}}class L extends i.IntegerObject{constructor(e){super(c,"currentPage",0,e=>e>=0)}}class _ extends i.XFAObject{constructor(e){super(c,"data",!0),this.adjustData=null,this.attributes=null,this.incrementalLoad=null,this.outputXSL=null,this.range=null,this.record=null,this.startNode=null,this.uri=null,this.window=null,this.xsl=null,this.excludeNS=new i.XFAObjectArray,this.transform=new i.XFAObjectArray}}class j extends i.XFAObject{constructor(e){super(c,"debug",!0),this.uri=null}}class U extends i.ContentObject{constructor(e){super(c,"defaultTypeface"),this.writingScript=(0,s.getStringOption)(e.writingScript,["*","Arabic","Cyrillic","EastEuropeanRoman","Greek","Hebrew","Japanese","Korean","Roman","SimplifiedChinese","Thai","TraditionalChinese","Vietnamese"])}}class X extends i.OptionObject{constructor(e){super(c,"destination",["pdf","pcl","ps","webClient","zpl"])}}class H extends i.Option01{constructor(e){super(c,"documentAssembly")}}class q extends i.XFAObject{constructor(e){super(c,"driver",!0),this.name=e.name?e.name.trim():"",this.fontInfo=null,this.xdc=null}}class z extends i.OptionObject{constructor(e){super(c,"duplexOption",["simplex","duplexFlipLongEdge","duplexFlipShortEdge"])}}class G extends i.OptionObject{constructor(e){super(c,"dynamicRender",["forbidden","required"])}}class W extends i.Option01{constructor(e){super(c,"embed")}}class V extends i.Option01{constructor(e){super(c,"encrypt")}}class K extends i.XFAObject{constructor(e){super(c,"encryption",!0),this.encrypt=null,this.encryptionLevel=null,this.permissions=null}}class Y extends i.OptionObject{constructor(e){super(c,"encryptionLevel",["40bit","128bit"])}}class J extends i.StringObject{constructor(e){super(c,"enforce")}}class Z extends i.XFAObject{constructor(e){super(c,"equate"),this.force=(0,s.getInteger)({data:e.force,defaultValue:1,validate:e=>0===e}),this.from=e.from||"",this.to=e.to||""}}class Q extends i.XFAObject{constructor(e){super(c,"equateRange"),this.from=e.from||"",this.to=e.to||"",this._unicodeRange=e.unicodeRange||""}get unicodeRange(){const e=[],t=/U\+([0-9a-fA-F]+)/,a=this._unicodeRange
+for(let n of a.split(",").map(e=>e.trim()).filter(e=>!!e))n=n.split("-",2).map(e=>{const a=e.match(t)
+return a?parseInt(a[1],16):0}),1===n.length&&n.push(n[0]),e.push(n)
+return(0,o.shadow)(this,"unicodeRange",e)}}class ee extends i.ContentObject{constructor(e){super(c,"exclude")}[r.$finalize](){this[r.$content]=this[r.$content].trim().split(/\s+/).filter(e=>e&&["calculate","close","enter","exit","initialize","ready","validate"].includes(e))}}class te extends i.StringObject{constructor(e){super(c,"excludeNS")}}class ae extends i.OptionObject{constructor(e){super(c,"flipLabel",["usePrinterSetting","on","off"])}}class ne extends i.XFAObject{constructor(e){super(c,"fontInfo",!0),this.embed=null,this.map=null,this.subsetBelow=null,this.alwaysEmbed=new i.XFAObjectArray,this.defaultTypeface=new i.XFAObjectArray,this.neverEmbed=new i.XFAObjectArray}}class re extends i.Option01{constructor(e){super(c,"formFieldFilling")}}class ie extends i.StringObject{constructor(e){super(c,"groupParent")}}class se extends i.OptionObject{constructor(e){super(c,"ifEmpty",["dataValue","dataGroup","ignore","remove"])}}class oe extends i.StringObject{constructor(e){super(c,"includeXDPContent")}}class ce extends i.OptionObject{constructor(e){super(c,"incrementalLoad",["none","forwardOnly"])}}class le extends i.Option01{constructor(e){super(c,"incrementalMerge")}}class he extends i.Option01{constructor(e){super(c,"interactive")}}class ue extends i.OptionObject{constructor(e){super(c,"jog",["usePrinterSetting","none","pageSet"])}}class de extends i.XFAObject{constructor(e){super(c,"labelPrinter",!0),this.name=(0,s.getStringOption)(e.name,["zpl","dpl","ipl","tcpl"]),this.batchOutput=null,this.flipLabel=null,this.fontInfo=null,this.xdc=null}}class fe extends i.OptionObject{constructor(e){super(c,"layout",["paginate","panel"])}}class ge extends i.IntegerObject{constructor(e){super(c,"level",0,e=>e>0)}}class pe extends i.Option01{constructor(e){super(c,"linearized")}}class me extends i.StringObject{constructor(e){super(c,"locale")}}class be extends i.StringObject{constructor(e){super(c,"localeSet")}}class ye extends i.XFAObject{constructor(e){super(c,"log",!0),this.mode=null,this.threshold=null,this.to=null,this.uri=null}}class we extends i.XFAObject{constructor(e){super(c,"map",!0),this.equate=new i.XFAObjectArray,this.equateRange=new i.XFAObjectArray}}class xe extends i.XFAObject{constructor(e){super(c,"mediumInfo",!0),this.map=null}}class Se extends i.XFAObject{constructor(e){super(c,"message",!0),this.msgId=null,this.severity=null}}class Ae extends i.XFAObject{constructor(e){super(c,"messaging",!0),this.message=new i.XFAObjectArray}}class ke extends i.OptionObject{constructor(e){super(c,"mode",["append","overwrite"])}}class Ce extends i.Option01{constructor(e){super(c,"modifyAnnots")}}class ve extends i.IntegerObject{constructor(e){super(c,"msgId",1,e=>e>=1)}}class Fe extends i.StringObject{constructor(e){super(c,"nameAttr")}}class Oe extends i.ContentObject{constructor(e){super(c,"neverEmbed")}}class Ie extends i.IntegerObject{constructor(e){super(c,"numberOfCopies",null,e=>e>=2&&e<=5)}}class Te extends i.XFAObject{constructor(e){super(c,"openAction",!0),this.destination=null}}class Me extends i.XFAObject{constructor(e){super(c,"output",!0),this.to=null,this.type=null,this.uri=null}}class Pe extends i.StringObject{constructor(e){super(c,"outputBin")}}class Ne extends i.XFAObject{constructor(e){super(c,"outputXSL",!0),this.uri=null}}class De extends i.OptionObject{constructor(e){super(c,"overprint",["none","both","draw","field"])}}class Re extends i.StringObject{constructor(e){super(c,"packets")}[r.$finalize](){"*"!==this[r.$content]&&(this[r.$content]=this[r.$content].trim().split(/\s+/).filter(e=>["config","datasets","template","xfdf","xslt"].includes(e)))}}class Ee extends i.XFAObject{constructor(e){super(c,"pageOffset"),this.x=(0,s.getInteger)({data:e.x,defaultValue:"useXDCSetting",validate:e=>!0}),this.y=(0,s.getInteger)({data:e.y,defaultValue:"useXDCSetting",validate:e=>!0})}}class Be extends i.StringObject{constructor(e){super(c,"pageRange")}[r.$finalize](){const e=this[r.$content].trim().split(/\s+/).map(e=>parseInt(e,10)),t=[]
 for(let a=0,n=e.length;a<n;a+=2)t.push(e.slice(a,a+2))
-this[r.$content]=t}}class $e extends i.OptionObject{constructor(e){super(c,"pagination",["simplex","duplexShortEdge","duplexLongEdge"])}}class Le extends i.OptionObject{constructor(e){super(c,"paginationOverride",["none","forceDuplex","forceDuplexLongEdge","forceDuplexShortEdge","forceSimplex"])}}class _e extends i.IntegerObject{constructor(e){super(c,"part",1,(e=>!1))}}class je extends i.XFAObject{constructor(e){super(c,"pcl",!0),this.name=e.name||"",this.batchOutput=null,this.fontInfo=null,this.jog=null,this.mediumInfo=null,this.outputBin=null,this.pageOffset=null,this.staple=null,this.xdc=null}}class Ue extends i.XFAObject{constructor(e){super(c,"pdf",!0),this.name=e.name||"",this.adobeExtensionLevel=null,this.batchOutput=null,this.compression=null,this.creator=null,this.encryption=null,this.fontInfo=null,this.interactive=null,this.linearized=null,this.openAction=null,this.pdfa=null,this.producer=null,this.renderPolicy=null,this.scriptModel=null,this.silentPrint=null,this.submitFormat=null,this.tagged=null,this.version=null,this.viewerPreferences=null,this.xdc=null}}class Xe extends i.XFAObject{constructor(e){super(c,"pdfa",!0),this.amd=null,this.conformance=null,this.includeXDPContent=null,this.part=null}}class He extends i.XFAObject{constructor(e){super(c,"permissions",!0),this.accessibleContent=null,this.change=null,this.contentCopy=null,this.documentAssembly=null,this.formFieldFilling=null,this.modifyAnnots=null,this.plaintextMetadata=null,this.print=null,this.printHighQuality=null}}class qe extends i.Option01{constructor(e){super(c,"pickTrayByPDFSize")}}class ze extends i.StringObject{constructor(e){super(c,"picture")}}class Ge extends i.Option01{constructor(e){super(c,"plaintextMetadata")}}class We extends i.OptionObject{constructor(e){super(c,"presence",["preserve","dissolve","dissolveStructure","ignore","remove"])}}class Ve extends i.XFAObject{constructor(e){super(c,"present",!0),this.behaviorOverride=null,this.cache=null,this.common=null,this.copies=null,this.destination=null,this.incrementalMerge=null,this.layout=null,this.output=null,this.overprint=null,this.pagination=null,this.paginationOverride=null,this.script=null,this.validate=null,this.xdp=null,this.driver=new i.XFAObjectArray,this.labelPrinter=new i.XFAObjectArray,this.pcl=new i.XFAObjectArray,this.pdf=new i.XFAObjectArray,this.ps=new i.XFAObjectArray,this.submitUrl=new i.XFAObjectArray,this.webClient=new i.XFAObjectArray,this.zpl=new i.XFAObjectArray}}class Ke extends i.Option01{constructor(e){super(c,"print")}}class Ye extends i.Option01{constructor(e){super(c,"printHighQuality")}}class Je extends i.OptionObject{constructor(e){super(c,"printScaling",["appdefault","noScaling"])}}class Ze extends i.StringObject{constructor(e){super(c,"printerName")}}class Qe extends i.StringObject{constructor(e){super(c,"producer")}}class et extends i.XFAObject{constructor(e){super(c,"ps",!0),this.name=e.name||"",this.batchOutput=null,this.fontInfo=null,this.jog=null,this.mediumInfo=null,this.outputBin=null,this.staple=null,this.xdc=null}}class tt extends i.ContentObject{constructor(e){super(c,"range")}[r.$finalize](){this[r.$content]=this[r.$content].trim().split(/\s*,\s*/,2).map((e=>e.split("-").map((e=>parseInt(e.trim(),10))))).filter((e=>e.every((e=>!isNaN(e))))).map((e=>(1===e.length&&e.push(e[0]),e)))}}class at extends i.ContentObject{constructor(e){super(c,"record")}[r.$finalize](){this[r.$content]=this[r.$content].trim()
+this[r.$content]=t}}class $e extends i.OptionObject{constructor(e){super(c,"pagination",["simplex","duplexShortEdge","duplexLongEdge"])}}class Le extends i.OptionObject{constructor(e){super(c,"paginationOverride",["none","forceDuplex","forceDuplexLongEdge","forceDuplexShortEdge","forceSimplex"])}}class _e extends i.IntegerObject{constructor(e){super(c,"part",1,e=>!1)}}class je extends i.XFAObject{constructor(e){super(c,"pcl",!0),this.name=e.name||"",this.batchOutput=null,this.fontInfo=null,this.jog=null,this.mediumInfo=null,this.outputBin=null,this.pageOffset=null,this.staple=null,this.xdc=null}}class Ue extends i.XFAObject{constructor(e){super(c,"pdf",!0),this.name=e.name||"",this.adobeExtensionLevel=null,this.batchOutput=null,this.compression=null,this.creator=null,this.encryption=null,this.fontInfo=null,this.interactive=null,this.linearized=null,this.openAction=null,this.pdfa=null,this.producer=null,this.renderPolicy=null,this.scriptModel=null,this.silentPrint=null,this.submitFormat=null,this.tagged=null,this.version=null,this.viewerPreferences=null,this.xdc=null}}class Xe extends i.XFAObject{constructor(e){super(c,"pdfa",!0),this.amd=null,this.conformance=null,this.includeXDPContent=null,this.part=null}}class He extends i.XFAObject{constructor(e){super(c,"permissions",!0),this.accessibleContent=null,this.change=null,this.contentCopy=null,this.documentAssembly=null,this.formFieldFilling=null,this.modifyAnnots=null,this.plaintextMetadata=null,this.print=null,this.printHighQuality=null}}class qe extends i.Option01{constructor(e){super(c,"pickTrayByPDFSize")}}class ze extends i.StringObject{constructor(e){super(c,"picture")}}class Ge extends i.Option01{constructor(e){super(c,"plaintextMetadata")}}class We extends i.OptionObject{constructor(e){super(c,"presence",["preserve","dissolve","dissolveStructure","ignore","remove"])}}class Ve extends i.XFAObject{constructor(e){super(c,"present",!0),this.behaviorOverride=null,this.cache=null,this.common=null,this.copies=null,this.destination=null,this.incrementalMerge=null,this.layout=null,this.output=null,this.overprint=null,this.pagination=null,this.paginationOverride=null,this.script=null,this.validate=null,this.xdp=null,this.driver=new i.XFAObjectArray,this.labelPrinter=new i.XFAObjectArray,this.pcl=new i.XFAObjectArray,this.pdf=new i.XFAObjectArray,this.ps=new i.XFAObjectArray,this.submitUrl=new i.XFAObjectArray,this.webClient=new i.XFAObjectArray,this.zpl=new i.XFAObjectArray}}class Ke extends i.Option01{constructor(e){super(c,"print")}}class Ye extends i.Option01{constructor(e){super(c,"printHighQuality")}}class Je extends i.OptionObject{constructor(e){super(c,"printScaling",["appdefault","noScaling"])}}class Ze extends i.StringObject{constructor(e){super(c,"printerName")}}class Qe extends i.StringObject{constructor(e){super(c,"producer")}}class et extends i.XFAObject{constructor(e){super(c,"ps",!0),this.name=e.name||"",this.batchOutput=null,this.fontInfo=null,this.jog=null,this.mediumInfo=null,this.outputBin=null,this.staple=null,this.xdc=null}}class tt extends i.ContentObject{constructor(e){super(c,"range")}[r.$finalize](){this[r.$content]=this[r.$content].trim().split(/\s*,\s*/,2).map(e=>e.split("-").map(e=>parseInt(e.trim(),10))).filter(e=>e.every(e=>!isNaN(e))).map(e=>(1===e.length&&e.push(e[0]),e))}}class at extends i.ContentObject{constructor(e){super(c,"record")}[r.$finalize](){this[r.$content]=this[r.$content].trim()
 const e=parseInt(this[r.$content],10)
-!isNaN(e)&&e>=0&&(this[r.$content]=e)}}class nt extends i.ContentObject{constructor(e){super(c,"relevant")}[r.$finalize](){this[r.$content]=this[r.$content].trim().split(/\s+/)}}class rt extends i.ContentObject{constructor(e){super(c,"rename")}[r.$finalize](){this[r.$content]=this[r.$content].trim(),(this[r.$content].toLowerCase().startsWith("xml")||new RegExp("[\\p{L}_][\\p{L}\\d._\\p{M}-]*","u").test(this[r.$content]))&&(0,o.warn)("XFA - Rename: invalid XFA name")}}class it extends i.OptionObject{constructor(e){super(c,"renderPolicy",["server","client"])}}class st extends i.OptionObject{constructor(e){super(c,"runScripts",["both","client","none","server"])}}class ot extends i.XFAObject{constructor(e){super(c,"script",!0),this.currentPage=null,this.exclude=null,this.runScripts=null}}class ct extends i.OptionObject{constructor(e){super(c,"scriptModel",["XFA","none"])}}class lt extends i.OptionObject{constructor(e){super(c,"severity",["ignore","error","information","trace","warning"])}}class ht extends i.XFAObject{constructor(e){super(c,"silentPrint",!0),this.addSilentPrint=null,this.printerName=null}}class ut extends i.XFAObject{constructor(e){super(c,"staple"),this.mode=(0,s.getStringOption)(e.mode,["usePrinterSetting","on","off"])}}class dt extends i.StringObject{constructor(e){super(c,"startNode")}}class ft extends i.IntegerObject{constructor(e){super(c,"startPage",0,(e=>!0))}}class gt extends i.OptionObject{constructor(e){super(c,"submitFormat",["html","delegate","fdf","xml","pdf"])}}class pt extends i.StringObject{constructor(e){super(c,"submitUrl")}}class mt extends i.IntegerObject{constructor(e){super(c,"subsetBelow",100,(e=>e>=0&&e<=100))}}class bt extends i.Option01{constructor(e){super(c,"suppressBanner")}}class yt extends i.Option01{constructor(e){super(c,"tagged")}}class wt extends i.XFAObject{constructor(e){super(c,"template",!0),this.base=null,this.relevant=null,this.startPage=null,this.uri=null,this.xsl=null}}class xt extends i.OptionObject{constructor(e){super(c,"threshold",["trace","error","information","warning"])}}class St extends i.OptionObject{constructor(e){super(c,"to",["null","memory","stderr","stdout","system","uri"])}}class At extends i.XFAObject{constructor(e){super(c,"templateCache"),this.maxEntries=(0,s.getInteger)({data:e.maxEntries,defaultValue:5,validate:e=>e>=0})}}class kt extends i.XFAObject{constructor(e){super(c,"trace",!0),this.area=new i.XFAObjectArray}}class Ct extends i.XFAObject{constructor(e){super(c,"transform",!0),this.groupParent=null,this.ifEmpty=null,this.nameAttr=null,this.picture=null,this.presence=null,this.rename=null,this.whitespace=null}}class vt extends i.OptionObject{constructor(e){super(c,"type",["none","ascii85","asciiHex","ccittfax","flate","lzw","runLength","native","xdp","mergedXDP"])}}class Ft extends i.StringObject{constructor(e){super(c,"uri")}}class Ot extends i.OptionObject{constructor(e){super(c,"validate",["preSubmit","prePrint","preExecute","preSave"])}}class It extends i.ContentObject{constructor(e){super(c,"validateApprovalSignatures")}[r.$finalize](){this[r.$content]=this[r.$content].trim().split(/\s+/).filter((e=>["docReady","postSign"].includes(e)))}}class Tt extends i.OptionObject{constructor(e){super(c,"validationMessaging",["allMessagesIndividually","allMessagesTogether","firstMessageOnly","noMessages"])}}class Mt extends i.OptionObject{constructor(e){super(c,"version",["1.7","1.6","1.5","1.4","1.3","1.2"])}}class Pt extends i.XFAObject{constructor(e){super(c,"VersionControl"),this.outputBelow=(0,s.getStringOption)(e.outputBelow,["warn","error","update"]),this.sourceAbove=(0,s.getStringOption)(e.sourceAbove,["warn","error"]),this.sourceBelow=(0,s.getStringOption)(e.sourceBelow,["update","maintain"])}}class Nt extends i.XFAObject{constructor(e){super(c,"viewerPreferences",!0),this.ADBE_JSConsole=null,this.ADBE_JSDebugger=null,this.addViewerPreferences=null,this.duplexOption=null,this.enforce=null,this.numberOfCopies=null,this.pageRange=null,this.pickTrayByPDFSize=null,this.printScaling=null}}class Dt extends i.XFAObject{constructor(e){super(c,"webClient",!0),this.name=e.name?e.name.trim():"",this.fontInfo=null,this.xdc=null}}class Rt extends i.OptionObject{constructor(e){super(c,"whitespace",["preserve","ltrim","normalize","rtrim","trim"])}}class Et extends i.ContentObject{constructor(e){super(c,"window")}[r.$finalize](){const e=this[r.$content].trim().split(/\s*,\s*/,2).map((e=>parseInt(e,10)))
-e.some((e=>isNaN(e)))?this[r.$content]=[0,0]:(1===e.length&&e.push(e[0]),this[r.$content]=e)}}class Bt extends i.XFAObject{constructor(e){super(c,"xdc",!0),this.uri=new i.XFAObjectArray,this.xsl=new i.XFAObjectArray}}class $t extends i.XFAObject{constructor(e){super(c,"xdp",!0),this.packets=null}}class Lt extends i.XFAObject{constructor(e){super(c,"xsl",!0),this.debug=null,this.uri=null}}class _t extends i.XFAObject{constructor(e){super(c,"zpl",!0),this.name=e.name?e.name.trim():"",this.batchOutput=null,this.flipLabel=null,this.fontInfo=null,this.xdc=null}}class jt{static[n.$buildXFAObject](e,t){if(jt.hasOwnProperty(e))return jt[e](t)}static acrobat(e){return new l(e)}static acrobat7(e){return new h(e)}static ADBE_JSConsole(e){return new u(e)}static ADBE_JSDebugger(e){return new d(e)}static addSilentPrint(e){return new f(e)}static addViewerPreferences(e){return new g(e)}static adjustData(e){return new p(e)}static adobeExtensionLevel(e){return new m(e)}static agent(e){return new b(e)}static alwaysEmbed(e){return new y(e)}static amd(e){return new w(e)}static area(e){return new x(e)}static attributes(e){return new S(e)}static autoSave(e){return new A(e)}static base(e){return new k(e)}static batchOutput(e){return new C(e)}static behaviorOverride(e){return new v(e)}static cache(e){return new F(e)}static change(e){return new O(e)}static common(e){return new I(e)}static compress(e){return new T(e)}static compressLogicalStructure(e){return new M(e)}static compressObjectStream(e){return new P(e)}static compression(e){return new N(e)}static config(e){return new D(e)}static conformance(e){return new R(e)}static contentCopy(e){return new E(e)}static copies(e){return new B(e)}static creator(e){return new $(e)}static currentPage(e){return new L(e)}static data(e){return new _(e)}static debug(e){return new j(e)}static defaultTypeface(e){return new U(e)}static destination(e){return new X(e)}static documentAssembly(e){return new H(e)}static driver(e){return new q(e)}static duplexOption(e){return new z(e)}static dynamicRender(e){return new G(e)}static embed(e){return new W(e)}static encrypt(e){return new V(e)}static encryption(e){return new K(e)}static encryptionLevel(e){return new Y(e)}static enforce(e){return new J(e)}static equate(e){return new Z(e)}static equateRange(e){return new Q(e)}static exclude(e){return new ee(e)}static excludeNS(e){return new te(e)}static flipLabel(e){return new ae(e)}static fontInfo(e){return new ne(e)}static formFieldFilling(e){return new re(e)}static groupParent(e){return new ie(e)}static ifEmpty(e){return new se(e)}static includeXDPContent(e){return new oe(e)}static incrementalLoad(e){return new ce(e)}static incrementalMerge(e){return new le(e)}static interactive(e){return new he(e)}static jog(e){return new ue(e)}static labelPrinter(e){return new de(e)}static layout(e){return new fe(e)}static level(e){return new ge(e)}static linearized(e){return new pe(e)}static locale(e){return new me(e)}static localeSet(e){return new be(e)}static log(e){return new ye(e)}static map(e){return new we(e)}static mediumInfo(e){return new xe(e)}static message(e){return new Se(e)}static messaging(e){return new Ae(e)}static mode(e){return new ke(e)}static modifyAnnots(e){return new Ce(e)}static msgId(e){return new ve(e)}static nameAttr(e){return new Fe(e)}static neverEmbed(e){return new Oe(e)}static numberOfCopies(e){return new Ie(e)}static openAction(e){return new Te(e)}static output(e){return new Me(e)}static outputBin(e){return new Pe(e)}static outputXSL(e){return new Ne(e)}static overprint(e){return new De(e)}static packets(e){return new Re(e)}static pageOffset(e){return new Ee(e)}static pageRange(e){return new Be(e)}static pagination(e){return new $e(e)}static paginationOverride(e){return new Le(e)}static part(e){return new _e(e)}static pcl(e){return new je(e)}static pdf(e){return new Ue(e)}static pdfa(e){return new Xe(e)}static permissions(e){return new He(e)}static pickTrayByPDFSize(e){return new qe(e)}static picture(e){return new ze(e)}static plaintextMetadata(e){return new Ge(e)}static presence(e){return new We(e)}static present(e){return new Ve(e)}static print(e){return new Ke(e)}static printHighQuality(e){return new Ye(e)}static printScaling(e){return new Je(e)}static printerName(e){return new Ze(e)}static producer(e){return new Qe(e)}static ps(e){return new et(e)}static range(e){return new tt(e)}static record(e){return new at(e)}static relevant(e){return new nt(e)}static rename(e){return new rt(e)}static renderPolicy(e){return new it(e)}static runScripts(e){return new st(e)}static script(e){return new ot(e)}static scriptModel(e){return new ct(e)}static severity(e){return new lt(e)}static silentPrint(e){return new ht(e)}static staple(e){return new ut(e)}static startNode(e){return new dt(e)}static startPage(e){return new ft(e)}static submitFormat(e){return new gt(e)}static submitUrl(e){return new pt(e)}static subsetBelow(e){return new mt(e)}static suppressBanner(e){return new bt(e)}static tagged(e){return new yt(e)}static template(e){return new wt(e)}static templateCache(e){return new At(e)}static threshold(e){return new xt(e)}static to(e){return new St(e)}static trace(e){return new kt(e)}static transform(e){return new Ct(e)}static type(e){return new vt(e)}static uri(e){return new Ft(e)}static validate(e){return new Ot(e)}static validateApprovalSignatures(e){return new It(e)}static validationMessaging(e){return new Tt(e)}static version(e){return new Mt(e)}static versionControl(e){return new Pt(e)}static viewerPreferences(e){return new Nt(e)}static webClient(e){return new Dt(e)}static whitespace(e){return new Rt(e)}static window(e){return new Et(e)}static xdc(e){return new Bt(e)}static xdp(e){return new $t(e)}static xsl(e){return new Lt(e)}static zpl(e){return new _t(e)}}t.ConfigNamespace=jt},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.ConnectionSetNamespace=void 0
+!isNaN(e)&&e>=0&&(this[r.$content]=e)}}class nt extends i.ContentObject{constructor(e){super(c,"relevant")}[r.$finalize](){this[r.$content]=this[r.$content].trim().split(/\s+/)}}class rt extends i.ContentObject{constructor(e){super(c,"rename")}[r.$finalize](){this[r.$content]=this[r.$content].trim(),(this[r.$content].toLowerCase().startsWith("xml")||new RegExp("[\\p{L}_][\\p{L}\\d._\\p{M}-]*","u").test(this[r.$content]))&&(0,o.warn)("XFA - Rename: invalid XFA name")}}class it extends i.OptionObject{constructor(e){super(c,"renderPolicy",["server","client"])}}class st extends i.OptionObject{constructor(e){super(c,"runScripts",["both","client","none","server"])}}class ot extends i.XFAObject{constructor(e){super(c,"script",!0),this.currentPage=null,this.exclude=null,this.runScripts=null}}class ct extends i.OptionObject{constructor(e){super(c,"scriptModel",["XFA","none"])}}class lt extends i.OptionObject{constructor(e){super(c,"severity",["ignore","error","information","trace","warning"])}}class ht extends i.XFAObject{constructor(e){super(c,"silentPrint",!0),this.addSilentPrint=null,this.printerName=null}}class ut extends i.XFAObject{constructor(e){super(c,"staple"),this.mode=(0,s.getStringOption)(e.mode,["usePrinterSetting","on","off"])}}class dt extends i.StringObject{constructor(e){super(c,"startNode")}}class ft extends i.IntegerObject{constructor(e){super(c,"startPage",0,e=>!0)}}class gt extends i.OptionObject{constructor(e){super(c,"submitFormat",["html","delegate","fdf","xml","pdf"])}}class pt extends i.StringObject{constructor(e){super(c,"submitUrl")}}class mt extends i.IntegerObject{constructor(e){super(c,"subsetBelow",100,e=>e>=0&&e<=100)}}class bt extends i.Option01{constructor(e){super(c,"suppressBanner")}}class yt extends i.Option01{constructor(e){super(c,"tagged")}}class wt extends i.XFAObject{constructor(e){super(c,"template",!0),this.base=null,this.relevant=null,this.startPage=null,this.uri=null,this.xsl=null}}class xt extends i.OptionObject{constructor(e){super(c,"threshold",["trace","error","information","warning"])}}class St extends i.OptionObject{constructor(e){super(c,"to",["null","memory","stderr","stdout","system","uri"])}}class At extends i.XFAObject{constructor(e){super(c,"templateCache"),this.maxEntries=(0,s.getInteger)({data:e.maxEntries,defaultValue:5,validate:e=>e>=0})}}class kt extends i.XFAObject{constructor(e){super(c,"trace",!0),this.area=new i.XFAObjectArray}}class Ct extends i.XFAObject{constructor(e){super(c,"transform",!0),this.groupParent=null,this.ifEmpty=null,this.nameAttr=null,this.picture=null,this.presence=null,this.rename=null,this.whitespace=null}}class vt extends i.OptionObject{constructor(e){super(c,"type",["none","ascii85","asciiHex","ccittfax","flate","lzw","runLength","native","xdp","mergedXDP"])}}class Ft extends i.StringObject{constructor(e){super(c,"uri")}}class Ot extends i.OptionObject{constructor(e){super(c,"validate",["preSubmit","prePrint","preExecute","preSave"])}}class It extends i.ContentObject{constructor(e){super(c,"validateApprovalSignatures")}[r.$finalize](){this[r.$content]=this[r.$content].trim().split(/\s+/).filter(e=>["docReady","postSign"].includes(e))}}class Tt extends i.OptionObject{constructor(e){super(c,"validationMessaging",["allMessagesIndividually","allMessagesTogether","firstMessageOnly","noMessages"])}}class Mt extends i.OptionObject{constructor(e){super(c,"version",["1.7","1.6","1.5","1.4","1.3","1.2"])}}class Pt extends i.XFAObject{constructor(e){super(c,"VersionControl"),this.outputBelow=(0,s.getStringOption)(e.outputBelow,["warn","error","update"]),this.sourceAbove=(0,s.getStringOption)(e.sourceAbove,["warn","error"]),this.sourceBelow=(0,s.getStringOption)(e.sourceBelow,["update","maintain"])}}class Nt extends i.XFAObject{constructor(e){super(c,"viewerPreferences",!0),this.ADBE_JSConsole=null,this.ADBE_JSDebugger=null,this.addViewerPreferences=null,this.duplexOption=null,this.enforce=null,this.numberOfCopies=null,this.pageRange=null,this.pickTrayByPDFSize=null,this.printScaling=null}}class Dt extends i.XFAObject{constructor(e){super(c,"webClient",!0),this.name=e.name?e.name.trim():"",this.fontInfo=null,this.xdc=null}}class Rt extends i.OptionObject{constructor(e){super(c,"whitespace",["preserve","ltrim","normalize","rtrim","trim"])}}class Et extends i.ContentObject{constructor(e){super(c,"window")}[r.$finalize](){const e=this[r.$content].trim().split(/\s*,\s*/,2).map(e=>parseInt(e,10))
+e.some(e=>isNaN(e))?this[r.$content]=[0,0]:(1===e.length&&e.push(e[0]),this[r.$content]=e)}}class Bt extends i.XFAObject{constructor(e){super(c,"xdc",!0),this.uri=new i.XFAObjectArray,this.xsl=new i.XFAObjectArray}}class $t extends i.XFAObject{constructor(e){super(c,"xdp",!0),this.packets=null}}class Lt extends i.XFAObject{constructor(e){super(c,"xsl",!0),this.debug=null,this.uri=null}}class _t extends i.XFAObject{constructor(e){super(c,"zpl",!0),this.name=e.name?e.name.trim():"",this.batchOutput=null,this.flipLabel=null,this.fontInfo=null,this.xdc=null}}class jt{static[n.$buildXFAObject](e,t){if(jt.hasOwnProperty(e))return jt[e](t)}static acrobat(e){return new l(e)}static acrobat7(e){return new h(e)}static ADBE_JSConsole(e){return new u(e)}static ADBE_JSDebugger(e){return new d(e)}static addSilentPrint(e){return new f(e)}static addViewerPreferences(e){return new g(e)}static adjustData(e){return new p(e)}static adobeExtensionLevel(e){return new m(e)}static agent(e){return new b(e)}static alwaysEmbed(e){return new y(e)}static amd(e){return new w(e)}static area(e){return new x(e)}static attributes(e){return new S(e)}static autoSave(e){return new A(e)}static base(e){return new k(e)}static batchOutput(e){return new C(e)}static behaviorOverride(e){return new v(e)}static cache(e){return new F(e)}static change(e){return new O(e)}static common(e){return new I(e)}static compress(e){return new T(e)}static compressLogicalStructure(e){return new M(e)}static compressObjectStream(e){return new P(e)}static compression(e){return new N(e)}static config(e){return new D(e)}static conformance(e){return new R(e)}static contentCopy(e){return new E(e)}static copies(e){return new B(e)}static creator(e){return new $(e)}static currentPage(e){return new L(e)}static data(e){return new _(e)}static debug(e){return new j(e)}static defaultTypeface(e){return new U(e)}static destination(e){return new X(e)}static documentAssembly(e){return new H(e)}static driver(e){return new q(e)}static duplexOption(e){return new z(e)}static dynamicRender(e){return new G(e)}static embed(e){return new W(e)}static encrypt(e){return new V(e)}static encryption(e){return new K(e)}static encryptionLevel(e){return new Y(e)}static enforce(e){return new J(e)}static equate(e){return new Z(e)}static equateRange(e){return new Q(e)}static exclude(e){return new ee(e)}static excludeNS(e){return new te(e)}static flipLabel(e){return new ae(e)}static fontInfo(e){return new ne(e)}static formFieldFilling(e){return new re(e)}static groupParent(e){return new ie(e)}static ifEmpty(e){return new se(e)}static includeXDPContent(e){return new oe(e)}static incrementalLoad(e){return new ce(e)}static incrementalMerge(e){return new le(e)}static interactive(e){return new he(e)}static jog(e){return new ue(e)}static labelPrinter(e){return new de(e)}static layout(e){return new fe(e)}static level(e){return new ge(e)}static linearized(e){return new pe(e)}static locale(e){return new me(e)}static localeSet(e){return new be(e)}static log(e){return new ye(e)}static map(e){return new we(e)}static mediumInfo(e){return new xe(e)}static message(e){return new Se(e)}static messaging(e){return new Ae(e)}static mode(e){return new ke(e)}static modifyAnnots(e){return new Ce(e)}static msgId(e){return new ve(e)}static nameAttr(e){return new Fe(e)}static neverEmbed(e){return new Oe(e)}static numberOfCopies(e){return new Ie(e)}static openAction(e){return new Te(e)}static output(e){return new Me(e)}static outputBin(e){return new Pe(e)}static outputXSL(e){return new Ne(e)}static overprint(e){return new De(e)}static packets(e){return new Re(e)}static pageOffset(e){return new Ee(e)}static pageRange(e){return new Be(e)}static pagination(e){return new $e(e)}static paginationOverride(e){return new Le(e)}static part(e){return new _e(e)}static pcl(e){return new je(e)}static pdf(e){return new Ue(e)}static pdfa(e){return new Xe(e)}static permissions(e){return new He(e)}static pickTrayByPDFSize(e){return new qe(e)}static picture(e){return new ze(e)}static plaintextMetadata(e){return new Ge(e)}static presence(e){return new We(e)}static present(e){return new Ve(e)}static print(e){return new Ke(e)}static printHighQuality(e){return new Ye(e)}static printScaling(e){return new Je(e)}static printerName(e){return new Ze(e)}static producer(e){return new Qe(e)}static ps(e){return new et(e)}static range(e){return new tt(e)}static record(e){return new at(e)}static relevant(e){return new nt(e)}static rename(e){return new rt(e)}static renderPolicy(e){return new it(e)}static runScripts(e){return new st(e)}static script(e){return new ot(e)}static scriptModel(e){return new ct(e)}static severity(e){return new lt(e)}static silentPrint(e){return new ht(e)}static staple(e){return new ut(e)}static startNode(e){return new dt(e)}static startPage(e){return new ft(e)}static submitFormat(e){return new gt(e)}static submitUrl(e){return new pt(e)}static subsetBelow(e){return new mt(e)}static suppressBanner(e){return new bt(e)}static tagged(e){return new yt(e)}static template(e){return new wt(e)}static templateCache(e){return new At(e)}static threshold(e){return new xt(e)}static to(e){return new St(e)}static trace(e){return new kt(e)}static transform(e){return new Ct(e)}static type(e){return new vt(e)}static uri(e){return new Ft(e)}static validate(e){return new Ot(e)}static validateApprovalSignatures(e){return new It(e)}static validationMessaging(e){return new Tt(e)}static version(e){return new Mt(e)}static versionControl(e){return new Pt(e)}static viewerPreferences(e){return new Nt(e)}static webClient(e){return new Dt(e)}static whitespace(e){return new Rt(e)}static window(e){return new Et(e)}static xdc(e){return new Bt(e)}static xdp(e){return new $t(e)}static xsl(e){return new Lt(e)}static zpl(e){return new _t(e)}}t.ConfigNamespace=jt},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.ConnectionSetNamespace=void 0
 var n=a(81),r=a(87)
 const i=n.NamespaceIds.connectionSet.id
 class s extends r.XFAObject{constructor(e){super(i,"connectionSet",!0),this.wsdlConnection=new r.XFAObjectArray,this.xmlConnection=new r.XFAObjectArray,this.xsdConnection=new r.XFAObjectArray}}class o extends r.XFAObject{constructor(e){super(i,"effectiveInputPolicy"),this.id=e.id||"",this.name=e.name||"",this.use=e.use||"",this.usehref=e.usehref||""}}class c extends r.XFAObject{constructor(e){super(i,"effectiveOutputPolicy"),this.id=e.id||"",this.name=e.name||"",this.use=e.use||"",this.usehref=e.usehref||""}}class l extends r.StringObject{constructor(e){super(i,"operation"),this.id=e.id||"",this.input=e.input||"",this.name=e.name||"",this.output=e.output||"",this.use=e.use||"",this.usehref=e.usehref||""}}class h extends r.StringObject{constructor(e){super(i,"rootElement"),this.id=e.id||"",this.name=e.name||"",this.use=e.use||"",this.usehref=e.usehref||""}}class u extends r.StringObject{constructor(e){super(i,"soapAction"),this.id=e.id||"",this.name=e.name||"",this.use=e.use||"",this.usehref=e.usehref||""}}class d extends r.StringObject{constructor(e){super(i,"soapAddress"),this.id=e.id||"",this.name=e.name||"",this.use=e.use||"",this.usehref=e.usehref||""}}class f extends r.StringObject{constructor(e){super(i,"uri"),this.id=e.id||"",this.name=e.name||"",this.use=e.use||"",this.usehref=e.usehref||""}}class g extends r.StringObject{constructor(e){super(i,"wsdlAddress"),this.id=e.id||"",this.name=e.name||"",this.use=e.use||"",this.usehref=e.usehref||""}}class p extends r.XFAObject{constructor(e){super(i,"wsdlConnection",!0),this.dataDescription=e.dataDescription||"",this.name=e.name||"",this.effectiveInputPolicy=null,this.effectiveOutputPolicy=null,this.operation=null,this.soapAction=null,this.soapAddress=null,this.wsdlAddress=null}}class m extends r.XFAObject{constructor(e){super(i,"xmlConnection",!0),this.dataDescription=e.dataDescription||"",this.name=e.name||"",this.uri=null}}class b extends r.XFAObject{constructor(e){super(i,"xsdConnection",!0),this.dataDescription=e.dataDescription||"",this.name=e.name||"",this.rootElement=null,this.uri=null}}class y{static[n.$buildXFAObject](e,t){if(y.hasOwnProperty(e))return y[e](t)}static connectionSet(e){return new s(e)}static effectiveInputPolicy(e){return new o(e)}static effectiveOutputPolicy(e){return new c(e)}static operation(e){return new l(e)}static rootElement(e){return new h(e)}static soapAction(e){return new u(e)}static soapAddress(e){return new d(e)}static uri(e){return new f(e)}static wsdlAddress(e){return new g(e)}static wsdlConnection(e){return new p(e)}static xmlConnection(e){return new m(e)}static xsdConnection(e){return new b(e)}}t.ConnectionSetNamespace=y},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.DatasetsNamespace=void 0
@@ -7863,15 +7862,15 @@ const c=r.NamespaceIds.xhtml.id,l=Symbol(),h=new Set(["color","font","font-famil
 function p(e,t,a){const r=Object.create(null)
 if(!e)return r
 const o=Object.create(null)
-for(const[n,i]of e.split(";").map((e=>e.split(":",2)))){const e=u.get(n)
+for(const[n,i]of e.split(";").map(e=>e.split(":",2))){const e=u.get(n)
 if(""===e)continue
 let t=i
-e&&(t="string"==typeof e?e:e(i,o)),n.endsWith("scale")?r.transform=r.transform?`${r[n]} ${t}`:t:r[n.replaceAll(/-([a-zA-Z])/g,((e,t)=>t.toUpperCase()))]=t}if(r.fontFamily&&(0,i.setFontFamily)({typeface:r.fontFamily,weight:r.fontWeight||"normal",posture:r.fontStyle||"normal",size:o.fontSize||0},t,t[n.$globalData].fontFinder,r),a&&r.verticalAlign&&"0px"!==r.verticalAlign&&r.fontSize){const e=.583,t=.333,a=(0,s.getMeasurement)(r.fontSize)
+e&&(t="string"==typeof e?e:e(i,o)),n.endsWith("scale")?r.transform=r.transform?`${r[n]} ${t}`:t:r[n.replaceAll(/-([a-zA-Z])/g,(e,t)=>t.toUpperCase())]=t}if(r.fontFamily&&(0,i.setFontFamily)({typeface:r.fontFamily,weight:r.fontWeight||"normal",posture:r.fontStyle||"normal",size:o.fontSize||0},t,t[n.$globalData].fontFinder,r),a&&r.verticalAlign&&"0px"!==r.verticalAlign&&r.fontSize){const e=.583,t=.333,a=(0,s.getMeasurement)(r.fontSize)
 r.fontSize=(0,i.measureToString)(a*e),r.verticalAlign=(0,i.measureToString)(Math.sign((0,s.getMeasurement)(r.verticalAlign))*a*t)}return a&&r.fontSize&&(r.fontSize=`calc(${r.fontSize} * var(--scale-factor))`),(0,i.fixTextIndent)(r),r}const m=new Set(["body","html"])
 class b extends o.XmlObject{constructor(e,t){super(c,t),this[l]=!1,this.style=e.style||""}[n.$clean](e){var t
-super[n.$clean](e),this.style=(t=this).style?t.style.trim().split(/\s*;\s*/).filter((e=>!!e)).map((e=>e.split(/\s*:\s*/,2))).filter((([e,a])=>("font-family"===e&&t[n.$globalData].usedTypefaces.add(a),h.has(e)))).map((e=>e.join(":"))).join(";"):""}[n.$acceptWhitespace](){return!m.has(this[n.$nodeName])}[n.$onText](e,t=!1){t?this[l]=!0:(e=e.replaceAll(f,""),this.style.includes("xfa-spacerun:yes")||(e=e.replaceAll(d," "))),e&&(this[n.$content]+=e)}[n.$pushGlyphs](e,t=!0){const a=Object.create(null),r={top:NaN,bottom:NaN,left:NaN,right:NaN}
+super[n.$clean](e),this.style=(t=this).style?t.style.trim().split(/\s*;\s*/).filter(e=>!!e).map(e=>e.split(/\s*:\s*/,2)).filter(([e,a])=>("font-family"===e&&t[n.$globalData].usedTypefaces.add(a),h.has(e))).map(e=>e.join(":")).join(";"):""}[n.$acceptWhitespace](){return!m.has(this[n.$nodeName])}[n.$onText](e,t=!1){t?this[l]=!0:(e=e.replaceAll(f,""),this.style.includes("xfa-spacerun:yes")||(e=e.replaceAll(d," "))),e&&(this[n.$content]+=e)}[n.$pushGlyphs](e,t=!0){const a=Object.create(null),r={top:NaN,bottom:NaN,left:NaN,right:NaN}
 let i=null
-for(const[n,o]of this.style.split(";").map((e=>e.split(":",2))))switch(n){case"font-family":a.typeface=(0,s.stripQuotes)(o)
+for(const[n,o]of this.style.split(";").map(e=>e.split(":",2)))switch(n){case"font-family":a.typeface=(0,s.stripQuotes)(o)
 break
 case"font-size":a.size=(0,s.getMeasurement)(o)
 break
@@ -7881,7 +7880,7 @@ case"font-style":a.posture=o
 break
 case"letter-spacing":a.letterSpacing=(0,s.getMeasurement)(o)
 break
-case"margin":const e=o.split(/ \t/).map((e=>(0,s.getMeasurement)(e)))
+case"margin":const e=o.split(/ \t/).map(e=>(0,s.getMeasurement)(e))
 switch(e.length){case 1:r.top=r.bottom=r.left=r.right=e[0]
 break
 case 2:r.top=r.bottom=e[0],r.left=r.right=e[1]
@@ -7917,7 +7916,7 @@ try{t.parseFromString(e["xdp:xdp"])}catch{}this.node=t.node}}getValue(e){if(!thi
 const t=this.node.searchNode((0,r.parseXFAPath)(e),0)
 if(!t)return""
 const a=t.firstChild
-return"value"===a?.nodeName?t.children.map((e=>s(e.textContent))):s(t.textContent)}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.XRef=void 0
+return"value"===a?.nodeName?t.children.map(e=>s(e.textContent)):s(t.textContent)}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.XRef=void 0
 var n=a(2),r=a(4),i=a(16),s=a(3),o=a(5),c=a(74)
 t.XRef=class{#D=null
 constructor(e,t){this.stream=e,this.pdfManager=t,this.entries=[],this._xrefStms=new Set,this._cacheMap=new Map,this._pendingRefs=new r.RefSet,this._newPersistentRefNum=null,this._newTemporaryRefNum=null}getNewPersistentRef(e){null===this._newPersistentRefNum&&(this._newPersistentRefNum=this.entries.length||1)
@@ -8083,7 +8082,7 @@ else{if(t.callback!==i)throw new Error("Unexpected callback case")
 a.reject(g(t.reason))}return}const n=this.actionHandler[t.action]
 if(!n)throw new Error(`Unknown action from worker: ${t.action}`)
 if(t.callbackId){const e=this.sourceName,s=t.sourceName
-new Promise((function(e){e(n(t.data))})).then((function(n){a.postMessage({sourceName:e,targetName:s,callback:r,callbackId:t.callbackId,data:n})}),(function(n){a.postMessage({sourceName:e,targetName:s,callback:i,callbackId:t.callbackId,reason:g(n)})}))}else t.streamId?this.#E(t):n(t.data)},a.addEventListener("message",this._onComObjOnMessage)}on(e,t){const a=this.actionHandler
+return void new Promise(function(e){e(n(t.data))}).then(function(n){a.postMessage({sourceName:e,targetName:s,callback:r,callbackId:t.callbackId,data:n})},function(n){a.postMessage({sourceName:e,targetName:s,callback:i,callbackId:t.callbackId,reason:g(n)})})}t.streamId?this.#E(t):n(t.data)},a.addEventListener("message",this._onComObjOnMessage)}on(e,t){const a=this.actionHandler
 if(a[e])throw new Error(`There is already an actionName called "${e}"`)
 a[e]=t}send(e,t,a){this.comObj.postMessage({sourceName:this.sourceName,targetName:this.targetName,action:e,data:t},a)}sendWithPromise(e,t,a){const r=this.callbackId++,i=new n.PromiseCapability
 this.callbackCapabilities[r]=i
@@ -8095,13 +8094,13 @@ const t=new n.PromiseCapability
 return this.streamControllers[i].cancelCall=t,this.streamControllers[i].isClosed=!0,l.postMessage({sourceName:o,targetName:c,stream:s,streamId:i,reason:g(e)}),t.promise}},a)}#E(e){const t=e.streamId,a=this.sourceName,r=e.sourceName,i=this.comObj,s=this,o=this.actionHandler[e.action],u={enqueue(e,s=1,o){if(this.isCancelled)return
 const c=this.desiredSize
 this.desiredSize-=s,c>0&&this.desiredSize<=0&&(this.sinkCapability=new n.PromiseCapability,this.ready=this.sinkCapability.promise),i.postMessage({sourceName:a,targetName:r,stream:l,streamId:t,chunk:e},o)},close(){this.isCancelled||(this.isCancelled=!0,i.postMessage({sourceName:a,targetName:r,stream:c,streamId:t}),delete s.streamSinks[t])},error(e){(0,n.assert)(e instanceof Error,"error must have a valid reason"),this.isCancelled||(this.isCancelled=!0,i.postMessage({sourceName:a,targetName:r,stream:h,streamId:t,reason:g(e)}))},sinkCapability:new n.PromiseCapability,onPull:null,onCancel:null,isCancelled:!1,desiredSize:e.desiredSize,ready:null}
-u.sinkCapability.resolve(),u.ready=u.sinkCapability.promise,this.streamSinks[t]=u,new Promise((function(t){t(o(e.data,u))})).then((function(){i.postMessage({sourceName:a,targetName:r,stream:f,streamId:t,success:!0})}),(function(e){i.postMessage({sourceName:a,targetName:r,stream:f,streamId:t,reason:g(e)})}))}#R(e){const t=e.streamId,a=this.sourceName,r=e.sourceName,i=this.comObj,p=this.streamControllers[t],m=this.streamSinks[t]
+u.sinkCapability.resolve(),u.ready=u.sinkCapability.promise,this.streamSinks[t]=u,new Promise(function(t){t(o(e.data,u))}).then(function(){i.postMessage({sourceName:a,targetName:r,stream:f,streamId:t,success:!0})},function(e){i.postMessage({sourceName:a,targetName:r,stream:f,streamId:t,reason:g(e)})})}#R(e){const t=e.streamId,a=this.sourceName,r=e.sourceName,i=this.comObj,p=this.streamControllers[t],m=this.streamSinks[t]
 switch(e.stream){case f:e.success?p.startCall.resolve():p.startCall.reject(g(e.reason))
 break
 case d:e.success?p.pullCall.resolve():p.pullCall.reject(g(e.reason))
 break
 case u:if(!m){i.postMessage({sourceName:a,targetName:r,stream:d,streamId:t,success:!0})
-break}m.desiredSize<=0&&e.desiredSize>0&&m.sinkCapability.resolve(),m.desiredSize=e.desiredSize,new Promise((function(e){e(m.onPull?.())})).then((function(){i.postMessage({sourceName:a,targetName:r,stream:d,streamId:t,success:!0})}),(function(e){i.postMessage({sourceName:a,targetName:r,stream:d,streamId:t,reason:g(e)})}))
+break}m.desiredSize<=0&&e.desiredSize>0&&m.sinkCapability.resolve(),m.desiredSize=e.desiredSize,new Promise(function(e){e(m.onPull?.())}).then(function(){i.postMessage({sourceName:a,targetName:r,stream:d,streamId:t,success:!0})},function(e){i.postMessage({sourceName:a,targetName:r,stream:d,streamId:t,reason:g(e)})})
 break
 case l:if((0,n.assert)(p,"enqueue should have stream controller"),p.isClosed)break
 p.controller.enqueue(e.chunk)
@@ -8114,7 +8113,7 @@ break
 case o:e.success?p.cancelCall.resolve():p.cancelCall.reject(g(e.reason)),this.#B(p,t)
 break
 case s:if(!m)break
-new Promise((function(t){t(m.onCancel?.(g(e.reason)))})).then((function(){i.postMessage({sourceName:a,targetName:r,stream:o,streamId:t,success:!0})}),(function(e){i.postMessage({sourceName:a,targetName:r,stream:o,streamId:t,reason:g(e)})})),m.sinkCapability.reject(g(e.reason)),m.isCancelled=!0,delete this.streamSinks[t]
+new Promise(function(t){t(m.onCancel?.(g(e.reason)))}).then(function(){i.postMessage({sourceName:a,targetName:r,stream:o,streamId:t,success:!0})},function(e){i.postMessage({sourceName:a,targetName:r,stream:o,streamId:t,reason:g(e)})}),m.sinkCapability.reject(g(e.reason)),m.isCancelled=!0,delete this.streamSinks[t]
 break
 default:throw new Error("Unexpected stream case")}}async#B(e,t){await Promise.allSettled([e.startCall?.promise,e.pullCall?.promise,e.cancelCall?.promise]),delete this.streamControllers[t]}destroy(){this.comObj.removeEventListener("message",this._onComObjOnMessage)}}},(e,t,a)=>{Object.defineProperty(t,"__esModule",{value:!0}),t.PDFWorkerStream=void 0
 var n=a(2)
@@ -8123,7 +8122,7 @@ return this._rangeRequestReaders.push(a),a}cancelAllRequests(e){this._fullReques
 for(const t of this._rangeRequestReaders.slice(0))t.cancel(e)}}
 class r{constructor(e){this._msgHandler=e,this.onProgress=null,this._contentLength=null,this._isRangeSupported=!1,this._isStreamingSupported=!1
 const t=this._msgHandler.sendWithStream("GetReader")
-this._reader=t.getReader(),this._headersReady=this._msgHandler.sendWithPromise("ReaderHeadersReady").then((e=>{this._isStreamingSupported=e.isStreamingSupported,this._isRangeSupported=e.isRangeSupported,this._contentLength=e.contentLength}))}get headersReady(){return this._headersReady}get contentLength(){return this._contentLength}get isStreamingSupported(){return this._isStreamingSupported}get isRangeSupported(){return this._isRangeSupported}async read(){const{value:e,done:t}=await this._reader.read()
+this._reader=t.getReader(),this._headersReady=this._msgHandler.sendWithPromise("ReaderHeadersReady").then(e=>{this._isStreamingSupported=e.isStreamingSupported,this._isRangeSupported=e.isRangeSupported,this._contentLength=e.contentLength})}get headersReady(){return this._headersReady}get contentLength(){return this._contentLength}get isStreamingSupported(){return this._isStreamingSupported}get isRangeSupported(){return this._isRangeSupported}async read(){const{value:e,done:t}=await this._reader.read()
 return t?{value:void 0,done:!0}:{value:e.buffer,done:!1}}cancel(e){this._reader.cancel(e)}}class i{constructor(e,t,a){this._msgHandler=a,this.onProgress=null
 const n=this._msgHandler.sendWithStream("GetRangeReader",{begin:e,end:t})
 this._reader=n.getReader()}get isStreamingSupported(){return!1}async read(){const{value:e,done:t}=await this._reader.read()
@@ -8134,4 +8133,4 @@ var i=t[n]={exports:{}}
 return e[n](i,i.exports,a),i.exports}var n={}
 return(()=>{var e=n
 Object.defineProperty(e,"__esModule",{value:!0}),Object.defineProperty(e,"WorkerMessageHandler",{enumerable:!0,get:function(){return t.WorkerMessageHandler}})
-var t=a(1)})(),n})()))
+var t=a(1)})(),n})())
