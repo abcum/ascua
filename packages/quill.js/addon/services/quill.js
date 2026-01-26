@@ -39,7 +39,7 @@ export default class extends Service {
 
 	html(name, instance, html, source = 'api') {
 
-		let delta = this.#instances[0].instance.clipboard.convert(html);
+		let delta = this.#instances[0].instance.clipboard.convert({ html });
 
 		// Ensure all other editors are updated with the changes.
 		this.#instances.filterBy('name', name).forEach(q => {

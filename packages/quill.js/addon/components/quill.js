@@ -46,7 +46,7 @@ export default class extends Component {
 
 	@arg bounds = null;
 	@arg debug = 'warn';
-	@arg formats = true;
+	@arg formats = null;
 	@arg placeholder = '';
 	@arg readOnly = false;
 	@arg scrollingContainer = null;
@@ -91,7 +91,7 @@ export default class extends Component {
 		}
 
 		if (this.value) {
-			let delta = this.instance.clipboard.convert(this.value);
+			let delta = this.instance.clipboard.convert({ text: this.value });
 			this.instance.setContents(delta, 'silent');
 		}
 
