@@ -1,6 +1,6 @@
 {
   "name": "@ascua/sheet.js",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "Small description for @ascua/sheet.js goes here",
   "keywords": [
     "ember-addon"

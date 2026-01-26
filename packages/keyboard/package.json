@@ -1,6 +1,6 @@
 {
   "name": "@ascua/keyboard",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "Small description for @ascua/keyboard goes here",
   "keywords": [
     "ember-addon"
