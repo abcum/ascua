@@ -91,7 +91,7 @@ export default class extends Component {
 		}
 
 		if (this.value) {
-			let delta = this.instance.clipboard.convert({ text: this.value });
+			let delta = this.instance.clipboard.convert({ html: this.value });
 			this.instance.setContents(delta, 'silent');
 		}
 
@@ -138,7 +138,7 @@ export default class extends Component {
 
 		if (!Quill) return;
 
-		let delta = this.instance.clipboard.convert(this.value);
+		let delta = this.instance.clipboard.convert({ html: this.value });
 
 		this.instance.setContents(delta, 'silent');
 
