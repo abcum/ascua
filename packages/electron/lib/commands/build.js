@@ -109,7 +109,7 @@ module.exports = Command.extend({
 					directories: {
 						output: "build",
 					},
-					electronVersion: "17.3.0",
+					electronVersion: require('electron/package.json').version,
 					extraMetadata: {
 						main: "electron/main.js",
 					},
