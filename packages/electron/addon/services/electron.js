@@ -114,11 +114,9 @@ export default class extends Service {
 
 	@action reset() {
 
-		const autoUpdater = this.autoUpdater;
+		if (Electron === null) return;
 
-		if (!autoUpdater) return;
-
-		autoUpdater.quitAndInstall(true, true);
+		Electron.ipcRenderer.send('install-update');
 
 	}
 

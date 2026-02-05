@@ -1,12 +1,16 @@
 /* eslint-env node */
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
+
+const { autoUpdater } = require('electron-updater');
 
 const remote = require('@electron/remote/main');
 
 const location = require('@ascua/app');
 
 const os = require('os');
+
+let isUpdating = false;
 
 app.setName('My App');
 
@@ -17,7 +21,21 @@ app.once('ready', () => {
 });
 
 app.once('window-all-closed', () => {
-	app.quit();
+	if (!isUpdating) {
+		app.quit();
+	}
+});
+
+ipcMain.on('install-update', () => {
+	// Only udpate packaged applications
+	if (!app.isPackaged) return;
+	// Let the main process handle updates
+	try {
+		isUpdating = true;
+		autoUpdater.quitAndInstall(true, true);
+	} catch (error) {
+		console.error('Failed to install update:', error);
+	}
 });
 
 app.once('will-finish-launching', () => {
