@@ -135,13 +135,13 @@ export default class Resize {
 			this.boxes[i].addEventListener('mousedown', this.didMousedown, false);
 			this.quill.root.parentNode.appendChild(this.boxes[i]);
 		}
-		document.addEventListener('keyup', this.didKeyUp, true);
-		this.quill.root.addEventListener('input', this.didKeyUp, true);
+		document.addEventListener('keyup', this.didKeyup, true);
+		this.quill.root.addEventListener('input', this.didKeyup, true);
 	}
 
 	hideBoxes() {
-		document.removeEventListener('keyup', this.didKeyUp);
-		this.quill.root.removeEventListener('input', this.didKeyUp);
+		document.removeEventListener('keyup', this.didKeyup);
+		this.quill.root.removeEventListener('input', this.didKeyup);
 		this.boxes.forEach(e => this.quill.root.parentNode.removeChild(e));
 		this.boxes = [];
 	}

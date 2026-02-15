@@ -2,7 +2,7 @@ import Quill from 'quill';
 
 const BlockEmbed = Quill.import('blots/block/embed');
 
-export default class Video extends BlockEmbed {
+export default class Image extends BlockEmbed {
 
 	static create(value) {
 		let node = super.create(value);
@@ -17,5 +17,5 @@ export default class Video extends BlockEmbed {
 
 }
 
-Video.blotName = 'video';
-Video.tagName = 'VIDEO';
+Image.blotName = 'image';
+Image.tagName = 'IMG';

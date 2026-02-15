@@ -23,13 +23,13 @@ export default class Insert {
 
 			if (typeof this.handler === 'function') {
 				const src = await this.handler(file);
-				const idx = (this.quill.getSelection() || {}).index;
-				if (idx < 0) idx = this.quill.getLength();
+				let idx = (this.quill.getSelection() || {}).index;
+				if (idx == null || idx < 0) idx = this.quill.getLength();
 				this.quill.insertEmbed(idx, 'image', src, 'user');
 			} else {
 				const src = await insert(file);
-				const idx = (this.quill.getSelection() || {}).index;
-				if (idx < 0) idx = this.quill.getLength();
+				let idx = (this.quill.getSelection() || {}).index;
+				if (idx == null || idx < 0) idx = this.quill.getLength();
 				this.quill.insertEmbed(idx, 'image', src, 'user');
 			}
 
@@ -39,13 +39,13 @@ export default class Insert {
 
 			if (typeof this.handler === 'function') {
 				const src = await this.handler(file);
-				const idx = (this.quill.getSelection() || {}).index;
-				if (idx < 0) idx = this.quill.getLength();
+				let idx = (this.quill.getSelection() || {}).index;
+				if (idx == null || idx < 0) idx = this.quill.getLength();
 				this.quill.insertEmbed(idx, 'video', src, 'user');
 			} else {
 				const src = await insert(file);
-				const idx = (this.quill.getSelection() || {}).index;
-				if (idx < 0) idx = this.quill.getLength();
+				let idx = (this.quill.getSelection() || {}).index;
+				if (idx == null || idx < 0) idx = this.quill.getLength();
 				this.quill.insertEmbed(idx, 'video', src, 'user');
 			}
 
