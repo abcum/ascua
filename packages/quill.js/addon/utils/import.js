@@ -46,7 +46,7 @@ export default class Import {
 
 		if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length) {
 			e.preventDefault();
-			e.stopPropagation();
+			e.stopImmediatePropagation();
 			[].forEach.call(e.clipboardData.files, file => {
 				this.quill.getModule('insert').insert(file);
 			});
@@ -57,7 +57,7 @@ export default class Import {
 	didDrop(e) {
 
 		e.preventDefault();
-		e.stopPropagation();
+		e.stopImmediatePropagation();
 
 		if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
 

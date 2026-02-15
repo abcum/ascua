@@ -5,6 +5,9 @@ import { arg } from '@ascua/decorators';
 import Event from '@ascua/events';
 import Quill from 'quill';
 
+import Uploader from '../utils/uploader';
+Quill.register('modules/uploader', Uploader, true);
+
 import Import from '../utils/import';
 Quill.register('modules/import', Import);
 
@@ -75,7 +78,7 @@ export default class extends Component {
 				keyboard: this.keyboard,
 				toolbar: this.toolbar,
 				import: this.import,
-				insert: this.insert,
+				insert: { handler: this.insert },
 				resize: this.resize,
 			},
 			placeholder: this.placeholder,

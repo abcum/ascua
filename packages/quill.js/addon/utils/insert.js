@@ -13,7 +13,7 @@ export default class Insert {
 	constructor(quill, options) {
 
 		this.quill = quill;
-		this.handler = options;
+		this.handler = options?.handler;
 
 	}
 
