@@ -108,7 +108,7 @@ export default class extends Component {
 			this.doc = yield this.xhr.promise;
 
 			for (let i = 1; i <= this.doc.numPages; i++) {
-				pages.pushObject(this.doc.getPage(i));
+				pages.push(this.doc.getPage(i));
 			}
 
 			this.pages = yield Promise.all(pages);
