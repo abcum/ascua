@@ -8,7 +8,7 @@ class Task {
 	@tracked error = null;
 	@tracked isLoading = true;
 	@tracked isSuccess = false;
-	@tracked isFaulure = false;
+	@tracked isFailure = false;
 
 	get isError() {
 		return Boolean(this.error);
