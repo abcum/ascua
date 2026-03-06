@@ -130,7 +130,7 @@ export default class extends Component {
 				}
 			}
 
-			r.readAsBinaryString(f);
+			r.readAsArrayBuffer(f);
 
 		}
 
