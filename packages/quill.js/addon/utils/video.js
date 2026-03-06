@@ -8,6 +8,7 @@ export default class Video extends BlockEmbed {
 		let node = super.create(value);
 		node.setAttribute('controls', true);
 		node.setAttribute('src', value);
+		node.setAttribute('poster', value.replace(/\.auto$/, '.avif'));
 		node.setAttribute('loop', false);
 		node.setAttribute('autoplay', false);
 		node.setAttribute('playsinline', true);
