@@ -1,0 +1,24 @@
+---
+description: Project overview for the Ascua addon monorepo
+alwaysApply: true
+---
+
+# Project Overview
+
+Lerna-managed monorepo of `@ascua/*` Ember addons used by the Hire Insight platform. Provides reusable UI components, integrations, and utilities.
+
+## Tech Stack
+
+- **Framework:** Ember.js (addon format)
+- **Monorepo:** Lerna with npm
+- **Build:** ember-cli
+
+## Key Commands
+
+- `make setup` — Install dependencies (do NOT use `npm install` directly)
+- `make clean` — Clean all node_modules and build artifacts
+- `make serve` — Start development server
+- `make version` — Version packages
+- `make publish` — Publish to npm
+
+See `development-setup.mdc` for detailed dependency management instructions.

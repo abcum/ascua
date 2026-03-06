@@ -1,0 +1,26 @@
+---
+description: Commit message conventions for this project
+alwaysApply: true
+---
+
+# Commit Conventions
+
+- Use **imperative mood** ("Fix", "Add", "Ensure", not "Fixed", "Added", "Ensures")
+- Use **sentence case** (capitalise the first word only)
+- Keep messages **concise and single-line**
+- No conventional commit prefixes (no `feat:`, `fix:`, `chore:`, etc.)
+- Version bump commits use bare version numbers (e.g. `v0.13.1`)
+- Never commit `.env` files, credentials, or secret keys
+
+## Examples
+
+Good:
+- `Fix image importing`
+- `Ensure gravatar images are not duplicated`
+- `Make improvements to @ascua/quill.js package`
+- `v0.13.1`
+
+Bad:
+- `fix: image importing` (no prefixes)
+- `Fixed image importing` (use imperative mood)
+- `fix image importing` (capitalise first word)
