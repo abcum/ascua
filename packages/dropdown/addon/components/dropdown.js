@@ -86,9 +86,7 @@ export default class extends Component {
 	@action register(el, value, label) {
 		setTimeout(() => {
 			Promise.resolve(value).then(value => {
-				this.options.addObject({
-					el, label, value,
-				});
+				this.options = [...this.options, { el, label, value }];
 			});
 		});
 	}
@@ -119,10 +117,11 @@ export default class extends Component {
 
 		if (this.args.multiple) {
 			if (this.value.includes(value)) {
-				value = this.value.removeObject(value);
+				this.value = this.value.filter(v => v !== value);
 			} else {
-				value = this.value.addObject(value);
+				this.value = [...this.value, value];
 			}
+			value = this.value;
 		}
 
 		if (this.args.onSelect) {
