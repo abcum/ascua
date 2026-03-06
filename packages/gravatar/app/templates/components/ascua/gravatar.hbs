@@ -1,1 +1,3 @@
-<app-gravatar {{style width=this.size height=this.size backgroundImage=this.image}} circular={{@circular}} ...attributes></app-gravatar>
+<app-gravatar {{style width=this.size height=this.size}} circular={{@circular}} ...attributes>
+	<img src={{this.current}} width={{this.size}} height={{this.size}} {{on "error" this.handleError}} />
+</app-gravatar>

@@ -1,8 +1,13 @@
 app-gravatar {
 	display:inline-block;
-	background-size:cover;
+}
+
+app-gravatar img {
+	display:block;
+	object-fit:cover;
 }
 
 app-gravatar[circular] {
 	border-radius:100%;
+	img { border-radius:100%; }
 }

@@ -1,8 +1,12 @@
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 import avatar from '../utils/avatar';
 import md5 from "../utils/md5";
 
 export default class extends Component {
+
+	@tracked failed = null;
 
 	get md5() {
 		return md5(this.args.email);
@@ -24,8 +28,12 @@ export default class extends Component {
 		return `https://secure.gravatar.com/avatar/${this.md5}?s=${this.size}&d=404`;
 	}
 
-	get image() {
-		return `url('${this.src}'), url('${this.err}')`;
+	get current() {
+		return this.failed === this.args.email ? this.err : this.src;
+	}
+
+	@action handleError() {
+		this.failed = this.args.email;
 	}
 
 }
