@@ -87,7 +87,8 @@ export default class extends Component {
 
 			let f = files[i];
 
-			if (es.length && es.includes(f.ext) === false) {
+			let ext = f.name.split('.').pop()?.toLowerCase();
+			if (es.length && !es.includes(ext)) {
 				return;
 			}
 
