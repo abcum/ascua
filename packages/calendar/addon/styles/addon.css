@@ -128,7 +128,7 @@ app-calendar-popup > app-calendar-front > app-calendar-navs {
 	padding:2px 25px 6px 25px;
 	background-color:transparent;
 	justify-content:space-between;
-	font-family:var(--system-fonts);
+	font-family:var(--system-font);
 	border-bottom:1px solid rgba(200, 200, 200, 0.6);
 }
 
@@ -180,7 +180,7 @@ app-calendar-popup > app-calendar-front > app-calendar-days > app-calendar-days-
 	color:rgba(0, 0, 0, 0.5);
 	background-color:transparent;
 	justify-content:space-between;
-	font-family:var(--system-fonts);
+	font-family:var(--system-font);
 	border-bottom:1px solid rgba(200, 200, 200, 0.6);
 }
 
@@ -214,7 +214,7 @@ app-calendar-popup > app-calendar-front > app-calendar-days > app-calendar-days-
 	padding:0px 8px 0px 8px;
 	background-color:transparent;
 	justify-content:space-between;
-	font-family:var(--system-fonts);
+	font-family:var(--system-font);
 }
 
 @media (prefers-color-scheme: dark) {
