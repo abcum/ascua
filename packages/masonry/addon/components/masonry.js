@@ -79,16 +79,7 @@ export default class extends Component {
 			for (let mutation of mutations) {
 				if (mutation.type == 'childList') {
 					[].forEach.call(mutation.addedNodes, child => {
-						if (child.tagName === "IMG") {
-							child.addEventListener('load', () => {
-								this.masonry.reloadItems();
-								this.masonry.layout();
-							});
-							child.addEventListener('error', () => {
-								this.masonry.reloadItems();
-								this.masonry.layout();
-							});
-						}
+						this.#observeImages(child);
 					})
 				}
 			}
@@ -97,6 +88,27 @@ export default class extends Component {
 		this.masonry.reloadItems();
 
 		this.masonry.layout();
+
+	}
+
+	#observeImages(node) {
+
+		let relayout = () => {
+			this.masonry.reloadItems();
+			this.masonry.layout();
+		};
+
+		let observe = (img) => {
+			if (img.complete) return;
+			img.addEventListener('load', relayout);
+			img.addEventListener('error', relayout);
+		};
+
+		if (node.tagName === 'IMG') {
+			observe(node);
+		} else if (node.querySelectorAll) {
+			node.querySelectorAll('img').forEach(observe);
+		}
 
 	}
 
