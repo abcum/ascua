@@ -10,7 +10,10 @@ export default class extends Component {
 		if (!Electron) return;
 
 		if (this.args.download) {
-			Remote.getCurrentWebContents().downloadURL(this.args.url);
+			Electron.ipcRenderer.invoke('download-file', {
+				url: this.args.url,
+				filename: this.args.download,
+			});
 		} else {
 			Remote.shell.openExternal(this.args.url);
 		}
