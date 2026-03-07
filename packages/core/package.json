@@ -1,6 +1,6 @@
 {
   "name": "@ascua/core",
-  "version": "0.14.1",
+  "version": "0.14.2",
   "description": "Small description for @ascua/core goes here",
   "keywords": [
     "ember-addon"
