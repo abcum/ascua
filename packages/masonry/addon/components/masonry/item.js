@@ -10,6 +10,13 @@ export default class extends Component {
 			subtree: true,
 		});
 
+		el.querySelectorAll('img').forEach(img => {
+			if (!img.complete) {
+				img.addEventListener('load', () => this.args.reload());
+				img.addEventListener('error', () => this.args.reload());
+			}
+		});
+
 		this.args.reload();
 
 	}
