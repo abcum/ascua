@@ -50,7 +50,7 @@ export default class extends Component {
 		let opts = Object.entries(this.options);
 
 		for (let [key, val] of opts) {
-			this.sortable.option(key, value);
+			this.instance.option(key, val);
 		}
 
 	}
