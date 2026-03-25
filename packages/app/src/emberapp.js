@@ -71,7 +71,9 @@ app.on('browser-window-created', (e, window) => {
 
 	window.webContents.on('did-fail-load', (e, int, text, url) => {
 		setTimeout( () => {
-			window.loadURL(process.env.EMBER_ELECTRON_LOCATION || INDX);
+			if (!window.isDestroyed()) {
+				window.loadURL(process.env.EMBER_ELECTRON_LOCATION || INDX);
+			}
 		}, 1000);
 	});
 
