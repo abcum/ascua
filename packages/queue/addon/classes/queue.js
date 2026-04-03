@@ -30,6 +30,8 @@ export default class Queue {
 				reject,
 			});
 
+			this.length = this.#queue.length + (this.#working ? 1 : 0);
+
 			this.dequeue();
 
 		});
@@ -38,24 +40,27 @@ export default class Queue {
 
 	async dequeue() {
 
-		this.length = this.#queue.length;
-
 		if (this.#working) {
 			return false;
 		}
 
 		const item = this.#queue.shift();
 
-		if (!item) return false;
+		if (!item) {
+			this.length = 0;
+			return false;
+		}
 
 		try {
 			this.#working = true;
+			this.length = this.#queue.length + 1;
 			let v = await item.promise();
 			item.resolve(v);
 		} catch (e) {
 			item.reject(e);
 		} finally {
 			this.#working = false;
+			this.length = this.#queue.length;
 			this.dequeue();
 		}
 
