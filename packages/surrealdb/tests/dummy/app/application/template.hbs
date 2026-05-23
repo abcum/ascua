@@ -1,0 +1,17 @@
+{{page-title "SurrealDB"}}
+
+<h2 id="title">SurrealDB Ember Demo</h2>
+
+<nav>
+  <ul>
+    {{#if this.surreal.authenticated}}
+      <li><LinkTo @route="surreal.index">Surreal</LinkTo></li>
+      <li><button type="button" {{on "click" this.signout}}>Signout</button></li>
+    {{else}}
+      <li><LinkTo @route="signup">Signup</LinkTo></li>
+      <li><LinkTo @route="signin">Signin</LinkTo></li>
+    {{/if}}
+  </ul>
+</nav>
+
+<div>{{outlet}}</div>
