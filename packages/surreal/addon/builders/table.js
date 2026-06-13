@@ -14,7 +14,7 @@ export default function(table, options={}) {
 		bits.push('*');
 	}
 
-	bits.push('FROM table($tb)');
+	bits.push('FROM type::table($tb)');
 
 	if (options.where && options.where.length) {
 		bits.push(`WHERE ${options.where.join(' AND ')}`);
@@ -29,12 +29,12 @@ export default function(table, options={}) {
 	}
 
 	if (options.limit) {
-		bits.push('LIMIT BY $limit');
+		bits.push('LIMIT $limit');
 		vars.limit = options.limit;
 	}
 
 	if (options.start) {
-		bits.push('START AT $start');
+		bits.push('START $start');
 		vars.start = options.start;
 	}
 

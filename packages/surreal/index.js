@@ -24,13 +24,13 @@ module.exports = {
 
 		this._super.included.apply(this, ...arguments);
 
-		app.import('node_modules/surreal.js/dist/main.js');
+		// The official `surrealdb` SDK is an ES module and is
+		// bundled automatically via ember-auto-import, so it no
+		// longer needs importing as a vendored global. We keep
+		// the diff-match-patch globals used by the diff/patch
+		// classes for record modification.
 
 		app.import('vendor/diffmatchpatch.js');
-
-		app.import('vendor/surreal.js', {
-			exports: { surreal: ['default'] }
-		});
 
 		app.import('vendor/dmp.js', {
 			exports: { dmp: ['default'] }

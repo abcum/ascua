@@ -176,6 +176,7 @@
     "@ascua/webapp": "file:packages/webapp",
     "@ascua/webview": "file:packages/webview",
     "@ascua/worker": "file:packages/worker",
-    "@ascua/zip.js": "file:packages/zip.js"
+    "@ascua/zip.js": "file:packages/zip.js",
+    "surrealdb": "^2.0.3"
   }
 }

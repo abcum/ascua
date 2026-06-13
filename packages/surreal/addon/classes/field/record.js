@@ -1,6 +1,7 @@
 import Property from './property';
 import Record from '../types/record';
 import Model from '@ascua/surreal/model';
+import { RecordId, StringRecordId } from 'surrealdb';
 import { RECORD } from '../model';
 
 export default function(type) {
@@ -31,6 +32,14 @@ export default function(type) {
 
 		},
 		set(key, value) {
+
+			// The SDK returns record links as RecordId instances; the
+			// model layer stores them as `tb:id` strings, so normalise
+			// any incoming record pointer to its string form first.
+
+			if (value instanceof RecordId || value instanceof StringRecordId) {
+				value = String(value);
+			}
 
 			switch (true) {
 			case value === null:
@@ -63,5 +72,5 @@ export default function(type) {
 			}
 
 		},
-	});
+	}, { kind: 'record', type });
 }

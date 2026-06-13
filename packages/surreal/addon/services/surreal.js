@@ -2,7 +2,7 @@ import Service from '@ascua/service/evented';
 import Storage from '../classes/storage';
 import config from '@ascua/config';
 import unid from '../utils/unid';
-import Database from 'surreal';
+import { Surreal as Database, RecordId, StringRecordId, Table } from 'surrealdb';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { assert } from '@ember/debug';
@@ -15,7 +15,7 @@ const defaults = {
 	db: undefined,
 	NS: undefined,
 	DB: undefined,
-	url: Database.EU,
+	url: 'wss://cloud.surrealdb.com',
 };
 
 export default class Surreal extends Service {
@@ -29,16 +29,28 @@ export default class Surreal extends Service {
 	#ls = new Storage();
 
 	// The underlying instance of
-	// the Surreal database which
-	// connects to the server.
+	// the official SurrealDB SDK
+	// which connects to the server.
 
-	#db = Database.Instance;
+	#db = new Database();
 
 	// The full configuration info for
 	// SurrealDB, including NS, DB,
 	// and custom endpoint options.
 
 	#config = undefined;
+
+	// The set of unsubscribe functions
+	// for the SDK connection lifecycle
+	// event listeners, cleared on destroy.
+
+	#listeners = [];
+
+	// The set of active live query
+	// subscriptions, keyed by the
+	// live query uuid string.
+
+	#live = new Map();
 
 	// The contents of the token
 	// used for authenticating with
@@ -102,67 +114,32 @@ export default class Surreal extends Service {
 		// the jwt getter value, so that the
 		// token contents can be accessed.
 
-		this.token = this.#db.token = this.#ls.get('surreal');
+		this.token = this.#ls.get('surreal');
 
 		// When the connection is closed we
 		// change the relevant properties
 		// stop live queries, and trigger.
 
-		this.#db.on('closed', () => {
+		this.#listeners.push(this.#db.subscribe('disconnected', () => {
 			this.opened = false;
 			this.attempted = false;
 			this.invalidated = false;
 			this.authenticated = false;
 			this.emit('closed');
-		});
+		}));
 
 		// When the connection is opened we
-		// change the relevant properties
-		// open live queries, and trigger.
+		// update the relevant properties and
+		// then attempt to authenticate below.
 
-		this.#db.on('opened', () => {
+		this.#listeners.push(this.#db.subscribe('connected', () => {
 			this.opened = true;
 			this.attempted = false;
 			this.invalidated = false;
 			this.authenticated = false;
 			this.emit('opened');
-		});
-
-		// When the connection is opened we
-		// always attempt to authenticate
-		// or mark as attempted if no token.
-
-		this.#db.on('opened', async () => {
-			let res = await this.wait();
-			this.attempted = true;
-			this.emit('attempted');
-			if (res instanceof Error) {
-				this.invalidated = true;
-				this.emit('invalidated');
-			} else {
-				this.authenticated = true;
-				this.emit('authenticated');
-			}
-		});
-
-		// When we receive a socket message
-		// we process it. If it has an ID
-		// then it is a query response.
-
-		this.#db.on('notify', (e) => {
-
-			this.emit(e.action, e.result);
-
-			switch (e.action) {
-				case 'CREATE':
-					return this.store.inject(e.result);
-				case 'UPDATE':
-					return this.store.inject(e.result);
-				case 'DELETE':
-					return this.store.remove(e.result);
-			}
-
-		});
+			this.#attempt();
+		}));
 
 		// Get the configuration options
 		// which have been specified in the
@@ -180,31 +157,76 @@ export default class Surreal extends Service {
 			this.#config.db !== undefined || this.#config.DB !== undefined,
 		);
 
-		// Open the websocket for the first
-		// time. This will automatically
-		// attempt to reconnect on failure.
+		// Build the websocket endpoint from the
+		// configured uri, appending the /rpc path
+		// which the SurrealDB server listens on.
 
 		if (this.#config.uri) this.#config.url = `${this.#config.uri}/rpc`;
 
-		// Open the websocket for the first
-		// time. This will automatically
-		// attempt to reconnect on failure.
+		// Open the websocket for the first time.
+		// The SDK will automatically attempt to
+		// reconnect on failure when `reconnect` is set.
 
-		this.#db.connect(this.#config.url, this.#config);
+		this.#db.connect(this.#config.url, {
+			namespace: this.#config.ns ?? this.#config.NS,
+			database: this.#config.db ?? this.#config.DB,
+			reconnect: true,
+		});
 
 	}
 
+	// Once the connection is open we always
+	// attempt to authenticate with the stored
+	// token, or mark as attempted if there is none.
+
+	async #attempt() {
+		try {
+			if (!this.token) throw new Error('No authentication token');
+			await this.#db.authenticate(this.token);
+			this.attempted = true;
+			this.authenticated = true;
+			this.emit('attempted');
+			this.emit('authenticated');
+		} catch (e) {
+			this.attempted = true;
+			this.invalidated = true;
+			this.emit('attempted');
+			this.emit('invalidated');
+		}
+	}
+
+	// Build a SurrealDB record pointer from a
+	// table name and an optional id. When no id
+	// is given, the whole table is targeted.
+
+	#thing(tb, id) {
+		switch (true) {
+			case id === undefined || id === null:
+				return new Table(tb);
+			case id instanceof RecordId || id instanceof StringRecordId:
+				return id;
+			case typeof id === 'string' && id.includes(':'):
+				return new StringRecordId(id);
+			default:
+				return new RecordId(tb, id);
+		}
+	}
+
 	// Tear down the Surreal service,
-	// ensuring we stop the pinger,
-	// and close the WebSocket.
+	// ensuring we close the WebSocket
+	// and remove all event listeners.
 
 	willDestroy() {
+
+		for (let [, sub] of this.#live) sub.kill();
+		this.#live.clear();
+
+		for (let off of this.#listeners) off();
+		this.#listeners = [];
 
 		this.#db.close();
 
 		this.removeAllListeners();
-
-		this.#db.removeAllListeners();
 
 		super.willDestroy(...arguments);
 
@@ -214,56 +236,84 @@ export default class Surreal extends Service {
 	// Direct methods
 	// --------------------------------------------------
 
-	sync() {
-		return this.#db.sync(...arguments);
-	}
-
 	wait() {
-		return this.#db.wait(...arguments);
+		return this.#db.ready;
 	}
 
-	live() {
-		return this.#db.live(...arguments);
+	let(key, value) {
+		return this.#db.set(key, value);
 	}
 
-	kill() {
-		return this.#db.kill(...arguments);
-	}
-
-	info() {
-		return this.#db.info(...arguments);
-	}
-
-	let() {
-		return this.#db.let(...arguments);
+	unset(key) {
+		return this.#db.unset(key);
 	}
 
 	query() {
 		return this.#db.query(...arguments);
 	}
 
-	select() {
-		return this.#db.select(...arguments);
+	select(tb, id) {
+		return this.#db.select(this.#thing(tb, id));
 	}
 
-	create() {
-		return this.#db.create(...arguments);
+	create(tb, id, data) {
+		if (arguments.length === 2) {
+			[id, data] = [undefined, id];
+		}
+		return this.#db.create(this.#thing(tb, id)).content(data);
 	}
 
-	update() {
-		return this.#db.update(...arguments);
+	update(tb, id, data) {
+		return this.#db.update(this.#thing(tb, id)).content(data);
 	}
 
-	change() {
-		return this.#db.change(...arguments);
+	change(tb, id, data) {
+		return this.#db.update(this.#thing(tb, id)).merge(data);
 	}
 
-	modify() {
-		return this.#db.modify(...arguments);
+	modify(tb, id, patch) {
+		return this.#db.update(this.#thing(tb, id)).patch(patch);
 	}
 
-	delete() {
-		return this.#db.delete(...arguments);
+	delete(tb, id) {
+		return this.#db.delete(this.#thing(tb, id));
+	}
+
+	// Return the currently authenticated record.
+	// The legacy `info()` RPC was removed, so we
+	// fetch the authenticated record via `$auth`.
+
+	async info() {
+		let [auth] = await this.#db.query('SELECT * FROM ONLY $auth');
+		return auth;
+	}
+
+	// --------------------------------------------------
+	// Live query methods
+	// --------------------------------------------------
+
+	async live(tb) {
+		let sub = await this.#db.live(new Table(tb));
+		this.#live.set(sub.id, sub);
+		sub.subscribe(({ action, value, recordId }) => {
+			this.emit(action, value);
+			switch (action) {
+				case 'CREATE':
+				case 'UPDATE':
+					return this.store.inject(value);
+				case 'DELETE':
+					return this.store.remove(recordId);
+			}
+		});
+		return sub;
+	}
+
+	kill(sub) {
+		let live = typeof sub === 'object' ? sub : this.#live.get(sub);
+		if (live) {
+			this.#live.delete(live.id);
+			return live.kill();
+		}
 	}
 
 	// --------------------------------------------------
@@ -272,10 +322,9 @@ export default class Surreal extends Service {
 
 	async signup() {
 		try {
-			let t = await this.#db.signup(...arguments);
-			this.#ls.set('surreal', t);
-			this.token = t;
-			this.#db.token = t;
+			let { access } = await this.#db.signup(...arguments);
+			this.#ls.set('surreal', access);
+			this.token = access;
 			this.attempted = true;
 			this.invalidated = false;
 			this.authenticated = true;
@@ -285,7 +334,6 @@ export default class Surreal extends Service {
 		} catch (e) {
 			this.#ls.del('surreal');
 			this.token = null;
-			this.#db.token = null;
 			this.attempted = true;
 			this.invalidated = true;
 			this.authenticated = false;
@@ -297,10 +345,9 @@ export default class Surreal extends Service {
 
 	async signin() {
 		try {
-			let t = await this.#db.signin(...arguments);
-			this.#ls.set('surreal', t);
-			this.token = t;
-			this.#db.token = t;
+			let { access } = await this.#db.signin(...arguments);
+			this.#ls.set('surreal', access);
+			this.token = access;
 			this.attempted = true;
 			this.invalidated = false;
 			this.authenticated = true;
@@ -310,7 +357,6 @@ export default class Surreal extends Service {
 		} catch (e) {
 			this.#ls.del('surreal');
 			this.token = null;
-			this.#db.token = null;
 			this.attempted = true;
 			this.invalidated = true;
 			this.authenticated = false;
@@ -323,34 +369,24 @@ export default class Surreal extends Service {
 	async invalidate() {
 		try {
 			await this.#db.invalidate(...arguments);
-			this.#ls.del('surreal');
-			this.token = null;
-			this.#db.token = null;
-			this.attempted = true;
-			this.invalidated = true;
-			this.authenticated = false;
-			this.emit('attempted');
-			this.emit('invalidated');
-			return Promise.resolve();
 		} catch (e) {
-			this.#ls.del('surreal');
-			this.token = null;
-			this.#db.token = null;
-			this.attempted = true;
-			this.invalidated = true;
-			this.authenticated = false;
-			this.emit('attempted');
-			this.emit('invalidated');
-			return Promise.resolve();
+			// ignore — we clear local state regardless
 		}
+		this.#ls.del('surreal');
+		this.token = null;
+		this.attempted = true;
+		this.invalidated = true;
+		this.authenticated = false;
+		this.emit('attempted');
+		this.emit('invalidated');
+		return Promise.resolve();
 	}
 
 	async authenticate(t) {
 		try {
-			await this.#db.authenticate(...arguments);
+			await this.#db.authenticate(t);
 			this.#ls.set('surreal', t);
 			this.token = t;
-			this.#db.token = t;
 			this.attempted = true;
 			this.invalidated = false;
 			this.authenticated = true;
@@ -360,7 +396,6 @@ export default class Surreal extends Service {
 		} catch (e) {
 			this.#ls.del('surreal');
 			this.token = null;
-			this.#db.token = null;
 			this.attempted = true;
 			this.invalidated = true;
 			this.authenticated = false;

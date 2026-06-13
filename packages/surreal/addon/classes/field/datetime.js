@@ -9,4 +9,4 @@ export default Property({
 	set(key, value) {
 		return this[RECORD].data[key] = Datetime(value);
 	},
-});
+}, { kind: 'datetime' });

@@ -8,6 +8,7 @@ import count from "../builders/count";
 import table from "../builders/table";
 import hasher from "../builders/hasher";
 import Record from '../classes/types/record';
+import { patch } from '../utils/wire';
 import { DestroyedError } from '../errors';
 
 export default class Store extends Service {
@@ -151,11 +152,18 @@ export default class Store extends Service {
 
 			try {
 
-				let cached = this.cached(item.meta.tb, item.id);
+				// The SDK returns each record with its id as a RecordId
+				// instance; derive the table name and the `tb:id` string
+				// the cache and model layer are keyed by.
+
+				let id = String(item.id);
+				let tb = (item.id && item.id.table) ? item.id.table.name : id.split(':')[0];
+
+				let cached = this.cached(tb, id);
 
 				if (cached === undefined) {
-					cached = this.lookup(item.meta.tb).create({ id: item.id, meta: item.meta });
-					this.#cache.get(item.meta.tb).addObject(cached);
+					cached = this.lookup(tb).create({ id });
+					this.#cache.get(tb).addObject(cached);
 					cached.ingest(item);
 				} else {
 					cached.ingest(item);
@@ -191,11 +199,14 @@ export default class Store extends Service {
 
 		return [].concat(ids).map(id => {
 
-			let model = id.split(':')[0];
+			let sid = String(id);
+			let model = (id && id.table) ? id.table.name : sid.split(':')[0];
 
-			this.cached(model, id).remove();
+			let cached = this.cached(model, sid);
 
-			this.unload(model, id);
+			if (cached) cached.remove();
+
+			this.unload(model, sid);
 
 		});
 
@@ -360,7 +371,7 @@ export default class Store extends Service {
 			}
 
 			let record = this.lookup(model).create(data);
-			let server = await this.surreal.create(model, id, record.json);
+			let server = await this.surreal.create(model, id, record.wire);
 			return this.inject(server);
 
 		} catch (e) {
@@ -391,7 +402,7 @@ export default class Store extends Service {
 
 		try {
 
-			let server = await this.surreal.modify(record.tb, record.id, diff);
+			let server = await this.surreal.modify(record.tb, record.id, patch(record, diff, this));
 			record.ingest(server);
 			return record;
 
@@ -421,7 +432,7 @@ export default class Store extends Service {
 
 		try {
 
-			let server = await this.surreal.change(record.tb, record.id, record.json);
+			let server = await this.surreal.change(record.tb, record.id, record.wire);
 			record.ingest(server);
 			return record;
 
@@ -481,11 +492,11 @@ export default class Store extends Service {
 
 		let { text, vars } = count(model, query);
 
-		let [json] = await this.surreal.query(text, vars);
+		// The SDK resolves a query to an array of per-statement
+		// result sets, and rejects on error, so there is no longer
+		// a { status, result } envelope to unwrap.
 
-		const { status, detail, result = [] } = json;
-
-		if (status !== 'OK') throw new Error(detail);
+		let [result = []] = await this.surreal.query(text, vars);
 
 		return result && result[0] && result[0].count || 0;
 
@@ -516,20 +527,21 @@ export default class Store extends Service {
 			result = await this.#stash[hash];
 			delete this.#stash[hash];
 		} else {
-			let [json] = await this.surreal.query(text, vars);
-			if (json.status !== 'OK') throw new Error(json.detail);
-			if (query.shoebox) this.#stash[hash] = json.result || [];
-			result = json.result || [];
+			let [rows = []] = await this.surreal.query(text, vars);
+			if (query.shoebox) this.#stash[hash] = rows;
+			result = rows;
 		}
 
 		let records = [].concat(result).map(item => {
 
 			try {
 
-				let cached = this.#cache.get(model).findBy('id', item.id);
+				let id = String(item.id);
+
+				let cached = this.#cache.get(model).findBy('id', id);
 
 				if (cached === undefined) {
-					cached = this.lookup(model).create({ id: item.id, meta: item.meta });
+					cached = this.lookup(model).create({ id });
 					this.#cache.get(model).addObject(cached);
 					cached.ingest(item);
 				} else {

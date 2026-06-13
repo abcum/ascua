@@ -8,15 +8,15 @@ export default function(table, options={}) {
 
 	bits.push('SELECT');
 
-	bits.push('count(*) AS count');
+	bits.push('count() AS count');
 
-	bits.push('FROM table($tb)');
+	bits.push('FROM type::table($tb)');
 
 	if (options.where && options.where.length) {
 		bits.push(`WHERE ${options.where.join(' AND ')}`);
 	}
 
-	bits.push(`GROUP BY all`);
+	bits.push(`GROUP ALL`);
 
 	return { text: bits.join(' '), vars };
 

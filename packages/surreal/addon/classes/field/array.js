@@ -8,6 +8,7 @@ import Datetime from '../types/datetime';
 import Record from '../types/record';
 import Model from '@ascua/surreal/model';
 import Field from '@ascua/surreal/field';
+import { RecordId, StringRecordId } from 'surrealdb';
 import { assert } from '@ember/debug';
 import { DestroyedError } from '@ascua/surreal/errors';
 import { RECORD } from '../model';
@@ -59,6 +60,7 @@ export default function(type) {
 
 					if (model && model.class.prototype instanceof Model) {
 						return this[RECORD].data[key] = this[RECORD].data[key] || Array.create(this, (v) => {
+							if (v instanceof RecordId || v instanceof StringRecordId) v = String(v);
 							switch (true) {
 							case v === null:
 								return v;
@@ -160,6 +162,7 @@ export default function(type) {
 
 					if (model && model.class.prototype instanceof Model) {
 						return this[RECORD].data[key] = Array.create(this, (v) => {
+							if (v instanceof RecordId || v instanceof StringRecordId) v = String(v);
 							switch (true) {
 							case v === null:
 								return v;
@@ -205,5 +208,5 @@ export default function(type) {
 			}
 
 		},
-	});
+	}, { kind: 'array', type });
 }

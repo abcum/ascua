@@ -8,6 +8,7 @@ import Patch from '../dmp/patch';
 import Diff from '../dmp/diff';
 import meta from '../meta';
 import json from '../../utils/json';
+import { fields } from '../../utils/wire';
 
 export const RECORD = Symbol("RECORD");
 export const LOADED = Symbol("LOADED");
@@ -65,7 +66,7 @@ export default class Model {
 	// that this record belongs to.
 
 	get tb() {
-		return this.#meta.tb;
+		return this.#id ? String(this.#id).split(':')[0] : undefined;
 	}
 
 	// The `id` property can be used
@@ -77,7 +78,9 @@ export default class Model {
 	}
 
 	set id(value) {
-		this.#id = value;
+		// The SDK returns ids as RecordId instances; the model layer
+		// stores them as `tb:id` strings for cache keys and templates.
+		this.#id = (value === null || value === undefined) ? value : String(value);
 	}
 
 	// The `meta` property stores the
@@ -106,6 +109,14 @@ export default class Model {
 
 	get json() {
 		return JSON.parse(JSON.stringify(this));
+	}
+
+	// The `wire` property returns the record's data converted into
+	// SurrealDB SDK value types (record links as StringRecordId,
+	// datetimes as DateTime), ready to be sent to the database.
+
+	get wire() {
+		return fields(this._full, this, this.store);
 	}
 
 	// When formatted as a string, the

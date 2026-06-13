@@ -3,10 +3,10 @@ import { RECORD } from '../model';
 
 const json = (v) => JSON.stringify(v);
 
-export default function(obj) {
+export default function(obj, descriptor = {}) {
 	return function(target, key, desc) {
 
-		meta.set(target, key);
+		meta.set(target, key, descriptor);
 
 		return {
 			configurable: false,

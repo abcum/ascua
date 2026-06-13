@@ -61,5 +61,5 @@ export default function(type) {
 			}
 
 		},
-	});
+	}, { kind: 'object', type });
 }
