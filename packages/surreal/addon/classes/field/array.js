@@ -60,7 +60,12 @@ export default function(type) {
 
 					if (model && model.class.prototype instanceof Model) {
 						return this[RECORD].data[key] = this[RECORD].data[key] || Array.create(this, (v) => {
-							if (v instanceof RecordId || v instanceof StringRecordId) v = String(v);
+							if (v instanceof RecordId || v instanceof StringRecordId) {
+								let cached = this.store.cached(type, v);
+								return cached
+									? this.store.proxy({ id: v, content: cached })
+									: this.store.proxy({ id: v, promise: () => this.store.select(type, v) });
+							}
 							switch (true) {
 							case v === null:
 								return v;
@@ -162,7 +167,12 @@ export default function(type) {
 
 					if (model && model.class.prototype instanceof Model) {
 						return this[RECORD].data[key] = Array.create(this, (v) => {
-							if (v instanceof RecordId || v instanceof StringRecordId) v = String(v);
+							if (v instanceof RecordId || v instanceof StringRecordId) {
+								let cached = this.store.cached(type, v);
+								return cached
+									? this.store.proxy({ id: v, content: cached })
+									: this.store.proxy({ id: v, promise: () => this.store.select(type, v) });
+							}
 							switch (true) {
 							case v === null:
 								return v;

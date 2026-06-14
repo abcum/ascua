@@ -1,4 +1,5 @@
 import { typeOf } from '@ember/utils';
+import { Value } from 'surrealdb';
 import DMP from 'dmp';
 
 const regex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
@@ -38,6 +39,16 @@ export default class Diff {
 	}
 
 	val(old, now, path='') {
+
+		// SurrealDB value types (RecordId, DateTime, Decimal, ...) are opaque
+		// leaves: compare by their string form, and emit the native instance
+		// unchanged so it reaches the SDK correctly typed.
+		if (old instanceof Value || now instanceof Value) {
+			if (String(old) !== String(now)) {
+				this.op('replace', path, now);
+			}
+			return;
+		}
 
 		if (old === now) {
 			return;

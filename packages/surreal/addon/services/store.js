@@ -8,7 +8,6 @@ import count from "../builders/count";
 import table from "../builders/table";
 import hasher from "../builders/hasher";
 import Record from '../classes/types/record';
-import { patch } from '../utils/wire';
 import { DestroyedError } from '../errors';
 
 export default class Store extends Service {
@@ -152,12 +151,13 @@ export default class Store extends Service {
 
 			try {
 
-				// The SDK returns each record with its id as a RecordId
-				// instance; derive the table name and the `tb:id` string
-				// the cache and model layer are keyed by.
+				// The SDK returns each record with its id as a native
+				// RecordId instance; we keep it native on the model and
+				// derive the table name from it. The cache stringifies
+				// for its key lookups.
 
-				let id = String(item.id);
-				let tb = (item.id && item.id.table) ? item.id.table.name : id.split(':')[0];
+				let id = item.id;
+				let tb = (id && id.table) ? id.table.name : String(id).split(':')[0];
 
 				let cached = this.cached(tb, id);
 
@@ -199,14 +199,13 @@ export default class Store extends Service {
 
 		return [].concat(ids).map(id => {
 
-			let sid = String(id);
-			let model = (id && id.table) ? id.table.name : sid.split(':')[0];
+			let model = (id && id.table) ? id.table.name : String(id).split(':')[0];
 
-			let cached = this.cached(model, sid);
+			let cached = this.cached(model, id);
 
 			if (cached) cached.remove();
 
-			this.unload(model, sid);
+			this.unload(model, id);
 
 		});
 
@@ -231,9 +230,11 @@ export default class Store extends Service {
 		if (id !== undefined) {
 
 			if (Array.isArray(id)) {
-				return this.#cache.get(model).remove(v => id.includes(v));
+				let ids = id.map(String);
+				return this.#cache.get(model).remove(v => ids.includes(String(v.id)));
 			} else {
-				return this.#cache.get(model).removeBy('id', id);
+				let sid = String(id);
+				return this.#cache.get(model).remove(v => String(v.id) === sid);
 			}
 
 		} else {
@@ -263,9 +264,11 @@ export default class Store extends Service {
 		if (id !== undefined) {
 
 			if (Array.isArray(id)) {
-				return this.#cache.get(model).filter(v => id.includes(v));
+				let ids = id.map(String);
+				return this.#cache.get(model).filter(v => ids.includes(String(v.id)));
 			} else {
-				return this.#cache.get(model).findBy('id', id);
+				let sid = String(id);
+				return this.#cache.get(model).find(v => String(v.id) === sid);
 			}
 
 		} else {
@@ -371,7 +374,7 @@ export default class Store extends Service {
 			}
 
 			let record = this.lookup(model).create(data);
-			let server = await this.surreal.create(model, id, record.wire);
+			let server = await this.surreal.create(model, id, record.json);
 			return this.inject(server);
 
 		} catch (e) {
@@ -402,7 +405,7 @@ export default class Store extends Service {
 
 		try {
 
-			let server = await this.surreal.modify(record.tb, record.id, patch(record, diff, this));
+			let server = await this.surreal.modify(record.tb, record.id, diff);
 			record.ingest(server);
 			return record;
 
@@ -432,7 +435,7 @@ export default class Store extends Service {
 
 		try {
 
-			let server = await this.surreal.change(record.tb, record.id, record.wire);
+			let server = await this.surreal.change(record.tb, record.id, record.json);
 			record.ingest(server);
 			return record;
 
@@ -536,9 +539,10 @@ export default class Store extends Service {
 
 			try {
 
-				let id = String(item.id);
+				let id = item.id;
+				let sid = String(id);
 
-				let cached = this.#cache.get(model).findBy('id', id);
+				let cached = this.#cache.get(model).find(v => String(v.id) === sid);
 
 				if (cached === undefined) {
 					cached = this.lookup(model).create({ id });

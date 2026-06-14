@@ -33,14 +33,6 @@ export default function(type) {
 		},
 		set(key, value) {
 
-			// The SDK returns record links as RecordId instances; the
-			// model layer stores them as `tb:id` strings, so normalise
-			// any incoming record pointer to its string form first.
-
-			if (value instanceof RecordId || value instanceof StringRecordId) {
-				value = String(value);
-			}
-
 			switch (true) {
 			case value === null:
 				return this[RECORD].data[key] = value;
@@ -48,6 +40,14 @@ export default function(type) {
 				return this[RECORD].data[key] = value;
 			case value instanceof Record:
 				return this[RECORD].data[key] = value;
+			// a native RecordId is a record pointer: wrap it in a (lazy)
+			// proxy keyed by the RecordId itself — never stringified here
+			case value instanceof RecordId || value instanceof StringRecordId: {
+				let cached = this.store.cached(type, value);
+				return this[RECORD].data[key] = this.store.proxy(cached
+					? { id: value, content: cached }
+					: { id: value, promise: () => this.store.select(type, value) });
+			}
 			case value === String(this[RECORD].data[key]):
 				return this[RECORD].data[key] = this[RECORD].data[key];
 			case value instanceof Model:

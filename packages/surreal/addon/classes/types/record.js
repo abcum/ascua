@@ -60,7 +60,7 @@ export default class Remote {
 	}
 
 	toString() {
-		return this.#id;
+		return this.#id == null ? this.#id : String(this.#id);
 	}
 
 	constructor(params) {
