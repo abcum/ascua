@@ -47,7 +47,10 @@ function field(value, desc, mode) {
 		case 'object':
 			return value['_' + mode] ?? null;
 		case 'array':
-			return Array.isArray(value) ? value.filter(e => e !== undefined).map(e => element(e, desc.type, mode)) : null;
+			// Spread into a plain array first: a RecordArray's own map/filter
+			// return another RecordArray (Array species), which the diff's
+			// `constructor === Array` check would miss.
+			return Array.isArray(value) ? [...value].filter(e => e !== undefined).map(e => element(e, desc.type, mode)) : null;
 		default:
 			return value;
 	}
@@ -57,7 +60,13 @@ function build(object, mode) {
 	let out = {};
 	meta.all(object).forEach(p => {
 		if (mode === 'some' && p.readonly) return;
-		out[p.name] = field(object[p.name], p, mode);
+		let value = field(object[p.name], p, mode);
+		// Omit null/undefined rather than emitting `null`: in 3.x an absent
+		// field is NONE (which `option<...>` accepts), whereas an explicit
+		// NULL is rejected. For diffs this means a cleared field becomes a
+		// `remove` op (→ NONE) instead of a `replace` with null.
+		if (value === null || value === undefined) return;
+		out[p.name] = value;
 	});
 	return out;
 }

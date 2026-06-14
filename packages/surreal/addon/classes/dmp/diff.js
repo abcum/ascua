@@ -69,10 +69,9 @@ export default class Diff {
 			}
 			return;
 		case 'object':
-			if (old.constructor === Array) {
+			if (Array.isArray(old)) {
 				this.arr(old, now, path);
-			}
-			if (old.constructor === Object) {
+			} else {
 				this.obj(old, now, path);
 			}
 			return;

@@ -284,8 +284,11 @@ export default class Surreal extends Service {
 	// fetch the authenticated record via `$auth`.
 
 	async info() {
-		let [auth] = await this.#db.query('SELECT * FROM ONLY $auth');
-		return auth;
+		// `$auth` is the authenticated record (record/JWT access) or empty
+		// for system (root/namespace/database) auth — avoid ONLY so an
+		// empty result does not throw, returning the record or undefined.
+		let [rows] = await this.#db.query('SELECT * FROM $auth');
+		return rows && rows[0];
 	}
 
 	// --------------------------------------------------

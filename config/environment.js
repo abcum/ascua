@@ -54,6 +54,12 @@ module.exports = function (environment) {
 		ENV.APP.autoboot = false;
 		ENV.locationType = 'none';
 		ENV.APP.rootElement = '#ember-testing';
+		// Integration tests run against a local SurrealDB 3.x server
+		// booted by the test runner (see tests/surreal-server.mjs). They
+		// are gated on SURREAL_TESTS so a plain `ember test` (no server)
+		// stays green; the runner sets it.
+		ENV.surreal.uri = 'ws://127.0.0.1:8000';
+		ENV.surreal.integration = !!process.env.SURREAL_TESTS;
 	}
 
 	if (environment === 'development') {

@@ -40,7 +40,7 @@ export default class Session extends Service {
 
 		this.surreal.on('authenticated', async () => {
 			let info = await this.surreal.info();
-			let sess = await this.store.inject(info);
+			let sess = info ? await this.store.inject(info) : undefined;
 			this.#ok(this.model = sess);
 		});
 
