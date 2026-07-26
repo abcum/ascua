@@ -379,7 +379,15 @@ export default class Store extends Service {
 
 			let record = this.lookup(model).create(data);
 			let server = await this.surreal.create(model, id, record.json);
-			return this.inject(server);
+
+			// Creating without an id targets the table, and the SDK resolves a
+			// table-targeted create to an array of the created records, whereas
+			// targeting a record id resolves to the record itself. `inject`
+			// mirrors whatever it is handed, so the return type of `create`
+			// depended on whether an id was passed. It creates one record, so
+			// it returns one record.
+
+			return this.inject(Array.isArray(server) ? server[0] : server);
 
 		} catch (e) {
 

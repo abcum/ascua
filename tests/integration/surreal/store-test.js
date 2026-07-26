@@ -25,6 +25,27 @@ scope('Integration | surreal | store', function (hooks) {
 		assert.deepEqual([...author.tags], ['math', 'computing'], 'array<string> field round-trips');
 	});
 
+	test('create returns one record whether or not an id is given', async function (assert) {
+		// Creating without an id targets the table, and the SDK resolves a
+		// table-targeted create to an array. `create` makes one record, so both
+		// forms must hand back that record rather than the shape the SDK chose.
+
+		let withId = await this.store.create('author', 'alan', { name: 'Alan Turing' });
+		let without = await this.store.create('author', null, { name: 'Anita Borg' });
+
+		assert.false(Array.isArray(withId), 'an explicit id yields a record');
+		assert.false(Array.isArray(without), 'a null id also yields a record, not an array');
+
+		assert.strictEqual(without.name, 'Anita Borg', 'fields are readable directly');
+		assert.ok(without.id instanceof RecordId, 'id is a native RecordId');
+		assert.strictEqual(without.tb, 'author', 'tb is derived from the generated id');
+
+		let twoArg = await this.store.create('author', { name: 'Barbara Liskov' });
+
+		assert.false(Array.isArray(twoArg), 'the two-argument form also yields a record');
+		assert.strictEqual(twoArg.name, 'Barbara Liskov', 'and its fields are readable');
+	});
+
 	test('select reloads a record from the server with native ids', async function (assert) {
 		let created = await this.store.create('author', 'grace', { name: 'Grace Hopper' });
 		let found = await this.store.select('author', created.id, { reload: true });
