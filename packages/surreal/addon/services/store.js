@@ -147,7 +147,11 @@ export default class Store extends Service {
 
 	inject(items) {
 
-		let records = [].concat(items).map(item => {
+		// The SDK resolves `select` of a record which does not exist to
+		// undefined, so a dangling record link injects nothing rather than
+		// throwing on `item.id` and taking down the render.
+
+		let records = [].concat(items).filter(item => item !== null && item !== undefined).map(item => {
 
 			try {
 
