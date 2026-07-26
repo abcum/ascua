@@ -18,6 +18,8 @@ export default class extends Array {
 
 	@tracked loaded = false;
 
+	@tracked failure = undefined;
+
 	constructor(limit, fetch = FETCH) {
 
 		super();
@@ -102,7 +104,16 @@ export default class extends Array {
 
 		} catch (error) {
 
-			// Ignore
+			// A range is cancelled whenever the list resets, and that rejection
+			// is expected, so it stays quiet. Anything else means the list will
+			// sit on "Loading" forever, so it must be visible rather than
+			// swallowed — record it and report it.
+
+			this.failure = error;
+
+			if (error !== undefined && error.message !== 'context cancelled') {
+				console.error('sparse: fetch failed, the list will not load', error);
+			}
 
 		}
 

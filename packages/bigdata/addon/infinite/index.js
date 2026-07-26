@@ -13,6 +13,8 @@ export default class extends Array {
 
 	@tracked loaded = false;
 
+	@tracked failure = undefined;
+
 	constructor(limit, fetch = FETCH) {
 
 		super();
@@ -76,7 +78,14 @@ export default class extends Array {
 
 		} catch (error) {
 
-			// Ignore
+			// See the note in sparse/index.js — an expected cancellation stays
+			// quiet, anything else must be visible rather than swallowed.
+
+			this.failure = error;
+
+			if (error !== undefined && error.message !== 'context cancelled') {
+				console.error('infinite: fetch failed, the list will not load', error);
+			}
 
 		}
 
