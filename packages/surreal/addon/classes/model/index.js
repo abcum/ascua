@@ -88,7 +88,26 @@ export default class Model {
 	// which is generated on the server.
 
 	get meta() {
-		return this.#meta;
+
+		if (this.#meta !== undefined) return this.#meta;
+
+		// The 0.3 server sent this sidecar on every record. SurrealDB 3.x does
+		// not, so it is derived from the record id instead — a great deal of
+		// application code reads `.meta.tb` and `.meta.id`, and an absent
+		// sidecar throws in JS while silently rendering nothing in a template.
+		//
+		// Synthesising it cannot affect what is written: utils/json.js builds
+		// its snapshots from `meta.all(object)`, which lists only fields
+		// registered by the field decorators, so `meta` can never enter a diff
+		// or an UPSERT payload.
+
+		if (this.#id == null) return undefined;
+
+		return {
+			tb: this.tb,
+			id: this.#id.id ?? String(this.#id).split(':').slice(1).join(':'),
+		};
+
 	}
 
 	set meta(value) {
