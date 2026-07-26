@@ -192,7 +192,10 @@ export default class extends Component {
 			let max = Math.max(item.index, this.cursor);
 			for (let i=min; i<=max; i++) {
 				this.args.model.objectAt(i, true).then(item => {
-					this.conf.a.addObject(item.id);
+					// An Item resolves to its content, so this `item` shadows the
+					// outer one with the raw model — its id is not normalised by
+					// Item#id and has to be stringified here.
+					this.conf.a.addObject(String(item.id));
 					if (this.args.onSelect) {
 						this.args.onSelect(this.conf.a);
 					}
