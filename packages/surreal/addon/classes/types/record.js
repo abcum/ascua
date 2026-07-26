@@ -60,7 +60,10 @@ export default class Remote {
 	}
 
 	toString() {
-		return this.#id == null ? this.#id : String(this.#id);
+		// Always a string. Returning the null id itself meant `String(link)` on
+		// a link with no id produced "null" or "undefined", which then reached
+		// templates and URLs as though it were an id.
+		return this.#id == null ? '' : String(this.#id);
 	}
 
 	constructor(params) {

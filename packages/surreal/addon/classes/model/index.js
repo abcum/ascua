@@ -135,7 +135,8 @@ export default class Model {
 	// id, with both table and id.
 
 	toString() {
-		return this.#id == null ? this.#id : String(this.#id);
+		// Always a string — see the same note on classes/types/record.js.
+		return this.#id == null ? '' : String(this.#id);
 	}
 
 	// When formatted as a JSON string,
