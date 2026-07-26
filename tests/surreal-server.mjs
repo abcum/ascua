@@ -16,7 +16,7 @@ import { Buffer } from 'node:buffer';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const HOST = '127.0.0.1';
-const PORT = 8000;
+const PORT = process.env.SURREAL_PORT ? Number(process.env.SURREAL_PORT) : 8000;
 const ENDPOINT = `http://${HOST}:${PORT}`;
 const NS = 'test';
 const DB = 'test';

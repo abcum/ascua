@@ -58,7 +58,7 @@ module.exports = function (environment) {
 		// booted by the test runner (see tests/surreal-server.mjs). They
 		// are gated on SURREAL_TESTS so a plain `ember test` (no server)
 		// stays green; the runner sets it.
-		ENV.surreal.uri = 'ws://127.0.0.1:8000';
+		ENV.surreal.uri = 'ws://127.0.0.1:' + (process.env.SURREAL_PORT || 8000);
 		ENV.surreal.integration = !!process.env.SURREAL_TESTS;
 	}
 
