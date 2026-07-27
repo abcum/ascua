@@ -1,6 +1,7 @@
 import Service from '@ember/service';
 import Cache from '../classes/cache';
 import { service } from '@ember/service';
+import { get } from '@ember/object';
 import { getOwner } from '@ember/application';
 import { assert } from '@ember/debug';
 import Model from '@ascua/surreal/model';
@@ -9,6 +10,51 @@ import table from "../builders/table";
 import hasher from "../builders/hasher";
 import Record from '../classes/types/record';
 import { DestroyedError } from '../errors';
+
+/**
+ * Look a record up in one of the cache's arrays by its stringified id.
+ *
+ * Record ids are compared as strings because since SurrealDB 3.x an id is a
+ * native RecordId, and two RecordIds for the same record are never `===`.
+ *
+ * The `get(arr, '[]')` is load-bearing and must not be dropped. Ember's
+ * `findBy`, which this replaced, iterates with `objectAt` and so consumes the
+ * array's tracked tag; a plain `Array.prototype.find` does not consume
+ * anything. That difference only shows up on a *miss*: a getter that looks for
+ * a record which has not arrived yet subscribes to nothing, so when the record
+ * is later added to the cache nothing invalidates and the getter is never
+ * recomputed. The value is correct the moment anything reads it again, which
+ * makes this look like a rendering fault rather than a tracking one — a list
+ * row paints with an unresolved link and stays blank while the model behind it
+ * holds the right answer.
+ *
+ * Consuming '[]' unconditionally, before the scan, is what makes a miss
+ * reactive: `addObject` dirties that tag, so every earlier miss recomputes.
+ */
+
+function lookup(arr, id) {
+	// Reading '[]' is how an array's tracked tag is consumed; there is no
+	// property-access equivalent, and dropping it makes a cache miss
+	// non-reactive. See the note above this function.
+	// eslint-disable-next-line ember/no-get
+	get(arr, '[]');
+	let sid = String(id);
+	for (let i = 0; i < arr.length; i++) {
+		let v = arr.objectAt(i);
+		if (v !== undefined && String(v.id) === sid) return v;
+	}
+	return undefined;
+}
+
+function lookupAll(arr, ids) {
+	// Reading '[]' is how an array's tracked tag is consumed; there is no
+	// property-access equivalent, and dropping it makes a cache miss
+	// non-reactive. See the note above this function.
+	// eslint-disable-next-line ember/no-get
+	get(arr, '[]');
+	let sids = ids.map(String);
+	return arr.filter(v => v !== undefined && sids.includes(String(v.id)));
+}
 
 export default class Store extends Service {
 
@@ -268,11 +314,9 @@ export default class Store extends Service {
 		if (id !== undefined) {
 
 			if (Array.isArray(id)) {
-				let ids = id.map(String);
-				return this.#cache.get(model).filter(v => ids.includes(String(v.id)));
+				return lookupAll(this.#cache.get(model), id);
 			} else {
-				let sid = String(id);
-				return this.#cache.get(model).find(v => String(v.id) === sid);
+				return lookup(this.#cache.get(model), id);
 			}
 
 		} else {
@@ -552,9 +596,8 @@ export default class Store extends Service {
 			try {
 
 				let id = item.id;
-				let sid = String(id);
 
-				let cached = this.#cache.get(model).find(v => String(v.id) === sid);
+				let cached = lookup(this.#cache.get(model), id);
 
 				if (cached === undefined) {
 					cached = this.lookup(model).create({ id });
