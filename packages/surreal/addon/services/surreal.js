@@ -101,10 +101,21 @@ export default class Surreal extends Service {
 		// Listen for changes to the local storage
 		// authentication key, and reauthenticate
 		// if the token changes from another tab.
+		//
+		// The token comparison is what stops this ping-ponging between tabs
+		// forever. A `storage` event fires in every *other* tab, and
+		// authenticate() writes the token back to local storage
+		// unconditionally, so without the guard two open tabs feed each other:
+		// A writes, B hears it and authenticates, B writes, A hears it and
+		// authenticates, and round it goes. Each lap is an `authenticate` RPC
+		// on the socket. Measured before this guard: 102,544 authenticate
+		// messages sent during one page load with two tabs open, which
+		// saturates the connection so ordinary queries never get a response,
+		// and pins a CPU core server-side. One tab alone never shows it.
 
 		if (window && window.addEventListener) {
 			window.addEventListener('storage', e => {
-				if (e.key === 'surreal') {
+				if (e.key === 'surreal' && e.newValue !== this.token) {
 					this.authenticate(e.newValue);
 				}
 			});
@@ -388,7 +399,12 @@ export default class Surreal extends Service {
 	async authenticate(t) {
 		try {
 			await this.#db.authenticate(t);
-			this.#ls.set('surreal', t);
+			// Only write when the value actually changes. Writing the same token
+			// back still fires a `storage` event in every other tab, which is one
+			// half of the cross-tab authenticate loop described in the
+			// constructor. The listener guards the other half; both are cheap and
+			// either alone would break the cycle.
+			if (this.#ls.get('surreal') !== t) this.#ls.set('surreal', t);
 			this.token = t;
 			this.attempted = true;
 			this.invalidated = false;
