@@ -123,7 +123,22 @@ export default class Task {
 			if (task.error !== CANCELLED) {
 				if (!this.isDestroyed) {
 					if (!this.isDestroying) {
-						this.value = task.value;
+
+						// `task.value` is only ever assigned on the successful
+						// path, so a failed run carries `undefined` — copying it
+						// out unconditionally wiped the last good value. A task
+						// that had succeeded and then failed reported no value
+						// and no result, which reads as "never ran" rather than
+						// "ran, and this time it broke".
+						//
+						// The failure is still reported: `error` and
+						// `isFailure` are set either way, and a caller that must
+						// distinguish stale from fresh has `isSuccess` for it.
+
+						if (task.error === undefined) {
+							this.value = task.value;
+						}
+
 						this.error = task.error;
 						this.isIdle = (this.tasks.length === 0);
 						this.isRunning = (this.tasks.length !== 0);
