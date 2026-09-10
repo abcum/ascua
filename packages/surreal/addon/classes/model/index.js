@@ -253,14 +253,27 @@ export default class Model {
 		} catch (e) {
 
 			// A superseded save is expected and silent: the next field edit
-			// cancels this context, `delay` rejects with it, and there is
-			// nothing to report — a newer save is already in flight. Anything
-			// else is a genuine failure and must reach the caller, same as
-			// `.update()` and `.delete()` already do; swallowing it here would
-			// hide it from the one place — `autosave.js` — that has to decide
-			// whether an unattended failure is safe to leave unhandled.
+			// calls `this.#cancel()` above, on THIS context, before it has a
+			// chance to reject anything — there is no parent to cancel it and
+			// no reason available to attach, so `@ascua/context`'s `delay`
+			// rejects this one with `undefined`, not an Error. Verified
+			// directly against `@ascua/context`: `cancel()` called with no
+			// argument resolves `cancelled` with `undefined`, which `delay`
+			// then rejects with, unchanged.
+			//
+			// A `cancError`-shaped rejection is handled too, in case a parent
+			// context ever cancels this one instead — `@ascua/context`
+			// reserves that shape for exactly that, though nothing reaches
+			// this method as a child of another context today.
+			//
+			// Anything else is a genuine failure and must reach the caller,
+			// same as `.update()` and `.delete()` already do; swallowing it
+			// here would hide it from the one place — `autosave.js` — that has
+			// to decide whether an unattended failure is safe to leave
+			// unhandled.
 
-			if (e !== undefined && e.message === 'context cancelled') return;
+			if (e === undefined) return;
+			if (e.message === 'context cancelled') return;
 
 			throw e;
 
@@ -342,7 +355,26 @@ export default class Model {
 	@defer async _modify() {
 		if (this.#fake) return;
 
-		let diff = new Diff(this.#client, this._some).output();
+		// Computing the diff is kept OUTSIDE the failure-recording try below,
+		// and failing to compute one is still treated as "nothing to save",
+		// not a save failure — restoring the original behaviour here, which
+		// this method's first pass at awaiting the store call accidentally
+		// changed by moving the diff out of the one try/catch that existed.
+		//
+		// That accidental change was reachable: some record shapes make
+		// `Diff`'s structural walk throw (see `classes/dmp/diff.js`), and with
+		// the diff step no longer guarded, that exception propagated as a
+		// genuine save failure — recorded, logged by `autosave.js`, on every
+		// affected record, on every list load, for a condition that was never
+		// a server round-trip and never should have looked like one.
+
+		let diff;
+
+		try {
+			diff = new Diff(this.#client, this._some).output();
+		} catch (e) {
+			return;
+		}
 
 		if (!diff.length) return;
 
@@ -357,7 +389,7 @@ export default class Model {
 		// bare `return` used to set state to LOADED synchronously, before the
 		// request had even reached the server.
 		//
-		// The `catch` here is what makes the failure visible at all: an
+		// The `catch` here is what makes a genuine failure visible at all: an
 		// unawaited `return this.store.modify(...)` chains its rejection onto
 		// this method's own returned promise without this local `catch` ever
 		// running, so recording the error onto the record was not possible —
