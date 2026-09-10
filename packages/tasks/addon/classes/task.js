@@ -48,8 +48,7 @@ export default class Task {
 		case 'restart':
 			if (this.tasks.length) {
 				try {
-					let task = this.tasks[this.tasks.length-1];
-					this.tasks.removeObject(task);
+					let task = this.tasks.pop();
 					task.error = CANCELLED;
 					task.throw(CANCELLED);
 				} catch (e) {
@@ -68,7 +67,7 @@ export default class Task {
 
 			// Add the task to the list
 
-			this.tasks.pushObject(task);
+			this.tasks.push(task);
 
 			// Set the task to running
 
@@ -107,7 +106,9 @@ export default class Task {
 
 			// Remove the task from the list
 
-			this.tasks.removeObject(task);
+			let at = this.tasks.indexOf(task);
+
+			if (at > -1) this.tasks.splice(at, 1);
 
 			// Set the task to idle
 

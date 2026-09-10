@@ -1,6 +1,16 @@
 import Item from './item';
 import Range from './range';
 import { tracked } from '@glimmer/tracking';
+import { notifyPropertyChange } from '@ember/object';
+
+// `notifyPropertyChange` is imported rather than called as a method, and
+// rows are read by index rather than through `objectAt`. Both of those
+// methods reach these classes only through Ember's Array prototype
+// extensions — `EXTEND_PROTOTYPES.Array` — which are deprecated and go
+// away in ember-source 6.0. The imported function is the same one the
+// mixin delegates to, and the rows handed to `fulfillObjectsAt` are a
+// plain array, so neither change alters behaviour today; they just stop
+// the list depending on a host application's prototype configuration.
 
 const FETCH = function() {
 	return { data: [], total: 0 };
@@ -53,7 +63,7 @@ export default class extends Array {
 		this.loaded = false;
 		this.counted = true;
 		this.failure = undefined;
-		this.notifyPropertyChange('[]');
+		notifyPropertyChange(this, '[]');
 		this.remoteObjectAt(0);
 	}
 
@@ -89,7 +99,7 @@ export default class extends Array {
 	fulfillObjectsAt({ start, limit }, array) {
 		for (let i = start; i < (start + limit) && i < this.total; i++) {
 			this[i] = this[i] || Item.create();
-			this[i].resolve(array.objectAt(i-start));
+			this[i].resolve(array[i-start]);
 		}
 	}
 
@@ -120,7 +130,7 @@ export default class extends Array {
 
 		this.loaded = true;
 
-		this.notifyPropertyChange('[]');
+		notifyPropertyChange(this, '[]');
 
 	}
 
@@ -134,7 +144,7 @@ export default class extends Array {
 
 		this.total = total;
 
-		this.notifyPropertyChange('[]');
+		notifyPropertyChange(this, '[]');
 
 	}
 
@@ -198,7 +208,7 @@ export default class extends Array {
 
 		}
 
-		this.notifyPropertyChange('[]');
+		notifyPropertyChange(this, '[]');
 
 	}
 
