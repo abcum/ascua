@@ -18,8 +18,14 @@ export default class Evented extends Service {
 
 	off(e, ctx, func) {
 		if (typeof this.events[e] === 'object') {
+			// Remove only the listener matching both ctx and func - keep an
+			// entry unless it matches on both, i.e. `||`, not `&&`. The
+			// inverted form here dropped any other listener sharing just the
+			// ctx (e.g. the same route instance's other subscriptions) or
+			// just the func, rather than only the one actually being
+			// unsubscribed.
 			this.events[e] = this.events[e].filter(v => {
-				return v.ctx !== ctx && v.func !== func;
+				return v.ctx !== ctx || v.func !== func;
 			});
 		}
 	}
