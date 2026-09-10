@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { setProperties } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { next } from '@ember/runloop';
 import Item from '../classes/item';
 
 export default class extends Component {
@@ -10,7 +11,13 @@ export default class extends Component {
 
 	model = [];
 
-	items = [];
+	// `{{#each this.items}}` needs a reassignment, not a mutation, to notice
+	// the pool grew or shrank - see the two branches in setup() below that
+	// change its length. Items already inside the pool keep updating via
+	// their own `@tracked index`/`model` (see classes/item.js), which this
+	// tracks independently of.
+
+	@tracked items = [];
 
 	conf = {
 		@tracked h: 0, // view height
@@ -117,18 +124,35 @@ export default class extends Component {
 		// Difference of rows
 		let dif = sub - this.items.length;
 
+		// Resized pool, used below instead of `this.items` until the
+		// reassignment below lands - setup() runs synchronously from a
+		// did-insert/did-resize modifier, which is still mid-render, and
+		// {{#each this.items}} already consumed the old array this pass;
+		// reassigning `this.items` here directly trips Ember's
+		// backtracking-rerender assertion by changing the iteration count of
+		// something already rendered. `schedule('afterRender', ...)` is not
+		// enough to dodge it - still the same runloop/transaction - so this
+		// pushes the reassignment out to the next runloop entirely.
+
+		let items = this.items;
+
 		// Remove any extra item placeholders
 		if (dif < 0) {
-			for ( let i = 0; i > dif; --i ) {
-				this.items.popObject();
-			}
+			items = items.slice(0, items.length + dif);
 		}
 
 		// Add necessary item placeholders
 		if (dif > 0) {
-			for ( let i = 0; i < dif; i++ ) {
-				this.items.pushObject( new Item() );
-			}
+			items = [
+				...items,
+				...Array.from({ length: dif }, () => new Item()),
+			];
+		}
+
+		if (items !== this.items) {
+			next(() => {
+				this.items = items;
+			});
 		}
 
 		// Array of ids for rows to be loaded
@@ -138,7 +162,7 @@ export default class extends Component {
 		ids.forEach(i => {
 			try {
 				let pos = i % sub;
-				let obj = this.items.objectAt(pos);
+				let obj = items[pos];
 				obj.index = i;
 				obj.model = this.args.model.objectAt(i, false);
 				if (i === this.total - 1) {
@@ -160,7 +184,7 @@ export default class extends Component {
 			ids.forEach(i => {
 				try {
 					let pos = i % sub;
-					let obj = this.items.objectAt(pos);
+					let obj = this.items[pos];
 					obj.index = i;
 					obj.model = this.args.model.objectAt(i, true);
 					if (i === this.total - 1) {
@@ -181,9 +205,9 @@ export default class extends Component {
 
 		if (item && options.toggle) {
 			if (this.conf.a.includes(item.id)) {
-				this.conf.a.removeObject(item.id);
+				this.conf.a = this.conf.a.filter(id => id !== item.id);
 			} else {
-				this.conf.a.addObject(item.id);
+				this.conf.a = [...this.conf.a, item.id];
 			}
 		}
 
@@ -195,7 +219,10 @@ export default class extends Component {
 					// An Item resolves to its content, so this `item` shadows the
 					// outer one with the raw model — its id is not normalised by
 					// Item#id and has to be stringified here.
-					this.conf.a.addObject(String(item.id));
+					let id = String(item.id);
+					if (!this.conf.a.includes(id)) {
+						this.conf.a = [...this.conf.a, id];
+					}
 					if (this.args.onSelect) {
 						this.args.onSelect(this.conf.a);
 					}
@@ -204,12 +231,11 @@ export default class extends Component {
 		}
 
 		if (item && options.single) {
-			this.conf.a.clear();
-			this.conf.a.addObject(item.id);
+			this.conf.a = [item.id];
 		}
 
 		if (item === undefined) {
-			this.conf.a.clear();
+			this.conf.a = [];
 		}
 
 		this.cursor = item ? item.index : null;
