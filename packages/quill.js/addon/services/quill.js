@@ -12,12 +12,18 @@ export default class extends Service {
 		super.willDestroy(...arguments);
 	}
 
+	// `#instances` is a plain, non-reactive registry — never rendered, only
+	// walked to sync editors. `addObject`/`removeObject`/`filterBy` below used
+	// to reach it through Ember's Array prototype extensions
+	// (`EXTEND_PROTOTYPES.Array`), deprecated and removed in ember-source 6.0.
+
 	register(component) {
-		this.#instances.addObject(component);
+		if (!this.#instances.includes(component)) this.#instances.push(component);
 	}
 
 	unregister(component) {
-		this.#instances.removeObject(component);
+		let i = this.#instances.indexOf(component);
+		if (i > -1) this.#instances.splice(i, 1);
 	}
 
 	text(name, instance, text, source = 'api') {
@@ -26,7 +32,7 @@ export default class extends Service {
 		let delta = new Delta().insert(text);
 
 		// Ensure all other editors are updated with the changes.
-		this.#instances.filterBy('name', name).forEach(q => {
+		this.#instances.filter(q => q.name === name).forEach(q => {
 			if (q.instance !== instance) {
 				q.instance.setContents(delta, 'silent');
 			}
@@ -42,7 +48,7 @@ export default class extends Service {
 		let delta = this.#instances[0].instance.clipboard.convert({ html });
 
 		// Ensure all other editors are updated with the changes.
-		this.#instances.filterBy('name', name).forEach(q => {
+		this.#instances.filter(q => q.name === name).forEach(q => {
 			if (q.instance !== instance) {
 				q.instance.setContents(delta, 'silent');
 			}
@@ -59,7 +65,7 @@ export default class extends Service {
 		delta = delta instanceof Delta ? delta : new Delta(delta);
 
 		// Ensure all other editors are updated with the changes.
-		this.#instances.filterBy('name', name).forEach(q => {
+		this.#instances.filter(q => q.name === name).forEach(q => {
 			if (q.instance !== instance) {
 				q.instance.setContents(delta, 'silent');
 			}
@@ -76,7 +82,7 @@ export default class extends Service {
 		delta = delta instanceof Delta ? delta : new Delta(delta);
 
 		// Ensure all other editors are updated with the changes.
-		this.#instances.filterBy('name', name).forEach(q => {
+		this.#instances.filter(q => q.name === name).forEach(q => {
 			if (q.instance !== instance) {
 				q.instance.updateContents(delta, 'silent');
 			}

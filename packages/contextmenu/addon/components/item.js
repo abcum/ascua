@@ -37,12 +37,21 @@ export default class extends Component {
 		});
 	}
 
+	// `addObject`/`removeObject` reached `items` only through Ember's Array
+	// prototype extensions (`EXTEND_PROTOTYPES.Array`), deprecated and removed
+	// in ember-source 6.0. `items` is a plain array, not `@tracked` — nothing
+	// here depends on notifying a reader, so a native push/splice is exactly
+	// equivalent.
+
 	@action didCreate() {
-		this.contextmenu.items.addObject(this);
+		let items = this.contextmenu.items;
+		if (!items.includes(this)) items.push(this);
 	}
 
 	@action willDelete() {
-		this.contextmenu.items.removeObject(this);
+		let items = this.contextmenu.items;
+		let i = items.indexOf(this);
+		if (i > -1) items.splice(i, 1);
 	}
 
 }
