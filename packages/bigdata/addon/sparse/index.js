@@ -52,6 +52,7 @@ export default class extends Array {
 		this.length = 0;
 		this.loaded = false;
 		this.counted = true;
+		this.failure = undefined;
 		this.notifyPropertyChange('[]');
 		this.remoteObjectAt(0);
 	}
@@ -138,6 +139,13 @@ export default class extends Array {
 	}
 
 	async fetcher(rng) {
+
+		// `failure` describes the most recent attempt, so it is cleared as one
+		// starts. Without this a list that failed once stayed failed: nothing
+		// else ever wrote the field, so a later successful load still reported
+		// the old error and any consumer branching on it kept its error state.
+
+		this.failure = undefined;
 
 		try {
 
