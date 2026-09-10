@@ -1,1 +1,21 @@
-{{!-- Temporarily disable contextmenu --}}
+<context-menu
+	visible={{this.visible}}
+	enabled={{this.contextmenu.enabled}}
+	{{did-update
+		this.didRender
+		this.contextmenu.x
+		this.contextmenu.y
+	}}
+>
+
+	{{! Dynamic component invocation, not the named outlet this used before —
+	    named outlets were removed in Ember 4.0. `menuName` is normalised to a
+	    slashed path by the service's `load`, so this resolves whichever
+	    component the app's `<RightClick @menu="...">` named, in either the
+	    dotted or slashed form it was written in. }}
+
+	{{#if this.contextmenu.menuName}}
+		{{component this.contextmenu.menuName model=this.contextmenu.menuModel}}
+	{{/if}}
+
+</context-menu>

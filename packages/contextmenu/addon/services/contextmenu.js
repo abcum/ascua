@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { getOwner } from '@ember/application';
+import { action } from '@ember/object';
 import Remote from '@electron/remote';
 import Electron from 'electron';
 
@@ -36,19 +36,52 @@ export default class extends Service {
 
 	@tracked y = 0;
 
+	// The name and model of the menu currently mounted, read by
+	// `<Ascua::Render>` to pick which component to invoke. `null` means
+	// nothing is showing — see `load`/`hide`.
+
+	@tracked menuName = null;
+
+	@tracked menuModel = null;
+
+	// Shared with `campaigns/campaign/{candidates,screening}` menus' "copy to
+	// another campaign" item. That action lives in a menu component mounted
+	// under `<Ascua::Render>`, nowhere near the candidates/screening route it
+	// needs to show a modal over — the two were previously bridged by
+	// classic Ember's implicit nested-controller access
+	// (`candidates`'s controller reaching a `menu` child controller by name),
+	// which depended on the same named-outlet render this service no longer
+	// does, and had already stopped working for that reason. The service is
+	// the one thing both sides already inject, so it carries the state
+	// instead.
+
+	@tracked showDuplicateModal = false;
+
+	@tracked duplicateModel = null;
+
+	@action openDuplicateModal(model) {
+
+		this.duplicateModel = model;
+
+		this.showDuplicateModal = true;
+
+	}
+
+	@action closeDuplicateModal() {
+
+		this.showDuplicateModal = false;
+
+		this.duplicateModel = null;
+
+	}
+
 	items = [];
 
 	constructor() {
 
-		return; // Temporarily disable contextmenu
-
 		super(...arguments);
 
 		if (enabled() === false) return;
-
-		this.owner = getOwner(this);
-
-		this.route = this.owner.lookup('route:application');
 
 		document.addEventListener('contextmenu', (e) => {
 			try {
@@ -87,25 +120,24 @@ export default class extends Service {
 
 		this.items = [];
 
-		let cont = this.owner.lookup(`controller:${name}`);
+		// `@menu` is written both dotted (`contacts.contact.menu.email`, the
+		// old route-name convention) and slashed
+		// (`campaigns/campaign/candidates/menu`) across the app's existing
+		// templates. A dynamic `{{component}}` invocation needs the slashed
+		// form; normalising here means neither convention has to change at
+		// the 20-odd call sites that already use one or the other.
 
-		if (!cont) this.route.generateController(name);
+		this.menuName = name.replace(/\./g, '/');
 
-		this.route.render(name, {
-			model: model,
-			controller: name,
-			into: 'application',
-			outlet: 'contextmenu',
-		});
+		this.menuModel = model;
 
 	}
 
 	hide() {
 
-		this.route.disconnectOutlet({
-			outlet: 'contextmenu',
-			parentView: 'application',
-		});
+		this.menuName = null;
+
+		this.menuModel = null;
 
 		this.enabled = false;
 
