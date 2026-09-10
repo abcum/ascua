@@ -58,6 +58,12 @@ export default class Model {
 	[RECORD] = {
 		@tracked data: {},
 		@tracked state: LOADED,
+		// The error from the most recent save/update/delete attempt, or
+		// `undefined` if the last attempt (if any) succeeded. Cleared as a
+		// new attempt starts — see the note on `bigdata`'s `failure` field
+		// for why: without this, a record that failed once stayed failed,
+		// since nothing else ever wrote it back.
+		@tracked error: undefined,
 	}
 
 	// The `tb` property can be used
@@ -120,6 +126,17 @@ export default class Model {
 
 	get exists() {
 		return this[RECORD].state !== DELETED;
+	}
+
+	// The error from the most recent save/update/delete attempt. `undefined`
+	// once an attempt has succeeded, or if none has been made. A failed
+	// attempt is rolled back — the record's fields are reverted to the last
+	// server-confirmed state, same as a normal `ingest` — so this is the
+	// only signal that the revert happened; nothing about `[RECORD].state`
+	// tells the two apart.
+
+	get error() {
+		return this[RECORD].error;
 	}
 
 	// The `json` property returns a
@@ -232,9 +249,21 @@ export default class Model {
 		[this.#ctx, this.#cancel] = context.withCancel();
 		try {
 			await this.#ctx.delay(500);
-			return this._modify.queue();
+			return await this._modify.queue();
 		} catch (e) {
-			// Ignore
+
+			// A superseded save is expected and silent: the next field edit
+			// cancels this context, `delay` rejects with it, and there is
+			// nothing to report — a newer save is already in flight. Anything
+			// else is a genuine failure and must reach the caller, same as
+			// `.update()` and `.delete()` already do; swallowing it here would
+			// hide it from the one place — `autosave.js` — that has to decide
+			// whether an unattended failure is safe to leave unhandled.
+
+			if (e !== undefined && e.message === 'context cancelled') return;
+
+			throw e;
+
 		}
 	}
 
@@ -312,18 +341,36 @@ export default class Model {
 
 	@defer async _modify() {
 		if (this.#fake) return;
+
+		let diff = new Diff(this.#client, this._some).output();
+
+		if (!diff.length) return;
+
+		this[RECORD].state = LOADING;
+		this[RECORD].error = undefined;
+		this.#client = this._some;
+
+		// Awaited rather than returned bare. `store.modify` calls `ingest()` on
+		// success or `rollback()` on failure before its own promise settles, and
+		// both already set `[RECORD].state` correctly — so this no longer needs
+		// a `finally` to do it again, and doing it here as well as an unawaited
+		// bare `return` used to set state to LOADED synchronously, before the
+		// request had even reached the server.
+		//
+		// The `catch` here is what makes the failure visible at all: an
+		// unawaited `return this.store.modify(...)` chains its rejection onto
+		// this method's own returned promise without this local `catch` ever
+		// running, so recording the error onto the record was not possible —
+		// only rethrowing was, and that reached the caller of `.save()`, which
+		// nothing awaits (see `autosave.js`, where it is finally handled).
+
 		try {
-			let diff = new Diff(this.#client, this._some).output();
-			if (diff.length) {
-				this[RECORD].state = LOADING;
-				this.#client = this._some;
-				return this.store.modify(this, diff);
-			}
+			return await this.store.modify(this, diff);
 		} catch (e) {
-			// Ignore
-		} finally {
-			this[RECORD].state = LOADED;
+			this[RECORD].error = e;
+			throw e;
 		}
+
 	}
 
 	/**
@@ -334,15 +381,23 @@ export default class Model {
 
 	@defer async _update() {
 		if (this.#fake) return;
+
+		this[RECORD].state = LOADING;
+		this[RECORD].error = undefined;
+		this.#client = this._some;
+
+		// See the note in `_modify` above: awaited so `ingest()`/`rollback()`
+		// inside `store.update` run and settle state before this resolves, and
+		// so the failure can be recorded rather than silently rethrown into a
+		// promise nothing awaits.
+
 		try {
-			this[RECORD].state = LOADING;
-			this.#client = this._some;
-			return this.store.update(this);
+			return await this.store.update(this);
 		} catch (e) {
-			// Ignore
-		} finally {
-			this[RECORD].state = LOADED;
+			this[RECORD].error = e;
+			throw e;
 		}
+
 	}
 
 	/**
@@ -353,13 +408,26 @@ export default class Model {
 
 	@defer async _delete() {
 		if (this.#fake) return;
+
+		this[RECORD].error = undefined;
+
+		// `state = DELETED` used to run in a `finally`, unconditionally — which
+		// marked the record deleted locally even when the server delete failed
+		// and `store.delete`'s own `catch` had already called `rollback()` to
+		// put it back. A denied or failed delete left the record gone from the
+		// UI while it still existed on the server. It is now only set once the
+		// delete has actually succeeded; the failure path leaves state exactly
+		// where `rollback()` put it.
+
 		try {
-			return this.store.delete(this);
-		} catch (e) {
-			// Ignore
-		} finally {
+			let result = await this.store.delete(this);
 			this[RECORD].state = DELETED;
+			return result;
+		} catch (e) {
+			this[RECORD].error = e;
+			throw e;
 		}
+
 	}
 
 }
