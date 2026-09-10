@@ -1,8 +1,16 @@
+import { notifyPropertyChange } from '@ember/object';
+
 // A plain per-model identity cache — `services/store.js`'s `#cache` is one of
-// these per table. Not `@tracked`, not rendered directly, so none of the
-// methods here need to notify anything; they only need to keep working
-// without Ember's Array prototype extensions (`EXTEND_PROTOTYPES.Array`),
-// which are deprecated and removed in ember-source 6.0.
+// these per table, and `store.cached(model)` (no id) hands it straight out to
+// a route's `model()`, in at least contacts/organisations/campaigns, so it
+// *is* rendered directly, not just consulted internally. Its mutators must
+// notify like Ember's Array prototype extensions did, or a record arriving
+// after the initial render (the common case: `model()` fires a `remote()`
+// fetch it does not await, then returns whatever is cached *now*) never
+// appears without a full route re-entry re-running that `model()` against an
+// by-then-warm cache. `store.js`'s `lookup`/`lookupAll` already depend on
+// exactly this for the by-id case - "consuming '[]'" only does anything if a
+// mutator on this class actually dirties it, which none of them did.
 
 export default class extends Array {
 
@@ -11,7 +19,10 @@ export default class extends Array {
 	// cached. Ember's `addObject` did this by checking `includes` first.
 
 	addObject(value) {
-		if (!this.includes(value)) this.push(value);
+		if (!this.includes(value)) {
+			this.push(value);
+			notifyPropertyChange(this, '[]');
+		}
 		return value;
 	}
 
@@ -27,10 +38,15 @@ export default class extends Array {
 	// anything that needs to be efficient over a large, unrelated list.
 
 	removeObjects(values) {
+		let removed = false;
 		for (const value of values) {
 			let i = this.indexOf(value);
-			if (i > -1) this.splice(i, 1);
+			if (i > -1) {
+				this.splice(i, 1);
+				removed = true;
+			}
 		}
+		if (removed) notifyPropertyChange(this, '[]');
 		return values;
 	}
 
@@ -43,7 +59,10 @@ export default class extends Array {
 	}
 
 	clear() {
-		this.length = 0;
+		if (this.length > 0) {
+			this.length = 0;
+			notifyPropertyChange(this, '[]');
+		}
 		return this;
 	}
 
