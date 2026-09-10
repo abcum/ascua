@@ -75,6 +75,25 @@ export default class extends Service {
 
 	}
 
+	// Shared with the contacts/organisations/campaigns list menus' "Delete"
+	// item. Those menus are mounted under `<Ascua::Render>`, nowhere near the
+	// list route whose confirmation modal needs to show - the same gap
+	// `showDuplicateModal` above bridges, for the same reason.
+
+	@tracked deleteTarget = null;
+
+	@action confirmDelete(model) {
+
+		this.deleteTarget = model;
+
+	}
+
+	@action cancelDelete() {
+
+		this.deleteTarget = null;
+
+	}
+
 	items = [];
 
 	constructor() {

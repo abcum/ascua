@@ -214,7 +214,7 @@ export default class extends Component {
 
 		this.cursor = item ? item.index : null;
 
-		if (this.args.onSelect) {
+		if (this.args.onSelect && !options.silent) {
 			this.args.onSelect(this.conf.a);
 		}
 
@@ -278,9 +278,19 @@ export default class extends Component {
 
 	@action ctxClick(event, item) {
 
-		this.select(item, { single: true });
+		// `silent` skips the `onSelect` call - consumers wire that to
+		// navigate to the selected record, which single/double-click want but
+		// a context menu doesn't: it should highlight the row it's showing
+		// actions for without moving the user off the list underneath it.
 
-		if (this.args.onContextMenu) {
+		this.select(item, { single: true, silent: true });
+
+		// `item.model` is `undefined` for a row whose page hasn't loaded yet
+		// (rendered as a loading placeholder) - right-clicking one before this
+		// guard existed threw reading `.content` off `undefined`, since nothing
+		// previously passed `@onContextMenu` to exercise this path.
+
+		if (this.args.onContextMenu && item.model) {
 			if (item.model.content) {
 				return this.args.onContextMenu(event, item.model.content);
 			} else {
