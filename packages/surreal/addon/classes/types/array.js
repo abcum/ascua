@@ -1,3 +1,5 @@
+import { notifyPropertyChange } from '@ember/object';
+
 const func = (v) => v;
 
 export default class RecordArray extends Array {
@@ -10,8 +12,16 @@ export default class RecordArray extends Array {
 			get() {
 				return Reflect.get(...arguments);
 			},
-			set() {
-				let val = Reflect.set(...arguments);
+			set(target, ...rest) {
+				let val = Reflect.set(target, ...rest);
+				// Notifies unconditionally, independent of `owner` - a field
+				// array can exist (and be rendered) without an owning record
+				// to autosave, and the two were never the same concern: this
+				// is what a template consuming the array (or the classic
+				// Array prototype extensions - filterBy/sortBy/{{#each}} -
+				// still enabled here, which rely on it too) needs to notice a
+				// push/splice/length change, not what triggers a save.
+				notifyPropertyChange(target, '[]');
 				if (owner) owner.autosave();
 				return val;
 			}
@@ -27,9 +37,10 @@ export default class RecordArray extends Array {
 	// operations instead; a host that turns the extension off does not lose
 	// field arrays.
 	//
-	// Reactivity is unaffected either way: `create`'s `Proxy` above notifies
-	// on the underlying index/length assignment these methods perform, not on
-	// which named method performed it.
+	// Reactivity is unaffected either way: `create`'s `Proxy` above's `set`
+	// trap fires - and now calls notifyPropertyChange('[]') - on the
+	// underlying index/length assignment these methods perform, not on which
+	// named method performed it.
 
 	addObject(value) {
 		value = this.type(value);
