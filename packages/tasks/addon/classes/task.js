@@ -1,5 +1,5 @@
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import { action, notifyPropertyChange } from '@ember/object';
 
 const CANCELLED = new Error("Cancelled task instance");
 
@@ -10,6 +10,12 @@ export default class Task {
 	#ctx = undefined;
 
 	#fnc = undefined;
+
+	// Not @tracked - a template reading `.length` on an Array-extended array
+	// (EXTEND_PROTOTYPES.Array, still enabled by every host of this addon)
+	// depends on its '[]' tag instead, which push/pop/splice below dirty
+	// explicitly now that they're native calls rather than the classic
+	// pushObject/removeObject this replaced - those notified '[]' themselves.
 
 	tasks = [];
 
@@ -49,6 +55,7 @@ export default class Task {
 			if (this.tasks.length) {
 				try {
 					let task = this.tasks.pop();
+					notifyPropertyChange(this.tasks, '[]');
 					task.error = CANCELLED;
 					task.throw(CANCELLED);
 				} catch (e) {
@@ -68,6 +75,7 @@ export default class Task {
 			// Add the task to the list
 
 			this.tasks.push(task);
+			notifyPropertyChange(this.tasks, '[]');
 
 			// Set the task to running
 
@@ -108,7 +116,10 @@ export default class Task {
 
 			let at = this.tasks.indexOf(task);
 
-			if (at > -1) this.tasks.splice(at, 1);
+			if (at > -1) {
+				this.tasks.splice(at, 1);
+				notifyPropertyChange(this.tasks, '[]');
+			}
 
 			// Set the task to idle
 
