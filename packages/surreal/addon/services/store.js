@@ -40,7 +40,7 @@ function lookup(arr, id) {
 	get(arr, '[]');
 	let sid = String(id);
 	for (let i = 0; i < arr.length; i++) {
-		let v = arr.objectAt(i);
+		let v = arr[i];
 		if (v !== undefined && String(v.id) === sid) return v;
 	}
 	return undefined;
