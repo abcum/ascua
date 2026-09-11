@@ -1,8 +1,7 @@
 import { helper } from '@ember/component/helper';
 import Date from 'dayjs';
+import { createUtc } from '../utils/date-helpers';
 
-export function utc([ value = undefined ]) {
-	return Date(value).utc();
-}
+export const utc = createUtc(Date);
 
 export default helper(utc);

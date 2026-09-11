@@ -1,8 +1,7 @@
 import { helper } from '@ember/component/helper';
 import Date from 'dayjs';
+import { createDateFormat } from '../utils/date-helpers';
 
-export function dateFormat([ value = undefined, format = undefined ]) {
-	return Date(value).format(format);
-}
+export const dateFormat = createDateFormat(Date);
 
 export default helper(dateFormat);

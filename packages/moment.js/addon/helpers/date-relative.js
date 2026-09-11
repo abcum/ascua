@@ -1,8 +1,7 @@
 import { helper } from '@ember/component/helper';
 import Date from 'moment';
+import { createDateRelative } from '../utils/date-helpers';
 
-export function dateRelative([ value = undefined, reference = undefined ], { ignoreSuffix = false }) {
-	return Date(value).from(reference, ignoreSuffix);
-}
+export const dateRelative = createDateRelative(Date);
 
 export default helper(dateRelative);

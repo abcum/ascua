@@ -1,12 +1,7 @@
 import { helper } from '@ember/component/helper';
 import Date from 'moment';
+import { createDateSub } from '../utils/date-helpers';
 
-export function dateSub([ value = undefined, c = undefined, t = undefined ], options = undefined) {
-	if (options) {
-		return Date(value).subtract( Object.assign({}, options) );
-	} else {
-		return Date(value).subtract(c, t);
-	}
-}
+export const dateSub = createDateSub(Date);
 
 export default helper(dateSub);

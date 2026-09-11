@@ -1,8 +1,7 @@
 import { helper } from '@ember/component/helper';
 import Date from 'moment';
+import { createDateCalendar } from '../utils/date-helpers';
 
-export function dateCalendar([ value = undefined, reference = undefined ], { format = undefined }) {
-	return Date(value).calendar(reference, format);
-}
+export const dateCalendar = createDateCalendar(Date);
 
 export default helper(dateCalendar);

@@ -1,12 +1,7 @@
 import { helper } from '@ember/component/helper';
 import Date from 'dayjs';
+import { createDateAdd } from '../utils/date-helpers';
 
-export function dateAdd([ value = undefined, c = undefined, t = undefined ], options = undefined) {
-	if (options) {
-		return Date(value).add( Object.assign({}, options) );
-	} else {
-		return Date(value).add(c, t);
-	}
-}
+export const dateAdd = createDateAdd(Date);
 
 export default helper(dateAdd);
