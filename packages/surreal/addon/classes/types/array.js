@@ -75,6 +75,49 @@ export default class RecordArray extends Array {
 		return this;
 	}
 
+	removeObject(value) {
+		let i = this.indexOf(value);
+		if (i > -1) this.splice(i, 1);
+		return value;
+	}
+
+	removeObjects(values) {
+		for (const value of [].concat(values)) this.removeObject(value);
+		return this;
+	}
+
+	removeAt(index, len = 1) {
+		this.splice(index, len);
+		return this;
+	}
+
+	clear() {
+		this.length = 0;
+		return this;
+	}
+
+	toArray() {
+		return [...this];
+	}
+
+	objectAt(index) {
+		return this[index];
+	}
+
+	popObject() {
+		return this.pop();
+	}
+
+	shiftObject() {
+		return this.shift();
+	}
+
+	unshiftObject(value) {
+		value = this.type(value);
+		this.unshift(value);
+		return value;
+	}
+
 	then() {
 		return Promise.all(this).then(...arguments);
 	}
