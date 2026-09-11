@@ -8,7 +8,10 @@ export function without([needle, haystack]) {
 			return needle.includes(item) ? prev : prev.concat(item);
 		}, []);
 	} else {
-		return array(haystack).without(needle);
+		// `.without(value)` was Ember's Array prototype extension
+		// (EXTEND_PROTOTYPES.Array), deprecated and removed in
+		// ember-source 6.0 - every element not strictly equal to `value`.
+		return array(haystack).filter(v => v !== needle);
 	}
 }
 

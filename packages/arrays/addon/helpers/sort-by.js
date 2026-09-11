@@ -2,6 +2,7 @@ import { helper } from '@ember/component/helper';
 import { isEmpty } from '@ember/utils';
 import { isArray } from '@ember/array';
 import { typeOf } from '@ember/utils';
+import { compare } from '@ember/utils';
 import { get } from '@ember/object';
 import array from '../utils/array';
 
@@ -27,7 +28,22 @@ export function sortBy([...params], { locale = false, numeric = false, caseFirst
 	}
 
 	if ( locale === false ) {
-		return array(value).sortBy(...props);
+
+		// `.sortBy(...properties)` was Ember's Array prototype extension
+		// (EXTEND_PROTOTYPES.Array), deprecated and removed in
+		// ember-source 6.0 - a multi-key sort comparing each property in
+		// turn with `compare()` (an `@ember/utils` export, not a prototype
+		// extension, so unaffected either way) and stopping at the first
+		// one that differs, same as that extension did internally.
+
+		return array(value).sort((one, two) => {
+			for (const prop of props) {
+				let c = compare(get(one, prop), get(two, prop));
+				if (c !== 0) return c;
+			}
+			return 0;
+		});
+
 	}
 
 	return array(value).sort(function(one, two) {

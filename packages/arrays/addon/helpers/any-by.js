@@ -1,6 +1,12 @@
 import { helper } from '@ember/component/helper';
 import { isEmpty } from '@ember/utils';
 import { isArray } from '@ember/array';
+import { get } from '@ember/object';
+
+// `.any(fn)` (an alias for the native `.some()`) and `.isAny(key[, value])`
+// were Ember's Array prototype extensions (EXTEND_PROTOTYPES.Array),
+// deprecated and removed in ember-source 6.0 - `.some()` is native and needs
+// no replacement, `.isAny` is a truthy-vs-equality check same as filterBy.
 
 export function anyBy([thing, value, array]) {
 
@@ -19,11 +25,11 @@ export function anyBy([thing, value, array]) {
 
 	switch (true) {
 	case typeof thing === 'function':
-		return array.any(thing);
+		return array.some(thing);
 	case value === undefined:
-		return array.isAny(thing, true);
+		return array.some(item => Boolean(get(item, thing)));
 	default:
-		return array.isAny(thing, value);
+		return array.some(item => get(item, thing) === value);
 	}
 
 }

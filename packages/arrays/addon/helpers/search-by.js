@@ -21,8 +21,13 @@ export function searchBy([...params], { exact = false }) {
 		return [];
 	}
 
+	// `.uniq()` was Ember's Array prototype extension
+	// (EXTEND_PROTOTYPES.Array), deprecated and removed in ember-source 6.0 -
+	// dedupes by identity, same as a Set does for the primitives/records this
+	// filters over.
+
 	if ( isEmpty(match) ) {
-		return array(value).uniq();
+		return [...new Set(array(value))];
 	}
 
 	if (typeOf(match) === 'number') {
@@ -33,9 +38,13 @@ export function searchBy([...params], { exact = false }) {
 		match = match.toLowerCase().split(' ');
 	}
 
+	// `.any(fn)` (an alias for the native `.some()`) was Ember's Array
+	// prototype extension (EXTEND_PROTOTYPES.Array), deprecated and removed
+	// in ember-source 6.0 - both occurrences below are `.some()` now.
+
 	return array(value).filter(item => {
 		return array(match).every(v => {
-			return array(props).any(p => {
+			return array(props).some(p => {
 
 				let f = get(item, p);
 
@@ -49,7 +58,7 @@ export function searchBy([...params], { exact = false }) {
 				}
 
 				if (isArray(f) === true) {
-					return [].concat(f).any(f => {
+					return [].concat(f).some(f => {
 						switch (exact) {
 						case true:
 							return String(f).toLowerCase() == v;
