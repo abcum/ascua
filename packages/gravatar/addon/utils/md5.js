@@ -1,3 +1,8 @@
+// Byte-identical to packages/surreal/addon/utils/md5.js. Left duplicated
+// rather than consolidated: neither package has a reason to depend on the
+// other, and no existing shared package (checked packages/core, /strings,
+// /format) already holds general-purpose utilities like this one.
+
 const hex_chr = [
 	'0','1','2','3',
 	'4','5','6','7',
