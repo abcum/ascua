@@ -1,5 +1,5 @@
 import Service from '@ascua/service/evented';
-import Storage from '../classes/storage';
+import Storage from '@ascua/storage';
 import config from '@ascua/config';
 import unid from '../utils/unid';
 import { Surreal as Database, RecordId, StringRecordId, Table } from 'surrealdb';
