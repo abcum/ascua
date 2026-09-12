@@ -5,9 +5,6 @@ export default class Import {
 		this.quill = quill;
 		this.allowMedia = options?.allowMedia !== false;
 
-		this.didDrop = this.didDrop.bind(this);
-		this.didPaste = this.didPaste.bind(this);
-
 		this.quill.root.addEventListener('drop', this.didDrop, false);
 		this.quill.root.addEventListener('paste', this.didPaste, false);
 		this.quill.getModule('toolbar').addHandler('image', this.didImage);
@@ -47,9 +44,9 @@ export default class Import {
 
 	}
 
-	didPaste(e) {
+	didPaste = (e) => {
 
-		if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length) {
+		if (e.clipboardData?.files?.length) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
 			if (!this.allowMedia) return;
@@ -60,12 +57,12 @@ export default class Import {
 
 	}
 
-	didDrop(e) {
+	didDrop = (e) => {
 
 		e.preventDefault();
 		e.stopImmediatePropagation();
 
-		if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+		if (e.dataTransfer?.files?.length) {
 
 			if (!this.allowMedia) return;
 

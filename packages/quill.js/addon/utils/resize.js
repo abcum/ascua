@@ -32,13 +32,6 @@ export default class Resize {
 
 		this.quill = quill;
 
-		this.didKeyup = this.didKeyup.bind(this);
-		this.didKeydown = this.didKeydown.bind(this);
-		this.didClick = this.didClick.bind(this);
-		this.didMouseup = this.didMouseup.bind(this);
-		this.didMousedown = this.didMousedown.bind(this);
-		this.didMousemove = this.didMousemove.bind(this);
-
 		document.execCommand('enableObjectResizing', false, 'false');
 
 		this.quill.root.addEventListener('click', this.didClick, false);
@@ -180,7 +173,7 @@ export default class Resize {
 	// removes it. Previously any keyup just hid the resize UI without
 	// ever touching the document, so deleting a selected image did
 	// nothing - the image lived on in the underlying delta regardless.
-	didKeyup(e) {
+	didKeyup = (e) => {
 		if (!this.img) return;
 		if (e && (e.key === 'Backspace' || e.key === 'Delete')) {
 			const blot = Quill.find(this.img);
@@ -195,14 +188,14 @@ export default class Resize {
 	// it and a following delete leaves the image behind. Forcing Quill's
 	// own full-document selection sidesteps that native-selection quirk
 	// entirely.
-	didKeydown(e) {
+	didKeydown = (e) => {
 		if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== 'a') return;
 		e.preventDefault();
 		this.quill.setSelection(0, this.quill.getLength(), 'user');
 	}
 
-	didClick(e) {
-		if (e.target && e.target.tagName && e.target.tagName.toUpperCase() === 'IMG') {
+	didClick = (e) => {
+		if (e.target?.tagName?.toUpperCase() === 'IMG') {
 			if (this.img === e.target) return; // Image is already focused
 			if (this.img) this.hide(); // Other iamge was clicked
 			this.show(e.target);
@@ -211,7 +204,7 @@ export default class Resize {
 		}
 	}
 
-	didMouseup() {
+	didMouseup = () => {
 		this.box = undefined;
 		this.start = undefined;
 		this.width = undefined;
@@ -219,7 +212,7 @@ export default class Resize {
 		document.removeEventListener('mousemove', this.didMousemove);
 	}
 
-	didMousedown(e) {
+	didMousedown = (e) => {
 		this.box = e.target;
 		this.start = e.clientX;
 		this.width = this.img.width || this.img.naturalWidth;
@@ -227,7 +220,7 @@ export default class Resize {
 		document.addEventListener('mousemove', this.didMousemove, false);
 	}
 
-	didMousemove(e) {
+	didMousemove = (e) => {
 
 		if (!this.img) return;
 
