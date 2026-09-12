@@ -8,7 +8,14 @@ export default class RecordArray extends Array {
 		let v = values.map(type);
 		let a = new this(...v);
 		a.type = type;
-		return new Proxy(a, {
+		// `proxy` is assigned below, before the `set` trap can ever fire -
+		// captured by reference so the trap notifies on the object consumers
+		// actually hold. `notifyPropertyChange(target, ...)` looked
+		// equivalent but silently never worked: Ember's classic notification
+		// is keyed by object identity, and every consumer of this array only
+		// ever sees the Proxy, never the raw `target` instance.
+		let proxy;
+		proxy = new Proxy(a, {
 			get() {
 				return Reflect.get(...arguments);
 			},
@@ -21,11 +28,12 @@ export default class RecordArray extends Array {
 				// Array prototype extensions - filterBy/sortBy/{{#each}} -
 				// still enabled here, which rely on it too) needs to notice a
 				// push/splice/length change, not what triggers a save.
-				notifyPropertyChange(target, '[]');
+				notifyPropertyChange(proxy, '[]');
 				if (owner) owner.autosave();
 				return val;
 			}
 		});
+		return proxy;
 	}
 
 	type = func;
