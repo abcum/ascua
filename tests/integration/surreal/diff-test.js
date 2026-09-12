@@ -60,6 +60,24 @@ scope('Integration | surreal | diff', function (hooks) {
 		assert.strictEqual(reloaded.details[1].isbn, 'BBB', 'the untouched sibling element was left alone');
 	});
 
+	test('save() preserves object identity for both the changed and untouched elements of an array-of-Field field', async function (assert) {
+		let book = await this.store.create('book', 'identity', {
+			title: 'T',
+			details: [{ isbn: 'AAA', pages: 1 }, { isbn: 'BBB', pages: 2 }],
+		});
+
+		let arrayRefBefore = book.details;
+		let el0Before = book.details[0];
+		let el1Before = book.details[1];
+
+		book.details[0].isbn = 'CCC';
+		await book.save();
+
+		assert.strictEqual(book.details, arrayRefBefore, 'array proxy reference preserved');
+		assert.strictEqual(book.details[0], el0Before, 'changed element reference preserved');
+		assert.strictEqual(book.details[1], el1Before, 'untouched sibling element reference preserved');
+	});
+
 	test('save() patches a changed field on a single embedded object (Field)', async function (assert) {
 		let book = await this.store.create('book', 'objfield', {
 			title: 'T',
