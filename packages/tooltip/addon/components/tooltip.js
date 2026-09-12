@@ -23,9 +23,9 @@ export default class extends Component {
 
 		super(...arguments);
 
-		this.openHandler = this.open.bind(this);
+		this.openHandler = this.open;
 
-		this.closeHandler = this.close.bind(this);
+		this.closeHandler = this.close;
 
 	}
 

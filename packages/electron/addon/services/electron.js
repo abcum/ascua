@@ -42,7 +42,7 @@ export default class extends Service {
 
 		if (this.#config.frequency) {
 			this.#timer = setInterval(
-				this.check.bind(this),
+				this.check,
 				this.#config.frequency,
 			);
 		}

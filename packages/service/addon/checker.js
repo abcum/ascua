@@ -39,7 +39,7 @@ export default class Checker extends Evented {
 		if (this._config.enabled === true) {
 			if (this._config.frequency) {
 				this._timer = setInterval(
-					this.check.bind(this),
+					this.check,
 					this._config.frequency,
 				);
 			}
