@@ -15,6 +15,7 @@
     "url": "https://surrealdb.com"
   },
   "dependencies": {
+    "@ascua/decorators": "file:../decorators",
     "@ascua/modifiers": "file:../modifiers",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0"
