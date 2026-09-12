@@ -2,7 +2,7 @@
 	<app-gridlist-view {{on "scroll" this.didScroll}} {{on "click" this.didClick}}>
 		<app-gridlist-area {{style height=this.conf.h}}>
 			{{~#each this.items as |item|~}}
-				{{#let (includes item.id this.conf.a) as |selected|}}
+				{{#let (this.isSelected item.id) as |selected|}}
 					<Ascua::Gridlist::Item
 						@item={{item}}
 						@conf={{this.conf}}

@@ -11,6 +11,8 @@ export default class extends Component {
 
 	model = [];
 
+	scrollFrame = undefined;
+
 	// `{{#each this.items}}` needs a reassignment, not a mutation, to notice
 	// the pool grew or shrank - see the two branches in setup() below that
 	// change its length. Items already inside the pool keep updating via
@@ -21,7 +23,7 @@ export default class extends Component {
 
 	conf = {
 		@tracked h: 0, // view height
-		@tracked a: [], // active selection
+		@tracked a: new Set(), // active selection, by id - Set for O(1) membership checks
 		@tracked k: this.args.colWidth ? 'g' : 'l',
 		v: { @tracked c: 0, @tracked r: 0 }, // visible items
 		e: { @tracked w: 0, @tracked h: 0 }, // view dimensions
@@ -45,7 +47,7 @@ export default class extends Component {
 		this.conf.e.h = element.clientHeight;
 		this.conf.i.w = parseInt(this.args.colWidth);
 		this.conf.i.h = parseInt(this.args.rowHeight);
-		this.conf.a = [].concat(this.args.selection);
+		this.conf.a = new Set([].concat(this.args.selection));
 		this.setup(true);
 	}
 
@@ -59,12 +61,12 @@ export default class extends Component {
 		this.conf.e.h = element.clientHeight;
 		this.conf.i.w = parseInt(this.args.colWidth);
 		this.conf.i.h = parseInt(this.args.rowHeight);
-		this.conf.a = [].concat(this.args.selection);
+		this.conf.a = new Set([].concat(this.args.selection));
 		this.setup(true);
 	}
 
 	@action didSelect(element) {
-		this.conf.a = [].concat(this.args.selection);
+		this.conf.a = new Set([].concat(this.args.selection));
 	}
 
 	@action didResize(element) {
@@ -76,7 +78,19 @@ export default class extends Component {
 	@action didScroll(element) {
 		this.conf.s.t = element.target.scrollTop;
 		this.conf.s.l = element.target.scrollLeft;
-		this.setup(false);
+		// Momentum/trackpad scrolling can fire this dozens of times per
+		// second - coalesce to at most once per frame instead of running
+		// setup()'s bucket math on every single scroll event.
+		if (this.scrollFrame) return;
+		this.scrollFrame = requestAnimationFrame(() => {
+			this.scrollFrame = undefined;
+			this.setup(false);
+		});
+	}
+
+	willDestroy() {
+		if (this.scrollFrame) cancelAnimationFrame(this.scrollFrame);
+		super.willDestroy(...arguments);
 	}
 
 	setup(force = false) {
@@ -204,11 +218,13 @@ export default class extends Component {
 	@action select(item, options) {
 
 		if (item && options.toggle) {
-			if (this.conf.a.includes(item.id)) {
-				this.conf.a = this.conf.a.filter(id => id !== item.id);
+			let next = new Set(this.conf.a);
+			if (next.has(item.id)) {
+				next.delete(item.id);
 			} else {
-				this.conf.a = [...this.conf.a, item.id];
+				next.add(item.id);
 			}
+			this.conf.a = next;
 		}
 
 		if (item && options.range) {
@@ -220,30 +236,44 @@ export default class extends Component {
 					// outer one with the raw model — its id is not normalised by
 					// Item#id and has to be stringified here.
 					let id = String(item.id);
-					if (!this.conf.a.includes(id)) {
-						this.conf.a = [...this.conf.a, id];
+					// Read/write `this.conf.a` live rather than a captured
+					// reference - these promises resolve out of order and a
+					// concurrent select() call (e.g. another click while a
+					// large range is still resolving) must not be clobbered.
+					if (!this.conf.a.has(id)) {
+						let next = new Set(this.conf.a);
+						next.add(id);
+						this.conf.a = next;
 					}
 					if (this.args.onSelect) {
-						this.args.onSelect(this.conf.a);
+						this.args.onSelect([...this.conf.a]);
 					}
 				});
 			}
 		}
 
 		if (item && options.single) {
-			this.conf.a = [item.id];
+			this.conf.a = new Set([item.id]);
 		}
 
 		if (item === undefined) {
-			this.conf.a = [];
+			this.conf.a = new Set();
 		}
 
 		this.cursor = item ? item.index : null;
 
 		if (this.args.onSelect && !options.silent) {
-			this.args.onSelect(this.conf.a);
+			this.args.onSelect([...this.conf.a]);
 		}
 
+	}
+
+	// The selection is stored as a Set internally (see `conf.a` above), but
+	// `@onSelect` consumers expect an array - e.g. `transition-to-selected`
+	// calls `.join(',')` on it - so it's converted back at every call site.
+
+	isSelected(id) {
+		return this.conf.a.has(id);
 	}
 
 	@action didClick(event, item) {

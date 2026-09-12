@@ -15,7 +15,6 @@
     "url": "https://surrealdb.com"
   },
   "dependencies": {
-    "@ascua/arrays": "file:../arrays",
     "@ascua/logic": "file:../logic",
     "@ascua/modifiers": "file:../modifiers",
     "@ascua/resize": "file:../resize",
