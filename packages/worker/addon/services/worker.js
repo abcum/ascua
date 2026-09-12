@@ -1,86 +1,27 @@
-import Service from '@ascua/service/evented';
-import { tracked } from '@glimmer/tracking';
+import Checker, { defaults } from '@ascua/service/checker';
 import { action } from '@ember/object';
 import config from '@ascua/config';
 
-const defaults = {
-	enabled: true,
-	autoupdate: false,
-	frequency: 5 * 60 * 1000,
-};
+export default class extends Checker {
 
-function enabled() {
-	try {
-		if (typeof FastBoot !== 'undefined') throw "exception";
-		if (!window) throw "exception";
-		if (!window.navigator) throw "exception";
-		if (!window.navigator.serviceWorker) throw "exception";
-		return true;
-	} catch (e) {
-		return false;
-	}
-}
-
-export default class extends Service {
-
-	#timer = undefined;
-
-	#config = undefined;
-
-	// Whether an update is available
-	// for the service worker, so that
-	// we can display a notification.
-
-	@tracked updateready = false;
-
-	// Setup the Worker service if the
-	// feature is supported, and check
-	// continuously for updates.
-
-	constructor() {
-
-		super(...arguments);
-
-		if (enabled() === false) return;
-
-		if (window.ELECTRON === true) return;
-
-		this.#config = Object.assign({}, defaults, config.worker);
-
-		if (this.#config.enabled === true) {
-			if (this.#config.frequency) {
-				this.#timer = setInterval(
-					this.check.bind(this),
-					this.#config.frequency,
-				);
-			}
+	isSupported() {
+		try {
+			if (typeof FastBoot !== 'undefined') throw "exception";
+			if (!window) throw "exception";
+			if (!window.navigator) throw "exception";
+			if (!window.navigator.serviceWorker) throw "exception";
+			return true;
+		} catch (e) {
+			return false;
 		}
-
-		this.on('updateready', () => {
-			switch (this.#config.autoupdate) {
-			case false:
-				return this.updateready = true;
-			case true:
-				return this.reset();
-			}
-		});
-
-		this.setup();
-
 	}
 
-	// If this service is going to be
-	// destroyed, then let's ensure that
-	// the checker timer is cancelled.
+	resolveConfig() {
+		return Object.assign({}, defaults, config.worker);
+	}
 
-	willDestroy() {
-
-		if (this.#timer) clearInterval(this.#timer);
-
-		this.removeAllListeners();
-
-		super.willDestroy(...arguments);
-
+	boot() {
+		this.setup();
 	}
 
 	// Setup sets up the service worker
@@ -89,7 +30,7 @@ export default class extends Service {
 
 	setup() {
 
-		if (this.#config.enabled === false) {
+		if (this._config.enabled === false) {
 
 			let sw = window.navigator.serviceWorker;
 
@@ -105,7 +46,7 @@ export default class extends Service {
 
 		}
 
-		if (this.#config.enabled === true) {
+		if (this._config.enabled === true) {
 
 			let sw = window.navigator.serviceWorker;
 

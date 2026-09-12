@@ -1,85 +1,29 @@
-import Service from '@ascua/service/evented';
-import { tracked } from '@glimmer/tracking';
+import Checker, { defaults } from '@ascua/service/checker';
 import { action } from '@ember/object';
 import config from '@ascua/config';
 
-const defaults = {
-	enabled: true,
-	autoupdate: false,
-	frequency: 5 * 60 * 1000,
-};
+export default class extends Checker {
 
-function enabled() {
-	try {
-		if (typeof FastBoot !== 'undefined') throw "exception";
-		if (!window) throw "exception";
-		if (!window.location) throw "exception";
-		return true;
-	} catch (e) {
-		return false;
-	}
-}
-
-export default class extends Service {
-
-	#timer = undefined;
-
-	#config = undefined;
-
-	// Whether an update is available
-	// for the ember app, so that we
-	// can display a notification.
-
-	@tracked updateready = false;
-
-	// Setup the Version service if the
-	// feature is supported, and check
-	// continuously for updates.
-
-	constructor() {
-
-		super(...arguments);
-
-		if (enabled() === false) return;
-
-		if (window.ELECTRON === true) return;
-
-		this.#config = Object.assign({}, defaults, config.update);
-
-		if (this.#config.enabled === true) {
-			if (this.#config.frequency) {
-				this.#timer = setInterval(
-					this.check.bind(this),
-					this.#config.frequency,
-				);
-			}
+	isSupported() {
+		try {
+			if (typeof FastBoot !== 'undefined') throw "exception";
+			if (!window) throw "exception";
+			if (!window.location) throw "exception";
+			return true;
+		} catch (e) {
+			return false;
 		}
-
-		this.on('updateready', () => {
-			switch (this.#config.autoupdate) {
-			case false:
-				return this.updateready = true;
-			case true:
-				return this.reset();
-			}
-		});
-
-		this.check();
-
 	}
 
-	// If this service is going to be
-	// destroyed, then let's ensure that
-	// the checker timer is cancelled.
+	resolveConfig() {
+		return Object.assign({}, defaults, config.update);
+	}
 
-	willDestroy() {
+	// Once the app's version check is set up, run an
+	// immediate check so a stale tab notices right away.
 
-		if (this.#timer) clearInterval(this.#timer);
-
-		this.removeAllListeners();
-
-		super.willDestroy(...arguments);
-
+	boot() {
+		this.check();
 	}
 
 	// Reset reloads the newer software
@@ -100,7 +44,7 @@ export default class extends Service {
 
 		if (this.updateready) return;
 
-		if (this.#config.enabled === true) {
+		if (this._config.enabled === true) {
 
 			let url = `/version.txt?_=${new Date().getTime()}`;
 
