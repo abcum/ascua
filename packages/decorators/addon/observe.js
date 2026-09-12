@@ -18,7 +18,17 @@ export default function(...paths) {
 
 		for (let path of paths) {
 			expandProperties(path, prop => {
-				addObserver(target, prop, null, key);
+				// `sync: false` registers an async observer instead of a
+				// sync one (Ember's deprecated default). Verified against a
+				// real build either way: this only reliably fires when the
+				// observed property is mutated via classic
+				// `set(obj, prop, value)` - a plain `this[prop] = value`
+				// assignment (the normal way state is mutated everywhere
+				// else in this codebase, @tracked or not) never calls
+				// notifyPropertyChange, so neither sync nor async observers
+				// ever see it. @observe/@unobserve are only meaningful on
+				// code that still mutates through set().
+				addObserver(target, prop, null, key, false);
 			});
 		}
 

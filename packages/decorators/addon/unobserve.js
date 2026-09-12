@@ -18,7 +18,10 @@ export default function(...paths) {
 
 		for (let path of paths) {
 			expandProperties(path, prop => {
-				removeObserver(target, prop, null, key);
+				// Must match the `sync: false` used by @observe's addObserver
+				// call, or this targets the wrong (sync) observer registry
+				// and never actually removes the async one.
+				removeObserver(target, prop, null, key, false);
 			});
 		}
 
