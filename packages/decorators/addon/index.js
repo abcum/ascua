@@ -7,6 +7,7 @@ import cache from './cache';
 import observe from './observe';
 import unobserve from './unobserve';
 import debounce from './debounce';
+import clampToViewport from './clamp-to-viewport';
 
 export {
 	on,
@@ -18,4 +19,5 @@ export {
 	observe,
 	unobserve,
 	debounce,
+	clampToViewport,
 }

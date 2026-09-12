@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { get } from '@ember/object';
+import { clampToViewport } from '@ascua/decorators';
 
 export default class extends Component {
 
@@ -46,10 +47,7 @@ export default class extends Component {
 		let t = this.element.getBoundingClientRect().top - 5;
 		let l = this.element.getBoundingClientRect().left - 5;
 
-		while (l + w > window.innerWidth - 30) l--;
-		while (t + h > window.innerHeight - 30) t--;
-
-		this.left = l; this.top = t;
+		({ left: this.left, top: this.top } = clampToViewport(l, t, w, h));
 
 		setTimeout(() => {
 
@@ -58,10 +56,7 @@ export default class extends Component {
 			let t = this.element.getBoundingClientRect().top - 5;
 			let l = this.element.getBoundingClientRect().left - 5;
 
-			while (l + w > window.innerWidth - 30) l--;
-			while (t + h > window.innerHeight - 30) t--;
-
-			this.left = l; this.top = t;
+			({ left: this.left, top: this.top } = clampToViewport(l, t, w, h));
 
 		});
 

@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
+import { clampToViewport } from '@ascua/decorators';
 import Electron from 'electron';
 
 export default class extends Component {
@@ -14,8 +15,7 @@ export default class extends Component {
 		let w = element.offsetWidth;
 		let h = element.offsetHeight;
 
-		while (x + w > window.innerWidth - 30) x--;
-		while (y + h > window.innerHeight - 30) y--;
+		({ left: x, top: y } = clampToViewport(x, y, w, h));
 
 		element.style.top = `${y}px`;
 		element.style.left = `${x}px`;

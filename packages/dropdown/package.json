@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@ascua/arrays": "file:../arrays",
+    "@ascua/decorators": "file:../decorators",
     "@ascua/keyboard": "file:../keyboard",
     "@ascua/logic": "file:../logic",
     "@ascua/modifiers": "file:../modifiers",
