@@ -18,30 +18,30 @@ export default function (target) {
 
 function func(target) {
 
-	target.reopen({
+	return class extends target {
 
-		store: service(),
+		@service store;
 
-		router: service(),
+		@service router;
 
-		surreal: service(),
+		@service surreal;
 
-		redirectAfterSignout: 'signin',
+		redirectAfterSignout = 'signin';
 
 		beforeModel() {
 			// Reset the data store.
 			this.store.reset();
 			// Invalidate the connection.
 			return this.surreal.invalidate();
-		},
+		}
 
 		afterModel() {
 			// Reset the data store.
 			this.store.reset();
 			// Redirect to the specified route.
 			return this.router.transitionTo(this.redirectAfterSignout);
-		},
+		}
 
-	});
+	};
 
 }

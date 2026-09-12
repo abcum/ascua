@@ -18,37 +18,31 @@ export default function (target) {
 
 function func(target) {
 
-	let enter = target.prototype.activate;
+	return class extends target {
 
-	let leave = target.prototype.deactivate;
+		@service router;
 
-	let before = target.prototype.beforeModel;
+		@service surreal;
 
-	target.reopen({
+		@service session;
 
-		router: service(),
-
-		surreal: service(),
-
-		session: service(),
-
-		redirectIfInvalidated: 'signin',
+		redirectIfInvalidated = 'signin';
 
 		activate() {
-			enter.apply(this, ...arguments);
+			super.activate(...arguments);
 			// Enable listening to invalidated events.
 			this.surreal.on('invalidated', this, this.invalidate);
-		},
+		}
 
 		deactivate() {
-			leave.apply(this, ...arguments);
+			super.deactivate(...arguments);
 			// Disable listening to invalidated events.
 			this.surreal.off('invalidated', this, this.invalidate);
-		},
+		}
 
 		invalidate() {
 			this.router.transitionTo(this.redirectIfInvalidated);
-		},
+		}
 
 		beforeModel(transition) {
 			// Store the current desired route.
@@ -60,10 +54,10 @@ function func(target) {
 			// Wait for session identification.
 			return this.session.ready.then(() => {
 				// Continue with original hook.
-				return before.apply(this, ...arguments);
+				return super.beforeModel(...arguments);
 			});
-		},
+		}
 
-	});
+	};
 
 }

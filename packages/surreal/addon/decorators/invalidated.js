@@ -18,31 +18,25 @@ export default function (target) {
 
 function func(target) {
 
-	let enter = target.prototype.activate;
+	return class extends target {
 
-	let leave = target.prototype.deactivate;
+		@service router;
 
-	let before = target.prototype.beforeModel;
+		@service surreal;
 
-	target.reopen({
-
-		router: service(),
-
-		surreal: service(),
-
-		redirectIfAuthenticated: 'index',
+		redirectIfAuthenticated = 'index';
 
 		activate() {
-			enter.apply(this, ...arguments);
+			super.activate(...arguments);
 			// Enable listening to authenticated events.
 			this.surreal.on('authenticated', this, this.authenticate);
-		},
+		}
 
 		deactivate() {
-			leave.apply(this, ...arguments);
+			super.deactivate(...arguments);
 			// Disable listening to authenticated events.
 			this.surreal.off('authenticated', this, this.authenticate);
-		},
+		}
 
 		authenticate() {
 			if (this.surreal.transition) {
@@ -50,7 +44,7 @@ function func(target) {
 			} else {
 				this.router.transitionTo(this.redirectIfAuthenticated);
 			}
-		},
+		}
 
 		beforeModel(transition) {
 			// Redirect if connection is authenticated.
@@ -58,9 +52,9 @@ function func(target) {
 				return this.router.replaceWith(this.redirectIfAuthenticated);
 			}
 			// Continue with original hook.
-			return before.apply(this, ...arguments);
-		},
+			return super.beforeModel(...arguments);
+		}
 
-	});
+	};
 
 }

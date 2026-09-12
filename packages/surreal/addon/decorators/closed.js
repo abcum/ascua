@@ -18,24 +18,24 @@ export default function (target) {
 
 function func(target) {
 
-	target.reopen({
+	return class extends target {
 
-		surreal: service(),
+		@service surreal;
 
-		closed: () => { },
+		closed() { }
 
 		activate() {
-			this._super(...arguments);
+			super.activate(...arguments);
 			// Enable listening to closed events.
 			this.surreal.on('closed', this, this.closed);
-		},
+		}
 
 		deactivate() {
-			this._super(...arguments);
+			super.deactivate(...arguments);
 			// Disable listening to closed events.
 			this.surreal.off('closed', this, this.closed);
-		},
+		}
 
-	});
+	};
 
 }

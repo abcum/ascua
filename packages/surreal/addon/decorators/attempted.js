@@ -18,20 +18,18 @@ export default function (target) {
 
 function func(target) {
 
-	let before = target.prototype.beforeModel;
+	return class extends target {
 
-	target.reopen({
-
-		surreal: service(),
+		@service surreal;
 
 		beforeModel() {
 			// Wait for authentication attempt.
 			return this.surreal.wait().then(() => {
 				// Continue with original hook.
-				return before.apply(this, ...arguments);
+				return super.beforeModel(...arguments);
 			});
-		},
+		}
 
-	});
+	};
 
 }
