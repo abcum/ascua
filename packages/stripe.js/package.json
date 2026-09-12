@@ -15,6 +15,7 @@
     "url": "https://surrealdb.com"
   },
   "dependencies": {
+    "@ascua/config": "file:../config",
     "@ascua/events": "file:../events",
     "@ascua/modifiers": "file:../modifiers",
     "ember-cli-babel": "^8.2.0",
