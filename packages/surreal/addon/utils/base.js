@@ -1,6 +1,6 @@
 export default function(str) {
 
-	var output = str.replace(/-/g, "+").replace(/_/g, "/");
+	let output = str.replace(/-/g, "+").replace(/_/g, "/");
 
 	switch (output.length % 4) {
 	case 0:
@@ -18,7 +18,7 @@ export default function(str) {
 	try {
 
 		return decodeURIComponent(window.atob(str).replace(/(.)/g, (m, p) => {
-			var code = p.charCodeAt(0).toString(16).toUpperCase();
+			let code = p.charCodeAt(0).toString(16).toUpperCase();
 			if (code.length < 2) code = '0' + code;
 			return '%' + code;
 		}));

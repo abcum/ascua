@@ -1,10 +1,10 @@
 import DMP from 'dmp';
 
 function getByPath(obj, path) {
-	var parts = path.split('.');
-	var o = obj;
+	const parts = path.split('.');
+	let o = obj;
 	if (parts.length > 1) {
-		for (var i = 0; i < parts.length - 1; i++) {
+		for (let i = 0; i < parts.length - 1; i++) {
 			if (!o[parts[i]]) {
 				o[parts[i]] = {};
 			}
@@ -15,10 +15,10 @@ function getByPath(obj, path) {
 }
 
 function setByPath(obj, path, value) {
-	var parts = path.split('.');
-	var o = obj;
+	const parts = path.split('.');
+	let o = obj;
 	if (parts.length > 1) {
-		for (var i = 0; i < parts.length - 1; i++) {
+		for (let i = 0; i < parts.length - 1; i++) {
 			if (!o[parts[i]]) {
 				o[parts[i]] = {};
 			}
@@ -29,10 +29,10 @@ function setByPath(obj, path, value) {
 }
 
 function delByPath(obj, path) {
-	var parts = path.split('.');
-	var o = obj;
+	const parts = path.split('.');
+	let o = obj;
 	if (parts.length > 1) {
-		for (var i = 0; i < parts.length - 1; i++) {
+		for (let i = 0; i < parts.length - 1; i++) {
 			if (!o[parts[i]]) {
 				o[parts[i]] = {};
 			}

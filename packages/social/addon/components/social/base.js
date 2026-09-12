@@ -18,8 +18,8 @@ export default class extends Component {
 
 		event.stopPropagation();
 
-		var l = (screen.width / 2) - (this.width / 2);
-		var t = (screen.height / 2) - (this.height / 2);
+		const l = (screen.width / 2) - (this.width / 2);
+		const t = (screen.height / 2) - (this.height / 2);
 
 		window.open(this.href, null, `status=no, titlebar=no, toolbar=no, width=${this.width}, height=${this.height}, top=${t}, left=${l}`);
 

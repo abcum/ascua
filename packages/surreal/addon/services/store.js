@@ -557,7 +557,7 @@ export default class Store extends Service {
 
 		let [result = []] = await this.surreal.query(text, vars);
 
-		return result && result[0] && result[0].count || 0;
+		return result?.[0]?.count ?? 0;
 
 	}
 
