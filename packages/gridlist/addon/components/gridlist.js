@@ -272,7 +272,7 @@ export default class extends Component {
 	// `@onSelect` consumers expect an array - e.g. `transition-to-selected`
 	// calls `.join(',')` on it - so it's converted back at every call site.
 
-	isSelected(id) {
+	@action isSelected(id) {
 		return this.conf.a.has(id);
 	}
 
