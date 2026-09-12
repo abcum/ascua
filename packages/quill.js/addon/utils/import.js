@@ -1,8 +1,9 @@
 export default class Import {
 
-	constructor(quill) {
+	constructor(quill, options) {
 
 		this.quill = quill;
+		this.allowMedia = options?.allowMedia !== false;
 
 		this.didDrop = this.didDrop.bind(this);
 		this.didPaste = this.didPaste.bind(this);
@@ -15,6 +16,8 @@ export default class Import {
 	}
 
 	didImage(e) {
+
+		if (!this.allowMedia) return;
 
 		const input = document.createElement('input');
 		input.setAttribute('type', 'file');
@@ -29,6 +32,8 @@ export default class Import {
 	}
 
 	didVideo(e) {
+
+		if (!this.allowMedia) return;
 
 		const input = document.createElement('input');
 		input.setAttribute('type', 'file');
@@ -47,6 +52,7 @@ export default class Import {
 		if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
+			if (!this.allowMedia) return;
 			[].forEach.call(e.clipboardData.files, file => {
 				this.quill.getModule('insert').insert(file);
 			});
@@ -60,6 +66,8 @@ export default class Import {
 		e.stopImmediatePropagation();
 
 		if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+
+			if (!this.allowMedia) return;
 
 			if (document.caretRangeFromPoint) {
 				const sel = document.getSelection();

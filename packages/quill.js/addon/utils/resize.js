@@ -1,3 +1,5 @@
+import Quill from 'quill';
+
 const props = [
 	'userSelect',
 	'mozUserSelect',
@@ -31,6 +33,7 @@ export default class Resize {
 		this.quill = quill;
 
 		this.didKeyup = this.didKeyup.bind(this);
+		this.didKeydown = this.didKeydown.bind(this);
 		this.didClick = this.didClick.bind(this);
 		this.didMouseup = this.didMouseup.bind(this);
 		this.didMousedown = this.didMousedown.bind(this);
@@ -39,6 +42,7 @@ export default class Resize {
 		document.execCommand('enableObjectResizing', false, 'false');
 
 		this.quill.root.addEventListener('click', this.didClick, false);
+		this.quill.root.addEventListener('keydown', this.didKeydown, false);
 
 	}
 
@@ -172,8 +176,29 @@ export default class Resize {
 	// which will allow selecting
 	// and resizing images in Quill.
 
-	didKeyup() {
-		if (this.img) this.hide();
+	// Backspace/Delete while an image is focused (resize handles shown)
+	// removes it. Previously any keyup just hid the resize UI without
+	// ever touching the document, so deleting a selected image did
+	// nothing - the image lived on in the underlying delta regardless.
+	didKeyup(e) {
+		if (!this.img) return;
+		if (e && (e.key === 'Backspace' || e.key === 'Delete')) {
+			const blot = Quill.find(this.img);
+			if (blot) this.quill.deleteText(this.quill.getIndex(blot), 1, 'user');
+		}
+		this.hide();
+	}
+
+	// Cmd/Ctrl+A: the browser's native selection sometimes stops just
+	// short of a trailing image blot (there is no text node past it to
+	// anchor the selection end to), so Quill's resulting range excludes
+	// it and a following delete leaves the image behind. Forcing Quill's
+	// own full-document selection sidesteps that native-selection quirk
+	// entirely.
+	didKeydown(e) {
+		if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== 'a') return;
+		e.preventDefault();
+		this.quill.setSelection(0, this.quill.getLength(), 'user');
 	}
 
 	didClick(e) {
