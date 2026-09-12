@@ -2,12 +2,7 @@ import Queue from './classes/queue';
 import Defer from './classes/defer';
 import { assert } from '@ember/debug';
 
-export function timeout(wait=0) {
-	return new Promise(resolve => {
-		setTimeout(resolve.bind(this, wait), wait);
-	});
-}
-
+export { timeout } from '@ascua/promise';
 
 export function queue(target, key, desc) {
 
