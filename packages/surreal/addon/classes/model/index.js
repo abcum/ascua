@@ -235,6 +235,21 @@ export default class Model {
 	async delete() {
 		if (this.#cancel) this.#cancel();
 		[this.#ctx, this.#cancel] = context.withCancel();
+
+		// `#cancel` only stops a save/update still inside its debounce delay
+		// (see `save()` below) - it cannot stop one that has already left that
+		// delay and is in flight to the server, because `_modify`/`_update`
+		// are independent `@defer` queues with no knowledge of `_delete`.
+		// Waiting for them to settle here guarantees this DELETE is always
+		// the last write SurrealDB sees for this record, so a MERGE that was
+		// already in flight can never land after it - on a SurrealDB version
+		// where UPDATE upserts a missing id (true before 2.0.0), a save that
+		// arrived after the row was gone would otherwise silently recreate
+		// it, near-empty, with only whatever fields that one diff carried.
+
+		await this._modify.settle();
+		await this._update.settle();
+
 		return this._delete.queue();
 	}
 
@@ -355,6 +370,17 @@ export default class Model {
 	@defer async _modify() {
 		if (this.#fake) return;
 
+		// A confirmed delete already won the race in `delete()` (see its own
+		// note) for anything still in flight when it was called; this covers
+		// the remaining case, a save queued *after* the delete has already
+		// succeeded - e.g. a field mutated by code that still held a
+		// reference to this record. Without this, `store.modify` would MERGE
+		// straight back into a now-missing id, which upserts it on a
+		// SurrealDB version where UPDATE creates a missing record (true
+		// before 2.0.0).
+
+		if (this[RECORD].state === DELETED) return;
+
 		// Computing the diff is kept OUTSIDE the failure-recording try below,
 		// and failing to compute one is still treated as "nothing to save",
 		// not a save failure — restoring the original behaviour here, which
@@ -413,6 +439,9 @@ export default class Model {
 
 	@defer async _update() {
 		if (this.#fake) return;
+
+		// See the matching guard in `_modify` above.
+		if (this[RECORD].state === DELETED) return;
 
 		this[RECORD].state = LOADING;
 		this[RECORD].error = undefined;

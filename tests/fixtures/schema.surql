@@ -50,3 +50,32 @@ DEFINE FIELD parts.*.isbn ON gadget TYPE option<string>;
 DEFINE FIELD parts.*.pages ON gadget TYPE option<number>;
 
 DEFINE INDEX book_title ON book FIELDS title FULLTEXT ANALYZER search BM25;
+
+-- --------------------------------------------------
+-- TABLE widget + `restricted` record access
+-- --------------------------------------------------
+--
+-- Exists purely to reproduce a delete denied by table PERMISSIONS: a plain
+-- `DEFINE USER ... ROLES EDITOR/VIEWER` bypasses table PERMISSIONS entirely
+-- (verified directly - only a record-access session is filtered by them),
+-- so a genuine repro needs one, and `restricted` is the minimal shape of one
+-- - a single fixed identity, signed into passwordlessly, with no fields or
+-- variables to manage. `widget`'s `FOR delete WHERE false` denies every
+-- delete under that access unconditionally, on purpose, as the simplest
+-- possible always-false permission.
+
+DEFINE TABLE restricted_owner SCHEMAFULL PERMISSIONS FULL;
+DEFINE FIELD name ON restricted_owner TYPE option<string>;
+
+CREATE restricted_owner:only SET name = 'only';
+
+DEFINE ACCESS restricted ON DATABASE TYPE RECORD
+	SIGNIN ( SELECT * FROM ONLY restricted_owner:only )
+	DURATION FOR SESSION 1h;
+
+DEFINE TABLE widget SCHEMAFULL
+	PERMISSIONS
+		FOR select, create, update FULL
+		FOR delete WHERE false;
+
+DEFINE FIELD name ON widget TYPE option<string>;

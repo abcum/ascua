@@ -521,7 +521,21 @@ export default class Store extends Service {
 
 		try {
 
-			await this.surreal.delete(record.tb, record.id);
+			// A DELETE that the record's own `FOR delete` permission denies is
+			// not an error as far as SurrealDB is concerned - it simply
+			// matches and removes nothing, and resolves the same as a real
+			// delete would. Verified directly: a session lacking permission
+			// gets back `undefined` here with no exception at all, so without
+			// this check the `catch` below - and the rollback the docstring
+			// above promises - never runs for a permissions failure, only for
+			// a genuine thrown error (a network fault, say).
+
+			let result = await this.surreal.delete(record.tb, record.id);
+
+			if (result === undefined || result === null) {
+				throw new Error(`Delete of ${record.tb}:${record.id} did not remove a record - check permissions`);
+			}
+
 			return this.unload(record.tb, record.id);
 
 		} catch (e) {
