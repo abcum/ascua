@@ -15,8 +15,10 @@
     "url": "https://surrealdb.com"
   },
   "dependencies": {
+    "@ascua/config": "file:../config",
     "@ascua/keyboard": "file:../keyboard",
     "@ascua/resize": "file:../resize",
+    "@ascua/tasks": "file:../tasks",
     "@ascua/viewport": "file:../viewport",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0",
