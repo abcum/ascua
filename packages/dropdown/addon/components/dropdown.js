@@ -108,11 +108,35 @@ export default class extends Component {
 		});
 	}
 
+	// Two values that both represent the same record can be different object
+	// instances - e.g. one fetched via the model being edited, the other via
+	// a different relation used to build the option list - so a multi-select
+	// toggle can't rely on `===`/`Array#includes`. Records expose a stable
+	// `id`; anything else (a plain string/number option) still compares by
+	// its own identity, matching the previous behaviour for those.
+	//
+	// Read `value.id` directly rather than testing `'id' in value` first:
+	// these are store proxies, and `in` doesn't see `id` on at least some of
+	// them (verified - `in` reports false while `.id` itself resolves fine),
+	// so a presence check silently disabled the id-based comparison for
+	// exactly the objects it exists to handle.
+	#key(value) {
+		if (!value || typeof value !== 'object') return value;
+		let id = value.id;
+		return id === undefined ? value : String(id);
+	}
+
+	@action includes(value) {
+		let key = this.#key(value);
+		return this.value.some(v => this.#key(v) === key);
+	}
+
 	@action async changed(value) {
 
 		if (this.args.multiple) {
-			if (this.value.includes(value)) {
-				this.value = this.value.filter(v => v !== value);
+			if (this.includes(value)) {
+				let key = this.#key(value);
+				this.value = this.value.filter(v => this.#key(v) !== key);
 			} else {
 				this.value = [...this.value, value];
 			}

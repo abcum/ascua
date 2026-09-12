@@ -1,7 +1,7 @@
 <app-dropdown-option
 	disabled={{@disabled}}
 	filtered={{matches @label @dropdown.search}}
-	selected={{includes (await @value) @dropdown.value}}
+	selected={{@dropdown.includes (await @value)}}
 	{{on "click" (fn @dropdown.changed @value)}}
 	...attributes>
 	{{@label}}
