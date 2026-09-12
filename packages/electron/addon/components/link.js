@@ -5,24 +5,22 @@ import Electron from 'electron';
 
 export default class extends Component {
 
-	@action didClick(event) {
+	@action async didClick(event) {
 
 		if (!Electron) {
 			if (this.args.download) {
 				event.stopPropagation();
 				event.preventDefault();
-				fetch(this.args.url)
-					.then(r => r.blob())
-					.then(blob => {
-						let url = URL.createObjectURL(blob);
-						let a = document.createElement('a');
-						a.href = url;
-						a.download = this.args.download;
-						document.body.appendChild(a);
-						a.click();
-						document.body.removeChild(a);
-						URL.revokeObjectURL(url);
-					});
+				let r = await fetch(this.args.url);
+				let blob = await r.blob();
+				let url = URL.createObjectURL(blob);
+				let a = document.createElement('a');
+				a.href = url;
+				a.download = this.args.download;
+				document.body.appendChild(a);
+				a.click();
+				document.body.removeChild(a);
+				URL.revokeObjectURL(url);
 			}
 			return;
 		}
