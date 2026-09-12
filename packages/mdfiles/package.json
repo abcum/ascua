@@ -17,8 +17,8 @@
   "dependencies": {
     "@ascua/config": "file:../config",
     "broccoli-merge-trees": "^4.2.0",
-    "ember-cli-babel": "^7.26.6",
-    "ember-cli-htmlbars": "^5.7.1",
+    "ember-cli-babel": "^8.2.0",
+    "ember-cli-htmlbars": "^6.3.0",
     "ember-fetch": "^8.1.2",
     "front-matter": "^4.0.2"
   },
