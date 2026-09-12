@@ -1,5 +1,4 @@
 import { tracked } from '@glimmer/tracking';
-import { get } from '@ember/object';
 
 export default class extends Object {
 
@@ -16,7 +15,7 @@ export default class extends Object {
 	// toggle can only ever add, appending the same id over and over.
 
 	get id() {
-		let id = get(this.model, 'id');
+		let id = this.model?.id;
 		return id === null || id === undefined ? id : String(id);
 	}
 

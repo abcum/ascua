@@ -1,5 +1,4 @@
 import Component from '@glimmer/component';
-import { setProperties } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { next } from '@ember/runloop';
@@ -39,10 +38,8 @@ export default class extends Component {
 
 	@action didCreate(element) {
 		if (this.exit()) return;
-		setProperties(this, {
-			model: this.args.model,
-			total: this.args.model.length,
-		});
+		this.model = this.args.model;
+		this.total = this.args.model.length;
 		this.conf.e.w = element.clientWidth;
 		this.conf.e.h = element.clientHeight;
 		this.conf.i.w = parseInt(this.args.colWidth);
@@ -53,10 +50,8 @@ export default class extends Component {
 
 	@action didChange(element) {
 		if (this.exit()) return;
-		setProperties(this, {
-			model: this.args.model,
-			total: this.args.model.length,
-		});
+		this.model = this.args.model;
+		this.total = this.args.model.length;
 		this.conf.e.w = element.clientWidth;
 		this.conf.e.h = element.clientHeight;
 		this.conf.i.w = parseInt(this.args.colWidth);
