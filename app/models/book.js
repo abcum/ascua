@@ -2,7 +2,8 @@ import Model from '@ascua/surreal/model';
 import { string, datetime, record, array, object } from '@ascua/surreal/field';
 
 // Test fixture model exercising a single record link, an array of record
-// links, an embedded object (Field), and a datetime.
+// links, an embedded object (Field), an array of embedded objects
+// (Field[]), and a datetime.
 
 export default class Book extends Model {
 
@@ -15,5 +16,7 @@ export default class Book extends Model {
 	@array('author') contributors;
 
 	@object('detail') detail;
+
+	@array('detail') details;
 
 }

@@ -4,6 +4,18 @@ import DMP from 'dmp';
 
 const regex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
 
+// Matches classes/field/array.js's own comparison helper: a stable,
+// sorted-key stringification used only to test equality, not to build a
+// payload.
+const json = (v) => {
+	try {
+		let o = JSON.parse(JSON.stringify(v));
+		return JSON.stringify(o, Object.keys(o).sort());
+	} catch (e) {
+		return JSON.stringify(v);
+	}
+};
+
 function route(path, part) {
 	if (path.length === 0) {
 		return '/' + part;
@@ -123,11 +135,22 @@ export default class Diff {
 
 	arr(old=[], now=[], path='') {
 
-		let i = 0;
+		// A `replace`/`change` op whose path runs through an array index
+		// silently no-ops against SurrealDB (3.2.3, confirmed directly
+		// against the server: PATCH replace at `/tags/0` or
+		// `/details/0/isbn` both return 200 with the array left
+		// completely unchanged - `add`/`remove` at an index are fine, it
+		// is specifically an in-place replace of an existing element that
+		// the server drops). So an existing shared index whose value
+		// changed can't be patched in place; the whole array is replaced
+		// instead, at this array's own (index-free) path - add/remove for
+		// a pure length change is unaffected and stays as the minimal op.
 
-		for (i=0; i < old.length && i < now.length; i++) {
-			let p = route(path, i);
-			this.val(old[i], now[i], p);
+		for (let i=0; i < old.length && i < now.length; i++) {
+			if (json(old[i]) !== json(now[i])) {
+				this.op('replace', path, now);
+				return;
+			}
 		}
 
 		for (let j = old.length; j < now.length; j++) {

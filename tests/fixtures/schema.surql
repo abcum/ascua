@@ -34,4 +34,19 @@ DEFINE FIELD detail ON book TYPE option<object>;
 DEFINE FIELD detail.isbn ON book TYPE option<string>;
 DEFINE FIELD detail.pages ON book TYPE option<number>;
 
+DEFINE FIELD details ON book TYPE option<array<object>>;
+DEFINE FIELD details.*.isbn ON book TYPE option<string>;
+DEFINE FIELD details.*.pages ON book TYPE option<number>;
+
+-- --------------------------------------------------
+-- TABLE gadget
+-- --------------------------------------------------
+
+DEFINE TABLE gadget SCHEMAFULL;
+
+DEFINE FIELD name ON gadget TYPE option<string>;
+DEFINE FIELD parts ON gadget TYPE option<array<object>>;
+DEFINE FIELD parts.*.isbn ON gadget TYPE option<string>;
+DEFINE FIELD parts.*.pages ON gadget TYPE option<number>;
+
 DEFINE INDEX book_title ON book FIELDS title FULLTEXT ANALYZER search BM25;
