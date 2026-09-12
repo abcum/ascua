@@ -17,7 +17,8 @@
   "dependencies": {
     "@ascua/decorators": "file:../decorators",
     "ember-cli-babel": "^8.2.0",
-    "ember-cli-htmlbars": "^6.3.0"
+    "ember-cli-htmlbars": "^6.3.0",
+    "rsvp": "^3.6.2"
   },
   "ember-addon": {
     "demoURL": "https://abcum.github.io/ascua"
