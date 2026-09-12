@@ -1,4 +1,5 @@
 import Service from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import { Promise } from 'rsvp';
 
 function enabled() {
@@ -17,7 +18,7 @@ export default class extends Service {
 
 	watchid = null;
 
-	current = null;
+	@tracked current = null;
 
 	find({ enableHighAccuracy = false, timeout = Infinity, maximumAge = 0 }) {
 
@@ -29,7 +30,7 @@ export default class extends Service {
 
 			window.navigator.geolocation.getCurrentPosition(
 				(result) => {
-					this.set('current', result);
+					this.current = result;
 					resolve(result);
 				},
 				(reason) => {
@@ -56,7 +57,7 @@ export default class extends Service {
 
 			this.watchid = window.navigator.geolocation.watchPosition(
 				(result) => {
-					this.set('current', result);
+					this.current = result;
 					resolve(result);
 				},
 				(reason) => {
