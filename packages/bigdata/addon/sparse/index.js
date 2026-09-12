@@ -26,6 +26,19 @@ export default class extends Array {
 
 	ranges = {};
 
+	// Tracks resolved-row access order so the list can cap how many rows it
+	// keeps materialised. Without this every index a session has ever
+	// scrolled past stays cached forever - fine for a small list, but the
+	// whole point of a sparse/"big data" list is that the backing dataset
+	// can be far larger than what's ever shown at once, so retaining every
+	// visited row defeats that. `maxCached` is set from `limit` in the
+	// constructor, well above a typical visible window, so evicting the
+	// least-recently-touched index doesn't disturb rows still on screen.
+
+	cached = new Map();
+
+	maxCached = 200;
+
 	@tracked loaded = false;
 
 	// Whether `total` is the real count rather than a provisional one.
@@ -43,9 +56,23 @@ export default class extends Array {
 
 		this.limit = limit;
 		this.fetch = fetch;
+		this.maxCached = Math.max(limit * 20, 200);
 
 		this.reset();
 
+	}
+
+	// Marks `idx` as the most-recently-touched row, evicting the
+	// least-recently-touched one once the cache grows past `maxCached`.
+
+	touch(idx) {
+		this.cached.delete(idx);
+		this.cached.set(idx, true);
+		if (this.cached.size > this.maxCached) {
+			let oldest = this.cached.keys().next().value;
+			this.cached.delete(oldest);
+			delete this[oldest];
+		}
 	}
 
 	objectAt(idx, fetch = false) {
@@ -63,6 +90,7 @@ export default class extends Array {
 		this.loaded = false;
 		this.counted = true;
 		this.failure = undefined;
+		this.cached.clear();
 		notifyPropertyChange(this, '[]');
 		this.remoteObjectAt(0);
 	}
@@ -75,6 +103,7 @@ export default class extends Array {
 	}
 
 	sparseObjectAt(idx) {
+		this.touch(idx);
 		return this[idx] = this[idx] || Item.create();
 	}
 
@@ -98,6 +127,7 @@ export default class extends Array {
 
 	fulfillObjectsAt({ start, limit }, array) {
 		for (let i = start; i < (start + limit) && i < this.total; i++) {
+			this.touch(i);
 			this[i] = this[i] || Item.create();
 			this[i].resolve(array[i-start]);
 		}
