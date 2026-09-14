@@ -422,7 +422,14 @@ export default class Surreal extends Service {
 			this.authenticated = false;
 			this.emit('attempted');
 			this.emit('invalidated');
-			return Promise.reject();
+
+			// Rejected WITH the reason. `Promise.reject()` discarded it, so a
+			// caller could not tell a wrong password from a missing access
+			// definition from a connection that was not up - every failure
+			// arrived as `undefined`, which is also unloggable. A sign-in form
+			// has nothing else to show the person in front of it.
+
+			throw e;
 		}
 	}
 
@@ -445,7 +452,14 @@ export default class Surreal extends Service {
 			this.authenticated = false;
 			this.emit('attempted');
 			this.emit('invalidated');
-			return Promise.reject();
+
+			// Rejected WITH the reason. `Promise.reject()` discarded it, so a
+			// caller could not tell a wrong password from a missing access
+			// definition from a connection that was not up - every failure
+			// arrived as `undefined`, which is also unloggable. A sign-in form
+			// has nothing else to show the person in front of it.
+
+			throw e;
 		}
 	}
 
