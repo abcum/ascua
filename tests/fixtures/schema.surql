@@ -79,3 +79,35 @@ DEFINE TABLE widget SCHEMAFULL
 		FOR delete WHERE false;
 
 DEFINE FIELD name ON widget TYPE option<string>;
+
+-- --------------------------------------------------
+-- TABLE gizmo
+-- --------------------------------------------------
+--
+-- The `@autosave` fixture used by the nested-object, nested-array,
+-- record-link and live-query suites. Deliberately richer than `gadget`:
+-- it mirrors the shapes that app.hireinsight.io's `contact` actually uses —
+-- an embedded object that itself contains an array and a further embedded
+-- object (`contact.location`), an array of embedded objects each with their
+-- own array and nested object (`contact.fields`, `contact.emails`), a single
+-- record link (`contact.account`) and an array of record links
+-- (`contact.owners`, `contact.applications`).
+
+DEFINE TABLE gizmo SCHEMAFULL;
+
+DEFINE FIELD name ON gizmo TYPE option<string>;
+
+DEFINE FIELD owner ON gizmo TYPE option<record<author>>;
+DEFINE FIELD owners ON gizmo TYPE option<array<record<author>>>;
+
+DEFINE FIELD spec ON gizmo TYPE option<object>;
+DEFINE FIELD spec.code ON gizmo TYPE option<string>;
+DEFINE FIELD spec.tags ON gizmo TYPE option<array<string>>;
+DEFINE FIELD spec.note ON gizmo TYPE option<object>;
+DEFINE FIELD spec.note.text ON gizmo TYPE option<string>;
+
+DEFINE FIELD specs ON gizmo TYPE option<array<object>>;
+DEFINE FIELD specs.*.code ON gizmo TYPE option<string>;
+DEFINE FIELD specs.*.tags ON gizmo TYPE option<array<string>>;
+DEFINE FIELD specs.*.note ON gizmo TYPE option<object>;
+DEFINE FIELD specs.*.note.text ON gizmo TYPE option<string>;
