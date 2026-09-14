@@ -9,6 +9,7 @@ import Record from '../types/record';
 import Model from '@ascua/surreal/model';
 import Field from '@ascua/surreal/field';
 import { RecordId, StringRecordId } from 'surrealdb';
+import thing from '../../utils/thing';
 import { assert } from '@ember/debug';
 import { DestroyedError } from '@ascua/surreal/errors';
 import { RECORD } from '../model';
@@ -78,17 +79,20 @@ export default function(type) {
 								return this.store.proxy({
 									id: v.id, content: this.store.inject(v)
 								});
-							default:
-								let cached = this.store.cached(type, v);
-								if (cached) {
-									return this.store.proxy({
-										id: v, content: cached,
-									});
-								} else {
-									return this.store.proxy({
-										id: v, promise: () => this.store.select(type, v)
-									});
-								}
+							default: {
+								// An id in some other form - a `"tb:id"`
+								// string, or a bare id. Normalised to a native
+								// record pointer first, so the proxy's
+								// `toJSON()` yields a record link rather than a
+								// plain string: a string reaches the server as
+								// a string and is rejected. See the matching
+								// note in classes/field/record.js.
+								let id = thing(type, v);
+								let cached = this.store.cached(type, id);
+								return this.store.proxy(cached
+									? { id, content: cached }
+									: { id, promise: () => this.store.select(type, id) });
+							}
 							}
 						}, ...value);
 					}
@@ -185,17 +189,20 @@ export default function(type) {
 								return this.store.proxy({
 									id: v.id, content: this.store.inject(v)
 								});
-							default:
-								let cached = this.store.cached(type, v);
-								if (cached) {
-									return this.store.proxy({
-										id: v, content: cached,
-									});
-								} else {
-									return this.store.proxy({
-										id: v, promise: () => this.store.select(type, v)
-									});
-								}
+							default: {
+								// An id in some other form - a `"tb:id"`
+								// string, or a bare id. Normalised to a native
+								// record pointer first, so the proxy's
+								// `toJSON()` yields a record link rather than a
+								// plain string: a string reaches the server as
+								// a string and is rejected. See the matching
+								// note in classes/field/record.js.
+								let id = thing(type, v);
+								let cached = this.store.cached(type, id);
+								return this.store.proxy(cached
+									? { id, content: cached }
+									: { id, promise: () => this.store.select(type, id) });
+							}
 							}
 						}, ...value);
 					}
