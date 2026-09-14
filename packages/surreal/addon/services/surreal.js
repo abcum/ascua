@@ -19,6 +19,34 @@ const defaults = {
 	url: 'wss://cloud.surrealdb.com',
 };
 
+// Reconnection policy.
+//
+// Passing `reconnect: true` takes the SDK's own defaults, which are wrong for
+// a long-lived desktop app: five attempts, starting at a 1s delay and
+// doubling, so the connection is abandoned permanently after roughly a minute
+// offline. A closed laptop lid, a VPN reconnect or a server restart therefore
+// left the app running against a socket that would never come back — and
+// because nothing in the UI depends on the socket being up, it went on
+// accepting edits, showing them as saved, and persisting none of them until
+// the whole app was restarted.
+//
+// So: never give up, and come back fast. The SDK waits
+// `retryDelay * retryDelayMultiplier ** attempt`, capped at `retryDelayMax`,
+// which with these values is ~375ms for the first retry and reaches the 10s
+// ceiling after about ten — quick enough that a brief blip is invisible,
+// gentle enough that a server which is down for an hour is not hammered.
+//
+// Override any of it with `surreal.reconnect` in the environment config.
+
+const reconnection = {
+	enabled: true,
+	attempts: -1,
+	retryDelay: 250,
+	retryDelayMax: 10000,
+	retryDelayMultiplier: 1.5,
+	retryDelayJitter: 0.1,
+};
+
 export default class Surreal extends Service {
 
 	@service store;
@@ -48,10 +76,19 @@ export default class Surreal extends Service {
 	#listeners = [];
 
 	// The set of active live query
-	// subscriptions, keyed by the
-	// live query uuid string.
+	// subscriptions.
+	//
+	// Held by identity rather than keyed by `sub.id`: a managed subscription
+	// re-registers itself under a NEW id every time the connection is
+	// re-established, so an id captured at subscribe time stops matching
+	// after the first reconnection - `kill()` then silently failed to find
+	// the subscription, leaving it running and leaking its entry here.
 
-	#live = new Map();
+	#live = new Set();
+
+	// The resolved reconnection policy, exposed so it can be inspected.
+
+	#reconnect = undefined;
 
 	// The contents of the token
 	// used for authenticating with
@@ -89,6 +126,19 @@ export default class Surreal extends Service {
 
 	@cache get jwt() {
 		return JWT(this.token);
+	}
+
+	// The reconnection policy actually in force, after the environment
+	// config has been merged over the defaults.
+
+	get reconnect() {
+		return this.#reconnect;
+	}
+
+	// The live query subscriptions currently held open.
+
+	get subscriptions() {
+		return [...this.#live];
 	}
 
 	// Setup the Surreal service,
@@ -140,6 +190,30 @@ export default class Surreal extends Service {
 			this.emit('closed');
 		}));
 
+		// When the connection drops but is going
+		// to be retried, the SDK reports it as
+		// `reconnecting` rather than `disconnected`.
+		//
+		// This has to be handled or the service's own state is a lie. The SDK
+		// publishes `disconnected` ONLY once it has stopped trying - when the
+		// socket is closed deliberately, or when the retry budget is spent -
+		// and publishes `reconnecting` for every ordinary drop in between. So
+		// a service listening only for `disconnected` went on reporting
+		// `opened === true` throughout an outage, and never emitted `closed`.
+		// Everything downstream that gates on those (route transitions, any
+		// offline indicator) therefore believed the connection was healthy
+		// while nothing could reach the server. With an unlimited retry budget
+		// - see `reconnection` above - `disconnected` now essentially never
+		// fires on its own, which would have made that permanent.
+
+		this.#listeners.push(this.#db.subscribe('reconnecting', () => {
+			this.opened = false;
+			this.attempted = false;
+			this.invalidated = false;
+			this.authenticated = false;
+			this.emit('closed');
+		}));
+
 		// When the connection is opened we
 		// update the relevant properties and
 		// then attempt to authenticate below.
@@ -179,10 +253,12 @@ export default class Surreal extends Service {
 		// The SDK will automatically attempt to
 		// reconnect on failure when `reconnect` is set.
 
+		this.#reconnect = Object.assign({}, reconnection, this.#config.reconnect);
+
 		this.#db.connect(this.#config.url, {
 			namespace: this.#config.ns ?? this.#config.NS,
 			database: this.#config.db ?? this.#config.DB,
-			reconnect: true,
+			reconnect: this.#reconnect,
 		});
 
 	}
@@ -213,7 +289,7 @@ export default class Surreal extends Service {
 
 	willDestroy() {
 
-		for (let [, sub] of this.#live) sub.kill();
+		for (let sub of this.#live) sub.kill();
 		this.#live.clear();
 
 		for (let off of this.#listeners) off();
@@ -292,7 +368,7 @@ export default class Surreal extends Service {
 
 	async live(tb) {
 		let sub = await this.#db.live(new Table(tb));
-		this.#live.set(sub.id, sub);
+		this.#live.add(sub);
 		sub.subscribe(({ action, value, recordId }) => {
 			this.emit(action, value);
 			switch (action) {
@@ -307,11 +383,20 @@ export default class Surreal extends Service {
 	}
 
 	kill(sub) {
-		let live = typeof sub === 'object' ? sub : this.#live.get(sub);
+
+		// Accepts either the subscription itself or its id. An id is matched
+		// against the CURRENT id of each held subscription, because a managed
+		// subscription is re-registered under a new one on every reconnect.
+
+		let live = (sub && typeof sub === 'object')
+			? sub
+			: [...this.#live].find(s => String(s.id) === String(sub));
+
 		if (live) {
-			this.#live.delete(live.id);
+			this.#live.delete(live);
 			return live.kill();
 		}
+
 	}
 
 	// --------------------------------------------------
