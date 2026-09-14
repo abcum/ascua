@@ -10,6 +10,25 @@ const regex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+
 // comparison — see utils/stable.js for why it is not a one-liner.
 const json = compare;
 
+// Whether a key can be named inside a patch path at all.
+//
+// SurrealDB splits a patch path on `/` AND on `.`, and supports no escaping
+// for either - verified directly against 3.2.3: patching `/blob/a~1b`, the
+// RFC 6901 escape for a key `a/b`, creates a literal `a~1b` key, while both
+// `/blob/a/b` and `/blob/a.b` write to a nested `{ a: { b } }` instead of to
+// the key that was meant. So there is no encoding that reaches such a key,
+// and descending into an object that has one silently writes to the wrong
+// place. The containing object is replaced wholesale instead - the same
+// approach `arr()` already takes for an element that cannot be patched in
+// place.
+//
+// Only an `@any` field (or a plain object nested inside one) can hold keys
+// like these; a declared field name is always a JS identifier.
+
+function nameable(key) {
+	return !key.includes('/') && !key.includes('.');
+}
+
 function route(path, part) {
 	if (path.length === 0) {
 		return '/' + part;
@@ -89,6 +108,28 @@ export default class Diff {
 	}
 
 	obj(old={}, now={}, path='') {
+
+		// If any key here cannot be named in a path, replace this object
+		// rather than trying to address its members. Skipped at the root,
+		// where the keys are declared field names and there is no enclosing
+		// object to replace.
+
+		if (path !== '') {
+
+			let awkward = false;
+
+			for (let k in old) if (!nameable(k)) { awkward = true; break; }
+			if (!awkward) for (let k in now) if (!nameable(k)) { awkward = true; break; }
+
+			if (awkward) {
+				// Still only when something actually changed. Replacing
+				// unconditionally would make any record holding such a key
+				// permanently dirty, so every load would queue a save.
+				if (json(old) !== json(now)) this.op('replace', path, now);
+				return;
+			}
+
+		}
 
 		for (let k in old) {
 
