@@ -111,3 +111,60 @@ DEFINE FIELD specs.*.code ON gizmo TYPE option<string>;
 DEFINE FIELD specs.*.tags ON gizmo TYPE option<array<string>>;
 DEFINE FIELD specs.*.note ON gizmo TYPE option<object>;
 DEFINE FIELD specs.*.note.text ON gizmo TYPE option<string>;
+
+-- --------------------------------------------------
+-- TABLE doodad
+-- --------------------------------------------------
+--
+-- Type-coverage fixture: every field kind the connector supports, each as a
+-- bare value, inside an array, and inside an embedded object — so a type can
+-- be exercised on its own and in every position it can actually occupy.
+
+DEFINE TABLE doodad SCHEMAFULL;
+
+DEFINE FIELD text ON doodad TYPE option<string>;
+DEFINE FIELD count ON doodad TYPE option<number>;
+DEFINE FIELD flag ON doodad TYPE option<bool>;
+DEFINE FIELD when ON doodad TYPE option<datetime>;
+DEFINE FIELD blob ON doodad TYPE option<object> FLEXIBLE;
+DEFINE FIELD blobs ON doodad TYPE option<array>;
+
+DEFINE FIELD texts ON doodad TYPE option<array<string>>;
+DEFINE FIELD counts ON doodad TYPE option<array<number>>;
+DEFINE FIELD flags ON doodad TYPE option<array<bool>>;
+DEFINE FIELD whens ON doodad TYPE option<array<datetime>>;
+
+DEFINE FIELD link ON doodad TYPE option<record<author>>;
+DEFINE FIELD links ON doodad TYPE option<array<record<author>>>;
+
+DEFINE FIELD bits ON doodad TYPE option<object>;
+DEFINE FIELD bits.text ON doodad TYPE option<string>;
+DEFINE FIELD bits.count ON doodad TYPE option<number>;
+DEFINE FIELD bits.flag ON doodad TYPE option<bool>;
+DEFINE FIELD bits.when ON doodad TYPE option<datetime>;
+DEFINE FIELD bits.texts ON doodad TYPE option<array<string>>;
+DEFINE FIELD bits.counts ON doodad TYPE option<array<number>>;
+
+DEFINE FIELD bitses ON doodad TYPE option<array<object>>;
+DEFINE FIELD bitses.*.text ON doodad TYPE option<string>;
+DEFINE FIELD bitses.*.count ON doodad TYPE option<number>;
+DEFINE FIELD bitses.*.flag ON doodad TYPE option<bool>;
+DEFINE FIELD bitses.*.when ON doodad TYPE option<datetime>;
+DEFINE FIELD bitses.*.texts ON doodad TYPE option<array<string>>;
+DEFINE FIELD bitses.*.counts ON doodad TYPE option<array<number>>;
+
+-- --------------------------------------------------
+-- TABLE gremlin
+-- --------------------------------------------------
+--
+-- A table the server will genuinely refuse writes to, so the rollback and
+-- error-reporting paths can be exercised against a real rejection rather
+-- than a simulated one. `name` accepts at most five characters; anything
+-- longer fails the ASSERT and the whole UPDATE is rejected.
+
+DEFINE TABLE gremlin SCHEMAFULL;
+
+DEFINE FIELD name ON gremlin TYPE option<string>
+	ASSERT $value = NONE OR string::len($value) <= 5;
+
+DEFINE FIELD note ON gremlin TYPE option<string>;
