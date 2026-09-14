@@ -9,7 +9,7 @@ import count from "../builders/count";
 import table from "../builders/table";
 import hasher from "../builders/hasher";
 import Record from '../classes/types/record';
-import { DestroyedError } from '../errors';
+import { DestroyedError, MissingModelError } from '../errors';
 
 /**
  * Look a record up in one of the cache's arrays by its stringified id.
@@ -168,6 +168,12 @@ export default class Store extends Service {
 			throw new DestroyedError();
 		} else {
 			let found = owner.factoryFor(`model:${model}`);
+			if (found === undefined) {
+				throw new MissingModelError(
+					`No model was found for the table '${model}'. Define app/models/${model}.js, ` +
+					`or stop records of that table reaching the store.`,
+				);
+			}
 			return {
 				class: found.class,
 				create() {
@@ -262,6 +268,17 @@ export default class Store extends Service {
 
 				if (e instanceof DestroyedError) {
 					// ignore
+				} else if (e instanceof MissingModelError) {
+
+					// Skip the record rather than abandoning the whole
+					// injection. A record for an unmodelled table can arrive
+					// from anywhere - a live notification, a linked record of
+					// an unexpected type, `$auth` - and none of those are
+					// reasons to take down the caller, which is frequently an
+					// event handler nothing awaits.
+
+					console.error(`store.inject: ${e.message}`);
+
 				} else {
 					throw e;
 				}
@@ -270,7 +287,7 @@ export default class Store extends Service {
 
 		});
 
-		return Array.isArray(items) ? records : records[0];
+		return Array.isArray(items) ? records.filter(r => r !== undefined) : records[0];
 
 	}
 
