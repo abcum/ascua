@@ -1,20 +1,14 @@
 import { typeOf } from '@ember/utils';
 import { Value } from 'surrealdb';
 import DMP from 'dmp';
+import { compare } from '../../utils/stable';
 
 const regex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/;
 
-// Matches classes/field/array.js's own comparison helper: a stable,
-// sorted-key stringification used only to test equality, not to build a
-// payload.
-const json = (v) => {
-	try {
-		let o = JSON.parse(JSON.stringify(v));
-		return JSON.stringify(o, Object.keys(o).sort());
-	} catch (e) {
-		return JSON.stringify(v);
-	}
-};
+// A stable, sorted-key stringification used only to test equality, not to
+// build a payload. Shared with classes/field/array.js, which needs the same
+// comparison — see utils/stable.js for why it is not a one-liner.
+const json = compare;
 
 function route(path, part) {
 	if (path.length === 0) {

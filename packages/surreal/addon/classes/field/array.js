@@ -12,15 +12,12 @@ import { RecordId, StringRecordId } from 'surrealdb';
 import { assert } from '@ember/debug';
 import { DestroyedError } from '@ascua/surreal/errors';
 import { RECORD } from '../model';
+import { compare } from '../../utils/stable';
 
-const json = (v) => {
-	try {
-		let o = JSON.parse(JSON.stringify(v));
-		return JSON.stringify(o, Object.keys(o).sort());
-	} catch (e) {
-		return JSON.stringify(v);
-	}
-}
+// A stable, sorted-key stringification used only to decide whether an
+// incoming element differs from the one already held. Shared with
+// classes/dmp/diff.js — see utils/stable.js.
+const json = compare;
 
 export default function(type) {
 	return Property({
