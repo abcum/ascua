@@ -635,6 +635,28 @@ export default class Store extends Service {
 
 	async search(model, query = {}) {
 
+		// A projection narrower than `*` cannot be ingested.
+		//
+		// `Model#ingest` treats a field the payload does not carry as a field
+		// the server no longer has, which is what makes a server-side clear
+		// arrive locally at all. A row selected with an explicit field list
+		// is indistinguishable from that, so ingesting one silently resets
+		// every field it did not ask for to its type default - the cached
+		// record is blanked while the server still holds the data, and the
+		// only symptom is a detail view that empties out when some unrelated
+		// list query runs.
+		//
+		// Selecting extra computed columns alongside `*` is fine and is what
+		// callers actually want (a relevance score, say), so the requirement
+		// is only that `*` is among them.
+
+		assert(
+			'A `field` projection passed to search() must include `*`, because the ' +
+			'results are ingested into the record cache and a partial row would ' +
+			'blank every field it omits',
+			!query.field || query.field.some(f => String(f).trim() === '*'),
+		);
+
 		let result;
 
 		let hash = hasher(model, query);
