@@ -5,9 +5,26 @@ const func = (v) => v;
 export default class RecordArray extends Array {
 
 	static create(owner, type = func, ...values) {
-		let v = values.map(type);
-		let a = new this(...v);
+
+		// Built empty and then filled, never `new this(...values)`.
+		//
+		// `Array`'s constructor treats a SINGLE numeric argument as a length
+		// rather than as a value, and that inherits straight through to a
+		// subclass. So a one-element numeric array - an `@array('number')`
+		// holding `[1]`, which is what a nested `geo` pair or a lone rating
+		// looks like mid-edit - became an array of one hole, and `[5]` became
+		// five of them. The snapshot in utils/json.js filters holes out, so
+		// the value did not merely arrive wrong, it vanished: the field was
+		// written to the server as `[]`.
+		//
+		// Only arrays whose first element is a number were affected, which is
+		// why `@array('string')` looked fine throughout.
+
+		let a = new this();
+
 		a.type = type;
+
+		a.push(...values.map(v => type(v)));
 		// `proxy` is assigned below, before the `set` trap can ever fire -
 		// captured by reference so the trap notifies on the object consumers
 		// actually hold. `notifyPropertyChange(target, ...)` looked
