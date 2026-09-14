@@ -303,6 +303,24 @@ export default class Model {
 
 	rollback() {
 
+		// A record which has never been ingested has no server-confirmed
+		// state to roll back to, and `#shadow` is still undefined. Reading
+		// `._full` off it threw a TypeError from inside `store.modify`'s
+		// `catch`, which then REPLACED the server's own error - so the real
+		// reason a save failed was destroyed and never reached the caller.
+		//
+		// Worse, the throw happened after `state` had been set to LOADING and
+		// before it could be set back, leaving the record stuck there
+		// permanently. `@autosave` only fires while a record is LOADED (see
+		// decorators/autosave.js), so from that point on the record silently
+		// stopped saving altogether: every later edit showed up in the UI and
+		// none of it was ever sent.
+
+		if (this.#shadow === undefined) {
+			this[RECORD].state = LOADED;
+			return;
+		}
+
 		// Set state to LOADING
 		this[RECORD].state = LOADING;
 
@@ -334,8 +352,18 @@ export default class Model {
 		// Set state to LOADING
 		this[RECORD].state = LOADING;
 
-		// Create a new shadow record for the data
-		this.#shadow = this.store.lookup(this.tb).create(data);
+		// Create a new shadow record for the data.
+		//
+		// Created as a shadow (the third argument) so it is inert. Without
+		// that flag it is an ordinary record: its constructor runs every
+		// field setter, each of which calls `autosave()`, so every ingest -
+		// one per record per load, per search result, per live notification -
+		// queued a save of a throwaway copy. Those saves were no-ops only
+		// because the copy's client state is snapshotted immediately
+		// afterwards, leaving nothing to diff; anything that perturbed that
+		// left a phantom write aimed at the real record's id.
+
+		this.#shadow = this.store.lookup(this.tb).create(data, true);
 
 		// Calculate changes while data was in flight
 		let changes = new Diff(this.#client, this._some).output();

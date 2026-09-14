@@ -32,7 +32,23 @@ function func(target) {
 			// nothing describes at all.
 
 			return this.save().catch(e => {
-				console.error('autosave: save failed, the record was rolled back to the last saved value', e);
+
+				// Logged with the record it happened to and the server's own
+				// message. `console.error('...', e)` alone rendered as
+				// `[object Object]` in a test log or a bug report - a
+				// SurrealDB SDK error is not an Error subclass in every case,
+				// so neither the record nor the reason survived, and an
+				// autosave that silently reverted a user's typing looked
+				// identical to one that never ran.
+
+				let reason = (e && (e.message || e.description)) || String(e);
+
+				console.error(
+					`autosave: save of ${this.id || '<unsaved record>'} failed, the record was rolled back ` +
+					`to the last saved value: ${reason}`,
+					e,
+				);
+
 			});
 
 		}

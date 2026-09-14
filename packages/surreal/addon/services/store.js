@@ -421,7 +421,15 @@ export default class Store extends Service {
 				[id, data] = [undefined, id];
 			}
 
-			let record = this.lookup(model).create(data);
+			// Built as a shadow (the third argument) - it exists only to turn
+			// `data` into a payload via `.json`, and is thrown away. Without
+			// the flag its constructor's field setters called `autosave()`,
+			// scheduling a save of a record which has no id at all: `tb` is
+			// then undefined and `thing(undefined, null)` resolves to a TABLE
+			// target, so the patch was aimed at a whole table rather than at
+			// any record.
+
+			let record = this.lookup(model).create(data, true);
 			let server = await this.surreal.create(model, id, record.json);
 
 			// Creating without an id targets the table, and the SDK resolves a
