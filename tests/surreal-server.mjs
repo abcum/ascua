@@ -13,14 +13,56 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { Buffer } from 'node:buffer';
+import { createServer } from 'node:net';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const HOST = '127.0.0.1';
-const PORT = process.env.SURREAL_PORT ? Number(process.env.SURREAL_PORT) : 8000;
-const ENDPOINT = `http://${HOST}:${PORT}`;
 const NS = 'test';
 const DB = 'test';
 const AUTH = 'Basic ' + Buffer.from('root:root').toString('base64');
+
+// Resolved in main(), once a free port has been found.
+let PORT;
+let ENDPOINT;
+
+// Does anything already hold this port?
+//
+// This matters more than it looks. The suite talks to whatever answers on the
+// port, and `waitForHealth` cannot tell the server this runner spawned from
+// one that was already running - so a developer with a SurrealDB instance up
+// on the default port (the usual local-development setup) previously had the
+// fixture schema applied to THAT server, and every `reset` table in
+// `setupSurreal` DELETEd there, against a real on-disk database. The default
+// port is therefore no longer 8000, and a port that is already taken is a
+// hard error rather than something to connect to.
+
+function free(port) {
+	return new Promise((resolve) => {
+		const probe = createServer();
+		probe.once('error', () => resolve(false));
+		probe.once('listening', () => probe.close(() => resolve(true)));
+		probe.listen(port, HOST);
+	});
+}
+
+async function choosePort() {
+	if (process.env.SURREAL_PORT) {
+		const port = Number(process.env.SURREAL_PORT);
+		if (!(await free(port))) {
+			throw new Error(
+				`SURREAL_PORT=${port} is already in use. The test suite applies its fixture ` +
+				`schema and DELETEs its fixture tables on the server it connects to, so it ` +
+				`refuses to share a port with an already-running SurrealDB. Stop that server ` +
+				`or pick another port.`,
+			);
+		}
+		return port;
+	}
+	for (let port = 8100; port < 8200; port++) {
+		if (await free(port)) return port;
+	}
+	throw new Error('No free port found in the range 8100-8199 for the test server');
+}
 
 let surreal;
 
@@ -65,6 +107,9 @@ async function applySchema() {
 }
 
 async function main() {
+	PORT = await choosePort();
+	ENDPOINT = `http://${HOST}:${PORT}`;
+
 	console.log('• starting SurrealDB on ' + ENDPOINT);
 	surreal = spawn(
 		'surreal',
@@ -83,8 +128,10 @@ async function main() {
 	console.log('• running ember test');
 	const ember = spawn('npx', ['ember', 'test', ...process.argv.slice(2)], {
 		stdio: 'inherit',
-		// SURREAL_TESTS un-gates the integration modules (see config/environment.js)
-		env: { ...process.env, SURREAL_TESTS: '1' },
+		// SURREAL_TESTS un-gates the integration modules, and SURREAL_PORT
+		// tells the built app which port this run's server is on (see
+		// config/environment.js - both are read at build time).
+		env: { ...process.env, SURREAL_TESTS: '1', SURREAL_PORT: String(PORT) },
 	});
 	ember.on('exit', (code) => shutdown(code === null ? 1 : code));
 }
