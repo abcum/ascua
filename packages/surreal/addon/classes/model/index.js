@@ -139,6 +139,23 @@ export default class Model {
 		return this[RECORD].error;
 	}
 
+	// Whether this record holds changes which have not yet been sent to the
+	// server — either still inside `save()`'s debounce window, or queued
+	// behind an in-flight write.
+	//
+	// This is the same comparison `_modify` makes to build its patch, so a
+	// record is dirty exactly when saving it now would send something.
+
+	get dirty() {
+		if (this.#fake) return false;
+		if (this[RECORD].state === DELETED) return false;
+		try {
+			return new Diff(this.#client, this._some).output().length > 0;
+		} catch (e) {
+			return false;
+		}
+	}
+
 	// The `json` property returns a
 	// JSON representation copy of the
 	// record's current data snapshot.

@@ -8,6 +8,16 @@ export default class Cache {
 		return this.#data[model] = this.#data[model] || new Array();
 	}
 
+	// Every record currently cached, across every table.
+
+	all() {
+		let out = [];
+		for (const k in this.#data) {
+			for (const record of this.#data[k]) out.push(record);
+		}
+		return out;
+	}
+
 	del(model) {
 		this.#data[model].clear();
 	}

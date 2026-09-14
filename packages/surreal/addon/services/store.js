@@ -121,6 +121,43 @@ export default class Store extends Service {
 	}
 
 	/**
+	 * Wait until nothing is left to write.
+	 *
+	 * `Model#save()` debounces for 500ms before it sends anything, so a record
+	 * edited a moment ago has changes which exist only as a pending timer —
+	 * invisible to any queue, and lost if the page goes away first. This waits
+	 * out that window (only when something is actually dirty) and then drains
+	 * every cached record's deferred write queues.
+	 *
+	 * Useful before tearing an app down — an Electron window closing on a
+	 * half-typed field, say — and in tests, where a save outliving its test
+	 * lands after the session has been invalidated and reports a failure
+	 * against whatever happens to be running next.
+	 *
+	 * @returns {Promise} Resolves once every pending write has settled.
+	 */
+
+	async settle() {
+
+		let records = this.#cache.all();
+
+		if (records.some(record => record.dirty)) {
+			// The debounce is a plain timer; there is nothing to await but it.
+			await new Promise(resolve => setTimeout(resolve, 600));
+			records = this.#cache.all();
+		}
+
+		for (const record of records) {
+			// `settle()` never rejects — it reports that nothing is still in
+			// flight, not whether the writes succeeded.
+			await record._modify.settle();
+			await record._update.settle();
+			await record._delete.settle();
+		}
+
+	}
+
+	/**
 	 * Lookup the model by its name.
 	 *
 	 * @returns {Model} The class for the desired model.
