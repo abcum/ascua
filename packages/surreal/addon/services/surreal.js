@@ -2,7 +2,8 @@ import Service from '@ascua/service/evented';
 import Storage from '@ascua/storage';
 import config from '@ascua/config';
 import unid from '../utils/unid';
-import { Surreal as Database, RecordId, StringRecordId, Table } from 'surrealdb';
+import thing from '../utils/thing';
+import { Surreal as Database, Table } from 'surrealdb';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { assert } from '@ember/debug';
@@ -206,23 +207,6 @@ export default class Surreal extends Service {
 		}
 	}
 
-	// Build a SurrealDB record pointer from a
-	// table name and an optional id. When no id
-	// is given, the whole table is targeted.
-
-	#thing(tb, id) {
-		switch (true) {
-			case id === undefined || id === null:
-				return new Table(tb);
-			case id instanceof RecordId || id instanceof StringRecordId:
-				return id;
-			case typeof id === 'string' && id.includes(':'):
-				return new StringRecordId(id);
-			default:
-				return new RecordId(tb, id);
-		}
-	}
-
 	// Tear down the Surreal service,
 	// ensuring we close the WebSocket
 	// and remove all event listeners.
@@ -264,30 +248,30 @@ export default class Surreal extends Service {
 	}
 
 	select(tb, id) {
-		return this.#db.select(this.#thing(tb, id));
+		return this.#db.select(thing(tb, id));
 	}
 
 	create(tb, id, data) {
 		if (arguments.length === 2) {
 			[id, data] = [undefined, id];
 		}
-		return this.#db.create(this.#thing(tb, id)).content(data);
+		return this.#db.create(thing(tb, id)).content(data);
 	}
 
 	update(tb, id, data) {
-		return this.#db.update(this.#thing(tb, id)).content(data);
+		return this.#db.update(thing(tb, id)).content(data);
 	}
 
 	change(tb, id, data) {
-		return this.#db.update(this.#thing(tb, id)).merge(data);
+		return this.#db.update(thing(tb, id)).merge(data);
 	}
 
 	modify(tb, id, patch) {
-		return this.#db.update(this.#thing(tb, id)).patch(patch);
+		return this.#db.update(thing(tb, id)).patch(patch);
 	}
 
 	delete(tb, id) {
-		return this.#db.delete(this.#thing(tb, id));
+		return this.#db.delete(thing(tb, id));
 	}
 
 	// Return the currently authenticated record.
