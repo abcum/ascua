@@ -503,6 +503,23 @@ export default class Surreal extends Service {
 			this.authenticated = false;
 			this.emit('attempted');
 			this.emit('invalidated');
+
+			// Logged, unlike signin()'s equivalent, which rethrows. This is
+			// called fire-and-forget - from the constructor restoring a stored
+			// token, from the cross-tab `storage` listener, and from app code
+			// handing over a token it has just been given - so rethrowing
+			// would only produce unhandled rejections. Resolving regardless is
+			// therefore right, but resolving SILENTLY is not: a rejected token
+			// then looks exactly like no token at all. The `invalidated` event
+			// is the only trace, and nothing is obliged to listen for it, so a
+			// login screen that quietly does nothing is the whole symptom.
+			//
+			// Found the hard way: a database whose DEFINE ACCESS carried a
+			// redacted signing key rejected every token, and the app sat on
+			// the login page with an empty console.
+
+			console.error('surreal: the database rejected the token', e);
+
 			return Promise.resolve();
 		}
 	}
