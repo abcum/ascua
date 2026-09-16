@@ -18,6 +18,7 @@
     "@ascua/config": "file:../config",
     "@ascua/context": "file:../context",
     "@ascua/decorators": "file:../decorators",
+    "@ascua/promise": "file:../promise",
     "@ascua/queue": "file:../queue",
     "@ascua/service": "file:../service",
     "@ascua/storage": "file:../storage",

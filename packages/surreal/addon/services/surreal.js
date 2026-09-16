@@ -8,6 +8,7 @@ import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { assert } from '@ember/debug';
 import { cache } from '@ascua/decorators';
+import { timeout } from '@ascua/promise';
 import JWT from '../utils/jwt';
 
 const defaults = {
@@ -45,6 +46,25 @@ const reconnection = {
 	retryDelayMax: 10000,
 	retryDelayMultiplier: 1.5,
 	retryDelayJitter: 0.1,
+};
+
+// How many times to try authenticating with the stored token before treating
+// it as genuinely invalid, and how long to wait between tries.
+//
+// `#attempt()` runs on every `connected` event, including the reconnections
+// the policy above now retries indefinitely - so a socket recovering from a
+// blip, a VPN switch or a permission query still queued from before the drop
+// can make a single `authenticate()` call fail for reasons that have nothing
+// to do with the token itself. Treating that one failure as an invalidation
+// forces the user back to the sign-in screen despite holding a perfectly good
+// token - which on Hire Insight also silently signs the user out of LinkedIn,
+// since app code treats reaching the sign-in screen as a reason to do that.
+// Trying a few times first gives a settling connection a chance to catch up
+// before we give up on the token.
+
+const attempts = {
+	count: 3,
+	delay: 500,
 };
 
 export default class Surreal extends Service {
@@ -85,6 +105,13 @@ export default class Surreal extends Service {
 	// the subscription, leaving it running and leaking its entry here.
 
 	#live = new Set();
+
+	// Bumped on every `#attempt()` call, so a retry left over from a
+	// superseded connect cycle (the socket dropped and reconnected again
+	// while it was still waiting) can tell it is stale and back off quietly
+	// instead of racing the newer attempt to set the service's state.
+
+	#attemptId = 0;
 
 	// The resolved reconnection policy, exposed so it can be inspected.
 
@@ -268,19 +295,40 @@ export default class Surreal extends Service {
 	// token, or mark as attempted if there is none.
 
 	async #attempt() {
-		try {
-			if (!this.token) throw new Error('No authentication token');
-			await this.#db.authenticate(this.token);
-			this.attempted = true;
-			this.authenticated = true;
-			this.emit('attempted');
-			this.emit('authenticated');
-		} catch (e) {
+
+		let id = ++this.#attemptId;
+
+		if (!this.token) {
 			this.attempted = true;
 			this.invalidated = true;
 			this.emit('attempted');
 			this.emit('invalidated');
+			return;
 		}
+
+		for (let i = 1; i <= attempts.count; i++) {
+			try {
+				await this.#db.authenticate(this.token);
+				if (id !== this.#attemptId) return;
+				this.attempted = true;
+				this.authenticated = true;
+				this.emit('attempted');
+				this.emit('authenticated');
+				return;
+			} catch (e) {
+				if (id !== this.#attemptId) return;
+				console.log('surreal: attempt() failed', e);
+				await timeout(attempts.delay * i);
+			}
+		}
+
+		if (id !== this.#attemptId) return;
+		this.attempted = true;
+		this.invalidated = true;
+		this.emit('attempted');
+		this.emit('invalidated');
+		console.log('surreal: attempt() failed');
+
 	}
 
 	// Tear down the Surreal service,
@@ -422,13 +470,6 @@ export default class Surreal extends Service {
 			this.authenticated = false;
 			this.emit('attempted');
 			this.emit('invalidated');
-
-			// Rejected WITH the reason. `Promise.reject()` discarded it, so a
-			// caller could not tell a wrong password from a missing access
-			// definition from a connection that was not up - every failure
-			// arrived as `undefined`, which is also unloggable. A sign-in form
-			// has nothing else to show the person in front of it.
-
 			throw e;
 		}
 	}
@@ -452,13 +493,6 @@ export default class Surreal extends Service {
 			this.authenticated = false;
 			this.emit('attempted');
 			this.emit('invalidated');
-
-			// Rejected WITH the reason. `Promise.reject()` discarded it, so a
-			// caller could not tell a wrong password from a missing access
-			// definition from a connection that was not up - every failure
-			// arrived as `undefined`, which is also unloggable. A sign-in form
-			// has nothing else to show the person in front of it.
-
 			throw e;
 		}
 	}
@@ -466,27 +500,30 @@ export default class Surreal extends Service {
 	async invalidate() {
 		try {
 			await this.#db.invalidate(...arguments);
+			this.#ls.del('surreal');
+			this.token = null;
+			this.attempted = true;
+			this.invalidated = true;
+			this.authenticated = false;
+			this.emit('attempted');
+			this.emit('invalidated');
+			return Promise.resolve();
 		} catch (e) {
-			// ignore — we clear local state regardless
+			this.#ls.del('surreal');
+			this.token = null;
+			this.attempted = true;
+			this.invalidated = true;
+			this.authenticated = false;
+			this.emit('attempted');
+			this.emit('invalidated');
+			console.error('surreal: invalidate() failed', e);
+			return Promise.resolve();
 		}
-		this.#ls.del('surreal');
-		this.token = null;
-		this.attempted = true;
-		this.invalidated = true;
-		this.authenticated = false;
-		this.emit('attempted');
-		this.emit('invalidated');
-		return Promise.resolve();
 	}
 
 	async authenticate(t) {
 		try {
 			await this.#db.authenticate(t);
-			// Only write when the value actually changes. Writing the same token
-			// back still fires a `storage` event in every other tab, which is one
-			// half of the cross-tab authenticate loop described in the
-			// constructor. The listener guards the other half; both are cheap and
-			// either alone would break the cycle.
 			if (this.#ls.get('surreal') !== t) this.#ls.set('surreal', t);
 			this.token = t;
 			this.attempted = true;
@@ -503,23 +540,7 @@ export default class Surreal extends Service {
 			this.authenticated = false;
 			this.emit('attempted');
 			this.emit('invalidated');
-
-			// Logged, unlike signin()'s equivalent, which rethrows. This is
-			// called fire-and-forget - from the constructor restoring a stored
-			// token, from the cross-tab `storage` listener, and from app code
-			// handing over a token it has just been given - so rethrowing
-			// would only produce unhandled rejections. Resolving regardless is
-			// therefore right, but resolving SILENTLY is not: a rejected token
-			// then looks exactly like no token at all. The `invalidated` event
-			// is the only trace, and nothing is obliged to listen for it, so a
-			// login screen that quietly does nothing is the whole symptom.
-			//
-			// Found the hard way: a database whose DEFINE ACCESS carried a
-			// redacted signing key rejected every token, and the app sat on
-			// the login page with an empty console.
-
-			console.error('surreal: the database rejected the token', e);
-
+			console.error('surreal: authenticate() failed', e);
 			return Promise.resolve();
 		}
 	}
