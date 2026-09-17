@@ -64,3 +64,9 @@ Use British English spelling in all code, comments, commit messages, and documen
 - **-ence** not -ense (e.g. licence, defence)
 - **-lled/-lling** not -led/-ling (e.g. cancelled, modelling)
 - **-ogue** not -og (e.g. catalogue, dialogue)
+
+### Comments
+
+Keep comments in JavaScript and TypeScript files, to a single line, directly above the line of code it explains, roughly the same length as that line. No multi-line comment blocks or paragraphs of rationale/history, unless absolutely necessary — that belongs in the commit message.
+
+Never narrate history in a comment — what the code used to do, what it was changed from, how a bug was found, or what was "confirmed" while debugging it ("previously...", "used to...", "confirmed on..."). A comment explains the current code's *why* to someone who has never seen its past; the past belongs in the commit message, not beside the code, where it goes stale and misleads the next person to touch it.
