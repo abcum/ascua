@@ -48,6 +48,31 @@ const reconnection = {
 	retryDelayJitter: 0.1,
 };
 
+// Retry policy for transaction conflicts.
+//
+// A write that lands on the same record as another concurrent write - two
+// of a contact's `experience` rows created together, say, each triggering
+// a schema `notify` event that bumps that contact's `times.updated` - can
+// be rejected by SurrealDB's optimistic concurrency control with a
+// "Transaction conflict: Resource busy" error. The SDK can re-send a
+// conflicting write with backoff instead of surfacing that to the caller,
+// which is what `.retry()` on `create()`, `update()`, `change()`,
+// `modify()` and `delete()` below opts into, using this policy as the
+// default. Overrides the SDK's own `enabled: false`, since here it is the
+// expected way of handling the conflict rather than something each caller
+// opts into individually.
+//
+// Override any of it with `surreal.retry` in the environment config.
+
+const retry = {
+	enabled: true,
+	attempts: 5,
+	retryDelay: 100,
+	retryDelayMax: 2000,
+	retryDelayMultiplier: 2,
+	retryDelayJitter: 0.1,
+};
+
 // How many times to try authenticating with the stored token before treating
 // it as genuinely invalid, and how long to wait between tries.
 //
@@ -117,6 +142,10 @@ export default class Surreal extends Service {
 
 	#reconnect = undefined;
 
+	// The resolved retry policy, exposed so it can be inspected.
+
+	#retry = undefined;
+
 	// The contents of the token
 	// used for authenticating with
 	// the Surreal database;
@@ -160,6 +189,13 @@ export default class Surreal extends Service {
 
 	get reconnect() {
 		return this.#reconnect;
+	}
+
+	// The retry policy actually in force, after the environment
+	// config has been merged over the defaults.
+
+	get retry() {
+		return this.#retry;
 	}
 
 	// The live query subscriptions currently held open.
@@ -281,11 +317,13 @@ export default class Surreal extends Service {
 		// reconnect on failure when `reconnect` is set.
 
 		this.#reconnect = Object.assign({}, reconnection, this.#config.reconnect);
+		this.#retry = Object.assign({}, retry, this.#config.retry);
 
 		this.#db.connect(this.#config.url, {
 			namespace: this.#config.ns ?? this.#config.NS,
 			database: this.#config.db ?? this.#config.DB,
 			reconnect: this.#reconnect,
+			retry: this.#retry,
 		});
 
 	}
@@ -379,23 +417,23 @@ export default class Surreal extends Service {
 		if (arguments.length === 2) {
 			[id, data] = [undefined, id];
 		}
-		return this.#db.create(thing(tb, id)).content(data);
+		return this.#db.create(thing(tb, id)).content(data).retry();
 	}
 
 	update(tb, id, data) {
-		return this.#db.update(thing(tb, id)).content(data);
+		return this.#db.update(thing(tb, id)).content(data).retry();
 	}
 
 	change(tb, id, data) {
-		return this.#db.update(thing(tb, id)).merge(data);
+		return this.#db.update(thing(tb, id)).merge(data).retry();
 	}
 
 	modify(tb, id, patch) {
-		return this.#db.update(thing(tb, id)).patch(patch);
+		return this.#db.update(thing(tb, id)).patch(patch).retry();
 	}
 
 	delete(tb, id) {
-		return this.#db.delete(thing(tb, id));
+		return this.#db.delete(thing(tb, id)).retry();
 	}
 
 	// Return the currently authenticated record.

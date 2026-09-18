@@ -168,3 +168,26 @@ DEFINE FIELD name ON gremlin TYPE option<string>
 	ASSERT $value = NONE OR string::len($value) <= 5;
 
 DEFINE FIELD note ON gremlin TYPE option<string>;
+
+-- --------------------------------------------------
+-- TABLE beacon + blip (retry fixture)
+-- --------------------------------------------------
+--
+-- Reproduces a genuine "Transaction conflict" rather than a simulated one:
+-- `blip`'s CREATE event sleeps briefly before bumping a single shared
+-- `beacon` record, widening the window for concurrent CREATEs to race for
+-- that same row - the same shape as app.hireinsight.io's `notify` events,
+-- several of which can land on one contact from a single LinkedIn import.
+
+DEFINE TABLE beacon SCHEMAFULL;
+
+DEFINE FIELD hits ON beacon TYPE number DEFAULT 0;
+
+DEFINE TABLE blip SCHEMAFULL;
+
+DEFINE FIELD beacon ON blip TYPE record<beacon>;
+
+DEFINE EVENT notify ON blip WHEN $event = "CREATE" THEN {
+	SLEEP 15ms;
+	UPDATE $after.beacon SET hits += 1;
+};
