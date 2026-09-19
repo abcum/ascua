@@ -3,7 +3,7 @@ import Storage from '@ascua/storage';
 import config from '@ascua/config';
 import unid from '../utils/unid';
 import thing from '../utils/thing';
-import { Surreal as Database, Table, raw } from 'surrealdb';
+import { Surreal as Database, Table, isRetryableConflict, raw } from 'surrealdb';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { assert } from '@ember/debug';
@@ -92,6 +92,49 @@ const attempts = {
 	delay: 500,
 };
 
+// Builds the create/update/upsert/relate/insert/delete/select/query surface
+// for a given queryable - the live connection, or an open transaction (both
+// expose the same shape via the SDK's shared `SurrealQueryable` base).
+//
+// Building the direct service's methods AND the transaction-scoped object
+// from this one factory, rather than hand-writing two copies, is what keeps
+// them from drifting apart - there is exactly one definition of what each
+// verb means, used against two different targets.
+//
+// `create`/`update`/`upsert` are returned unresolved and chainable, mirroring
+// the SDK itself rather than inventing our own verbs for it: the caller
+// finishes with `.content(data)`, `.merge(data)`, `.replace(data)` or
+// `.patch(data)`. Only `update`/`upsert` get `.replace()` from the SDK -
+// its only difference from `.content()` is that it makes SurrealDB error on
+// a READONLY-field mismatch instead of `.content()`'s silent,
+// existing-value-preserving behaviour, which requires an existing record to
+// mean anything; `create` has none, so the SDK gives it no `.replace()`
+// either. `relate`/`insert` take their data directly, matching the SDK's own
+// (non-chainable) shape for those two.
+//
+// `retry` applies the single-write retry policy to every mutating verb. It
+// is true for the direct service and false inside a transaction, where a
+// conflict aborts the whole transaction and only replaying it from scratch
+// (see `transaction()` below) is meaningful - retrying one statement out of
+// it is not.
+
+function queryable(db, retry) {
+
+	let r = retry ? (p => p.retry()) : (p => p);
+
+	return {
+		query: (...args) => db.query(...args),
+		select: (tb, id) => db.select(thing(tb, id)),
+		create: (tb, id) => r(db.create(thing(tb, id))),
+		update: (tb, id) => r(db.update(thing(tb, id))),
+		upsert: (tb, id) => r(db.upsert(thing(tb, id))),
+		relate: (from, edge, to, data) => r(db.relate(thing(undefined, from), new Table(edge), thing(undefined, to), data)),
+		insert: (tb, data) => r(db.insert(new Table(tb), data)),
+		delete: (tb, id) => r(db.delete(thing(tb, id))),
+	};
+
+}
+
 export default class Surreal extends Service {
 
 	@service store;
@@ -107,6 +150,11 @@ export default class Surreal extends Service {
 	// which connects to the server.
 
 	#db = new Database();
+
+	// The direct-service verb surface, built once against `#db` with the
+	// single-write retry policy applied - see `queryable()` above.
+
+	#verbs = queryable(this.#db, true);
 
 	// The full configuration info for
 	// SurrealDB, including NS, DB,
@@ -406,34 +454,39 @@ export default class Surreal extends Service {
 	}
 
 	query() {
-		return this.#db.query(...arguments);
+		return this.#verbs.query(...arguments);
 	}
 
 	select(tb, id) {
-		return this.#db.select(thing(tb, id));
+		return this.#verbs.select(tb, id);
 	}
 
-	create(tb, id, data) {
-		if (arguments.length === 2) {
-			[id, data] = [undefined, id];
-		}
-		return this.#db.create(thing(tb, id)).content(data).retry();
+	// Chainable, mirroring the SDK: finish with `.content(data)`, `.merge(data)`,
+	// `.replace(data)` or `.patch(data)` (`create` only has `.content()`/`.patch()` -
+	// see `queryable()` above for why).
+
+	create(tb, id) {
+		return this.#verbs.create(tb, id);
 	}
 
-	update(tb, id, data) {
-		return this.#db.update(thing(tb, id)).content(data).retry();
+	update(tb, id) {
+		return this.#verbs.update(tb, id);
 	}
 
-	change(tb, id, data) {
-		return this.#db.update(thing(tb, id)).merge(data).retry();
+	upsert(tb, id) {
+		return this.#verbs.upsert(tb, id);
 	}
 
-	modify(tb, id, patch) {
-		return this.#db.update(thing(tb, id)).patch(patch).retry();
+	relate(from, edge, to, data) {
+		return this.#verbs.relate(from, edge, to, data);
+	}
+
+	insert(tb, data) {
+		return this.#verbs.insert(tb, data);
 	}
 
 	delete(tb, id) {
-		return this.#db.delete(thing(tb, id)).retry();
+		return this.#verbs.delete(tb, id);
 	}
 
 	// Return the currently authenticated record.
@@ -446,6 +499,62 @@ export default class Surreal extends Service {
 		// empty result does not throw, returning the record or undefined.
 		let [rows] = await this.#db.query('SELECT * FROM $auth');
 		return rows && rows[0];
+	}
+
+	// Run a set of statements atomically inside a single SurrealDB
+	// transaction, retrying the whole thing on a conflict.
+	//
+	// `fn` is handed the same `query`/`select`/`create`/`update`/`upsert`/
+	// `relate`/`insert`/`delete` surface as the service itself - built by the
+	// same `queryable()` factory above, against this transaction rather than
+	// the default session, just without `.retry()`: a conflict aborts the
+	// *whole* transaction, so replaying one statement out of it is
+	// meaningless; only replaying `fn` from scratch against a fresh
+	// transaction is. That replay reuses the same policy as the single-write
+	// `.retry()` calls above (`this.#retry`) rather than adding a second
+	// policy to configure.
+	//
+	// Because of that replay, `fn` must be safe to call more than once - it
+	// should build fresh payloads from its own arguments rather than mutate
+	// shared or outer state, and avoid side effects outside of the scoped
+	// object it is given.
+
+	async transaction(fn) {
+
+		let policy = this.#retry;
+
+		for (let attempt = 0; ; attempt++) {
+
+			let tx = await this.#db.beginTransaction();
+			let scoped = queryable(tx, false);
+
+			try {
+
+				let result = await fn(scoped);
+				await tx.commit();
+				return result;
+
+			} catch (e) {
+
+				await tx.cancel().catch(() => {});
+
+				let retryable = policy.enabled
+					&& isRetryableConflict(e)
+					&& (policy.attempts === -1 || attempt < policy.attempts);
+
+				if (!retryable) throw e;
+
+				let delay = Math.min(
+					policy.retryDelay * (policy.retryDelayMultiplier ** (attempt + 1)),
+					policy.retryDelayMax,
+				);
+
+				await timeout(delay);
+
+			}
+
+		}
+
 	}
 
 	// --------------------------------------------------

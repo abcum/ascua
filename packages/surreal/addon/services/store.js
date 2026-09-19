@@ -484,7 +484,7 @@ export default class Store extends Service {
 			// any record.
 
 			let record = this.lookup(model).create(data, true);
-			let server = await this.surreal.create(model, id, record.json);
+			let server = await this.surreal.create(model, id).content(record.json);
 
 			// Creating without an id targets the table, and the SDK resolves a
 			// table-targeted create to an array of the created records, whereas
@@ -494,6 +494,117 @@ export default class Store extends Service {
 			// it returns one record.
 
 			return this.inject(Array.isArray(server) ? server[0] : server);
+
+		} catch (e) {
+
+			if (e instanceof DestroyedError) {
+				// ignore
+			} else {
+				throw e;
+			}
+
+		}
+
+	}
+
+	/**
+	 * Upserts a record in the database and in the local cache - creating it
+	 * if it does not already exist. If the upsert is not successful due to
+	 * an error or permissions failure, then the record will not be stored
+	 * locally.
+	 *
+	 * @param {string} model - The model type.
+	 * @param {string} id - Optional record id.
+	 * @param {Object} data - The record data.
+	 * @returns {Promise} Promise object with the upserted record.
+	 */
+
+	async upsert(model, id, data) {
+
+		assert('The model type must be a string', typeof model === 'string');
+
+		try {
+
+			if (arguments.length === 2) {
+				[id, data] = [undefined, id];
+			}
+
+			// See the matching comment on `create()` above.
+
+			let record = this.lookup(model).create(data, true);
+			let server = await this.surreal.upsert(model, id).content(record.json);
+
+			return this.inject(Array.isArray(server) ? server[0] : server);
+
+		} catch (e) {
+
+			if (e instanceof DestroyedError) {
+				// ignore
+			} else {
+				throw e;
+			}
+
+		}
+
+	}
+
+	/**
+	 * Creates a graph edge between two records in the database and in the
+	 * local cache.
+	 *
+	 * @param {Model|Object} from - The record the edge starts at.
+	 * @param {string} edge - The edge table name.
+	 * @param {Model|Object} to - The record the edge ends at.
+	 * @param {Object} data - Optional data to store on the edge record.
+	 * @returns {Promise} Promise object with the created edge record.
+	 */
+
+	async relate(from, edge, to, data) {
+
+		assert('The edge table must be a string', typeof edge === 'string');
+
+		try {
+
+			let server = await this.surreal.relate(from, edge, to, data);
+
+			return this.inject(server);
+
+		} catch (e) {
+
+			if (e instanceof DestroyedError) {
+				// ignore
+			} else {
+				throw e;
+			}
+
+		}
+
+	}
+
+	/**
+	 * Inserts one or more records into the database and into the local
+	 * cache, in a single request.
+	 *
+	 * @param {string} model - The model type.
+	 * @param {Object|Array} data - One or more records to insert.
+	 * @returns {Promise} Promise object with the inserted record(s).
+	 */
+
+	async insert(model, data) {
+
+		assert('The model type must be a string', typeof model === 'string');
+
+		try {
+
+			// Each row is shadowed through the model individually - see the
+			// matching comment on `create()` above - so every row's payload
+			// gets the same type serialisation a single create() would give it.
+
+			let rows = Array.isArray(data) ? data : [data];
+			let payload = rows.map(row => this.lookup(model).create(row, true).json);
+			let server = await this.surreal.insert(model, Array.isArray(data) ? payload : payload[0]);
+
+			return this.inject(server);
 
 		} catch (e) {
 
@@ -523,7 +634,7 @@ export default class Store extends Service {
 
 		try {
 
-			let server = await this.surreal.modify(record.tb, record.id, diff);
+			let server = await this.surreal.update(record.tb, record.id).patch(diff);
 			record.ingest(server);
 			return record;
 
@@ -553,7 +664,7 @@ export default class Store extends Service {
 
 		try {
 
-			let server = await this.surreal.change(record.tb, record.id, record.json);
+			let server = await this.surreal.update(record.tb, record.id).merge(record.json);
 			record.ingest(server);
 			return record;
 
@@ -720,6 +831,218 @@ export default class Store extends Service {
 		});
 
 		return query.limit !== 1 ? records : records[0];
+
+	}
+
+	/**
+	 * Run a set of writes atomically inside a single SurrealDB transaction,
+	 * via `surreal.transaction()`.
+	 *
+	 * `fn` is handed a scoped store-like object exposing `create`/`update`/
+	 * `upsert`/`relate`/`insert`/`search`/`select`/`delete`, each running
+	 * against the transaction. None of them
+	 * touch the live record cache while the transaction is open: SurrealDB
+	 * transactions read their own uncommitted writes, so a `search`/`select`
+	 * inside the transaction can return a row that only exists because of
+	 * this same transaction's own earlier, not-yet-committed write (a second
+	 * experience entry's organisation lookup finding the organisation an
+	 * earlier entry just created, say). Injecting that into the cache
+	 * immediately, and then having the transaction cancel or get retried,
+	 * would leave a record cached that the server never actually kept - so
+	 * everything touched is buffered here and only applied, in one batch,
+	 * once the transaction has actually committed.
+	 *
+	 * Because a conflict replays `fn` from scratch (see `surreal.transaction`),
+	 * `fn` must be safe to call more than once - build fresh payloads from
+	 * its own arguments rather than mutate shared or outer state, and avoid
+	 * side effects outside of the scoped object it is given.
+	 *
+	 * A write made through `beginTransaction()`/`commit()` used to never
+	 * notify a live query at all - not delayed until commit, simply never
+	 * sent, even though the write itself genuinely committed (confirmed
+	 * directly against a real server; fixed upstream in SurrealDB on
+	 * 2026-09-13, not yet in the 3.2.3 stable release at time of writing -
+	 * see `tests/integration/surreal/transaction-test.js`). That's not why
+	 * this buffers, though: even with that fixed, a transaction's own reads
+	 * can see its own uncommitted writes, which a live query watching from
+	 * outside the transaction never will - so this client still cannot rely
+	 * on a live-query notification alone to know what it just wrote.
+	 *
+	 * Gotcha for callers: pass a row's `.id`, never the row itself, when
+	 * pointing a later `create` at something created or found earlier in the
+	 * same transaction (an experience row's `organisation`, say). A
+	 * record-link field's setter (`classes/field/record.js`) injects a plain
+	 * object it is handed straight into the live cache to resolve the link -
+	 * which is exactly the premature, pre-commit injection this method
+	 * exists to prevent. A `RecordId` (a row's `.id`) is handled without
+	 * touching the cache at all.
+	 *
+	 * @param {Function} fn - Callback receiving a transaction-scoped store.
+	 * @returns {Promise} Resolves with whatever `fn` returns, once committed.
+	 */
+
+	async transaction(fn) {
+
+		let { result, touched, removed } = await this.surreal.transaction(async (surreal) => {
+
+			// Declared fresh per attempt - a conflict discards this attempt's
+			// transaction entirely, so anything it touched must be discarded
+			// with it rather than carried over into the retry's own buffer.
+
+			let touched = []; // raw rows from every create/update/upsert/relate/insert/select/search done inside
+			let removed = []; // [tb, id] pairs deleted inside
+
+			// Shadows `data` through the model to get its serialised JSON
+			// payload - the same construction `create()`/`upsert()` use
+			// outside a transaction (see the comment on `create()` above),
+			// so type formatting (dates, etc.) matches either way.
+
+			let payload = (model, data) => this.lookup(model).create(data, true).json;
+
+			let scoped = {
+
+				// Arrow function, so `this` stays the outer `Store` (for
+				// `payload`'s `this.lookup`) - which rules out the usual
+				// `arguments.length === 2` check for the shorthand
+				// `create(model, data)` call used below, since an arrow
+				// function has no own `arguments`. Checking `data ===
+				// undefined` instead is equivalent: with only two arguments
+				// supplied, the third parameter is always undefined
+				// regardless of what was passed as the second.
+				create: async (model, id, data) => {
+
+					assert('The model type must be a string', typeof model === 'string');
+
+					if (data === undefined) {
+						[id, data] = [undefined, id];
+					}
+
+					let server = await surreal.create(model, id).content(payload(model, data));
+					let row = Array.isArray(server) ? server[0] : server;
+
+					touched.push(row);
+
+					return row;
+
+				},
+
+				// Full-content replace of an existing (or table-wide) target -
+				// unlike `create`, `id` is required, since updating a record
+				// you have not identified is rarely what's wanted.
+				update: async (model, id, data) => {
+
+					assert('The model type must be a string', typeof model === 'string');
+
+					let server = await surreal.update(model, id).content(payload(model, data));
+					let row = Array.isArray(server) ? server[0] : server;
+
+					touched.push(row);
+
+					return row;
+
+				},
+
+				upsert: async (model, id, data) => {
+
+					assert('The model type must be a string', typeof model === 'string');
+
+					if (data === undefined) {
+						[id, data] = [undefined, id];
+					}
+
+					let server = await surreal.upsert(model, id).content(payload(model, data));
+					let row = Array.isArray(server) ? server[0] : server;
+
+					touched.push(row);
+
+					return row;
+
+				},
+
+				relate: async (from, edge, to, data) => {
+
+					assert('The edge table must be a string', typeof edge === 'string');
+
+					let row = await surreal.relate(from, edge, to, data);
+
+					touched.push(row);
+
+					return row;
+
+				},
+
+				insert: async (model, data) => {
+
+					assert('The model type must be a string', typeof model === 'string');
+
+					let rows = Array.isArray(data) ? data : [data];
+					let json = rows.map(row => payload(model, row));
+					let server = await surreal.insert(model, Array.isArray(data) ? json : json[0]);
+					let list = [].concat(server);
+
+					touched.push(...list);
+
+					return server;
+
+				},
+
+				search: async (model, query = {}) => {
+
+					assert('The model type must be a string', typeof model === 'string');
+
+					// See the matching assertion in `search()` above - a partial
+					// row blanks every field it omits once ingested.
+
+					assert(
+						'A `field` projection passed to search() must include `*`, because the ' +
+						'results are ingested into the record cache and a partial row would ' +
+						'blank every field it omits',
+						!query.field || query.field.some(f => String(f).trim() === '*'),
+					);
+
+					let { text, vars } = table(model, query);
+					let [rows = []] = await surreal.query(text, vars);
+
+					touched.push(...rows);
+
+					return query.limit !== 1 ? rows : rows[0];
+
+				},
+
+				select: async (model, id) => {
+
+					assert('The model type must be a string', typeof model === 'string');
+
+					let row = await surreal.select(model, id);
+
+					if (row) touched.push(row);
+
+					return row;
+
+				},
+
+				delete: async (record) => {
+
+					assert('You must pass a record to be deleted', record instanceof Model);
+
+					await surreal.delete(record.tb, record.id);
+
+					removed.push([record.tb, record.id]);
+
+				},
+
+			};
+
+			let result = await fn(scoped);
+
+			return { result, touched, removed };
+
+		});
+
+		for (let row of touched) this.inject(row);
+		for (let [tb, id] of removed) this.unload(tb, id);
+
+		return result;
 
 	}
 

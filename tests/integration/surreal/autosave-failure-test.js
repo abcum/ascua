@@ -93,7 +93,7 @@ scope('Integration | surreal | autosave failures', function (hooks) {
 		// `autosave()`, scheduling a save of something with no id at all —
 		// which resolves to a TABLE target rather than a record.
 		let calls = [];
-		for (const m of ['create', 'modify', 'change', 'update']) {
+		for (const m of ['create', 'update']) {
 			let original = this.surreal[m].bind(this.surreal);
 			this.surreal[m] = function (...args) {
 				calls.push(m);
@@ -121,7 +121,7 @@ scope('Integration | surreal | autosave failures', function (hooks) {
 		await new Promise((resolve) => setTimeout(resolve, 900));
 
 		let calls = [];
-		for (const m of ['create', 'modify', 'change', 'update', 'delete']) {
+		for (const m of ['create', 'update', 'delete']) {
 			let original = this.surreal[m].bind(this.surreal);
 			this.surreal[m] = function (...args) {
 				calls.push(m);

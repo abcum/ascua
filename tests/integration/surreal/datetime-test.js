@@ -28,8 +28,8 @@ scope('Integration | surreal | datetime precision', function (hooks) {
 		await this.surreal.query('CREATE doodad:t2 SET text = "x", when = time::now()');
 
 		let writes = 0;
-		let original = this.surreal.modify.bind(this.surreal);
-		this.surreal.modify = function (...args) {
+		let original = this.surreal.update.bind(this.surreal);
+		this.surreal.update = function (...args) {
 			writes++;
 			return original(...args);
 		};
@@ -47,8 +47,8 @@ scope('Integration | surreal | datetime precision', function (hooks) {
 		await autosaved(doodad);
 
 		let writes = 0;
-		let original = this.surreal.modify.bind(this.surreal);
-		this.surreal.modify = function (...args) {
+		let original = this.surreal.update.bind(this.surreal);
+		this.surreal.update = function (...args) {
 			writes++;
 			return original(...args);
 		};

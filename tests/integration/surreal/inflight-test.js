@@ -150,6 +150,13 @@ scope('Integration | surreal | in-flight edits', function (hooks) {
 		let row = await raw(this.surreal, 'f8');
 		assert.strictEqual(row.text, 'y', 'our first edit landed');
 		assert.strictEqual(row.count, 42, 'our in-flight edit landed');
+
+		// The revealing assertion: `store.modify()` sends a PATCH of only
+		// what this client actually changed (text, count), never a MERGE of
+		// its whole `record.json` - which would carry this client's own
+		// stale `flag: false` (it never learned about the other session's
+		// write) and silently clobber the concurrent edit back to false.
+		assert.true(row.flag, "the other session's concurrent write to an untouched field survived");
 	});
 
 	test('an any field holding keys a patch path cannot name still saves', async function (assert) {
@@ -184,8 +191,8 @@ scope('Integration | surreal | in-flight edits', function (hooks) {
 		assert.false(doodad.dirty, 'not dirty with nothing changed');
 
 		let writes = 0;
-		let original = this.surreal.modify.bind(this.surreal);
-		this.surreal.modify = function (...args) {
+		let original = this.surreal.update.bind(this.surreal);
+		this.surreal.update = function (...args) {
 			writes++;
 			return original(...args);
 		};

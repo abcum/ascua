@@ -191,3 +191,48 @@ DEFINE EVENT notify ON blip WHEN $event = "CREATE" THEN {
 	SLEEP 15ms;
 	UPDATE $after.beacon SET hits += 1;
 };
+
+-- Same shape as blip, but for an UPDATE/UPSERT conflict rather than a CREATE
+-- one: `stamp:shared` is a single fixed record every worker updates
+-- concurrently, so the update itself - not a fresh row each time - is what
+-- collides. `seq` exists only so each write's payload genuinely changes the
+-- record; SurrealDB does not fire an UPDATE event for a merge that would
+-- leave every field's value the same as it already was.
+
+DEFINE TABLE stamp SCHEMAFULL;
+
+DEFINE FIELD beacon ON stamp TYPE record<beacon>;
+DEFINE FIELD seq ON stamp TYPE option<number>;
+
+DEFINE EVENT notify ON stamp WHEN $event = "UPDATE" THEN {
+	SLEEP 15ms;
+	UPDATE $after.beacon SET hits += 1;
+};
+
+-- --------------------------------------------------
+-- TABLE ledger (.content() vs .replace() fixture)
+-- --------------------------------------------------
+--
+-- `opened` is READONLY, matching SurrealDB's own docs example for the one
+-- documented behavioural difference between CONTENT and REPLACE: a CONTENT
+-- payload that omits a READONLY field silently keeps its stored value,
+-- while the identical REPLACE payload raises an error.
+
+DEFINE TABLE ledger SCHEMAFULL;
+
+DEFINE FIELD opened ON ledger TYPE datetime READONLY;
+DEFINE FIELD balance ON ledger TYPE number DEFAULT 0;
+
+-- --------------------------------------------------
+-- TABLE follows (relate() fixture)
+-- --------------------------------------------------
+--
+-- A minimal graph-edge table between two `author` records, for exercising
+-- `relate()`/`store.relate()` both directly and inside a transaction.
+
+DEFINE TABLE follows SCHEMAFULL TYPE RELATION IN author OUT author;
+
+-- The ASSERT gives `relate()` its own genuine-rejection fixture, matching
+-- `gremlin`'s role for `modify()`/`update()`.
+DEFINE FIELD since ON follows TYPE option<datetime>
+	ASSERT $value = NONE OR $value > d'2000-01-01T00:00:00Z';

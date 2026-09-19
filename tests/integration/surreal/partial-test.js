@@ -227,7 +227,7 @@ scope('Integration | surreal | partial and empty data', function (hooks) {
 		await autosaved(doodad);
 
 		let calls = [];
-		for (const m of ['modify', 'change', 'update']) {
+		for (const m of ['update']) {
 			let original = this.surreal[m].bind(this.surreal);
 			this.surreal[m] = function (...args) {
 				calls.push(m);
