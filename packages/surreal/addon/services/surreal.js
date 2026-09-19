@@ -3,7 +3,7 @@ import Storage from '@ascua/storage';
 import config from '@ascua/config';
 import unid from '../utils/unid';
 import thing from '../utils/thing';
-import { Surreal as Database, Table } from 'surrealdb';
+import { Surreal as Database, Table, raw } from 'surrealdb';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { assert } from '@ember/debug';
@@ -452,8 +452,10 @@ export default class Surreal extends Service {
 	// Live query methods
 	// --------------------------------------------------
 
-	async live(tb) {
-		let sub = await this.#db.live(new Table(tb));
+	async live(tb, where) {
+		let query = this.#db.live(new Table(tb));
+		if (where) query = query.where(raw(where));
+		let sub = await query;
 		this.#live.add(sub);
 		sub.subscribe(({ action, value, recordId }) => {
 			this.emit(action, value);
