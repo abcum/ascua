@@ -3,7 +3,7 @@ import Storage from '@ascua/storage';
 import config from '@ascua/config';
 import unid from '../utils/unid';
 import thing from '../utils/thing';
-import { Surreal as Database, Table, isRetryableConflict, raw } from 'surrealdb';
+import { Surreal as Database, Table, BoundQuery, isRetryableConflict, raw } from 'surrealdb';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { assert } from '@ember/debug';
@@ -554,6 +554,79 @@ export default class Surreal extends Service {
 			}
 
 		}
+
+	}
+
+	// Send several statements as one atomic "BEGIN TRANSACTION; ...; COMMIT
+	// TRANSACTION;" request, in a single round trip - a stand-in for
+	// `transaction()` above until every deployed SurrealDB has the fix for
+	// a bug confirmed there (see that method's docstring): a write made
+	// through `beginTransaction()`/`commit()` never notifies a live query,
+	// whereas this single-request form does, correctly, today.
+	//
+	// Unlike `transaction()`, this has no callback and no branching - every
+	// statement has to be fully built before any of them run, because
+	// they're all compiled and sent together. `builders` are the SDK's own
+	// chainable objects (`this.create(tb, id).content(data)` and friends),
+	// unexecuted - `.compile()` (public on every one of them) turns each
+	// into a `BoundQuery` without sending anything, and those get stitched
+	// into one combined query via `BoundQuery#append()`, which merges
+	// bindings and only throws on a genuine name collision (not expected in
+	// practice - each builder's bindings are named from a counter shared
+	// across the whole SDK instance, not reset per statement).
+	//
+	// The server includes one result per statement, BEGIN and COMMIT
+	// themselves included - those two are dropped, leaving one entry per
+	// builder, in order. A conflict retries the whole request from scratch,
+	// same policy as `transaction()`, for the same reason: replaying one
+	// statement out of an atomic block on its own is meaningless.
+	//
+	// Retrying uses `Query#retry()` - the SDK's own mechanism for exactly this
+	// multi-statement case - rather than a hand-rolled loop, but with a
+	// broadened `retryable`: a losing multi-statement block surfaces as a
+	// `QueryError` with `details.kind === 'NotExecuted'`, not the
+	// `TransactionConflict` that `isRetryableConflict()` alone recognises, and
+	// that shape is indistinguishable at this level from a genuine, permanent
+	// rejection (an ASSERT failure, say) elsewhere in the same block. Treating
+	// `NotExecuted` as retryable means a permanent rejection also gets retried
+	// - burning the whole policy's attempts and backoff, a few seconds, before
+	// surfacing the real error - which is accepted as the cost of retrying the
+	// conflicts that are actually transient.
+
+	batch(...builders) {
+
+		if (builders.length === 1 && Array.isArray(builders[0])) {
+			builders = builders[0];
+		}
+
+		let db = this.#db;
+		let policy = {
+			...this.#retry,
+			retryable: (e) => isRetryableConflict(e) || e?.details?.kind === 'NotExecuted',
+		};
+
+		let execute = async () => {
+
+			let combined = new BoundQuery('BEGIN TRANSACTION;\n');
+
+			for (let builder of builders) {
+				combined.append(builder.compile());
+				combined.append(';\n');
+			}
+
+			combined.append('COMMIT TRANSACTION;');
+
+			let results = await db.query(combined).retry(policy);
+
+			return results.slice(1, results.length - 1);
+
+		};
+
+		return {
+			then: (resolve, reject) => execute().then(resolve, reject),
+			catch: (reject) => execute().then(undefined, reject),
+			finally: (fn) => execute().finally(fn),
+		};
 
 	}
 

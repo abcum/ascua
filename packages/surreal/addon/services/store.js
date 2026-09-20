@@ -56,6 +56,59 @@ function lookupAll(arr, ids) {
 	return arr.filter(v => v !== undefined && sids.includes(String(v.id)));
 }
 
+// Wraps a mutating store method's two halves - `prepare` (returns the
+// underlying, unexecuted `surreal`-level builder) and `finalize` (turns its
+// raw server result into the store-shaped value: injecting into the cache,
+// ingesting into an existing record, unloading a deleted one) - into the
+// shape `create`/`update`/`modify`/`upsert`/`relate`/`insert`/`delete` all
+// return below. Nothing runs until something actually consumes it:
+//
+//   await store.create(...)      - runs it, waits for and returns the result
+//   store.create(...).run()      - runs it, without waiting for the result -
+//                                   the direct replacement for how these
+//                                   methods used to behave unconditionally.
+//                                   `void store.create(...)` does NOT do
+//                                   this - void only discards an
+//                                   already-computed value, and nothing
+//                                   here is computed until `.then()`/`.run()`
+//                                   actually calls `prepare()`.
+//   store.batch([a, b, ...])     - `.compile()` (never `.then()`/`.run()`)
+//                                   is called on each item to build one
+//                                   combined request; `.finalize()` and
+//                                   `.rollback()` are applied afterwards to
+//                                   each item's own slice of the result -
+//                                   see `batch()` below.
+//
+// `recover` (optional) is called, argument the thrown error, whenever
+// `prepare()`/`finalize()` fails for any reason - including a batch this
+// item was part of failing as a whole, even though no request specific to
+// this item was ever sent on its own. It may return a value to swallow the
+// error (e.g. a `DestroyedError`, resolving to `undefined`), or itself
+// throw/rethrow to propagate - same shape as a `.then()` rejection handler.
+// Defaults to rethrowing whatever it was given.
+
+function batchable(prepare, finalize, recover = (e) => { throw e; }) {
+
+	let promise;
+
+	let execute = () => promise ??= (async () => {
+		try {
+			return finalize(await prepare());
+		} catch (e) {
+			return recover(e);
+		}
+	})();
+
+	return {
+		compile: () => prepare().compile(),
+		finalize,
+		recover,
+		then: (resolve, reject) => execute().then(resolve, reject),
+		run: () => execute(),
+	};
+
+}
+
 export default class Store extends Service {
 
 	@service surreal;
@@ -454,26 +507,28 @@ export default class Store extends Service {
 	}
 
 	/**
-	 * Creates a record in the database and in the
-	 * local cache. If the create is not successful
-	 * due to an error or permissions failure, then
+	 * Creates a record in the database and in the local cache. If the
+	 * create is not successful due to an error or permissions failure, then
 	 * the record will not be stored locally.
+	 *
+	 * Returns a `batchable()` object, not a plain Promise - see that
+	 * function's docstring above for `await`/`.run()`/`store.batch()`.
 	 *
 	 * @param {string} model - The model type.
 	 * @param {string} id - Optional record id.
 	 * @param {Object} data - The record data.
-	 * @returns {Promise} Promise object with the updated record.
+	 * @returns {Object} A batchable object resolving to the created record.
 	 */
 
-	async create(model, id, data) {
+	create(model, id, data) {
 
 		assert('The model type must be a string', typeof model === 'string');
 
-		try {
+		if (arguments.length === 2) {
+			[id, data] = [undefined, id];
+		}
 
-			if (arguments.length === 2) {
-				[id, data] = [undefined, id];
-			}
+		let prepare = () => {
 
 			// Built as a shadow (the third argument) - it exists only to turn
 			// `data` into a payload via `.json`, and is thrown away. Without
@@ -484,7 +539,12 @@ export default class Store extends Service {
 			// any record.
 
 			let record = this.lookup(model).create(data, true);
-			let server = await this.surreal.create(model, id).content(record.json);
+
+			return this.surreal.create(model, id).content(record.json);
+
+		};
+
+		let finalize = (server) => {
 
 			// Creating without an id targets the table, and the SDK resolves a
 			// table-targeted create to an array of the created records, whereas
@@ -495,15 +555,14 @@ export default class Store extends Service {
 
 			return this.inject(Array.isArray(server) ? server[0] : server);
 
-		} catch (e) {
+		};
 
-			if (e instanceof DestroyedError) {
-				// ignore
-			} else {
-				throw e;
-			}
+		let recover = (e) => {
+			if (e instanceof DestroyedError) return undefined;
+			throw e;
+		};
 
-		}
+		return batchable(prepare, finalize, recover);
 
 	}
 
@@ -513,38 +572,37 @@ export default class Store extends Service {
 	 * an error or permissions failure, then the record will not be stored
 	 * locally.
 	 *
+	 * Returns a `batchable()` object - see `create()` above.
+	 *
 	 * @param {string} model - The model type.
 	 * @param {string} id - Optional record id.
 	 * @param {Object} data - The record data.
-	 * @returns {Promise} Promise object with the upserted record.
+	 * @returns {Object} A batchable object resolving to the upserted record.
 	 */
 
-	async upsert(model, id, data) {
+	upsert(model, id, data) {
 
 		assert('The model type must be a string', typeof model === 'string');
 
-		try {
-
-			if (arguments.length === 2) {
-				[id, data] = [undefined, id];
-			}
-
-			// See the matching comment on `create()` above.
-
-			let record = this.lookup(model).create(data, true);
-			let server = await this.surreal.upsert(model, id).content(record.json);
-
-			return this.inject(Array.isArray(server) ? server[0] : server);
-
-		} catch (e) {
-
-			if (e instanceof DestroyedError) {
-				// ignore
-			} else {
-				throw e;
-			}
-
+		if (arguments.length === 2) {
+			[id, data] = [undefined, id];
 		}
+
+		// See the matching comment on `create()` above.
+
+		let prepare = () => {
+			let record = this.lookup(model).create(data, true);
+			return this.surreal.upsert(model, id).content(record.json);
+		};
+
+		let finalize = (server) => this.inject(Array.isArray(server) ? server[0] : server);
+
+		let recover = (e) => {
+			if (e instanceof DestroyedError) return undefined;
+			throw e;
+		};
+
+		return batchable(prepare, finalize, recover);
 
 	}
 
@@ -552,32 +610,28 @@ export default class Store extends Service {
 	 * Creates a graph edge between two records in the database and in the
 	 * local cache.
 	 *
+	 * Returns a `batchable()` object - see `create()` above.
+	 *
 	 * @param {Model|Object} from - The record the edge starts at.
 	 * @param {string} edge - The edge table name.
 	 * @param {Model|Object} to - The record the edge ends at.
 	 * @param {Object} data - Optional data to store on the edge record.
-	 * @returns {Promise} Promise object with the created edge record.
+	 * @returns {Object} A batchable object resolving to the created edge record.
 	 */
 
-	async relate(from, edge, to, data) {
+	relate(from, edge, to, data) {
 
 		assert('The edge table must be a string', typeof edge === 'string');
 
-		try {
+		let prepare = () => this.surreal.relate(from, edge, to, data);
+		let finalize = (server) => this.inject(server);
 
-			let server = await this.surreal.relate(from, edge, to, data);
+		let recover = (e) => {
+			if (e instanceof DestroyedError) return undefined;
+			throw e;
+		};
 
-			return this.inject(server);
-
-		} catch (e) {
-
-			if (e instanceof DestroyedError) {
-				// ignore
-			} else {
-				throw e;
-			}
-
-		}
+		return batchable(prepare, finalize, recover);
 
 	}
 
@@ -585,16 +639,18 @@ export default class Store extends Service {
 	 * Inserts one or more records into the database and into the local
 	 * cache, in a single request.
 	 *
+	 * Returns a `batchable()` object - see `create()` above.
+	 *
 	 * @param {string} model - The model type.
 	 * @param {Object|Array} data - One or more records to insert.
-	 * @returns {Promise} Promise object with the inserted record(s).
+	 * @returns {Object} A batchable object resolving to the inserted record(s).
 	 */
 
-	async insert(model, data) {
+	insert(model, data) {
 
 		assert('The model type must be a string', typeof model === 'string');
 
-		try {
+		let prepare = () => {
 
 			// Each row is shadowed through the model individually - see the
 			// matching comment on `create()` above - so every row's payload
@@ -602,108 +658,111 @@ export default class Store extends Service {
 
 			let rows = Array.isArray(data) ? data : [data];
 			let payload = rows.map(row => this.lookup(model).create(row, true).json);
-			let server = await this.surreal.insert(model, Array.isArray(data) ? payload : payload[0]);
 
-			return this.inject(server);
+			return this.surreal.insert(model, Array.isArray(data) ? payload : payload[0]);
 
-		} catch (e) {
+		};
 
-			if (e instanceof DestroyedError) {
-				// ignore
-			} else {
-				throw e;
-			}
+		let finalize = (server) => this.inject(server);
 
-		}
+		let recover = (e) => {
+			if (e instanceof DestroyedError) return undefined;
+			throw e;
+		};
+
+		return batchable(prepare, finalize, recover);
 
 	}
 
 	/**
-	 * Updates all record changes with the database.
-	 * If the update is not successful due to an
-	 * error or permissions failure, then the record
+	 * Updates all record changes with the database. If the update is not
+	 * successful due to an error or permissions failure, then the record
 	 * will be rolled back.
 	 *
+	 * Returns a `batchable()` object - see `create()` above.
+	 *
 	 * @param {Model} record - A record.
-	 * @returns {Promise} Promise object with the updated record.
+	 * @param {Object} diff - A JSON-patch diff to apply.
+	 * @returns {Object} A batchable object resolving to the updated record.
 	 */
 
-	async modify(record, diff) {
+	modify(record, diff) {
 
 		assert('You must pass a record to be modified', record instanceof Model);
 
-		try {
+		let prepare = () => this.surreal.update(record.tb, record.id).patch(diff);
 
-			let server = await this.surreal.update(record.tb, record.id).patch(diff);
+		let finalize = (server) => {
 			record.ingest(server);
 			return record;
+		};
 
-		} catch (e) {
-
+		let recover = (e) => {
 			record.rollback();
-
 			throw e;
+		};
 
-		}
+		return batchable(prepare, finalize, recover);
 
 	}
 
 	/**
-	 * Updates all record changes with the database.
-	 * If the update is not successful due to an
-	 * error or permissions failure, then the record
+	 * Updates all record changes with the database. If the update is not
+	 * successful due to an error or permissions failure, then the record
 	 * will be rolled back.
 	 *
+	 * Returns a `batchable()` object - see `create()` above.
+	 *
 	 * @param {Model} record - A record.
-	 * @returns {Promise} Promise object with the updated record.
+	 * @returns {Object} A batchable object resolving to the updated record.
 	 */
 
-	async update(record) {
+	update(record) {
 
 		assert('You must pass a record to be updated', record instanceof Model);
 
-		try {
+		let prepare = () => this.surreal.update(record.tb, record.id).merge(record.json);
 
-			let server = await this.surreal.update(record.tb, record.id).merge(record.json);
+		let finalize = (server) => {
 			record.ingest(server);
 			return record;
+		};
 
-		} catch (e) {
-
+		let recover = (e) => {
 			record.rollback();
-
 			throw e;
+		};
 
-		}
+		return batchable(prepare, finalize, recover);
 
 	}
 
 	/**
-	 * Deletes a record from the database and removes
-	 * it from the local cache. If the delete is not
-	 * successful due to an error or permissions
+	 * Deletes a record from the database and removes it from the local
+	 * cache. If the delete is not successful due to an error or permissions
 	 * failure, then the record will be rolled back.
 	 *
+	 * Returns a `batchable()` object - see `create()` above.
+	 *
 	 * @param {Model} record - A record.
-	 * @returns {Promise} Promise object with the delete record.
+	 * @returns {Object} A batchable object resolving once the record is removed.
 	 */
 
-	async delete(record) {
+	delete(record) {
 
 		assert('You must pass a record to be deleted', record instanceof Model);
 
-		try {
+		let prepare = () => this.surreal.delete(record.tb, record.id);
+
+		let finalize = (result) => {
 
 			// A DELETE that the record's own `FOR delete` permission denies is
 			// not an error as far as SurrealDB is concerned - it simply
 			// matches and removes nothing, and resolves the same as a real
 			// delete would. Verified directly: a session lacking permission
 			// gets back `undefined` here with no exception at all, so without
-			// this check the `catch` below - and the rollback the docstring
-			// above promises - never runs for a permissions failure, only for
-			// a genuine thrown error (a network fault, say).
-
-			let result = await this.surreal.delete(record.tb, record.id);
+			// this check the record would never roll back for a permissions
+			// failure, only for a genuine thrown error (a network fault, say).
 
 			if (result === undefined || result === null) {
 				throw new Error(`Delete of ${record.tb}:${record.id} did not remove a record - check permissions`);
@@ -711,13 +770,14 @@ export default class Store extends Service {
 
 			return this.unload(record.tb, record.id);
 
-		} catch (e) {
+		};
 
+		let recover = (e) => {
 			record.rollback();
-
 			throw e;
+		};
 
-		}
+		return batchable(prepare, finalize, recover);
 
 	}
 
@@ -831,6 +891,64 @@ export default class Store extends Service {
 		});
 
 		return query.limit !== 1 ? records : records[0];
+
+	}
+
+	/**
+	 * Send several `create`/`update`/`modify`/`upsert`/`relate`/`insert`/
+	 * `delete` calls as one atomic request, via `surreal.batch()` - a
+	 * stand-in for `transaction()` below until every deployed SurrealDB has
+	 * the live-query fix that method's docstring describes.
+	 *
+	 * `items` is an array of already-called-but-unconsumed results from this
+	 * service's own mutating methods - e.g. `this.store.create('note', ...)`
+	 * - passed WITHOUT `await`/`.run()`, since consuming one of them any
+	 * other way runs it on its own, outside the batch. `.compile()` is
+	 * called on each to build one combined request; once it resolves, each
+	 * item's own `.finalize()` is applied to its slice of the results
+	 * (injecting into the cache, ingesting into an existing record, and so
+	 * on - exactly what consuming it directly would have done), or, if the
+	 * whole batch failed, its `.recover()` (e.g. `record.rollback()`).
+	 *
+	 * Because a conflict retries the whole request from scratch (see
+	 * `surreal.batch()`), every item's own `data` must be safe to send more
+	 * than once - the same "build fresh payloads, no side effects outside
+	 * what's passed in" rule `transaction()` documents below.
+	 *
+	 * @param {...Object|Array} items - Unconsumed results of other `store` methods.
+	 * @returns {Promise} Resolves to an array of each item's own result, in order.
+	 */
+
+	async batch(...items) {
+
+		if (items.length === 1 && Array.isArray(items[0])) {
+			items = items[0];
+		}
+
+		try {
+
+			let results = await this.surreal.batch(...items);
+
+			return items.map((item, i) => item.finalize(results[i]));
+
+		} catch (e) {
+
+			// The whole request failed atomically - nothing here was ever
+			// sent as its own statement, but every item still gets a chance
+			// to react (e.g. roll back a record it was updating).
+
+			for (let item of items) {
+				try {
+					item.recover(e);
+				} catch (ignored) {
+					// expected - `recover` rethrows by default; only its
+					// side effects (not its return value) matter here.
+				}
+			}
+
+			throw e;
+
+		}
 
 	}
 
