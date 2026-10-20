@@ -87,9 +87,12 @@ const retry = {
 // Trying a few times first gives a settling connection a chance to catch up
 // before we give up on the token.
 
-const attempts = {
+// `timeout` bounds both the wait for the socket and each authenticate call, so a
+// stalled connection or sign-in ends in the signed-out state rather than hanging.
+export const attempts = {
 	count: 3,
 	delay: 500,
+	timeout: 10000,
 };
 
 // Builds the create/update/upsert/relate/insert/delete/select/query surface
@@ -376,6 +379,17 @@ export default class Surreal extends Service {
 
 	}
 
+	// Rejects if the server does not answer within `attempts.timeout`, so a stalled
+	// sign-in counts as a failed attempt rather than hanging the loop.
+
+	#authenticate(token) {
+		let timer;
+		let stalled = new Promise((_, reject) => {
+			timer = setTimeout(() => reject(new Error('surreal: authenticate timed out')), attempts.timeout);
+		});
+		return Promise.race([this.#db.authenticate(token), stalled]).finally(() => clearTimeout(timer));
+	}
+
 	// Once the connection is open we always
 	// attempt to authenticate with the stored
 	// token, or mark as attempted if there is none.
@@ -394,7 +408,7 @@ export default class Surreal extends Service {
 
 		for (let i = 1; i <= attempts.count; i++) {
 			try {
-				await this.#db.authenticate(this.token);
+				await this.#authenticate(this.token);
 				if (id !== this.#attemptId) return;
 				this.attempted = true;
 				this.authenticated = true;
@@ -441,8 +455,19 @@ export default class Surreal extends Service {
 	// Direct methods
 	// --------------------------------------------------
 
+	// Resolves once the socket is ready, or after `attempts.timeout` with the
+	// service marked signed out, so a connection that never opens cannot block routes.
 	wait() {
-		return this.#db.ready;
+		return Promise.race([
+			this.#db.ready,
+			timeout(attempts.timeout).then(() => {
+				if (this.opened || this.attempted) return;
+				this.attempted = true;
+				this.invalidated = true;
+				this.emit('attempted');
+				this.emit('invalidated');
+			}),
+		]);
 	}
 
 	let(key, value) {
