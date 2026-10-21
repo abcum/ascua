@@ -129,12 +129,9 @@ module('Unit | surreal | diff ops', function () {
 		assert.strictEqual(result[0].path, '/a/1', 'at the dropped index');
 	});
 
-	test('a changed element replaces the whole array, at an index-free path', function (assert) {
-		// A replace whose path runs through an array index is silently
-		// dropped by SurrealDB, so an in-place element change has to be sent
-		// as a replace of the array itself.
-		assert.deepEqual(ops({ a: ['x', 'y'] }, { a: ['X', 'y'] }), [
-			{ op: 'replace', path: '/a', value: ['X', 'y'] },
+	test('a changed element is patched at its own index', function (assert) {
+		assert.deepEqual(ops({ a: [{ n: 1 }, { n: 1 }] }, { a: [{ n: 2 }, { n: 1 }] }), [
+			{ op: 'replace', path: '/a/0/n', value: 2 },
 		]);
 	});
 
@@ -159,15 +156,13 @@ module('Unit | surreal | diff ops', function () {
 		assert.deepEqual(result, [{ op: 'replace', path: '/o/n', value: 2 }]);
 	});
 
-	test('a change inside an array element replaces the array', function (assert) {
+	test('a change inside an array element is patched at its nested path', function (assert) {
 		let result = ops(
 			{ a: [{ n: { deep: 1 } }] },
 			{ a: [{ n: { deep: 2 } }] },
 		);
 
-		assert.strictEqual(result.length, 1, 'one op');
-		assert.strictEqual(result[0].op, 'replace', 'a replace');
-		assert.strictEqual(result[0].path, '/a', 'of the whole array');
+		assert.deepEqual(result, [{ op: 'replace', path: '/a/0/n/deep', value: 2 }]);
 	});
 
 	// ------------------------------------------------------------------
