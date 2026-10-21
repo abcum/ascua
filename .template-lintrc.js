@@ -1,9 +1,25 @@
 'use strict';
 
 module.exports = {
-	extends: 'octane',
+	extends: 'recommended',
 	rules: {
-		'block-indentation': 'tab',
+		// Existing violations are warnings until they are fixed.
+		'no-at-ember-render-modifiers': 'warn',
+		'no-invalid-interactive': 'warn',
+		'require-presentational-children': 'warn',
+		'no-passed-in-event-handlers': 'warn',
+		'no-builtin-form-components': 'warn',
+		'require-input-label': 'warn',
+		'no-redundant-fn': 'warn',
+		'no-unnecessary-curly-parens': 'warn',
+		'require-valid-alt-text': 'warn',
+		'no-nested-splattributes': 'warn',
+		'no-duplicate-id': 'warn',
+		'no-forbidden-elements': 'warn',
+		'no-unknown-arguments-for-builtin-components': 'warn',
+		'no-whitespace-for-layout': 'warn',
+		'require-iframe-title': 'warn',
+	'block-indentation': 'tab',
 		'attribute-indentation': false,
 		'no-implicit-this': {
 			allow: [
