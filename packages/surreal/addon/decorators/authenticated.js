@@ -51,10 +51,18 @@ function func(target) {
 			if (this.surreal.invalidated === true) {
 				return this.router.replaceWith(this.redirectIfInvalidated);
 			}
-			// Wait for session identification.
-			return this.session.ready.then(() => {
-				// Continue with original hook.
-				return super.beforeModel(...arguments);
+			// Wait for session identification, or for an invalidation that happens while waiting.
+			return new Promise((resolve) => {
+				const onInvalidated = () => {
+					this.surreal.off('invalidated', onInvalidated);
+					resolve(this.router.replaceWith(this.redirectIfInvalidated));
+				};
+				this.surreal.on('invalidated', onInvalidated);
+				this.session.ready.then(() => {
+					this.surreal.off('invalidated', onInvalidated);
+					// Continue with original hook.
+					resolve(super.beforeModel(...arguments));
+				});
 			});
 		}
 
