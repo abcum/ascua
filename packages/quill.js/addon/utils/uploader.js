@@ -7,4 +7,7 @@
 
 export default class Uploader {
 	constructor() {}
+
+	// Quill calls this for file-only pastes; Import has already handled them.
+	upload() {}
 }
