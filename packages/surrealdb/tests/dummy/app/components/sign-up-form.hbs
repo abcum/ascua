@@ -1,0 +1,15 @@
+<div id="signup">
+  <Input
+    id="email"
+    @type="text"
+    @value={{this.email}}
+    placeholder="Enter your email"
+  />
+  <Input
+    id="password"
+    @type="password"
+    @value={{this.pass}}
+    placeholder="Enter your password"
+  />
+  <button type="button" {{on "click" this.signup}}>Signup</button>
+</div>
