@@ -5,6 +5,7 @@ const fs = require('fs');
 const PATH = app.getAppPath();
 const BASE = join(PATH, 'dist');
 const INDX = join(BASE, 'index.html');
+const LOCATION = process.env.EMBER_ELECTRON_LOCATION || 'ember://app';
 
 protocol.registerSchemesAsPrivileged([
 	{ scheme: 'ember', privileges: { standard: true, secure: true } },
@@ -69,10 +70,12 @@ app.on('browser-window-created', (e, window) => {
 		}
 	});
 
-	window.webContents.on('did-fail-load', (e, int, text, url) => {
+	window.webContents.on('did-fail-load', (e, int, text, url, isMainFrame) => {
+		// Only recover when the app itself failed to load, not other pages or subframes
+		if (!isMainFrame || !url.startsWith(LOCATION)) return;
 		setTimeout( () => {
 			if (!window.isDestroyed()) {
-				window.loadURL(process.env.EMBER_ELECTRON_LOCATION || INDX);
+				window.loadURL(LOCATION);
 			}
 		}, 1000);
 	});
