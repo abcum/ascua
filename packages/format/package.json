@@ -15,6 +15,7 @@
     "url": "https://surrealdb.com"
   },
   "dependencies": {
+    "@ascua/intl": "^0.31.0",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0"
   },

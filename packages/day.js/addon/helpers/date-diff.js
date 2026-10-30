@@ -1,7 +1,7 @@
-import { helper } from '@ember/component/helper';
+import localised from '../utils/localised';
 import Date from 'dayjs';
 import { createDateDiff } from '../utils/date-helpers';
 
 export const dateDiff = createDateDiff(Date);
 
-export default helper(dateDiff);
+export default localised(dateDiff);

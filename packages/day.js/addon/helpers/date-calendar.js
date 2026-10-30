@@ -1,7 +1,7 @@
-import { helper } from '@ember/component/helper';
+import localised from '../utils/localised';
 import Date from 'dayjs';
 import { createDateCalendar } from '../utils/date-helpers';
 
 export const dateCalendar = createDateCalendar(Date);
 
-export default helper(dateCalendar);
+export default localised(dateCalendar);

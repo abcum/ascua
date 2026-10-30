@@ -1,9 +1,10 @@
-import { helper } from '@ember/component/helper';
+import localised from '../utils/localised';
+import { formatNumber } from '@ascua/intl/utils/message';
 
-export function percent(params, hash = { style: 'percent' }) {
+export function percent(params, hash = { style: 'percent' }, locale = 'en') {
 	let options = Object.assign({}, hash);
 	options.style = 'percent';
-	return Number(params[0]).toLocaleString([], options);
+	return formatNumber(Number(params[0]), locale, options);
 }
 
-export default helper(percent);
+export default localised(percent);

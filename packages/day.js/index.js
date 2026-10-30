@@ -1,5 +1,8 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
 const transform = {
 	using: [{ transformation: 'babel' }]
 };
@@ -37,9 +40,13 @@ module.exports = {
 		if (this.opts.locales) {
 			[].concat(this.opts.locales).forEach(l => {
 				app.import('node_modules/dayjs/locale/'+l+'.js', transform);
-				app.import('vendor/dayjs/locale/'+l+'.js', transform);
+				if (fs.existsSync(path.join(__dirname, 'vendor/dayjs/locale', l+'.js'))) {
+					app.import('vendor/dayjs/locale/'+l+'.js', transform);
+				}
 			});
 		}
+
+		app.import('vendor/dayjs/default.js', transform);
 
 	},
 

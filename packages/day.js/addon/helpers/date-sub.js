@@ -1,7 +1,7 @@
-import { helper } from '@ember/component/helper';
+import localised from '../utils/localised';
 import Date from 'dayjs';
 import { createDateSub } from '../utils/date-helpers';
 
 export const dateSub = createDateSub(Date);
 
-export default helper(dateSub);
+export default localised(dateSub);
