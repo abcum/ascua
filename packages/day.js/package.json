@@ -1,6 +1,6 @@
 {
   "name": "@ascua/day.js",
-  "version": "0.31.0",
+  "version": "0.32.0",
   "description": "Small description for @ascua/day.js goes here",
   "keywords": [
     "ember-addon"
@@ -17,7 +17,7 @@
   "dependencies": {
     "@ascua/clock": "file:../clock",
     "@ascua/decorators": "file:../decorators",
-    "@ascua/intl": "^0.31.0",
+    "@ascua/intl": "^0.32.0",
     "dayjs": "^1.11.19",
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0"
