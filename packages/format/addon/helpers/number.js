@@ -1,9 +1,10 @@
-import { helper } from '@ember/component/helper';
+import localised from '../utils/localised';
+import { formatNumber } from '@ascua/intl/utils/message';
 
-export function number(params, hash = { style: 'decimal' }) {
+export function number(params, hash = { style: 'decimal' }, locale = 'en') {
 	let options = Object.assign({}, hash);
 	options.style = 'decimal';
-	return Number(params[0]).toLocaleString([], options);
+	return formatNumber(Number(params[0]), locale, options);
 }
 
-export default helper(number);
+export default localised(number);

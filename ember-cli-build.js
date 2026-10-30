@@ -5,6 +5,9 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function (defaults) {
 
 	const app = new EmberApp(defaults, {
+		dayjs: {
+			locales: ['en-gb', 'de', 'fr', 'es', 'pt', 'ja'],
+		},
 		prism: {
 			copyToClipboard: true,
 			languages: [

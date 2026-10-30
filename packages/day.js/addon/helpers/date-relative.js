@@ -1,7 +1,7 @@
-import { helper } from '@ember/component/helper';
+import localised from '../utils/localised';
 import Date from 'dayjs';
 import { createDateRelative } from '../utils/date-helpers';
 
 export const dateRelative = createDateRelative(Date);
 
-export default helper(dateRelative);
+export default localised(dateRelative);

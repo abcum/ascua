@@ -9,8 +9,10 @@ export default class extends Helper {
 
 	@service clock;
 
+	@service intl;
+
 	compute() {
-		return now(this.clock.now);
+		return now(this.clock.now, this.intl.locale);
 	}
 
 }
