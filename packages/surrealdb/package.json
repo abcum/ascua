@@ -1,0 +1,111 @@
+{
+  "name": "@ascua/surrealdb",
+  "version": "0.0.237",
+  "description": "Small description for @ascua/surrealdb goes here",
+  "keywords": [
+    "ember-addon"
+  ],
+  "homepage": "https://abcum.github.io/ascua",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abcum/ascua.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Tobie Morgan Hitchcock",
+    "url": "https://abcum.com"
+  },
+  "scripts": {
+    "build": "ember build --environment=production",
+    "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:css:fix": "concurrently \"npm:lint:css -- --fix\"",
+    "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\"",
+    "lint:hbs": "ember-template-lint .",
+    "lint:hbs:fix": "ember-template-lint . --fix",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
+    "start": "ember serve",
+    "test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
+    "test:ember": "ember test",
+    "test:ember-compatibility": "ember try:each"
+  },
+  "dependencies": {
+    "@ascua/config": "file:../config",
+    "@ascua/context": "file:../context",
+    "@ascua/decorators": "file:../decorators",
+    "@ascua/proxy": "file:../proxy",
+    "@ascua/queue": "file:../queue",
+    "@ascua/service": "file:../service",
+    "@babel/core": "^7.23.2",
+    "broccoli-persistent-filter": "^3.1.2",
+    "ember-auto-import": "2.6.3",
+    "ember-cli-babel": "^8.2.0",
+    "ember-cli-htmlbars": "^6.3.0",
+    "ember-window-mock": "^0.8.1",
+    "surrealdb.js": "^0.11.0",
+    "tracked-built-ins": "^3.2.0",
+    "ws": "^8.5.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.22.15",
+    "@babel/plugin-proposal-decorators": "^7.23.2",
+    "@ember/optional-features": "^2.0.0",
+    "@ember/test-helpers": "^3.2.0",
+    "@embroider/test-setup": "^3.0.2",
+    "@glimmer/component": "^1.1.2",
+    "@glimmer/tracking": "^1.1.2",
+    "broccoli-asset-rev": "^3.0.0",
+    "concurrently": "^8.2.2",
+    "ember-cli": "~5.4.0",
+    "ember-cli-clean-css": "^3.0.0",
+    "ember-cli-dependency-checker": "^3.3.2",
+    "ember-cli-inject-live-reload": "^2.1.0",
+    "ember-cli-sri": "^2.1.1",
+    "ember-cli-terser": "^4.0.2",
+    "ember-load-initializers": "^2.1.2",
+    "ember-page-title": "^8.0.0",
+    "ember-qunit": "^8.0.1",
+    "ember-resolver": "^11.0.1",
+    "ember-source": "~5.4.0",
+    "ember-source-channel-url": "^3.0.0",
+    "ember-template-lint": "^5.11.2",
+    "ember-truth-helpers": "^4.0.3",
+    "ember-try": "^3.0.0",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-ember": "^11.11.1",
+    "eslint-plugin-n": "^16.2.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-qunit": "^8.0.1",
+    "loader.js": "^4.7.0",
+    "prettier": "^3.0.3",
+    "qunit": "^2.20.0",
+    "qunit-dom": "^2.0.0",
+    "stylelint": "^15.11.0",
+    "stylelint-config-standard": "^34.0.0",
+    "stylelint-prettier": "^4.0.2",
+    "webpack": "^5.89.0"
+  },
+  "peerDependencies": {
+    "ember-source": ">= 4.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "ember-addon": {
+    "demoURL": "https://abcum.github.io/ascua",
+    "before": [
+      "ember-cli-babel"
+    ],
+    "fastbootDependencies": [
+      "ws"
+    ]
+  },
+  "fastbootDependencies": [
+    "ws"
+  ]
+}
