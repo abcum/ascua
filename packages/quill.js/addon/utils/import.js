@@ -5,6 +5,7 @@ export default class Import {
 		this.quill = quill;
 		this.allowMedia = options?.allowMedia !== false;
 
+		this.quill.root.addEventListener('dragover', this.didDragOver, false);
 		this.quill.root.addEventListener('drop', this.didDrop, false);
 		this.quill.root.addEventListener('paste', this.didPaste, false);
 		this.quill.getModule('toolbar').addHandler('image', this.didImage);
@@ -12,7 +13,7 @@ export default class Import {
 
 	}
 
-	didImage(e) {
+	didImage = () => {
 
 		if (!this.allowMedia) return;
 
@@ -28,7 +29,7 @@ export default class Import {
 
 	}
 
-	didVideo(e) {
+	didVideo = () => {
 
 		if (!this.allowMedia) return;
 
@@ -57,12 +58,22 @@ export default class Import {
 
 	}
 
+	didDragOver = (e) => {
+
+		// Without this the browser does not deliver file drops reliably
+		if ([...(e.dataTransfer?.types ?? [])].includes('Files')) e.preventDefault();
+
+	}
+
 	didDrop = (e) => {
+
+		// Leave drops of internal content to Quill
+		if (!e.dataTransfer?.files?.length) return;
 
 		e.preventDefault();
 		e.stopImmediatePropagation();
 
-		if (e.dataTransfer?.files?.length) {
+		{
 
 			if (!this.allowMedia) return;
 

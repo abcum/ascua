@@ -19,7 +19,7 @@ export default class Insert {
 
 	async insert(file) {
 
-		if (file.type.match(/^image\/(gif|jpg|jpeg|png|apng|svg|webp|bmp)$/i)) {
+		if (file.type.match(/^image\//i)) {
 
 			if (typeof this.handler === 'function') {
 				const src = await this.handler(file);
