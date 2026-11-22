@@ -8,7 +8,7 @@ const INDX = join(BASE, 'index.html');
 const LOCATION = process.env.EMBER_ELECTRON_LOCATION || 'ember://app';
 
 protocol.registerSchemesAsPrivileged([
-	{ scheme: 'ember', privileges: { standard: true, secure: true } },
+	{ scheme: 'ember', privileges: { standard: true, secure: true, supportFetchAPI: true } },
 ]);
 
 app.once('ready', () => {
