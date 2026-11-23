@@ -1,5 +1,5 @@
 <app-gridlist {{did-insert this.didCreate}} {{did-resize this.didResize}} {{did-update this.didChange @model @model.length}} {{did-update this.didSelect @selection}} ...attributes>
-	<app-gridlist-view {{on "scroll" this.didScroll}} {{on "click" this.didClick}}>
+	<app-gridlist-view {{on "scroll" this.didScroll}} {{on "mousedown" this.didMouseDown}} {{on "click" this.didClick}}>
 		<app-gridlist-area {{style height=this.conf.h}}>
 			{{~#each this.items as |item|~}}
 				{{#let (this.isSelected item.id) as |selected|}}
