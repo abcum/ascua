@@ -271,6 +271,13 @@ export default class extends Component {
 		return this.conf.a.has(id);
 	}
 
+	// Stops the browser starting a text selection when modifier or double-clicking rows.
+	@action didMouseDown(event) {
+		if (event.shiftKey || event.metaKey || event.altKey || event.detail > 1) {
+			event.preventDefault();
+		}
+	}
+
 	@action didClick(event, item) {
 
 		event.stopPropagation();
