@@ -1,6 +1,6 @@
 {
   "name": "@ascua/decimal.js",
-  "version": "0.34.0",
+  "version": "0.35.0",
   "description": "Small description for @ascua/decimal.js goes here",
   "keywords": [
     "ember-addon"
